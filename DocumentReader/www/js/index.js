@@ -122,16 +122,16 @@ var app = {
                 if (accessKey != null && accessKey != "") {
                     accessKey = accessKey.replace(/^/g, '').replace(/\n/g, '');
                     DocumentReader.setRfidScenario({
-                        mMrz: accessKey,
-                        mPacePasswordType: 1,
+                        mrz: accessKey,
+                        pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_MRZ,
                     }, function (m) { }, function (e) { console.log(e) });
                 } else {
                     accessKey = null;
                     accessKey = results.getTextFieldValueByType(159);
                     if (accessKey != null && accessKey != "") {
                         DocumentReader.setRfidScenario({
-                            mPassword: accessKey,
-                            mPacePasswordType: 2,
+                            password: accessKey,
+                            pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_CAN,
                         }, function (m) { }, function (e) { console.log(e) });
                     }
                 }
