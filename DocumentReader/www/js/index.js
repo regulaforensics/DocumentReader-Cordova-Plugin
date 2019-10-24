@@ -11,7 +11,6 @@ var app = {
 
         var DocumentReaderResults = DocumentReader.DocumentReaderResults;
         var Scenario = DocumentReader.Scenario;
-        var Enum = DocumentReader.Enum;
         var doRfid = false;
 
         function postInitialize(scenarios, canRfid) {
@@ -118,7 +117,7 @@ var app = {
             var results = DocumentReaderResults.fromJson(JSON.parse(jstring));
             if (doRfid && results != null && results.chipPage != 0) {
                 accessKey = null;
-                accessKey = results.getTextFieldValueByType(51);
+                accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_MRZ_STRINGS);
                 if (accessKey != null && accessKey != "") {
                     accessKey = accessKey.replace(/^/g, '').replace(/\n/g, '');
                     DocumentReader.setRfidScenario({
@@ -127,7 +126,7 @@ var app = {
                     }, function (m) { }, function (e) { console.log(e) });
                 } else {
                     accessKey = null;
-                    accessKey = results.getTextFieldValueByType(159);
+                    accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_CARD_ACCESS_NUMBER);
                     if (accessKey != null && accessKey != "") {
                         DocumentReader.setRfidScenario({
                             password: accessKey,
@@ -144,14 +143,14 @@ var app = {
         }
 
         function displayResults(results) {
-            document.getElementById("status").innerHTML = results.getTextFieldValueByType(25);
+            document.getElementById("status").innerHTML = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES);
             document.getElementById("status").style.backgroundColor = "green";
-            if (results.getGraphicFieldImageByType(207) != null) {
-                var base64DocFront = "data:image/png;base64," + results.getGraphicFieldImageByType(207);
+            if (results.getGraphicFieldImageByType(DocumentReader.Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE) != null) {
+                var base64DocFront = "data:image/png;base64," + results.getGraphicFieldImageByType(DocumentReader.Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE);
                 document.getElementById("documentImage").src = base64DocFront;
             }
-            if (results.getGraphicFieldImageByType(201) != null) {
-                var base64Portrait = "data:image/png;base64," + results.getGraphicFieldImageByType(201);
+            if (results.getGraphicFieldImageByType(DocumentReader.Enum.eGraphicFieldType.GF_PORTRAIT) != null) {
+                var base64Portrait = "data:image/png;base64," + results.getGraphicFieldImageByType(DocumentReader.Enum.eGraphicFieldType.GF_PORTRAIT);
                 document.getElementById("portraitImage").src = base64Portrait;
             }
         }
