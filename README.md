@@ -28,6 +28,8 @@ cordova prepare
 6. iOS:
   * Run `cordova run ios` inside `DocumentReader` folder - this is just one way to run the app. You can also run it directly from within Xcode.
 
+**Note:** in case `DocumentReaderCore.framework is missed` error is encontered, do the following: go to the `Frameworks, Libraries, and Embedded Content` on the General Tab of the target. Remove `DocumentReaderCore.framework`. Then add the framework once again (ios/DocumentReader/Plugins/cordova-plugin-document-reader-core-fullrfid/).
+
 ## How to add Document Reader to your project
 Document Reader libraries are available on [npm](https://www.npmjs.com/~regula).
 First of all, install API library, simply running the following command:

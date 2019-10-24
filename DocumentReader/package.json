@@ -10,8 +10,8 @@
   "keywords": [
     "ecosystem:cordova"
   ],
-  "author": "Regula Team",
-  "license": "Apache-2.0",
+  "author": "Regula Forensics Inc.",
+  "license": "commercial",
   "dependencies": {
     "cordova-android": "^8.1.0",
     "cordova-ios": "^5.0.1",
