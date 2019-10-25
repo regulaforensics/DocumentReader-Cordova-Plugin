@@ -34,7 +34,7 @@ cordova prepare
 Document Reader libraries are available on [npm](https://www.npmjs.com/~regula).
 First of all, install API library, simply running the following command:
 ```
-cordova plugin add cordova-plugin-document-reader-api
+cordova plugin add cordova-plugin-document-reader-api --variable CAMERA_USAGE_DESCRIPTION="To take photo" --variable READ_EXTERNAL_STORAGE="To choose photo"
 ```
 
 And then add one of the Core libraries depend on the functionality that you wish and the license capabilities:

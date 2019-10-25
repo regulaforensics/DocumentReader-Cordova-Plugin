@@ -46,7 +46,8 @@ var app = {
         function scan() {
             DocumentReader.showScanner(
                 function (message) { handleResults(message) },
-                function (error) { console.log(error) });
+                function (error) { console.log(error) }
+            );
         }
 
         function recognizeAndroid() {
@@ -70,7 +71,8 @@ var app = {
                                         DocumentReader.recognizeImage(
                                             base64,
                                             function (message) { handleResults(message) },
-                                            function (error) { console.log(error) });
+                                            function (error) { console.log(error) }
+                                        );
                                     };
                                     reader.readAsDataURL(file);
                                 });
@@ -103,13 +105,16 @@ var app = {
                                     DocumentReader.recognizeImage(
                                         base64,
                                         function (message) { handleResults(message) },
-                                        function (error) { console.log(error) });
+                                        function (error) { console.log(error) }
+                                    );
                                 };
                                 reader.readAsDataURL(file);
                             });
                         },
-                        function fail(e) { console.log('Cannot found requested file'); });
-                }, function (e) { console.log(error) }, { maximumImagesCount: 1 });
+                        function fail(e) { console.log('Cannot found requested file'); }
+                    );
+                }, function (e) { console.log(error) }, { maximumImagesCount: 1 }
+            );
         }
 
         function handleResults(jstring) {
@@ -207,15 +212,18 @@ var app = {
                                                     var scenarios = JSON.parse(scenariosJSONString);
                                                     DocumentReader.getCanRFID(
                                                         function (canRfid) { postInitialize(scenarios, canRfid) },
-                                                        function (error) { console.log(error) });
+                                                        function (error) { console.log(error) }
+                                                    );
                                                 },
-                                                function (error) { console.log(error) });
+                                                function (error) { console.log(error) }
+                                            );
                                         },
                                         function (error) {
                                             console.log(error);
                                             document.getElementById("status").innerHTML = error;
                                             document.getElementById("status").style.backgroundColor = "red";
-                                        });
+                                        }
+                                    );
                                 }
                             },
                             function (error) {
@@ -232,7 +240,8 @@ var app = {
                 console.dir(e);
                 document.getElementById("status").innerHTML = "Error reading license";
                 document.getElementById("status").style.backgroundColor = "red";
-            });
+            }
+        );
     },
 
     // Update DOM on a Received Event
