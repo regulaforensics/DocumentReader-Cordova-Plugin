@@ -32,12 +32,12 @@ $ cordova prepare
 
 ## How to add the SDK to the project
 Document Reader libraries are available on [npm](https://www.npmjs.com/~regula).
-First of all, install API library, simply running the following command:
+First of all, install **API** library, simply running the following command:
 ```bash
 $ cordova plugin add cordova-plugin-document-reader-api --variable CAMERA_USAGE_DESCRIPTION="To take photo" --variable READ_EXTERNAL_STORAGE="To choose photo"
 ```
 
-And then add one of the Core libraries depend on the functionality that you wish and the license capabilities:
+And then add one of the [Core](https://docs.regulaforensics.com/cordova/core) libraries depend on the functionality that you wish and the license capabilities:
 
 * Install **bounds** library edition:
 ```bash
