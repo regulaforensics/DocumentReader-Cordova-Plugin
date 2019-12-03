@@ -6,20 +6,20 @@ You can use native camera to scan the documents or image from gallery for extrac
 We have provided a simple application that demonstrates the  _**API**_  calls you can use to interact with the Document Reader Library.
 
 # Content
-* [How to build demo application](#how-to-build-demo-application)
-* [How to add Document Reader library to your project](#how-to-add-document-reader-to-your-project)
+* [How to build the demo application](#how-to-build-the-demo-application)
+* [How to add the SDK to the project](#how-to-add-the-sdk-to-the-project)
 * [Troubleshooting license issues](#troubleshooting-license-issues)
 * [Documentation](#documentation)
 * [Additional information](#additional-information)
 
-## How to build demo application
+## How to build the demo application
 1. Get a trial license for demo application at  [licensing.regulaforensics.com](https://licensing.regulaforensics.com/)  (`regula.license`  file).
 2. Download or clone current repository using the command `git clone https://github.com/regulaforensics/DocumentReader-Cordova-Plugin.git`.
 3. Run the following commands in Terminal:
 ```bash
-cd DocumentReader
-npm install
-cordova prepare
+$ cd DocumentReader
+$ npm install
+$ cordova prepare
 ```
 
 4. Copy the `regula.license` file to the `DocumentReader/www` folder.
@@ -30,58 +30,58 @@ cordova prepare
 
 **Note:** in case `DocumentReaderCore.framework is missed` error is encontered, do the following: go to the `Frameworks, Libraries, and Embedded Content` on the General Tab of the target. Remove `DocumentReaderCore.framework`. Then add the framework once again (`ios/DocumentReader/Plugins/cordova-plugin-document-reader-core-fullrfid/`).
 
-## How to add Document Reader to your project
+## How to add the SDK to the project
 Document Reader libraries are available on [npm](https://www.npmjs.com/~regula).
 First of all, install API library, simply running the following command:
-```
-cordova plugin add cordova-plugin-document-reader-api --variable CAMERA_USAGE_DESCRIPTION="To take photo" --variable READ_EXTERNAL_STORAGE="To choose photo"
+```bash
+$ cordova plugin add cordova-plugin-document-reader-api --variable CAMERA_USAGE_DESCRIPTION="To take photo" --variable READ_EXTERNAL_STORAGE="To choose photo"
 ```
 
 And then add one of the Core libraries depend on the functionality that you wish and the license capabilities:
 
 * Install **bounds** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-bounds
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-bounds
 ```
 
 * Install **mrz** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-mrz
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-mrz
 ```
 
 * Install **mrzrfid** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-mrzrfid
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-mrzrfid
 ```
 
 * Install **barcode** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-barcode
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-barcode
 ```
 
 * Install **barcodemrz** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-barcodemrz
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-barcodemrz
 ```
 
 * Install **doctype** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-doctype
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-doctype
 ```
 
 * Install **ocrandmrz** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-ocrandmrz
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-ocrandmrz
 ```
 
 * Install **full** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-full
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-full
 ```
 
 * Install **fullrfid** library edition:
-```
-cordova plugin add cordova-plugin-document-reader-core-fullrfid
+```bash
+$ cordova plugin add cordova-plugin-document-reader-core-fullrfid
 ```
 
 ## Troubleshooting license issues
@@ -91,10 +91,10 @@ If you have issues with license verification when running the application, pleas
 3. The license is valid (not expired).
 4. The date and time on the device, where you run the application, are valid.
 5. You use the latest release version of the Document Reader SDK.
-6. You placed the  `license` into the correct folder as described here [How to build demo application](#how-to-build-demo-application) (`DocumentReader/www` folder).
+6. You placed the license into the project.
 
 ## Documentation
-You can find documentation on API [here](https://docs.regulaforensics.com/cordova).
+The documentation on the SDK can be found [here](https://docs.regulaforensics.com/cordova).
 
 ## Additional information
 If you have any technical questions, feel free to [contact](mailto:cordova.support@regulaforensics.com) us or create issue [here](https://github.com/regulaforensics/DocumentReader-Cordova-Plugin/issues).
