@@ -23,11 +23,11 @@
   },
   "cordova": {
     "plugins": {
-      "cordova-plugin-document-reader-api-beta": {
+      "cordova-plugin-document-reader-api": {
         "CAMERA_USAGE_DESCRIPTION": "To take photo",
         "READ_EXTERNAL_STORAGE": "To choose photo"
       },
-      "cordova-plugin-document-reader-core-fullrfid-beta": {},
+      "cordova-plugin-document-reader-core-fullrfid": {},
       "cordova-plugin-file": {},
       "cordova-plugin-image-picker": {
         "PHOTO_LIBRARY_USAGE_DESCRIPTION": " "
