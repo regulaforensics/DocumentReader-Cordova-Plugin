@@ -210,7 +210,7 @@ var app = {
                                             DocumentReader.getAvailableScenarios(
                                                 function (scenariosJSONString) {
                                                     var scenarios = JSON.parse(scenariosJSONString);
-                                                    DocumentReader.getCanRFID(
+                                                    DocumentReader.isRFIDAvailableForUse(
                                                         function (canRfid) { postInitialize(scenarios, canRfid) },
                                                         function (error) { console.log(error) }
                                                     );
