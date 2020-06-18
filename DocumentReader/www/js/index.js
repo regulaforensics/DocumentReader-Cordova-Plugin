@@ -45,7 +45,13 @@ var app = {
 
         function scan() {
             DocumentReader.showScanner(
-                function (message) { handleResults(message) },
+                function (jString) {
+                    if (jString.length >= 8 && jString.substring(0, 8) == "Success:")
+                        handleResults(jString.substring(8));
+                    else
+                        print(jString);
+                
+            },
                 function (error) { console.log(error) }
             );
         }
@@ -140,7 +146,12 @@ var app = {
                     }
                 }
                 DocumentReader.startRFIDReader(
-                    function (jstring) { displayResults(DocumentReaderResults.fromJson(JSON.parse(jstring))) },
+                    function (jstring) {
+                    if (jstring.length >= 8 && jstring.substring(0, 8) == "Success:")
+                        displayResults(DocumentReaderResults.fromJson(JSON.parse(jstring.substring(8))))
+                    else
+                      print(jstring);
+                     },
                     function (e) { console.log(e) });
             } else {
                 displayResults(results);
