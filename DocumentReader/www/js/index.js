@@ -140,7 +140,7 @@ var app = {
                     }
                 }
                 DocumentReader.startRFIDReader(
-                    function (message) { handleResults(message) },
+                    function (message) { displayResults(DocumentReaderResults.fromJson(JSON.parse(message))) },
                     function (e) { console.log(e) });
             } else {
                 displayResults(results);
