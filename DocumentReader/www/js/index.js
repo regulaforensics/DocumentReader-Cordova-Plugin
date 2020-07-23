@@ -140,7 +140,7 @@ var app = {
                     }
                 }
                 DocumentReader.startRFIDReader(
-                    function (jstring) { displayResults(DocumentReaderResults.fromJson(JSON.parse(jstring))) },
+                    function (message) { displayResults(DocumentReaderResults.fromJson(JSON.parse(message))) },
                     function (e) { console.log(e) });
             } else {
                 displayResults(results);
@@ -210,7 +210,7 @@ var app = {
                                             DocumentReader.getAvailableScenarios(
                                                 function (scenariosJSONString) {
                                                     var scenarios = JSON.parse(scenariosJSONString);
-                                                    DocumentReader.getCanRFID(
+                                                    DocumentReader.isRFIDAvailableForUse(
                                                         function (canRfid) { postInitialize(scenarios, canRfid) },
                                                         function (error) { console.log(error) }
                                                     );
