@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api-beta" version="5.1.31"
+<plugin id="cordova-plugin-document-reader-api-beta" version="5.1.32"
   xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
@@ -25,7 +25,7 @@
     <podspec>
       <config/>
       <pods>
-        <pod name="DocumentReader" spec="~> ios_5.1.31" />
+        <pod name="DocumentReader" spec="~> ios_5.1.32" />
       </pods>
     </podspec>
     <preference name="CAMERA_USAGE_DESCRIPTION" default=" " />
