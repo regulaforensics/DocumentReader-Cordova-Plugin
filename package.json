@@ -1,6 +1,6 @@
 {
   "name": "cordova-plugin-document-reader-api-beta",
-  "version": "5.1.29",
+  "version": "5.1.30",
   "description": "Cordova plugin for reading and validation of identification documents (API framework)",
   "cordova": {
     "id": "cordova-plugin-document-reader-api-beta",
