@@ -2,8 +2,13 @@ package cordova.plugin.documentreader;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
+import android.nfc.NfcAdapter;
+import android.nfc.tech.IsoDep;
 import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
 
@@ -13,6 +18,7 @@ import com.regula.documentreader.api.completions.IDocumentReaderPrepareCompletio
 import com.regula.documentreader.api.enums.DocReaderAction;
 import com.regula.documentreader.api.params.ImageInputParam;
 import com.regula.documentreader.api.params.rfid.PKDCertificate;
+import com.regula.documentreader.api.results.DocumentReaderResults;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -26,15 +32,34 @@ import java.util.List;
 
 import static com.regula.documentreader.api.DocumentReader.Instance;
 
-@SuppressWarnings({"ConstantConditions", "unused"})
+@SuppressWarnings({"ConstantConditions", "RedundantSuppression"})
 public class DocumentReader extends CordovaPlugin {
     private CallbackContext callbackContext;
-    private Context context;
+    private boolean backgroundRFIDEnabled = false;
+    private Activity activity;
     JSONArray data;
     private static int databaseDownloadProgress = 0;
 
     private Context getContext() {
-        return context;
+        return activity;
+    }
+
+    private Activity getActivity() {
+        return activity;
+    }
+
+    @Override
+    public void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        if (intent.getAction() != null && intent.getAction().equals(NfcAdapter.ACTION_TECH_DISCOVERED) && backgroundRFIDEnabled)
+            Instance().readRFID(IsoDep.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)), getCompletion());
+    }
+
+    @Override
+    public void onResume(boolean multitasking) {
+        super.onResume(multitasking);
+        if (backgroundRFIDEnabled)
+            startForegroundDispatch(getActivity());
     }
 
     private interface Callback {
@@ -45,6 +70,9 @@ public class DocumentReader extends CordovaPlugin {
         default void success() {
             success("");
         }
+
+        default void finish() {
+        }
     }
 
     private <T> T args(int index) throws JSONException {
@@ -53,7 +81,13 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void sendProgress(int progress) {
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, "Downloading database: " + progress + "%");
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, progress);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void sendCompletion(int action, DocumentReaderResults results, Throwable error) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, JSONConstructor.generateCompletion(action, results, error, getContext()).toString());
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
     }
@@ -61,7 +95,7 @@ public class DocumentReader extends CordovaPlugin {
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
         this.callbackContext = callbackContext;
-        context = cordova.getActivity();
+        activity = cordova.getActivity();
         data = args;
         Callback callback = new Callback() {
             @Override
@@ -183,6 +217,9 @@ public class DocumentReader extends CordovaPlugin {
                 case "readRFID":
                     readRFID(callback);
                     break;
+                case "getRfidSessionStatus":
+                    getRfidSessionStatus(callback);
+                    break;
                 case "setEnableCoreLogs":
                     setEnableCoreLogs(callback, args(0));
                     break;
@@ -213,11 +250,17 @@ public class DocumentReader extends CordovaPlugin {
                 case "initializeReader":
                     initializeReader(callback, args(0));
                     break;
+                case "initializeReaderWithDatabasePath":
+                    initializeReaderWithDatabasePath(callback, args(0), args(1));
+                    break;
                 case "prepareDatabase":
                     prepareDatabase(callback, args(0));
                     break;
                 case "recognizeImage":
                     recognizeImage(callback, args(0));
+                    break;
+                case "setRfidSessionStatus":
+                    setRfidSessionStatus(callback, args(0));
                     break;
                 case "recognizeImageFrame":
                     recognizeImageFrame(callback, args(0), args(1));
@@ -252,6 +295,27 @@ public class DocumentReader extends CordovaPlugin {
             callback.error("no permission");
         } else
             callback.success("");
+    }
+
+    private void startForegroundDispatch(final Activity activity) {
+        IntentFilter[] filters = new IntentFilter[1];
+        filters[0] = new IntentFilter();
+        filters[0].addAction(NfcAdapter.ACTION_TECH_DISCOVERED);
+        filters[0].addCategory(Intent.CATEGORY_DEFAULT);
+        String[][] techList = new String[][]{
+                new String[]{"android.nfc.tech.IsoDep"}
+        };
+        Intent intent = new Intent(activity.getApplicationContext(), activity.getClass());
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        PendingIntent pendingIntent = PendingIntent.getActivity(activity.getApplicationContext(), 0, intent, 0);
+        NfcAdapter.getDefaultAdapter(getActivity()).enableForegroundDispatch(activity, pendingIntent, filters, techList);
+    }
+
+    private void stopBackgroundRFID() {
+        if (!backgroundRFIDEnabled)
+            return;
+        NfcAdapter.getDefaultAdapter(getActivity()).disableForegroundDispatch(getActivity());
+        backgroundRFIDEnabled = false;
     }
 
     private void getAvailableScenarios(Callback callback) throws JSONException {
@@ -367,10 +431,8 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void recognizeImageWithImageInputParams(Callback callback, String base64Image, final JSONObject params) throws JSONException {
-        if (Instance().getDocumentReaderIsReady())
-            Instance().recognizeImage(JSONConstructor.bitmapFromBase64(base64Image), new ImageInputParam(params.getInt("width"), params.getInt("height"), params.getInt("type")), getCompletion(callback));
-        else
-            callback.error("document reader not ready");
+        Instance().recognizeImage(JSONConstructor.bitmapFromBase64(base64Image), new ImageInputParam(params.getInt("width"), params.getInt("height"), params.getInt("type")), getCompletion());
+        callback.finish();
     }
 
     private void recognizeImageWithOpts(Callback callback, final JSONObject opts, String base64Image) throws JSONException {
@@ -379,20 +441,18 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void recognizeImage(Callback callback, String base64Image) {
-        if (Instance().getDocumentReaderIsReady())
-            Instance().recognizeImage(JSONConstructor.bitmapFromBase64(base64Image), getCompletion(callback));
-        else
-            callback.error("document reader not ready");
+        stopBackgroundRFID();
+        Instance().recognizeImage(JSONConstructor.bitmapFromBase64(base64Image), getCompletion());
+        callback.finish();
     }
 
     private void recognizeImages(Callback callback, JSONArray base64Images) throws JSONException {
-        if (Instance().getDocumentReaderIsReady()) {
-            Bitmap[] images = new Bitmap[base64Images.length()];
-            for (int i = 0; i < images.length; i++)
-                images[i] = JSONConstructor.bitmapFromBase64(base64Images.getString(i));
-            Instance().recognizeImages(images, getCompletion(callback));
-        } else
-            callback.error("document reader not ready");
+        stopBackgroundRFID();
+        Bitmap[] images = new Bitmap[base64Images.length()];
+        for (int i = 0; i < images.length; i++)
+            images[i] = JSONConstructor.bitmapFromBase64(base64Images.getString(i));
+        Instance().recognizeImages(images, getCompletion());
+        callback.finish();
     }
 
     private void removeDatabase(Callback callback) {
@@ -429,24 +489,20 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void recognizeImageFrame(Callback callback, String base64Image, final JSONObject opts) throws JSONException {
-        if (Instance().getDocumentReaderIsReady())
-            Instance().recognizeImageFrame(JSONConstructor.bitmapFromBase64(base64Image), new ImageInputParam(opts.getInt("width"), opts.getInt("height"), opts.getInt("type")), getCompletion(callback));
-        else
-            callback.error("document reader not ready");
+        Instance().recognizeImageFrame(JSONConstructor.bitmapFromBase64(base64Image), new ImageInputParam(opts.getInt("width"), opts.getInt("height"), opts.getInt("type")), getCompletion());
+        callback.finish();
     }
 
     private void recognizeVideoFrame(Callback callback, String byteString, final JSONObject opts) throws JSONException {
-        if (Instance().getDocumentReaderIsReady())
-            Instance().recognizeVideoFrame(byteString.getBytes(), new ImageInputParam(opts.getInt("width"), opts.getInt("height"), opts.getInt("type")), getCompletion(callback));
-        else
-            callback.error("document reader not ready");
+        stopBackgroundRFID();
+        Instance().recognizeVideoFrame(byteString.getBytes(), new ImageInputParam(opts.getInt("width"), opts.getInt("height"), opts.getInt("type")), getCompletion());
+        callback.finish();
     }
 
     private void showScannerWithCameraID(Callback callback, int cameraID) {
-        if (Instance().getDocumentReaderIsReady())
-            Instance().showScanner(getContext(), cameraID, getCompletion(callback));
-        else
-            callback.error("document reader not ready");
+        stopBackgroundRFID();
+        Instance().showScanner(getContext(), cameraID, getCompletion());
+        callback.finish();
     }
 
     private void showScanner(Callback callback) {
@@ -454,11 +510,10 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void showScannerWithCameraIDAndOpts(Callback callback, int cameraID, final JSONObject opts) throws JSONException {
-        if (Instance().getDocumentReaderIsReady()) {
-            RegulaConfig.setConfig(Instance(), opts, getContext());
-            Instance().showScanner(getContext(), cameraID, getCompletion(callback));
-        } else
-            callback.error("document reader not ready");
+        stopBackgroundRFID();
+        RegulaConfig.setConfig(Instance(), opts, getContext());
+        Instance().showScanner(getContext(), cameraID, getCompletion());
+        callback.finish();
     }
 
     private void stopScanner(Callback callback) {
@@ -467,11 +522,14 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void startRFIDReader(Callback callback) {
-        Instance().startRFIDReader(getContext(), getCompletion(callback));
+        stopBackgroundRFID();
+        Instance().startRFIDReader(getContext(), getCompletion());
+        callback.finish();
     }
 
     private void stopRFIDReader(Callback callback) {
         Instance().stopRFIDReader(getContext());
+        stopBackgroundRFID();
         callback.success();
     }
 
@@ -497,35 +555,45 @@ public class DocumentReader extends CordovaPlugin {
         callback.success();
     }
 
-    private void setCameraSessionIsPaused(Callback callback, @SuppressWarnings("unused") boolean ignored) {
-        callback.error("setCameraSessionIsPaused() is an ios-only method");
+    private void readRFID(Callback callback) {
+        backgroundRFIDEnabled = true;
+        startForegroundDispatch(getActivity());
+        callback.finish();
     }
 
-    private void readRFID(Callback callback) {
-        callback.error("readRFID() is an ios-only method");
+    private void setCameraSessionIsPaused(Callback callback, @SuppressWarnings("unused") boolean ignored) {
+        callback.error("setCameraSessionIsPaused() is an ios-only method");
     }
 
     private void getCameraSessionIsPaused(Callback callback) {
         callback.error("getCameraSessionIsPaused() is an ios-only method");
     }
 
+    @SuppressWarnings("unused")
     private void recognizeImageWithCameraMode(Callback callback, String base64, boolean mode) {
         callback.error("recognizeImageWithCameraMode() is an ios-only method");
     }
 
-    private IDocumentReaderCompletion getCompletion(Callback callback) {
+    @SuppressWarnings("unused")
+    private void initializeReaderWithDatabasePath(Callback callback, Object license, String path) {
+        callback.error("initializeReaderWithDatabasePath() is an ios-only method");
+    }
+
+    @SuppressWarnings("unused")
+    private void setRfidSessionStatus(Callback callback, String s) {
+        callback.error("setRfidSessionStatus() is an ios-only method");
+    }
+
+    private void getRfidSessionStatus(Callback callback) {
+        callback.error("getRfidSessionStatus() is an ios-only method");
+    }
+
+    private IDocumentReaderCompletion getCompletion() {
         return (action, results, error) -> {
-            switch (action) {
-                case DocReaderAction.COMPLETE:
-                    callback.success(JSONConstructor.resultsToJsonObject(results, getContext()).toString());
-                    break;
-                case DocReaderAction.CANCEL:
-                    callback.error("Canceled by user");
-                    break;
-                case DocReaderAction.ERROR:
-                    callback.error("Error: " + error);
-                    break;
-            }
+            System.out.println("Received action: " + action);
+            sendCompletion(action, results, error);
+            if (action == DocReaderAction.ERROR || action == DocReaderAction.CANCEL || (action == DocReaderAction.COMPLETE && results.rfidResult == 1))
+                stopBackgroundRFID();
         };
     }
 
@@ -540,11 +608,11 @@ public class DocumentReader extends CordovaPlugin {
             }
 
             @Override
-            public void onPrepareCompleted(boolean status, String error) {
+            public void onPrepareCompleted(boolean status, Throwable error) {
                 if (status)
                     callback.success("database prepared");
                 else
-                    callback.error("database preparation failed: " + error);
+                    callback.error("database preparation failed: " + error.toString());
             }
         };
     }

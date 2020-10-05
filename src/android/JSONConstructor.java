@@ -4,15 +4,14 @@ import android.content.Context;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
-import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Nullable;
 import android.util.Base64;
 
 import com.regula.documentreader.api.enums.BarcodeType;
+import com.regula.documentreader.api.enums.DocReaderAction;
 import com.regula.documentreader.api.params.FaceMetaData;
 import com.regula.documentreader.api.results.Bounds;
 import com.regula.documentreader.api.results.Coordinate;
@@ -68,6 +67,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@SuppressWarnings("RedundantSuppression")
 class JSONConstructor {
 
     // To JSON
@@ -112,12 +112,16 @@ class JSONConstructor {
 
     static JSONObject resultsToJsonObject(DocumentReaderResults results, Context context) {
         JSONObject jsonObject = new JSONObject();
+        if (results == null) return jsonObject;
         try {
             jsonObject.put("chipPage", results.chipPage);
             jsonObject.put("highResolution", results.highResolution);
             jsonObject.put("morePagesAvailable", results.morePagesAvailable);
-            jsonObject.put("processingFinished", results.processingFinished);
+            jsonObject.put("processingFinishedStatus", results.processingFinishedStatus);
             jsonObject.put("rfidResult", results.rfidResult);
+            jsonObject.put("elapsedTimeRFID", results.elapsedTimeRFID);
+            jsonObject.put("elapsedTime", results.elapsedTime);
+            jsonObject.put("overallResult", results.getOverallResult());
             jsonObject.put("documentType", generateList(results.documentType, JSONConstructor::generateDocumentReaderDocumentType, context));
             if (results.barcodePosition != null)
                 jsonObject.put("barcodePosition", generateElementPosition(results.barcodePosition));
@@ -147,6 +151,12 @@ class JSONConstructor {
         return jsonObject;
     }
 
+    static JSONObject resultsToJsonObjectNotification(DocumentReaderResults results) throws JSONException {
+        if (results != null && results.documentReaderNotification != null)
+            return new JSONObject().put("documentReaderNotification", generateDocumentReaderNotification(results.documentReaderNotification));
+        return new JSONObject();
+    }
+
     static JSONObject generateElementPosition(ElementPosition elementPosition) throws JSONException {
         JSONObject result = new JSONObject();
         result.put("angle", elementPosition.angle);
@@ -169,9 +179,9 @@ class JSONConstructor {
         return result;
     }
 
-    static JSONObject generateCoordinate(@Nullable Coordinate coordinate) throws JSONException {
+    static JSONObject generateCoordinate(Coordinate coordinate) throws JSONException {
         JSONObject result = new JSONObject();
-        if(coordinate == null) return result;
+        if (coordinate == null) return result;
         result.put("x", coordinate.x);
         result.put("y", coordinate.y);
 
@@ -209,7 +219,8 @@ class JSONConstructor {
 
     static private JSONObject generateDocumentReaderNotification(DocumentReaderNotification documentReaderNotification) throws JSONException {
         JSONObject result = new JSONObject();
-        result.put("code", documentReaderNotification.code);
+        result.put("code", documentReaderNotification.code & 0xFFFF0000);
+        result.put("number", documentReaderNotification.code & 0x0000FFFF);
         result.put("value", documentReaderNotification.value);
 
         return result;
@@ -245,10 +256,9 @@ class JSONConstructor {
         result.put("lightType", documentReaderGraphicField.light);
         result.put("lightName", eRPRM_Lights.getTranslation(context, documentReaderGraphicField.light));
         result.put("pageIndex", documentReaderGraphicField.pageIndex);
+        result.put("value", documentReaderGraphicField.imageBase64());
         if (documentReaderGraphicField.getRect() != null)
             result.put("fieldRect", generateDocReaderFieldRect(documentReaderGraphicField.getRect()));
-        if (documentReaderGraphicField.getBitmap() != null)
-            result.put("value", bitmapToBase64String(documentReaderGraphicField.getBitmap()));
 
         return result;
     }
@@ -298,14 +308,9 @@ class JSONConstructor {
         result.put("lightType", documentReaderJsonResultGroup.lightType);
         result.put("pageIdx", documentReaderJsonResultGroup.pageIdx);
         result.put("resultType", documentReaderJsonResultGroup.resultType);
-        if (documentReaderJsonResultGroup.jsonResult != null)
-            result.put("jsonResult", generateDocumentReaderJsonResultGroupJsonResult(documentReaderJsonResultGroup.jsonResult));
+        result.put("jsonResult", documentReaderJsonResultGroup.jsonResult);
 
         return result;
-    }
-
-    static private JSONObject generateDocumentReaderJsonResultGroupJsonResult(String jsonResult) throws JSONException {
-        return new JSONObject(jsonResult);
     }
 
     static private JSONObject generateRfidSessionData(RFIDSessionData rfidSessionData, Context context) throws JSONException {
@@ -320,12 +325,12 @@ class JSONConstructor {
         result.put("securityObjects", generateList(rfidSessionData.securityObjects, JSONConstructor::generateSecurityObject, context));
         if (rfidSessionData.cardProperties != null)
             result.put("cardProperties", generateCardProperties(rfidSessionData.cardProperties));
-        if(rfidSessionData.sessionDataStatus!=null)
+        if (rfidSessionData.sessionDataStatus != null)
             result.put("sessionDataStatus", generateRFIDSessionDataStatus(rfidSessionData.sessionDataStatus));
-        
+
         return result;
     }
-    
+
     static private JSONObject generateRFIDSessionDataStatus(RFIDSessionDataStatus input) throws JSONException {
         JSONObject result = new JSONObject();
         result.put("AA", input.AA);
@@ -335,7 +340,7 @@ class JSONConstructor {
         result.put("PACE", input.PACE);
         result.put("TA", input.TA);
         result.put("overallStatus", input.overallStatus);
-        
+
         return result;
     }
 
@@ -559,6 +564,7 @@ class JSONConstructor {
         result.put("validity", documentReaderValue.validity);
         result.put("value", documentReaderValue.value);
         result.put("originalValue", documentReaderValue.originalValue);
+        result.put("probability", documentReaderValue.probability);
         result.put("comparison", generateMapIntegerInteger(documentReaderValue.comparison));
         if (documentReaderValue.boundRect != null)
             result.put("boundRect", generateRect(documentReaderValue.boundRect));
@@ -576,22 +582,11 @@ class JSONConstructor {
         return result;
     }
 
-    static private JSONArray generateMapIntegerInteger(Map<Integer, Integer> map) throws JSONException {
-        JSONArray result = new JSONArray();
-        int index = 0;
-        for (Map.Entry<Integer, Integer> entry : map.entrySet()) {
-            if (entry != null)
-                result.put(index, generatePairIntegerInteger(entry));
-            index++;
-        }
-        return result;
-    }
-
-    static private JSONObject generatePairIntegerInteger(Map.Entry<Integer, Integer> entry) throws JSONException {
+    static private JSONObject generateMapIntegerInteger(Map<Integer, Integer> map) throws JSONException {
         JSONObject result = new JSONObject();
-        result.put("key", entry.getKey());
-        result.put("value", entry.getValue());
-
+        for (Map.Entry<Integer, Integer> entry : map.entrySet())
+            if (entry != null)
+                result.put(entry.getKey().toString(), entry.getValue());
         return result;
     }
 
@@ -686,11 +681,68 @@ class JSONConstructor {
         return result;
     }
 
+    static JSONObject generateCompletion(int action, DocumentReaderResults results, Throwable error, Context context) {
+        JSONObject result = new JSONObject();
+        try {
+            result.put("action", action);
+            switch (action) {
+                case DocReaderAction.MORE_PAGES_AVAILABLE:
+                case DocReaderAction.PROCESS:
+                case DocReaderAction.PROCESS_WHITE_UV_IMAGES:
+                    result.put("results", "");
+                case DocReaderAction.NOTIFICATION:
+                    result.put("results", resultsToJsonObjectNotification(results));
+                    break;
+                case DocReaderAction.COMPLETE:
+                case DocReaderAction.CANCEL:
+                case DocReaderAction.ERROR:
+                    result.put("results", resultsToJsonObject(results, context));
+                    break;
+            }
+            result.put("error", generateThrowable(error, context));
+        } catch (JSONException ignored) {
+        }
+
+        return result;
+    }
+
+    static JSONObject generateThrowable(Throwable throwable, Context context) throws JSONException {
+        JSONObject result = new JSONObject();
+        if (throwable == null)
+            return result;
+        result.put("localizedMessage", throwable.getLocalizedMessage());
+        result.put("message", throwable.getMessage());
+        result.put("string", throwable.toString());
+        result.put("stackTrace", generateArray(throwable.getStackTrace(), JSONConstructor::generateStackTraceElement, context));
+
+        return result;
+    }
+
+    static JSONObject generateStackTraceElement(StackTraceElement e, Context context) throws JSONException {
+        JSONObject result = new JSONObject();
+        if (e == null)
+            return result;
+        result.put("className", e.getClassName());
+        result.put("fileName", e.getFileName());
+        result.put("lineNumber", e.getLineNumber());
+        result.put("methodName", e.getMethodName());
+        result.put("isNativeMethod", e.isNativeMethod());
+        result.put("string", e.toString());
+
+        return result;
+    }
+
     // From JSON
 
     static Bitmap bitmapFromBase64(String base64) {
         byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
-        return BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inPreferredConfig = Bitmap.Config.RGB_565;
+        Bitmap result = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length, options);
+        int sizeMultiplier = result.getByteCount() / 5000000;
+        if (result.getByteCount() > 5000000)
+            result = Bitmap.createScaledBitmap(result, result.getWidth() / (int)Math.sqrt(sizeMultiplier), result.getHeight() / (int)Math.sqrt(sizeMultiplier), false);
+        return result;
     }
 
     static byte[] byteArrayFromJson(JSONArray array) throws JSONException {
@@ -702,7 +754,7 @@ class JSONConstructor {
 
     static Drawable drawableFromBase64(String base64, Context context) {
         ByteArrayInputStream byteArrayInputStream = new ByteArrayInputStream(Base64.decode(base64.getBytes(), Base64.DEFAULT));
-        return Drawable.createFromResourceStream(context.getResources(), null, byteArrayInputStream, null, null);
+        return Drawable.createFromResourceStream(context.getResources(), null, byteArrayInputStream, null);
     }
 
     static Bitmap bitmapFromDrawable(Drawable drawable) {
@@ -710,12 +762,12 @@ class JSONConstructor {
 
         if (drawable instanceof BitmapDrawable) {
             BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
-            if(bitmapDrawable.getBitmap() != null) {
+            if (bitmapDrawable.getBitmap() != null) {
                 return bitmapDrawable.getBitmap();
             }
         }
 
-        if(drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
+        if (drawable.getIntrinsicWidth() <= 0 || drawable.getIntrinsicHeight() <= 0) {
             bitmap = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
         } else {
             bitmap = Bitmap.createBitmap(drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight(), Bitmap.Config.ARGB_8888);
@@ -782,18 +834,5 @@ class JSONConstructor {
         result.y = object.getInt("y");
 
         return result;
-    }
-
-    static Paint.Cap capFromInt(int s){
-        switch (s){
-            case 0:
-                return Paint.Cap.BUTT;
-            case 1:
-                return Paint.Cap.ROUND;
-            case 2:
-                return Paint.Cap.SQUARE;
-            default:
-                return null;
-        }
     }
 }
