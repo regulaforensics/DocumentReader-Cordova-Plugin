@@ -172,8 +172,8 @@ var app = {
                     if (accessKey != null && accessKey != "")
                         DocumentReader.setRfidScenario({ password: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_CAN }, function(m) { }, function(e) { })
                 }
-                customRFID()
-//                usualRFID()
+                // customRFID()
+                usualRFID()
             } else
                 displayResults(results);
         }

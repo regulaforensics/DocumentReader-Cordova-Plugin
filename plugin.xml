@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api" version="0.0.15"
+<plugin id="cordova-plugin-document-reader-api" version="0.0.16"
   xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
@@ -43,7 +43,6 @@
     </config-file>
     <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
     <config-file parent="/*" target="AndroidManifest.xml">
-      <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="23" />
       <uses-permission android:name="android.permission.CAMERA" />
       <uses-permission android:name="android.permission.NFC" />
       <uses-feature android:name="android.hardware.camera" />
