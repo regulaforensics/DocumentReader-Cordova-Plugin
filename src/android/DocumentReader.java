@@ -70,9 +70,6 @@ public class DocumentReader extends CordovaPlugin {
         default void success() {
             success("");
         }
-
-        default void finish() {
-        }
     }
 
     private <T> T args(int index) throws JSONException {
@@ -96,6 +93,7 @@ public class DocumentReader extends CordovaPlugin {
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
         this.callbackContext = callbackContext;
         activity = cordova.getActivity();
+        action = (String)args.remove(0);
         data = args;
         Callback callback = new Callback() {
             @Override
@@ -430,9 +428,8 @@ public class DocumentReader extends CordovaPlugin {
         callback.success();
     }
 
-    private void recognizeImageWithImageInputParams(Callback callback, String base64Image, final JSONObject params) throws JSONException {
+    private void recognizeImageWithImageInputParams(@SuppressWarnings("unused") Callback callback, String base64Image, final JSONObject params) throws JSONException {
         Instance().recognizeImage(JSONConstructor.bitmapFromBase64(base64Image), new ImageInputParam(params.getInt("width"), params.getInt("height"), params.getInt("type")), getCompletion());
-        callback.finish();
     }
 
     private void recognizeImageWithOpts(Callback callback, final JSONObject opts, String base64Image) throws JSONException {
@@ -440,19 +437,17 @@ public class DocumentReader extends CordovaPlugin {
         recognizeImage(callback, base64Image);
     }
 
-    private void recognizeImage(Callback callback, String base64Image) {
+    private void recognizeImage(@SuppressWarnings("unused") Callback callback, String base64Image) {
         stopBackgroundRFID();
         Instance().recognizeImage(JSONConstructor.bitmapFromBase64(base64Image), getCompletion());
-        callback.finish();
     }
 
-    private void recognizeImages(Callback callback, JSONArray base64Images) throws JSONException {
+    private void recognizeImages(@SuppressWarnings("unused") Callback callback, JSONArray base64Images) throws JSONException {
         stopBackgroundRFID();
         Bitmap[] images = new Bitmap[base64Images.length()];
         for (int i = 0; i < images.length; i++)
             images[i] = JSONConstructor.bitmapFromBase64(base64Images.getString(i));
         Instance().recognizeImages(images, getCompletion());
-        callback.finish();
     }
 
     private void removeDatabase(Callback callback) {
@@ -488,32 +483,28 @@ public class DocumentReader extends CordovaPlugin {
         callback.success();
     }
 
-    private void recognizeImageFrame(Callback callback, String base64Image, final JSONObject opts) throws JSONException {
+    private void recognizeImageFrame(@SuppressWarnings("unused") Callback callback, String base64Image, final JSONObject opts) throws JSONException {
         Instance().recognizeImageFrame(JSONConstructor.bitmapFromBase64(base64Image), new ImageInputParam(opts.getInt("width"), opts.getInt("height"), opts.getInt("type")), getCompletion());
-        callback.finish();
     }
 
-    private void recognizeVideoFrame(Callback callback, String byteString, final JSONObject opts) throws JSONException {
+    private void recognizeVideoFrame(@SuppressWarnings("unused") Callback callback, String byteString, final JSONObject opts) throws JSONException {
         stopBackgroundRFID();
         Instance().recognizeVideoFrame(byteString.getBytes(), new ImageInputParam(opts.getInt("width"), opts.getInt("height"), opts.getInt("type")), getCompletion());
-        callback.finish();
     }
 
-    private void showScannerWithCameraID(Callback callback, int cameraID) {
+    private void showScannerWithCameraID(@SuppressWarnings("unused") Callback callback, int cameraID) {
         stopBackgroundRFID();
         Instance().showScanner(getContext(), cameraID, getCompletion());
-        callback.finish();
     }
 
     private void showScanner(Callback callback) {
         showScannerWithCameraID(callback, -1);
     }
 
-    private void showScannerWithCameraIDAndOpts(Callback callback, int cameraID, final JSONObject opts) throws JSONException {
+    private void showScannerWithCameraIDAndOpts(@SuppressWarnings("unused") Callback callback, int cameraID, final JSONObject opts) throws JSONException {
         stopBackgroundRFID();
         RegulaConfig.setConfig(Instance(), opts, getContext());
         Instance().showScanner(getContext(), cameraID, getCompletion());
-        callback.finish();
     }
 
     private void stopScanner(Callback callback) {
@@ -521,10 +512,9 @@ public class DocumentReader extends CordovaPlugin {
         callback.success();
     }
 
-    private void startRFIDReader(Callback callback) {
+    private void startRFIDReader(@SuppressWarnings("unused") Callback callback) {
         stopBackgroundRFID();
         Instance().startRFIDReader(getContext(), getCompletion());
-        callback.finish();
     }
 
     private void stopRFIDReader(Callback callback) {
@@ -555,10 +545,9 @@ public class DocumentReader extends CordovaPlugin {
         callback.success();
     }
 
-    private void readRFID(Callback callback) {
+    private void readRFID(@SuppressWarnings("unused") Callback callback) {
         backgroundRFIDEnabled = true;
         startForegroundDispatch(getActivity());
-        callback.finish();
     }
 
     private void setCameraSessionIsPaused(Callback callback, @SuppressWarnings("unused") boolean ignored) {
