@@ -84,7 +84,7 @@ var app = {
                                 }
                                 reader.readAsDataURL(file)
                             })}, function(e) { })
-                    }, function(e){ }, { maximumImagesCount: 10 })
+                    }, function(e){ }, { maximumImagesCount: 1 })
         }
 
         function handleCompletion(completion) {
@@ -151,13 +151,12 @@ var app = {
 
         function customRFID() {
             showRfidUI()
-            DocumentReader.readRFID(function(m) {
-            handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) { })
+            DocumentReader.readRFID(function(m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) { })
           }
 
         function usualRFID() {
             doRfid = false
-            DocumentReader.startRFIDReader(function(e) { }, function(e) { })
+            DocumentReader.startRFIDReader(function(m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) { })
         }
 
         function handleResults(results) {
@@ -172,7 +171,7 @@ var app = {
                     if (accessKey != null && accessKey != "")
                         DocumentReader.setRfidScenario({ password: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_CAN }, function(m) { }, function(e) { })
                 }
-                // customRFID()
+                //customRFID()
                 usualRFID()
             } else
                 displayResults(results);

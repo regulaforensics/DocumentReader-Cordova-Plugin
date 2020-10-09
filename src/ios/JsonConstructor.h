@@ -1,11 +1,11 @@
-#ifndef JsonConstructor_h
-#define JsonConstructor_h
+#ifndef JSONConstructor_h
+#define JSONConstructor_h
 
 #import <DocumentReader/DocumentReader.h>
 @import CoreGraphics;
 @import UIKit;
 
-@interface JsonConstructor : NSObject
+@interface JSONConstructor : NSObject
 + (NSString* _Nullable)resultsToJsonString:(RGLDocumentReaderResults* _Nullable) results;
 + (NSMutableDictionary* _Nullable)generateImageQualityGroup:(RGLImageQualityGroup* _Nullable) imageQualityGroup;
 +(NSMutableArray* _Nullable)generateImageQualityList:(NSArray<RGLImageQuality *> * _Nonnull) imageQualityList;
@@ -26,6 +26,10 @@
 +(NSMutableArray* _Nonnull )generateNSArrayNSNumber:(NSArray<NSNumber*>* _Nonnull) list;
 +(NSString* _Nullable)generateScenario:(RGLScenario* _Nullable) scenario;
 +(RGLPKDCertificate* _Nullable)RGLPKDCertificateFromJson:(NSDictionary* _Nullable) dict;
++(NSInteger)generateDocReaderAction:(RGLDocReaderAction)action;
++(NSInteger)generateRFIDCompleteAction:(RGLRFIDCompleteAction)action;
++(NSInteger)generateRFIDNotificationAction:(RGLRFIDNotificationAction)action;
++(NSString*_Nullable)generateCompletion:(NSInteger)action :(RGLDocumentReaderResults*_Nullable)results :(NSError*_Nullable)error :(RGLRFIDNotify*_Nullable)notify;
 
 @end
 #endif

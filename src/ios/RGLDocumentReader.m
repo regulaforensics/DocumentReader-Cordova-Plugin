@@ -4,338 +4,480 @@
 
 @implementation RGLDocumentReader
 
-static NSNumber * _databasePercentageDownloaded;
+static NSNumber* _databasePercentageDownloaded;
+static CDVInvokedUrlCommand* _command;
 
-+ (NSNumber*)databasePercentageDownloaded{ return _databasePercentageDownloaded; }
-+ (void)setDatabasePercentageDownloaded:(NSNumber *)number { _databasePercentageDownloaded = number; }
++ (NSNumber*) databasePercentageDownloaded { return _databasePercentageDownloaded; }
++ (void) setDatabasePercentageDownloaded:(NSNumber*)number { _databasePercentageDownloaded = number; }
++ (CDVInvokedUrlCommand*)command { return _command; }
++ (void) setCommand:(CDVInvokedUrlCommand*)command { _command = command; }
 
-- (void) result:(NSString*)message :(CDVInvokedUrlCommand*)command{
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:message] callbackId:command.callbackId];
+typedef void (^Callback)(NSString* response);
+
+- (void) result:(NSString*)message :(Callback)callback {
+    callback(message);
 }
 
-- (void) error:(NSString*)error :(CDVInvokedUrlCommand*)command{
-    [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:error] callbackId:command.callbackId];
+- (void) sendEvent:(NSString*)data :(NSString*)callbackId {
+    CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:data];
+    [result setKeepCallbackAsBool:YES];
+    [self.commandDelegate sendPluginResult:result callbackId:callbackId];
 }
 
-- (void) startRFIDReader:(CDVInvokedUrlCommand*)command{
-    if([RGLDocReader.shared isDocumentReaderIsReady])
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [RGLDocReader.shared startRFIDReaderFromPresenter:[[[UIApplication sharedApplication] keyWindow] rootViewController] completion:[self getCompletion: command]];
-        });
-    else
-        [self result:@"document reader not ready" :command];
-}
-
-- (void) initializeReader:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared initializeReader:[[command arguments] objectAtIndex:0] completion:[self getInitCompletion: command]];
-}
-
-- (void) initializeReaderWithDatabasePath:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared initializeReader:[[NSData alloc] initWithBase64EncodedString:[[command arguments] objectAtIndex:0] options:0] databasePath:[[command arguments] objectAtIndex:1] completion:[self getInitCompletion: command]];
-}
-
-- (void) prepareDatabase:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared prepareDatabase:[[command arguments] objectAtIndex:0] progressHandler:[self getProgressHandler:command] completion:[self getPrepareCompletion: command]];
-}
-
-- (void) removeDatabase:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared removeDatabase:^(BOOL successful, NSString * _Nullable error) {
-        if (successful)
-            [self result:@"database removed" :command];
-        else
-            [self error:[NSString stringWithFormat:@"%@/%@", @"database removal failed: ", error] :command];
-    }];
-}
-
-- (void) cancelDBUpdate:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared cancelDBUpdate];
-    [self result:@"" :command];
-}
-
--(void) runAutoUpdate:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared runAutoUpdate:[[command arguments] objectAtIndex:0] progressHandler:[self getProgressHandler:command] completion:[self getPrepareCompletion: command]];
-}
-
-- (void) showScanner:(CDVInvokedUrlCommand*)command{
-    if([RGLDocReader.shared isDocumentReaderIsReady]){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
-            UIViewController *currentViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
-            [RGLDocReader.shared showScanner:currentViewController completion:[self getCompletion: command]];
-        });
-    }else
-        [self result:@"document reader not ready" :command];
-}
-
-- (void) recognizeImage:(CDVInvokedUrlCommand*)command{
-    [self recognizeImageWith:command :[[command arguments] objectAtIndex:0] :false];
-}
-
-- (void) recognizeImages:(CDVInvokedUrlCommand*)command{
-    if([RGLDocReader.shared isDocumentReaderIsReady]){
-        dispatch_async(dispatch_get_main_queue(), ^{
-            NSArray* input = [[command arguments] objectAtIndex:0];
-            NSMutableArray<UIImage*>* images = [[NSMutableArray alloc] init];
-            for(__strong NSMutableString* base64 in input)
-                [images addObject:[UIImage imageWithData:[[NSData alloc]initWithBase64EncodedString:base64 options:NSDataBase64DecodingIgnoreUnknownCharacters]]];
-            [RGLDocReader.shared recognizeImages:images completion:[self getCompletion: command]];
-        });
-    }else
-        [self result:@"document reader not ready" :command];
-}
-
-- (void) recognizeImageWithCameraMode:(CDVInvokedUrlCommand*)command{
-    [self recognizeImageWith:command :[[command arguments] objectAtIndex:0] :[[command arguments] objectAtIndex:1]];
-}
-
-- (void) recognizeImageWith:(CDVInvokedUrlCommand*)command :(NSMutableString*)base64 :(BOOL)cameraMode{
-    if([RGLDocReader.shared isDocumentReaderIsReady])
-        [RGLDocReader.shared recognizeImage:[UIImage imageWithData:[[NSData alloc]initWithBase64EncodedString:base64 options:NSDataBase64DecodingIgnoreUnknownCharacters]] cameraMode:cameraMode completion:[self getCompletion: command]];
-    else
-        [self result:@"document reader not ready" :command];
-}
-
-- (void) setConfig:(CDVInvokedUrlCommand*)command{
-        [RegulaConfig setConfig:[[command arguments] objectAtIndex:0] :RGLDocReader.shared];
-        [self result:@"" :command];
-}
-
-- (void) getConfig:(CDVInvokedUrlCommand*)command{
-    [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:[RegulaConfig getConfig:RGLDocReader.shared] options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :command];
-}
-
-- (void) setRfidScenario:(CDVInvokedUrlCommand*)command{
-        [RegulaConfig setRfidScenario:[[command arguments] objectAtIndex:0] : RGLDocReader.shared.rfidScenario];
-        [self result:@"" :command];
-}
-
-- (void) getRfidScenario:(CDVInvokedUrlCommand*)command{
-        [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:RGLDocReader.shared.rfidScenario.rfidScenarioDictionary options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :command];
-}
-
-- (void) readRFID:(CDVInvokedUrlCommand*)command{
-    if([RGLDocReader.shared isDocumentReaderIsReady])
-        [RGLDocReader.shared readRFID:nil completion:[self getRFIDCompletion: command]];
-    else
-        [self result:@"document reader not ready" :command];
-}
-
-- (void) stopRFIDReader:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared stopRFIDReader:^(){[self result:@"" :command];}];
-}
-
-- (void) clearPKDCertificates:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared clearPKDCertificates];
-    [self result:@"" :command];
-}
-
-- (void) addPKDCertificates:(CDVInvokedUrlCommand*)command{
-    NSArray* input = [[command arguments] objectAtIndex:0];
-    NSMutableArray<RGLPKDCertificate*>* certificates = [[RGLPKDCertificate init] alloc];
-    for(NSDictionary* certificateJSON in input)
-        [certificates addObject:[JsonConstructor RGLPKDCertificateFromJson:certificateJSON]];
-    [RGLDocReader.shared addPKDCertificates:certificates];
-    [self result:@"" :command];
-}
-
-- (void) deinitializeReader:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared deinitializeReader];
-    [self result:@"" :command];
-}
-
-- (void) selectedScenario:(CDVInvokedUrlCommand*)command{
-    [self result:[JsonConstructor generateScenario:RGLDocReader.shared.selectedScenario] :command];
-}
-
-- (void) stopScanner:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared stopScanner:^(){[self result:@"" :command];}];
-}
-
-- (void) startNewSession:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared startNewSession];
-    [self result:@"" :command];
-}
-
-- (void) startNewPage:(CDVInvokedUrlCommand*)command{
-    [RGLDocReader.shared startNewPage];
-    [self result:@"" :command];
-}
-
-- (void) getDocumentReaderIsReady:(CDVInvokedUrlCommand*)command{
-    [self result:[RGLDocReader.shared isDocumentReaderIsReady] ? @YES : @NO :command];
-}
-
-- (void) getAPIVersion:(CDVInvokedUrlCommand*)command{
-    [self result:[[RGLDocReader.shared version] api] :command];
-}
-
-- (void) getCoreVersion:(CDVInvokedUrlCommand*)command{
-    [self result:[[RGLDocReader.shared version] core] :command];
-}
-
-- (void) getCoreMode:(CDVInvokedUrlCommand*)command{
-    [self result:[[RGLDocReader.shared version] coreMode] :command];
-}
-
-- (void) getDatabaseID:(CDVInvokedUrlCommand*)command{
-    [self result:[[[RGLDocReader.shared version] database] databaseID] :command];
-}
-
-- (void) getDatabaseVersion:(CDVInvokedUrlCommand*)command{
-    [self result:[[[RGLDocReader.shared version] database] version] :command];
-}
-
-- (void) getDatabaseDate:(CDVInvokedUrlCommand*)command{
-    [self result:[[[RGLDocReader.shared version] database] date] :command];
-}
-
-- (void) getDatabaseDescription:(CDVInvokedUrlCommand*)command{
-    [self result:[[[RGLDocReader.shared version] database] databaseDescription] :command];
-}
-
-- (void) getDatabaseCountriesNumber:(CDVInvokedUrlCommand*)command{
-    [self result:[NSString stringWithFormat: @"%ld", (long)RGLDocReader.shared.version.database.countriesNumber] :command];
-}
-
-- (void) getDatabaseDocumentsNumber:(CDVInvokedUrlCommand*)command{
-    [self result:[NSString stringWithFormat: @"%ld", (long)RGLDocReader.shared.version.database.documentsNumber] :command];
-}
-
-- (void) getLicenseExpiryDate:(CDVInvokedUrlCommand*)command{
-    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-    [formatter setFormatterBehavior:NSDateFormatterBehaviorDefault];
-    [formatter setDateStyle:NSDateFormatterShortStyle];
-    [formatter setTimeStyle:NSDateFormatterNoStyle];
-    [self result:[formatter stringFromDate:RGLDocReader.shared.license.expiryDate] :command];
-}
-
-- (void) getLicenseCountryFilter:(CDVInvokedUrlCommand*)command{
-    if(RGLDocReader.shared.license.countryFilter == nil)
-        [self result:@"nil" :command];
-    else
-        [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:RGLDocReader.shared.license.countryFilter options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :command];
-}
-
-- (void) licenseIsRfidAvailable:(CDVInvokedUrlCommand*)command{
-    [self result:RGLDocReader.shared.license.isRfidAvailable ? @YES : @NO :command];
-}
-
-- (void) getLicenseMessage:(CDVInvokedUrlCommand*)command{
-    [self result:@"nil" :command];
-}
-
-- (void) getDocumentReaderStatus:(CDVInvokedUrlCommand*)command{
-    [self result:RGLDocReader.shared.documentReaderStatus :command];
-}
-
-- (void) getRfidSessionStatus:(CDVInvokedUrlCommand*)command{
-    [self result:RGLDocReader.shared.rfidSessionStatus :command];
-}
-
-- (void) getCurrentScenario:(CDVInvokedUrlCommand*)command{
-    [self result:RGLDocReader.shared.processParams.scenario :command];
-}
-
-- (void) getCameraSessionIsPaused:(CDVInvokedUrlCommand*)command{
-    [self result:RGLDocReader.shared.isCameraSessionIsPaused ? @YES : @NO :command];
-}
-
-- (void) setCameraSessionIsPaused:(CDVInvokedUrlCommand*)command{
-    RGLDocReader.shared.cameraSessionIsPaused = [[command arguments] objectAtIndex:0];
-    [self result:@"" :command];
-}
-
-- (void) isRFIDAvailableForUse:(CDVInvokedUrlCommand*)command{
-    [self result:RGLDocReader.shared.isRFIDAvailableForUse ? @YES : @NO :command];
-}
-
-- (void) getSessionLogFolder:(CDVInvokedUrlCommand*)command{
-    [self result:RGLDocReader.shared.processParams.sessionLogFolder :command];
-}
-
-- (void) getAvailableScenarios:(CDVInvokedUrlCommand*)command{
-    NSMutableArray *availableScenarios = [[NSMutableArray alloc] init];
-    for(RGLScenario *scenario in [RGLDocReader.shared availableScenarios])
-        [availableScenarios addObject:[JsonConstructor generateScenario:scenario]];
-    [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:availableScenarios options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :command];
-}
-
--(RGLDocumentReaderInitializationCompletion)getInitCompletion:(CDVInvokedUrlCommand*)command{
-    return ^(BOOL successful, NSString * _Nullable error ) {
-        if (successful)
-            [self result:@"init complete" :command];
-        else
-            [self error:[NSString stringWithFormat:@"%@/%@", @"init failed: ", error] :command];
-    };
-}
-
--(void (^_Nullable)(NSProgress * _Nonnull progress))getProgressHandler:(CDVInvokedUrlCommand*)command{
+-(void (^_Nullable)(NSProgress * _Nonnull progress))getProgressHandler:(Callback)successCallback :(Callback)errorCallback{
+    NSString* callbackId = RGLDocumentReader.command.callbackId;
     return ^(NSProgress * _Nonnull progress) {
         if(RGLDocumentReader.databasePercentageDownloaded != [NSNumber numberWithDouble:progress.fractionCompleted * 100]){
-            CDVPluginResult* result = [CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:[NSString stringWithFormat:@"%@%.1f%@", @"Downloading database: ", progress.fractionCompleted * 100, @"%"]];
-            [result setKeepCallbackAsBool:YES];
-            [self.commandDelegate sendPluginResult:result callbackId:command.callbackId];
+            [self sendEvent:[NSString stringWithFormat:@"%.1f", progress.fractionCompleted * 100] :callbackId];
             [RGLDocumentReader setDatabasePercentageDownloaded:[NSNumber numberWithDouble:progress.fractionCompleted * 100]];
         }
     };
 }
 
--(RGLDocumentReaderPrepareCompletion _Nonnull)getPrepareCompletion:(CDVInvokedUrlCommand*)command{
-    return ^(BOOL successful, NSString * _Nullable error) {
+-(RGLDocumentReaderCompletion _Nonnull)getCompletion {
+    NSString* callbackId = RGLDocumentReader.command.callbackId;
+    return ^(RGLDocReaderAction action, RGLDocumentReaderResults * _Nullable results, NSError * _Nullable error) {
+        [self sendEvent:[JSONConstructor generateCompletion:[JSONConstructor generateDocReaderAction: action] :results :error :nil] :callbackId];
+    };
+}
+
+-(RGLRFIDProcessCompletion _Nonnull)getRFIDCompletion {
+    NSString* callbackId = RGLDocumentReader.command.callbackId;
+    return ^(RGLRFIDCompleteAction action, RGLDocumentReaderResults * _Nullable results, NSError * _Nullable error, RGLRFIDErrorCodes errorCode) {
+        [self sendEvent:[JSONConstructor generateCompletion:[JSONConstructor generateRFIDCompleteAction: action] :results :error :nil] :callbackId];
+    };
+}
+
+-(RGLRFIDNotificationCallback _Nonnull)getRFIDNotificationCallback {
+    NSString* callbackId = RGLDocumentReader.command.callbackId;
+    return ^(RGLRFIDNotificationAction notificationAction, RGLRFIDNotify* _Nullable notify) {
+        [self sendEvent:[JSONConstructor generateCompletion:[JSONConstructor generateRFIDNotificationAction:notificationAction] :nil :nil :notify] :callbackId];
+    };
+}
+
+- (void) exec:(CDVInvokedUrlCommand*)command {
+    [RGLDocumentReader setCommand:command];
+    NSMutableArray* args = [[NSMutableArray alloc] init];
+    NSString* action = [[command arguments] objectAtIndex:0];
+    for(int i = 1;i<[command arguments].count;i++)
+        [args addObject:[[command arguments] objectAtIndex:i]];
+    Callback successCallback = ^(NSString* response){
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsString:response] callbackId:command.callbackId];
+    };
+    Callback errorCallback = ^(NSString* response){
+        [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:response] callbackId:command.callbackId];
+    };
+
+    if([action isEqualToString:@"getAPIVersion"])
+        [self getAPIVersion :successCallback :errorCallback];
+    else if([action isEqualToString:@"getAvailableScenarios"])
+        [self getAvailableScenarios :successCallback :errorCallback];
+    else if([action isEqualToString:@"isRFIDAvailableForUse"])
+        [self isRFIDAvailableForUse :successCallback :errorCallback];
+    else if([action isEqualToString:@"getCoreMode"])
+        [self getCoreMode :successCallback :errorCallback];
+    else if([action isEqualToString:@"getCoreVersion"])
+        [self getCoreVersion :successCallback :errorCallback];
+    else if([action isEqualToString:@"getDatabaseDate"])
+        [self getDatabaseDate :successCallback :errorCallback];
+    else if([action isEqualToString:@"getDatabaseID"])
+        [self getDatabaseID :successCallback :errorCallback];
+    else if([action isEqualToString:@"getDatabaseVersion"])
+        [self getDatabaseVersion :successCallback :errorCallback];
+    else if([action isEqualToString:@"getDocumentReaderIsReady"])
+        [self getDocumentReaderIsReady :successCallback :errorCallback];
+    else if([action isEqualToString:@"getDocumentReaderStatus"])
+        [self getDocumentReaderStatus :successCallback :errorCallback];
+    else if([action isEqualToString:@"getDatabaseCountriesNumber"])
+        [self getDatabaseCountriesNumber :successCallback :errorCallback];
+    else if([action isEqualToString:@"getDatabaseDocumentsNumber"])
+        [self getDatabaseDocumentsNumber :successCallback :errorCallback];
+    else if([action isEqualToString:@"selectedScenario"])
+        [self selectedScenario :successCallback :errorCallback];
+    else if([action isEqualToString:@"getSessionLogFolder"])
+        [self getSessionLogFolder :successCallback :errorCallback];
+    else if([action isEqualToString:@"getDatabaseDescription"])
+        [self getDatabaseDescription :successCallback :errorCallback];
+    else if([action isEqualToString:@"showScanner"])
+        [self showScanner :successCallback :errorCallback];
+    else if([action isEqualToString:@"startNewPage"])
+        [self startNewPage :successCallback :errorCallback];
+    else if([action isEqualToString:@"startNewSession"])
+        [self startNewSession :successCallback :errorCallback];
+    else if([action isEqualToString:@"startRFIDReader"])
+        [self startRFIDReader :successCallback :errorCallback];
+    else if([action isEqualToString:@"stopRFIDReader"])
+        [self stopRFIDReader :successCallback :errorCallback];
+    else if([action isEqualToString:@"stopScanner"])
+        [self stopScanner :successCallback :errorCallback];
+    else if([action isEqualToString:@"deinitializeReader"])
+        [self deinitializeReader :successCallback :errorCallback];
+    else if([action isEqualToString:@"isAuthenticatorAvailableForUse"])
+        [self isAuthenticatorAvailableForUse :successCallback :errorCallback];
+    else if([action isEqualToString:@"getConfig"])
+        [self getConfig :successCallback :errorCallback];
+    else if([action isEqualToString:@"getRfidScenario"])
+        [self getRfidScenario :successCallback :errorCallback];
+    else if([action isEqualToString:@"getLicenseExpiryDate"])
+        [self getLicenseExpiryDate :successCallback :errorCallback];
+    else if([action isEqualToString:@"getLicenseCountryFilter"])
+        [self getLicenseCountryFilter :successCallback :errorCallback];
+    else if([action isEqualToString:@"licenseIsRfidAvailable"])
+        [self licenseIsRfidAvailable :successCallback :errorCallback];
+    else if([action isEqualToString:@"getCameraSessionIsPaused"])
+        [self getCameraSessionIsPaused :successCallback :errorCallback];
+    else if([action isEqualToString:@"removeDatabase"])
+        [self removeDatabase :successCallback :errorCallback];
+    else if([action isEqualToString:@"cancelDBUpdate"])
+        [self cancelDBUpdate :successCallback :errorCallback];
+    else if([action isEqualToString:@"resetConfiguration"])
+        [self resetConfiguration :successCallback :errorCallback];
+    else if([action isEqualToString:@"clearPKDCertificates"])
+        [self clearPKDCertificates :successCallback :errorCallback];
+    else if([action isEqualToString:@"readRFID"])
+        [self readRFID :successCallback :errorCallback];
+    else if([action isEqualToString:@"getRfidSessionStatus"])
+        [self getRfidSessionStatus :successCallback :errorCallback];
+    else if([action isEqualToString:@"setEnableCoreLogs"])
+        [self setEnableCoreLogs :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"addPKDCertificates"])
+        [self addPKDCertificates :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"setCameraSessionIsPaused"])
+        [self setCameraSessionIsPaused :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"getScenario"])
+        [self getScenario :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"recognizeImages"])
+        [self recognizeImages :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"showScannerWithCameraID"])
+        [self showScannerWithCameraID :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"runAutoUpdate"])
+        [self runAutoUpdate :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"setConfig"])
+        [self setConfig :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"setRfidScenario"])
+        [self setRfidScenario :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"initializeReader"])
+        [self initializeReader :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"initializeReaderWithDatabasePath"])
+        [self initializeReaderWithDatabasePath :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
+    else if([action isEqualToString:@"prepareDatabase"])
+        [self prepareDatabase :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"recognizeImage"])
+        [self recognizeImage :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"setRfidSessionStatus"])
+        [self setRfidSessionStatus :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"recognizeImageFrame"])
+        [self recognizeImageFrame :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
+    else if([action isEqualToString:@"recognizeImageWithOpts"])
+        [self recognizeImageWithOpts :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
+    else if([action isEqualToString:@"recognizeVideoFrame"])
+        [self recognizeVideoFrame :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
+    else if([action isEqualToString:@"showScannerWithCameraIDAndOpts"])
+        [self showScannerWithCameraIDAndOpts :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
+    else if([action isEqualToString:@"recognizeImageWithImageInputParams"])
+        [self recognizeImageWithImageInputParams :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
+    else if([action isEqualToString:@"recognizeImageWithCameraMode"])
+        [self recognizeImageWithCameraMode :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
+    else
+        [self result:[NSString stringWithFormat:@"%@/%@", @"method not implemented: ", action] :errorCallback];
+}
+
+- (void) resetConfiguration:(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"resetConfiguration() is an android-anly method" :errorCallback];
+}
+
+- (void) setEnableCoreLogs:(BOOL)logs :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"setEnableCoreLogs() is an android-anly method" :errorCallback];
+}
+
+- (void) showScannerWithCameraID:(NSNumber*)cameraID :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"showScannerWithCameraID() is an android-anly method" :errorCallback];
+}
+
+- (void) recognizeImageFrame:(NSString*)base64 :(NSDictionary*)opts :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"recognizeImageFrame() is an android-anly method" :errorCallback];
+}
+
+- (void) recognizeImageWithOpts:(NSDictionary*)opts :(NSString*)base64 :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"recognizeImageWithOpts() is an android-anly method" :errorCallback];
+}
+
+- (void) recognizeVideoFrame:(NSString*)byteString :(NSDictionary*)opts :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"recognizeVideoFrame() is an android-anly method" :errorCallback];
+}
+
+- (void) showScannerWithCameraIDAndOpts:(NSNumber*)cameraID :(NSDictionary*)opts :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"showScannerWithCameraIDAndOpts() is an android-anly method" :errorCallback];
+}
+
+- (void) recognizeImageWithImageInputParams:(NSString*)base64 :(NSDictionary*)params :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"recognizeImageWithImageInputParams() is an android-anly method" :errorCallback];
+}
+
+- (void) getLicenseMessage:(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"getLicenseMessage() is an android-anly method" :successCallback];
+}
+
+- (void) initializeReader:(NSData*)license :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared initializeReader:license completion:[self getInitCompletion :successCallback :errorCallback]];
+}
+
+- (void) startRFIDReader:(Callback)successCallback :(Callback)errorCallback{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [RGLDocReader.shared startRFIDReaderFromPresenter:[[[UIApplication sharedApplication] keyWindow] rootViewController] completion:[self getCompletion]];
+    });
+}
+
+- (void) initializeReaderWithDatabasePath:(NSData*)license :(NSString*)databasePath :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared initializeReader:license databasePath:databasePath completion:[self getInitCompletion :successCallback :errorCallback]];
+}
+
+- (void) prepareDatabase:(NSString*)dbID :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared prepareDatabase:dbID progressHandler:[self getProgressHandler :successCallback :errorCallback] completion:[self getPrepareCompletion :successCallback :errorCallback]];
+}
+
+- (void) removeDatabase:(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared removeDatabase:^(BOOL successful, NSError * _Nullable error) {
         if (successful)
-            [self result:@"database prepared" :command];
+            [self result:@"database removed" :successCallback];
         else
-            [self error:[NSString stringWithFormat:@"%@/%@", @"database preparation failed: ", error] :command];
+            [self result:[NSString stringWithFormat:@"%@/%@", @"database removal failed: ", error.description] :errorCallback];
+    }];
+}
+
+- (void) cancelDBUpdate:(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared cancelDBUpdate];
+    [self result:@"" :successCallback];
+}
+
+-(void) runAutoUpdate:(NSString*)dbID :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared runAutoUpdate:dbID progressHandler:[self getProgressHandler :successCallback :errorCallback] completion:[self getPrepareCompletion :successCallback :errorCallback]];
+}
+
+- (void) showScanner:(Callback)successCallback :(Callback)errorCallback{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [[UIApplication sharedApplication] setStatusBarStyle:UIStatusBarStyleLightContent animated:YES];
+            UIViewController *currentViewController = [[[UIApplication sharedApplication] keyWindow] rootViewController];
+            [RGLDocReader.shared showScanner:currentViewController completion:[self getCompletion]];
+        });
+}
+
+- (void) recognizeImage:(NSMutableString*)base64 :(Callback)successCallback :(Callback)errorCallback{
+    [self recognizeImageWith :base64 :false :successCallback :errorCallback];
+}
+
+- (void) recognizeImages:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
+        NSMutableArray<UIImage*>* images = [[NSMutableArray alloc] init];
+        for(__strong NSMutableString* base64 in input)
+            [images addObject:[UIImage imageWithData:[[NSData alloc]initWithBase64EncodedString:base64 options:NSDataBase64DecodingIgnoreUnknownCharacters]]];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [RGLDocReader.shared recognizeImages:images completion:[self getCompletion]];
+        });
+}
+
+- (void) recognizeImageWithCameraMode:(NSMutableString*)base64 :(BOOL)cameraMode :(Callback)successCallback :(Callback)errorCallback{
+    [self recognizeImageWith :base64 :cameraMode :successCallback :errorCallback];
+}
+
+- (void) recognizeImageWith:(NSMutableString*)base64 :(BOOL)cameraMode :(Callback)successCallback :(Callback)errorCallback{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [RGLDocReader.shared recognizeImage:[UIImage imageWithData:[[NSData alloc]initWithBase64EncodedString:base64 options:NSDataBase64DecodingIgnoreUnknownCharacters]] cameraMode:cameraMode completion:[self getCompletion]];
+        });
+}
+
+- (void) setConfig:(NSDictionary*)config :(Callback)successCallback :(Callback)errorCallback{
+        [RegulaConfig setConfig:config :RGLDocReader.shared];
+        [self result:@"" :successCallback];
+}
+
+- (void) getConfig:(Callback)successCallback :(Callback)errorCallback{
+    [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:[RegulaConfig getConfig:RGLDocReader.shared] options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :successCallback];
+}
+
+- (void) setRfidScenario:(NSDictionary*)rfidScenario :(Callback)successCallback :(Callback)errorCallback{
+        [RegulaConfig setRfidScenario:rfidScenario  :RGLDocReader.shared.rfidScenario];
+        [self result:@"" :successCallback];
+}
+
+- (void) getRfidScenario:(Callback)successCallback :(Callback)errorCallback{
+        [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:RGLDocReader.shared.rfidScenario.rfidScenarioDictionary options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :successCallback];
+}
+
+- (void) readRFID:(Callback)successCallback :(Callback)errorCallback{
+        [RGLDocReader.shared readRFID:[self getRFIDNotificationCallback] completion:[self getRFIDCompletion]];
+}
+
+- (void) stopRFIDReader:(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared stopRFIDReader:^(){[self result:@"" :successCallback];}];
+}
+
+- (void) clearPKDCertificates:(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared clearPKDCertificates];
+    [self result:@"" :successCallback];
+}
+
+- (void) addPKDCertificates:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
+    NSMutableArray<RGLPKDCertificate*>* certificates = [[RGLPKDCertificate init] alloc];
+    for(NSDictionary* certificateJSON in input)
+        [certificates addObject:[JSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
+    [RGLDocReader.shared addPKDCertificates:certificates];
+    [self result:@"" :successCallback];
+}
+
+- (void) deinitializeReader:(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared deinitializeReader];
+    [self result:@"" :successCallback];
+}
+
+- (void) selectedScenario:(Callback)successCallback :(Callback)errorCallback{
+    [self result:[JSONConstructor generateScenario:RGLDocReader.shared.selectedScenario] :successCallback];
+}
+
+- (void) stopScanner:(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared stopScanner:^(){[self result:@"" :successCallback];}];
+}
+
+- (void) startNewSession:(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared startNewSession];
+    [self result:@"" :successCallback];
+}
+
+- (void) startNewPage:(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared startNewPage];
+    [self result:@"" :successCallback];
+}
+
+- (void) getDocumentReaderIsReady:(Callback)successCallback :(Callback)errorCallback{
+    [self result:[RGLDocReader.shared isDocumentReaderIsReady] ? @YES : @NO :successCallback];
+}
+
+- (void) getAPIVersion:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.version.api :successCallback];
+}
+
+- (void) getCoreVersion:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.version.core :successCallback];
+}
+
+- (void) getCoreMode:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.version.coreMode :successCallback];
+}
+
+- (void) getDatabaseID:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.version.database.databaseID :successCallback];
+}
+
+- (void) getDatabaseVersion:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.version.database.version :successCallback];
+}
+
+- (void) getDatabaseDate:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.version.database.date :successCallback];
+}
+
+- (void) getDatabaseDescription:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.version.database.databaseDescription :successCallback];
+}
+
+- (void) getDatabaseCountriesNumber:(Callback)successCallback :(Callback)errorCallback{
+    [self result:[NSNumber numberWithInteger:RGLDocReader.shared.version.database.countriesNumber] :successCallback];
+}
+
+- (void) getDatabaseDocumentsNumber:(Callback)successCallback :(Callback)errorCallback{
+    [self result:[NSNumber numberWithInteger:RGLDocReader.shared.version.database.documentsNumber] :successCallback];
+}
+
+- (void) getLicenseExpiryDate:(Callback)successCallback :(Callback)errorCallback{
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setFormatterBehavior:NSDateFormatterBehaviorDefault];
+    [formatter setDateStyle:NSDateFormatterShortStyle];
+    [formatter setTimeStyle:NSDateFormatterNoStyle];
+    [self result:[formatter stringFromDate:RGLDocReader.shared.license.expiryDate] :successCallback];
+}
+
+- (void) getLicenseCountryFilter:(Callback)successCallback :(Callback)errorCallback{
+    if(RGLDocReader.shared.license.countryFilter == nil)
+        [self result:@"nil" :successCallback];
+    else
+        [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:RGLDocReader.shared.license.countryFilter options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :successCallback];
+}
+
+- (void) licenseIsRfidAvailable:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.license.isRfidAvailable ? @YES : @NO :successCallback];
+}
+
+- (void) getDocumentReaderStatus:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.documentReaderStatus :successCallback];
+}
+
+- (void) getRfidSessionStatus:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.rfidSessionStatus :successCallback];
+}
+
+- (void) setRfidSessionStatus:(NSString*)status :(Callback)successCallback :(Callback)errorCallback{
+    RGLDocReader.shared.rfidSessionStatus = status;
+    [self result:@"" :successCallback];
+}
+
+- (void) getCurrentScenario:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.processParams.scenario :successCallback];
+}
+
+- (void) getCameraSessionIsPaused:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.isCameraSessionIsPaused ? @YES : @NO :successCallback];
+}
+
+- (void) setCameraSessionIsPaused:(BOOL)paused :(Callback)successCallback :(Callback)errorCallback{
+    RGLDocReader.shared.cameraSessionIsPaused = paused;
+    [self result:@"" :successCallback];
+}
+
+- (void) isRFIDAvailableForUse:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.isRFIDAvailableForUse ? @YES : @NO :successCallback];
+}
+
+- (void) isAuthenticatorAvailableForUse:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.isAuthenticatorAvailableForUse ? @YES : @NO :successCallback];
+}
+
+- (void) getSessionLogFolder:(Callback)successCallback :(Callback)errorCallback{
+    [self result:RGLDocReader.shared.processParams.sessionLogFolder :successCallback];
+}
+
+- (void) getScenario:(NSString*)scenarioID :(Callback)successCallback :(Callback)errorCallback{
+    BOOL success = false;
+    for(RGLScenario *scenario in RGLDocReader.shared.availableScenarios)
+        if([scenario.identifier isEqualToString:scenarioID]){
+            [self result:[JSONConstructor generateScenario:scenario] :successCallback];
+            success = true;
+            break;
+        }
+    if(!success)
+        [self result:@"Scenario unavailable" :errorCallback];
+}
+
+- (void) getAvailableScenarios:(Callback)successCallback :(Callback)errorCallback{
+    NSMutableArray *availableScenarios = [[NSMutableArray alloc] init];
+    for(RGLScenario *scenario in RGLDocReader.shared.availableScenarios)
+        [availableScenarios addObject:[JSONConstructor generateScenario:scenario]];
+    [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:availableScenarios options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :successCallback];
+}
+
+-(RGLDocumentReaderInitializationCompletion)getInitCompletion:(Callback)successCallback :(Callback)errorCallback{
+    return ^(BOOL successful, NSError * _Nullable error ) {
+        if (successful)
+            [self result:@"init complete" :successCallback];
+        else
+            [self result:[NSString stringWithFormat:@"%@/%@", @"init failed: ", error.description] :errorCallback];
     };
 }
 
--(RGLDocumentReaderCompletion _Nonnull)getCompletion:(CDVInvokedUrlCommand*)command{
-    return ^(RGLDocReaderAction action, RGLDocumentReaderResults * _Nullable results, NSString * _Nullable error) {
-        switch (action) {
-            case RGLDocReaderActionCancel: {
-                [self error:@"Cancelled by user" :command];
-                break;
-            }
-                
-            case RGLDocReaderActionComplete: {
-                [self result:[JsonConstructor resultsToJsonString:results] :command];
-                break;
-            }
-                
-            case RGLDocReaderActionError: {
-                [self error:[NSString stringWithFormat:@"%@/%@", @"error: ", error] :command];
-                break;
-            }
-                
-            case RGLDocReaderActionProcess:
-            case RGLDocReaderActionMorePagesAvailable: {
-                break;
-            }
-        }
-    };
-}
-
--(RGLRFIDProcessCompletion _Nonnull)getRFIDCompletion:(CDVInvokedUrlCommand*)command{
-    return ^(RGLRFIDCompleteAction action, RGLDocumentReaderResults * _Nullable results, NSString * _Nullable error, RGLRFIDErrorCodes errorCode) {
-        switch (action) {
-            case RGLRFIDCompleteActionCancel: {
-                [self error:@"Cancelled by user" :command];
-                break;
-            }
-                
-            case RGLRFIDCompleteActionComplete: {
-                [self result:[JsonConstructor resultsToJsonString:results] :command];
-                break;
-            }
-                
-            case RGLRFIDCompleteActionError: {
-                [self error:[NSString stringWithFormat:@"%@/%@", @"error: ", error] :command];
-                break;
-            }
-            case RGLRFIDCompleteActionSessionRestarted: {
-                break;
-            }
-        }
+-(RGLDocumentReaderPrepareCompletion _Nonnull)getPrepareCompletion:(Callback)successCallback :(Callback)errorCallback{
+    return ^(BOOL successful, NSError * _Nullable error) {
+        if (successful)
+            [self result:@"database prepared" :successCallback];
+        else
+            [self result:[NSString stringWithFormat:@"%@/%@", @"database preparation failed: ", error.description] :errorCallback];
     };
 }
 
