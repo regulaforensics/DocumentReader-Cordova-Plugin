@@ -5025,7 +5025,6 @@ DocumentReader.recognizeVideoFrame = (arg0, arg1, successCallback, errorCallback
 DocumentReader.showScannerWithCameraIDAndOpts = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["showScannerWithCameraIDAndOpts", arg0, arg1])
 DocumentReader.recognizeImageWithImageInputParams = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithImageInputParams", arg0, arg1])
 DocumentReader.recognizeImageWithCameraMode = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithCameraMode", arg0, arg1])
-DocumentReader.permissionRead = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "permissionRead", [])
 
 DocumentReader.DocumentReaderResults = DocumentReaderResults
 DocumentReader.Enum = Enum

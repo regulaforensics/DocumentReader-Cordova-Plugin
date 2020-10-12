@@ -59,7 +59,19 @@ var app = {
         }
 
         function recognizeAndroid() {
-            DocumentReader.permissionRead(function(m) { recognize() }, function(e) { if (e == "no permission") recognizeAndroid() })
+            var permissions = cordova.plugins.permissions
+            permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, function( status ){
+                if ( status.hasPermission )
+                    recognize()
+                else {
+                    permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, function success( status ) {
+                        if( status.hasPermission ) 
+                            recognize()
+                    }, function error() {
+                        console.warn('READ_EXTERNAL_STORAGE permission denied');
+                    })
+                }
+            })
         }
 
         function stopRfid() {

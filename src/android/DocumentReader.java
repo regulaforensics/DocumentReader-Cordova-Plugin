@@ -1,6 +1,5 @@
 package cordova.plugin.documentreader;
 
-import android.Manifest;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -9,7 +8,6 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
-import android.support.v4.app.ActivityCompat;
 import android.util.Base64;
 
 import com.regula.documentreader.api.completions.IDocumentReaderCompletion;
@@ -278,21 +276,10 @@ public class DocumentReader extends CordovaPlugin {
                 case "recognizeImageWithCameraMode":
                     recognizeImageWithCameraMode(callback, args(0), args(1));
                     break;
-                case "permissionRead":
-                    permissionRead(callback);
-                    break;
             }
         } catch (Exception ignored) {
         }
         return true;
-    }
-
-    private void permissionRead(Callback callback) {
-        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.READ_EXTERNAL_STORAGE) != 0) {
-            ActivityCompat.requestPermissions((Activity) getContext(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
-            callback.error("no permission");
-        } else
-            callback.success("");
     }
 
     private void startForegroundDispatch(final Activity activity) {
