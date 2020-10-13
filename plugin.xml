@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api" version="0.0.23"
+<plugin id="cordova-plugin-document-reader-api" version="0.0.24"
   xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
@@ -37,6 +37,15 @@
       </feature>
     </config-file>
     <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+    <!-- <config-file parent="/*" target="AndroidManifest.xml">
+      <uses-permission android:name="android.permission.CAMERA" />
+      <uses-permission android:name="android.permission.NFC" />
+      <uses-feature android:name="android.hardware.camera" />
+      <uses-feature android:name="android.hardware.camera.autofocus" />
+    </config-file>
+    <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
+      <application android:requestLegacyExternalStorage="true" />
+    </edit-config> -->
     <source-file src="src/android/DocumentReader.java" target-dir="src/cordova.plugin.documentreader" />
     <source-file src="src/android/JSONConstructor.java" target-dir="src/cordova.plugin.documentreader" />
     <source-file src="src/android/RegulaConfig.java" target-dir="src/cordova.plugin.documentreader" />

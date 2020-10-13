@@ -18,7 +18,7 @@
     <allow-intent href="geo:*" />
     <platform name="android">
         <allow-intent href="market:*" />
-        <config-file parent="/*" target="AndroidManifest.xml">
+        <!-- <config-file parent="/*" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.CAMERA" />
             <uses-permission android:name="android.permission.NFC" />
             <uses-feature android:name="android.hardware.camera" />
@@ -26,7 +26,7 @@
         </config-file>
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:requestLegacyExternalStorage="true" />
-        </edit-config>
+        </edit-config> -->
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />

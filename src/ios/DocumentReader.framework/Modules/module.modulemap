@@ -1,0 +1,6 @@
+framework module DocumentReader {
+  umbrella header "DocumentReader.h"
+
+  export *
+  module * { export * }
+}

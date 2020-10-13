@@ -1,0 +1,3374 @@
+BCSymbolMap Version: 2.0
+-[RGLDataTransferCallbackHandler closureReturnWithParams:withCompletionHandler:]
+-[RGLDataTransferCallbackHandler delegate]
+-[RGLDataTransferCallbackHandler setDelegate:]
+-[RGLDataTransferCallbackHandler .cxx_destruct]
+_OBJC_IVAR_$_RGLDataTransferCallbackHandler._delegate
+Apple clang version 11.0.0 (clang-1100.0.33.12)
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/RGLDocReader/RGLDataTransferCallbackHandler.m
+/Users/administratorregula/regula/DocumentReaderAPI_Git
+DocumentReader/RGLDocReader/RGLDataTransferCallbackHandler.m
+DocumentReader/RGLDocReader/RGLDataTransferCallbackHandler.h
+-[RGLRFIDSessionDataStatus initWithJSON:]
+-[RGLRFIDSessionDataStatus jsonDictionary]
++[RGLRFIDSessionDataStatus initWithJSON:]
+-[RGLRFIDSessionDataStatus AA]
+-[RGLRFIDSessionDataStatus setAA:]
+-[RGLRFIDSessionDataStatus BAC]
+-[RGLRFIDSessionDataStatus setBAC:]
+-[RGLRFIDSessionDataStatus CA]
+-[RGLRFIDSessionDataStatus setCA:]
+-[RGLRFIDSessionDataStatus PA]
+-[RGLRFIDSessionDataStatus setPA:]
+-[RGLRFIDSessionDataStatus PACE]
+-[RGLRFIDSessionDataStatus setPACE:]
+-[RGLRFIDSessionDataStatus TA]
+-[RGLRFIDSessionDataStatus setTA:]
+-[RGLRFIDSessionDataStatus overallStatus]
+-[RGLRFIDSessionDataStatus setOverallStatus:]
+_OBJC_IVAR_$_RGLRFIDSessionDataStatus._AA
+_OBJC_IVAR_$_RGLRFIDSessionDataStatus._BAC
+_OBJC_IVAR_$_RGLRFIDSessionDataStatus._CA
+_OBJC_IVAR_$_RGLRFIDSessionDataStatus._PA
+_OBJC_IVAR_$_RGLRFIDSessionDataStatus._PACE
+_OBJC_IVAR_$_RGLRFIDSessionDataStatus._TA
+_OBJC_IVAR_$_RGLRFIDSessionDataStatus._overallStatus
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLRFIDSessionDataStatus.m
+DocumentReader/Models/DocReaderResult/RFID/RGLRFIDSessionDataStatus.h
+DocumentReader/Models/DocReaderResult/RFID/RGLRFIDSessionDataStatus.m
+-[RGLMaskView initWithOffset:cornerRadius:lineWidth:shapeType:]
+-[RGLMaskView initWithFrame:]
+-[RGLMaskView setCornerRadius:]
+-[RGLMaskView layoutSubviews]
+-[RGLMaskView ovalMaskWithRect:]
+-[RGLMaskView ovalMaskWithRect:inverse:]
+-[RGLMaskView cornerRadiusMaskWithRect:]
+-[RGLMaskView cornerRadiusMaskWithRect:cornerRadius:]
+-[RGLMaskView cornerRadiusMaskWithRect:cornerRadius:inverse:]
+-[RGLMaskView maskWithPath:]
+-[RGLMaskView maskWithPath:inverse:]
+-[RGLMaskView setTorchModeOn:]
+-[RGLMaskView dataSource]
+-[RGLMaskView setDataSource:]
+-[RGLMaskView maskLayer]
+-[RGLMaskView setMaskLayer:]
+-[RGLMaskView offset]
+-[RGLMaskView setOffset:]
+-[RGLMaskView cornerRadius]
+-[RGLMaskView lineWidth]
+-[RGLMaskView setLineWidth:]
+-[RGLMaskView frameShapeType]
+-[RGLMaskView setFrameShapeType:]
+-[RGLMaskView .cxx_destruct]
+_OBJC_IVAR_$_RGLMaskView._offset
+_OBJC_IVAR_$_RGLMaskView._cornerRadius
+_OBJC_IVAR_$_RGLMaskView._lineWidth
+_OBJC_IVAR_$_RGLMaskView._frameShapeType
+_OBJC_IVAR_$_RGLMaskView._dataSource
+_OBJC_IVAR_$_RGLMaskView._maskLayer
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Views/RGLMaskView.m
+DocumentReader/Views/RGLMaskView.m
+DocumentReader/Views/RGLMaskView.h
+-[RGLDocumentReaderBarcodeField initWithJSON:]
++[RGLDocumentReaderBarcodeField initWithJSON:]
+-[RGLDocumentReaderBarcodeField jsonDictionary]
+-[RGLDocumentReaderBarcodeField barcodeType]
+-[RGLDocumentReaderBarcodeField status]
+-[RGLDocumentReaderBarcodeField pdf417Info]
+-[RGLDocumentReaderBarcodeField data]
+-[RGLDocumentReaderBarcodeField pageIndex]
+-[RGLDocumentReaderBarcodeField .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderBarcodeField._barcodeType
+_OBJC_IVAR_$_RGLDocumentReaderBarcodeField._status
+_OBJC_IVAR_$_RGLDocumentReaderBarcodeField._pdf417Info
+_OBJC_IVAR_$_RGLDocumentReaderBarcodeField._data
+_OBJC_IVAR_$_RGLDocumentReaderBarcodeField._pageIndex
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Barcode/RGLDocumentReaderBarcodeField.m
+DocumentReader/Models/DocReaderResult/Barcode/RGLDocumentReaderBarcodeField.m
+DocumentReader/Models/DocReaderResult/Barcode/RGLDocumentReaderBarcodeField.h
+-[NSData(RGLHex) rgl_hexDescription]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSData+RGLHex.m
+DocumentReader/Engine/Extensions/NSData+RGLHex.m
+-[RGLPKDCertificate initWithBinaryData:resourceType:privateKey:]
+-[RGLPKDCertificate binaryData]
+-[RGLPKDCertificate resourceType]
+-[RGLPKDCertificate privateKey]
+-[RGLPKDCertificate .cxx_destruct]
+_OBJC_IVAR_$_RGLPKDCertificate._binaryData
+_OBJC_IVAR_$_RGLPKDCertificate._resourceType
+_OBJC_IVAR_$_RGLPKDCertificate._privateKey
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/RFID/RGLPKDCertificate.m
+DocumentReader/Models/RFID/RGLPKDCertificate.m
+DocumentReader/Models/RFID/RGLPKDCertificate.h
+-[RGLDocumentReaderTextField initWithJSON:]
+-[RGLDocumentReaderTextField initWithFieldType:]
+-[RGLDocumentReaderTextField initWithFieldType:lcid:]
+-[RGLDocumentReaderTextField getValue]
++[RGLDocumentReaderTextField initWithJSON:]
+-[RGLDocumentReaderTextField jsonDictionary]
++[RGLDocumentReaderTextField fieldTypeName:]
++[RGLDocumentReaderTextField lcidName:]
+-[RGLDocumentReaderTextField fieldType]
+-[RGLDocumentReaderTextField fieldName]
+-[RGLDocumentReaderTextField lcid]
+-[RGLDocumentReaderTextField values]
+-[RGLDocumentReaderTextField status]
+-[RGLDocumentReaderTextField .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderTextField._fieldType
+_OBJC_IVAR_$_RGLDocumentReaderTextField._fieldName
+_OBJC_IVAR_$_RGLDocumentReaderTextField._lcid
+_OBJC_IVAR_$_RGLDocumentReaderTextField._values
+_OBJC_IVAR_$_RGLDocumentReaderTextField._status
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderTextField.m
+DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderTextField.m
+DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderTextField.h
+-[RGLAuthority initWithJSON:]
+-[RGLAuthority jsonDictionary]
++[RGLAuthority initWithJSON:]
+-[RGLAuthority attributes]
+-[RGLAuthority data]
+-[RGLAuthority friendlyName]
+-[RGLAuthority .cxx_destruct]
+_OBJC_IVAR_$_RGLAuthority._attributes
+_OBJC_IVAR_$_RGLAuthority._data
+_OBJC_IVAR_$_RGLAuthority._friendlyName
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLAuthority.m
+DocumentReader/Models/DocReaderResult/RFID/RGLAuthority.m
+DocumentReader/Models/DocReaderResult/RFID/RGLAuthority.h
+-[UIImage(RGLOrientation) rgl_fixOrientation]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/UIImage/UIImage+RGLOrientation.m
+DocumentReader/Engine/Extensions/UIImage/UIImage+RGLOrientation.m
+-[RGLIdentResult initWithEtalonImage:image:percentValue:status:elementType:area:elementDiagnose:]
+-[RGLIdentResult initWithJSON:]
+-[RGLIdentResult jsonDictionary]
++[RGLIdentResult initWithJSON:]
+-[RGLIdentResult etalonImage]
+-[RGLIdentResult image]
+-[RGLIdentResult percentValue]
+-[RGLIdentResult lightIndex]
+-[RGLIdentResult area]
+-[RGLIdentResult .cxx_destruct]
+_OBJC_IVAR_$_RGLIdentResult._etalonImage
+_OBJC_IVAR_$_RGLIdentResult._image
+_OBJC_IVAR_$_RGLIdentResult._percentValue
+_OBJC_IVAR_$_RGLIdentResult._area
+_OBJC_IVAR_$_RGLIdentResult._lightIndex
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Authenticity/RGLIdentResult.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLIdentResult.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLIdentResult.h
+-[RGLSecurityObjectCertificates initWithJSON:]
+-[RGLSecurityObjectCertificates jsonDictionary]
++[RGLSecurityObjectCertificates initWithJSON:]
+-[RGLSecurityObjectCertificates securityObject]
+-[RGLSecurityObjectCertificates .cxx_destruct]
+_OBJC_IVAR_$_RGLSecurityObjectCertificates._securityObject
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLSecurityObjectCertificates.m
+DocumentReader/Models/DocReaderResult/RFID/RGLSecurityObjectCertificates.m
+DocumentReader/Models/DocReaderResult/RFID/RGLSecurityObjectCertificates.h
+-[RGLFile initWithJSON:]
+-[RGLFile jsonDictionary]
++[RGLFile initWithJSON:]
+-[RGLFile fileData]
+-[RGLFile fileID]
+-[RGLFile notifications]
+-[RGLFile pAStatus]
+-[RGLFile readingStatus]
+-[RGLFile readingTime]
+-[RGLFile type]
+-[RGLFile typeName]
+-[RGLFile docFieldsText]
+-[RGLFile docFieldsGraphics]
+-[RGLFile docFieldsOriginals]
+-[RGLFile certificates]
+-[RGLFile .cxx_destruct]
+_OBJC_IVAR_$_RGLFile._pAStatus
+_OBJC_IVAR_$_RGLFile._readingStatus
+_OBJC_IVAR_$_RGLFile._fileData
+_OBJC_IVAR_$_RGLFile._fileID
+_OBJC_IVAR_$_RGLFile._notifications
+_OBJC_IVAR_$_RGLFile._readingTime
+_OBJC_IVAR_$_RGLFile._type
+_OBJC_IVAR_$_RGLFile._typeName
+_OBJC_IVAR_$_RGLFile._docFieldsText
+_OBJC_IVAR_$_RGLFile._docFieldsGraphics
+_OBJC_IVAR_$_RGLFile._docFieldsOriginals
+_OBJC_IVAR_$_RGLFile._certificates
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLFile.m
+DocumentReader/Models/DocReaderResult/RFID/RGLFile.m
+DocumentReader/Models/DocReaderResult/RFID/RGLFile.h
+-[NSURL(RGLFileManager) rgl_isFileExist]
+-[NSURL(RGLFileManager) rgl_createFolder:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSURL/NSURL+RGLFileManager.m
+DocumentReader/Engine/Extensions/NSURL/NSURL+RGLFileManager.m
+-[RGLDefaultImageReader startWithImages:orientation:handler:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/ImageReader/RGLImageReader/RGLDefaultImageReader.m
+DocumentReader/Engine/ImageReader/RGLImageReader/RGLDefaultImageReader.m
+-[RGLDocReader init]
+-[RGLDocReader isDocumentReaderIsReady]
+-[RGLDocReader isRFIDAvailableForUse]
+-[RGLDocReader isAuthenticatorAvailableForUse]
++[RGLDocReader shared]
+___22+[RGLDocReader shared]_block_invoke
+___copy_helper_block_e8_
+___destroy_helper_block_e8_
+-[RGLDocReader dealloc]
+-[RGLDocReader initializeReader:completion:]
+-[RGLDocReader initializeReader:databasePath:completion:]
+-[RGLDocReader deinitializeReader]
+-[RGLDocReader startRFIDReaderFromPresenter:completion:]
+___56-[RGLDocReader startRFIDReaderFromPresenter:completion:]_block_invoke
+___copy_helper_block_e8_32s40b
+___destroy_helper_block_e8_32s40s
+___56-[RGLDocReader startRFIDReaderFromPresenter:completion:]_block_invoke.97
+-[RGLDocReader rfidRegulaDeviceCompletionManagerWithHandler:action:rfidController:results:]
+___91-[RGLDocReader rfidRegulaDeviceCompletionManagerWithHandler:action:rfidController:results:]_block_invoke
+___91-[RGLDocReader rfidRegulaDeviceCompletionManagerWithHandler:action:rfidController:results:]_block_invoke_2
+___copy_helper_block_e8_32s40b48s
+___destroy_helper_block_e8_32s40s48s
+___copy_helper_block_e8_32s40s48b56s
+___destroy_helper_block_e8_32s40s48s56s
+-[RGLDocReader rfidCompletionManagerWithHandler:action:rfidController:results:]
+___79-[RGLDocReader rfidCompletionManagerWithHandler:action:rfidController:results:]_block_invoke
+-[RGLDocReader prepareDatabase:progressHandler:completion:]
+-[RGLDocReader addPKDCertificates:]
+-[RGLDocReader clearPKDCertificates]
+-[RGLDocReader prepareDatabase:completion:]
+-[RGLDocReader runAutoUpdate:progressHandler:completion:]
+-[RGLDocReader runAutoUpdate:completion:]
+-[RGLDocReader recognizeImage:completion:]
+-[RGLDocReader recognizeImage:cameraMode:completion:]
+-[RGLDocReader recognizeImages:completion:]
+-[RGLDocReader recognizeImages:cameraMode:completion:]
+___54-[RGLDocReader recognizeImages:cameraMode:completion:]_block_invoke
+-[RGLDocReader showScanner:completion:]
+___39-[RGLDocReader showScanner:completion:]_block_invoke
+-[RGLDocReader startNewSession]
+-[RGLDocReader startNewPage]
+___28-[RGLDocReader startNewPage]_block_invoke
+___copy_helper_block_e8_32s
+___destroy_helper_block_e8_32s
+-[RGLDocReader startRFIDReading:completion:]
+___44-[RGLDocReader startRFIDReading:completion:]_block_invoke
+-[RGLDocReader readRFID:completion:]
+___36-[RGLDocReader readRFID:completion:]_block_invoke
+___36-[RGLDocReader readRFID:completion:]_block_invoke_2
+___copy_helper_block_e8_32b40w
+___destroy_helper_block_e8_32s40w
+___36-[RGLDocReader readRFID:completion:]_block_invoke.259
+___36-[RGLDocReader readRFID:completion:]_block_invoke_2.262
+___36-[RGLDocReader readRFID:completion:]_block_invoke_3
+___copy_helper_block_e8_32s40w
+___36-[RGLDocReader readRFID:completion:]_block_invoke.291
+___36-[RGLDocReader readRFID:completion:]_block_invoke_2.294
+___copy_helper_block_e8_32w
+___destroy_helper_block_e8_32w
+___36-[RGLDocReader readRFID:completion:]_block_invoke.311
+___copy_helper_block_e8_32b40s48w
+___destroy_helper_block_e8_32s40s48w
+___copy_helper_block_e8_32b40b48s56w
+___destroy_helper_block_e8_32s40s48s56w
+-[RGLDocReader setRfidSessionStatus:]
+-[RGLDocReader handleRfidSessionStatusWithDefaultStatus:]
+-[RGLDocReader handleRfidCompletion:action:results:error:errorCode:]
+___68-[RGLDocReader handleRfidCompletion:action:results:error:errorCode:]_block_invoke
+___copy_helper_block_e8_32b40s48s
+-[RGLDocReader isRestartRfidErrorCode:]
+-[RGLDocReader stopScanner:]
+-[RGLDocReader prepareCameraViewController:cameraHandler:]
+___58-[RGLDocReader prepareCameraViewController:cameraHandler:]_block_invoke
+-[RGLDocReader prepareCameraViewController:]
+-[RGLDocReader removeDatabase:]
+-[RGLDocReader cancelDBUpdate]
+-[RGLDocReader stopRFIDReader:]
+-[RGLDocReader privateInitializeReaderWithLicense:databasePath:completion:]
+___75-[RGLDocReader privateInitializeReaderWithLicense:databasePath:completion:]_block_invoke
+___75-[RGLDocReader privateInitializeReaderWithLicense:databasePath:completion:]_block_invoke_2
+___copy_helper_block_e8_32s40s48b
+-[RGLDocReader startingNewSessionWithAsyncCall:]
+___48-[RGLDocReader startingNewSessionWithAsyncCall:]_block_invoke
+___48-[RGLDocReader startingNewSessionWithAsyncCall:]_block_invoke_2
+-[RGLDocReader runNewSession]
+-[RGLDocReader setCameraSessionIsPaused:]
+-[RGLDocReader selectedScenario]
+-[RGLDocReader scenarioIsAvailable]
+-[RGLDocReader completionManagerWitthHandler:action:cameraViewController:result:cameraViewControllerIsShowed:]
+___110-[RGLDocReader completionManagerWitthHandler:action:cameraViewController:result:cameraViewControllerIsShowed:]_block_invoke
+-[RGLDocReader saveLatestDocumentType:]
+-[RGLDocReader runUpdateWithURL:updateMode:progressHandler:completion:]
+___71-[RGLDocReader runUpdateWithURL:updateMode:progressHandler:completion:]_block_invoke
+___71-[RGLDocReader runUpdateWithURL:updateMode:progressHandler:completion:]_block_invoke_2
+___copy_helper_block_e8_32b
+___71-[RGLDocReader runUpdateWithURL:updateMode:progressHandler:completion:]_block_invoke.441
+___copy_helper_block_e8_32b40s48b
+-[RGLDocReader invalidateAllDonwloadSession]
+-[RGLDocReader handleDatabaseData:error:hash:completion:]
+-[RGLDocReader checkDatabaseWithDatabasePath:updateMode:]
+-[RGLDocReader isNeedToRewriteDatabase]
+-[RGLDocReader isNeedToStartPreparing]
+-[RGLDocReader findAvailableDatabaseWithJSON:]
+-[RGLDocReader performMigration]
+-[RGLDocReader generateProcessParamsJSON]
+-[RGLDocReader didGetParams:withCompletionHandler:]
+-[RGLDocReader handle:inputString:inputData:completionBlock:]
+___61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke
+___61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke.545
+___61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke_2
+___61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke.585
+___61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke_2.599
+-[RGLDocReader receivedAPDUResponse:]
+-[RGLDocReader didInvalidateWithError:]
+-[RGLDocReader sessionDidCancelledByUser:]
+-[RGLDocReader finishSessionWithStatus:error:]
+___46-[RGLDocReader finishSessionWithStatus:error:]_block_invoke
+___copy_helper_block_e8_32s40s
+-[RGLDocReader processParams]
+-[RGLDocReader setProcessParams:]
+-[RGLDocReader version]
+-[RGLDocReader setVersion:]
+-[RGLDocReader availableScenarios]
+-[RGLDocReader setAvailableScenarios:]
+-[RGLDocReader isCameraSessionIsPaused]
+-[RGLDocReader documentReaderStatus]
+-[RGLDocReader setDocumentReaderStatus:]
+-[RGLDocReader rfidSessionStatus]
+-[RGLDocReader scanPhotoQueue]
+-[RGLDocReader setScanPhotoQueue:]
+-[RGLDocReader license]
+-[RGLDocReader setLicense:]
+-[RGLDocReader rfidDelegate]
+-[RGLDocReader setRfidDelegate:]
+-[RGLDocReader functionality]
+-[RGLDocReader setFunctionality:]
+-[RGLDocReader customization]
+-[RGLDocReader setCustomization:]
+-[RGLDocReader rfidScenario]
+-[RGLDocReader setRfidScenario:]
+-[RGLDocReader localizationClassName]
+-[RGLDocReader setLocalizationClassName:]
+-[RGLDocReader internetNetworkService]
+-[RGLDocReader setInternetNetworkService:]
+-[RGLDocReader databaseNetworkService]
+-[RGLDocReader setDatabaseNetworkService:]
+-[RGLDocReader licenseData]
+-[RGLDocReader setLicenseData:]
+-[RGLDocReader cameraViewController]
+-[RGLDocReader setCameraViewController:]
+-[RGLDocReader rfidViewController]
+-[RGLDocReader setRfidViewController:]
+-[RGLDocReader regulaDeviceViewController]
+-[RGLDocReader setRegulaDeviceViewController:]
+-[RGLDocReader rfidCallbackCompletionBlock]
+-[RGLDocReader setRfidCallbackCompletionBlock:]
+-[RGLDocReader rglCallbackCompletionBlock]
+-[RGLDocReader setRglCallbackCompletionBlock:]
+-[RGLDocReader callbackHandler]
+-[RGLDocReader setCallbackHandler:]
+-[RGLDocReader rfidSession]
+-[RGLDocReader setRfidSession:]
+-[RGLDocReader rfidSendDataCallbackCompletion]
+-[RGLDocReader setRfidSendDataCallbackCompletion:]
+-[RGLDocReader sessionIsActive]
+-[RGLDocReader setSessionIsActive:]
+-[RGLDocReader sessionWasInvalidated]
+-[RGLDocReader setSessionWasInvalidated:]
+-[RGLDocReader cancelAction]
+-[RGLDocReader setCancelAction:]
+-[RGLDocReader notificationHandler]
+-[RGLDocReader setNotificationHandler:]
+-[RGLDocReader cancelError]
+-[RGLDocReader setCancelError:]
+-[RGLDocReader rfidProcessCompletion]
+-[RGLDocReader setRfidProcessCompletion:]
+-[RGLDocReader latestDocumentReaderResults]
+-[RGLDocReader setLatestDocumentReaderResults:]
+-[RGLDocReader initializationResponse]
+-[RGLDocReader setInitializationResponse:]
+-[RGLDocReader .cxx_destruct]
+_shared.instance
+_shared.onceToken
+___block_descriptor_40_e8__e5_v8?0l
+___block_descriptor_48_e8_32s40bs_e85_v32?0"RGLDocumentReaderRegulaDeviceRFIDController"8q16"RGLDocumentReaderResults"24l
+___block_descriptor_48_e8_32s40bs_e73_v32?0"RGLDocumentReaderRFIDController"8q16"RGLDocumentReaderResults"24l
+___block_descriptor_64_e8_32s40bs48s_e5_v8?0l
+___block_descriptor_72_e8_32s40s48bs56s_e5_v8?0l
+___block_descriptor_49_e8_32s40bs_e37_v24?0"RGLDocumentReaderResults"8q16l
+___block_descriptor_48_e8_32s40bs_e79_v32?0"RGLDocumentReaderCameraViewController"8q16"RGLDocumentReaderResults"24l
+___block_descriptor_40_e8_32s_e5_v8?0l
+___block_descriptor_48_e8_32s40bs_e5_v8?0l
+___block_descriptor_48_e8_32bs40w_e5_v8?0l
+___block_descriptor_48_e8_32s40w_e5_v8?0l
+___block_descriptor_48_e8_32bs40w_e62_v40?0q8"NSData"16"NSString"24?<v?q"NSData""NSString">32l
+___block_descriptor_40_e8_32w_e5_v8?0l
+___block_descriptor_56_e8_32bs40s48w_e37_v20?0I8"RGLDocumentReaderResults"12l
+___block_descriptor_64_e8_32bs40bs48s56w_e5_v8?0l
+___block_descriptor_64_e8_32bs40bs48s56w_e20_v24?0q8"NSError"16l
+___block_descriptor_68_e8_32bs40s48s_e5_v8?0l
+___block_descriptor_56_e8_32bs40s48s_e5_v8?0l
+___block_descriptor_56_e8_32s40s48bs_e5_v8?0l
+___block_descriptor_56_e8_32s40bs48s_e5_v8?0l
+___block_descriptor_40_e8_32bs_e20_v16?0"NSProgress"8l
+___block_descriptor_57_e8_32s40s48bs_e28_v24?0"NSData"8"NSError"16l
+___block_descriptor_57_e8_32bs40s48bs_e28_v24?0"NSData"8"NSError"16l
+___block_descriptor_48_e8_32s40bs_e28_v24?0"NSData"8"NSError"16l
+___block_descriptor_40_e8_32bs_e17_v16?0"NSArray"8l
+___block_descriptor_40_e8_32bs_e16_v16?0"NSData"8l
+___block_descriptor_48_e8_32s40s_e5_v8?0l
+__OBJC_PROTOCOL_$_RGLDataTransferCallbackHandlerDelegate
+__OBJC_LABEL_PROTOCOL_$_RGLDataTransferCallbackHandlerDelegate
+__OBJC_PROTOCOL_$_NSObject
+__OBJC_LABEL_PROTOCOL_$_NSObject
+__OBJC_PROTOCOL_$_RGLRFIDSessionDelegate
+__OBJC_LABEL_PROTOCOL_$_RGLRFIDSessionDelegate
+_OBJC_IVAR_$_RGLDocReader._cameraSessionIsPaused
+_OBJC_IVAR_$_RGLDocReader._sessionIsActive
+_OBJC_IVAR_$_RGLDocReader._sessionWasInvalidated
+_OBJC_IVAR_$_RGLDocReader._processParams
+_OBJC_IVAR_$_RGLDocReader._version
+_OBJC_IVAR_$_RGLDocReader._availableScenarios
+_OBJC_IVAR_$_RGLDocReader._documentReaderStatus
+_OBJC_IVAR_$_RGLDocReader._rfidSessionStatus
+_OBJC_IVAR_$_RGLDocReader._scanPhotoQueue
+_OBJC_IVAR_$_RGLDocReader._license
+_OBJC_IVAR_$_RGLDocReader._rfidDelegate
+_OBJC_IVAR_$_RGLDocReader._functionality
+_OBJC_IVAR_$_RGLDocReader._customization
+_OBJC_IVAR_$_RGLDocReader._rfidScenario
+_OBJC_IVAR_$_RGLDocReader._localizationClassName
+_OBJC_IVAR_$_RGLDocReader._internetNetworkService
+_OBJC_IVAR_$_RGLDocReader._databaseNetworkService
+_OBJC_IVAR_$_RGLDocReader._licenseData
+_OBJC_IVAR_$_RGLDocReader._cameraViewController
+_OBJC_IVAR_$_RGLDocReader._rfidViewController
+_OBJC_IVAR_$_RGLDocReader._regulaDeviceViewController
+_OBJC_IVAR_$_RGLDocReader._rfidCallbackCompletionBlock
+_OBJC_IVAR_$_RGLDocReader._rglCallbackCompletionBlock
+_OBJC_IVAR_$_RGLDocReader._callbackHandler
+_OBJC_IVAR_$_RGLDocReader._rfidSession
+_OBJC_IVAR_$_RGLDocReader._rfidSendDataCallbackCompletion
+_OBJC_IVAR_$_RGLDocReader._cancelAction
+_OBJC_IVAR_$_RGLDocReader._notificationHandler
+_OBJC_IVAR_$_RGLDocReader._cancelError
+_OBJC_IVAR_$_RGLDocReader._rfidProcessCompletion
+_OBJC_IVAR_$_RGLDocReader._latestDocumentReaderResults
+_OBJC_IVAR_$_RGLDocReader._initializationResponse
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/RGLDocReader/RGLDocReader.m
+DocumentReader/RGLDocReader/RGLDocReader.m
+DocumentReader/RGLDocReader/RGLDocReader+Private.h
+DocumentReader/RGLDocReader/RGLDocReader.h
+__copy_helper_block_e8_32s40s
+__46-[RGLDocReader finishSessionWithStatus:error:]_block_invoke
+__61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke_2.599
+__61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke.585
+__61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke_2
+__61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke.545
+__61-[RGLDocReader handle:inputString:inputData:completionBlock:]_block_invoke
+__copy_helper_block_e8_32b40s48b
+__71-[RGLDocReader runUpdateWithURL:updateMode:progressHandler:completion:]_block_invoke.441
+__copy_helper_block_e8_32b
+__71-[RGLDocReader runUpdateWithURL:updateMode:progressHandler:completion:]_block_invoke_2
+__71-[RGLDocReader runUpdateWithURL:updateMode:progressHandler:completion:]_block_invoke
+__110-[RGLDocReader completionManagerWitthHandler:action:cameraViewController:result:cameraViewControllerIsShowed:]_block_invoke
+__48-[RGLDocReader startingNewSessionWithAsyncCall:]_block_invoke_2
+__48-[RGLDocReader startingNewSessionWithAsyncCall:]_block_invoke
+__copy_helper_block_e8_32s40s48b
+__75-[RGLDocReader privateInitializeReaderWithLicense:databasePath:completion:]_block_invoke_2
+__75-[RGLDocReader privateInitializeReaderWithLicense:databasePath:completion:]_block_invoke
+__58-[RGLDocReader prepareCameraViewController:cameraHandler:]_block_invoke
+__copy_helper_block_e8_32b40s48s
+__68-[RGLDocReader handleRfidCompletion:action:results:error:errorCode:]_block_invoke
+__destroy_helper_block_e8_32s40s48s56w
+__copy_helper_block_e8_32b40b48s56w
+__destroy_helper_block_e8_32s40s48w
+__copy_helper_block_e8_32b40s48w
+__36-[RGLDocReader readRFID:completion:]_block_invoke.311
+__destroy_helper_block_e8_32w
+__copy_helper_block_e8_32w
+__36-[RGLDocReader readRFID:completion:]_block_invoke_2.294
+__36-[RGLDocReader readRFID:completion:]_block_invoke.291
+__copy_helper_block_e8_32s40w
+__36-[RGLDocReader readRFID:completion:]_block_invoke_3
+__36-[RGLDocReader readRFID:completion:]_block_invoke_2.262
+__36-[RGLDocReader readRFID:completion:]_block_invoke.259
+__destroy_helper_block_e8_32s40w
+__copy_helper_block_e8_32b40w
+__36-[RGLDocReader readRFID:completion:]_block_invoke_2
+__36-[RGLDocReader readRFID:completion:]_block_invoke
+__44-[RGLDocReader startRFIDReading:completion:]_block_invoke
+__destroy_helper_block_e8_32s
+__copy_helper_block_e8_32s
+__28-[RGLDocReader startNewPage]_block_invoke
+__39-[RGLDocReader showScanner:completion:]_block_invoke
+__54-[RGLDocReader recognizeImages:cameraMode:completion:]_block_invoke
+__79-[RGLDocReader rfidCompletionManagerWithHandler:action:rfidController:results:]_block_invoke
+__destroy_helper_block_e8_32s40s48s56s
+__copy_helper_block_e8_32s40s48b56s
+__destroy_helper_block_e8_32s40s48s
+__copy_helper_block_e8_32s40b48s
+__91-[RGLDocReader rfidRegulaDeviceCompletionManagerWithHandler:action:rfidController:results:]_block_invoke_2
+__91-[RGLDocReader rfidRegulaDeviceCompletionManagerWithHandler:action:rfidController:results:]_block_invoke
+__56-[RGLDocReader startRFIDReaderFromPresenter:completion:]_block_invoke.97
+__destroy_helper_block_e8_32s40s
+__copy_helper_block_e8_32s40b
+__56-[RGLDocReader startRFIDReaderFromPresenter:completion:]_block_invoke
+__destroy_helper_block_e8_
+__copy_helper_block_e8_
+__22+[RGLDocReader shared]_block_invoke
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.2.sdk/usr/include/dispatch/once.h
+-[RGLSecurityObject initWithJSON:]
+-[RGLSecurityObject jsonDictionary]
++[RGLSecurityObject initWithJSON:]
+-[RGLSecurityObject fileReference]
+-[RGLSecurityObject objectType]
+-[RGLSecurityObject version]
+-[RGLSecurityObject signerInfos]
+-[RGLSecurityObject notifications]
+-[RGLSecurityObject .cxx_destruct]
+_OBJC_IVAR_$_RGLSecurityObject._fileReference
+_OBJC_IVAR_$_RGLSecurityObject._objectType
+_OBJC_IVAR_$_RGLSecurityObject._version
+_OBJC_IVAR_$_RGLSecurityObject._signerInfos
+_OBJC_IVAR_$_RGLSecurityObject._notifications
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLSecurityObject.m
+DocumentReader/Models/DocReaderResult/RFID/RGLSecurityObject.m
+DocumentReader/Models/DocReaderResult/RFID/RGLSecurityObject.h
+-[RGLPosition initWithJSON:]
+-[RGLPosition jsonDictionary]
+-[RGLPosition dictionaryFromPoint:]
++[RGLPosition initWithJSON:]
+-[RGLPosition size]
+-[RGLPosition center]
+-[RGLPosition leftTop]
+-[RGLPosition leftBottom]
+-[RGLPosition rightTop]
+-[RGLPosition rightBottom]
+-[RGLPosition angle]
+-[RGLPosition perspectiveTr]
+-[RGLPosition objArea]
+-[RGLPosition objIntAngleDev]
+-[RGLPosition resultStatus]
+-[RGLPosition docFormat]
+-[RGLPosition pageIndex]
+-[RGLPosition dpi]
+-[RGLPosition inverse]
+_OBJC_IVAR_$_RGLPosition._angle
+_OBJC_IVAR_$_RGLPosition._perspectiveTr
+_OBJC_IVAR_$_RGLPosition._objArea
+_OBJC_IVAR_$_RGLPosition._objIntAngleDev
+_OBJC_IVAR_$_RGLPosition._resultStatus
+_OBJC_IVAR_$_RGLPosition._docFormat
+_OBJC_IVAR_$_RGLPosition._pageIndex
+_OBJC_IVAR_$_RGLPosition._dpi
+_OBJC_IVAR_$_RGLPosition._inverse
+_OBJC_IVAR_$_RGLPosition._size
+_OBJC_IVAR_$_RGLPosition._center
+_OBJC_IVAR_$_RGLPosition._leftTop
+_OBJC_IVAR_$_RGLPosition._leftBottom
+_OBJC_IVAR_$_RGLPosition._rightTop
+_OBJC_IVAR_$_RGLPosition._rightBottom
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/DocumentPosition/RGLPosition.m
+DocumentReader/Models/DocReaderResult/DocumentPosition/RGLPosition.h
+DocumentReader/Models/DocReaderResult/DocumentPosition/RGLPosition.m
++[NSString(EnumValues) rgl_stringFromBarcodeType:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSString/NSString+RGLEnumValues.m
+DocumentReader/Engine/Extensions/NSString/NSString+RGLEnumValues.m
+-[RGLImageData init]
+-[RGLImageData setIsRecognized:]
+___32-[RGLImageData setIsRecognized:]_block_invoke
+-[RGLImageData image]
+-[RGLImageData setImage:]
+-[RGLImageData convertedBorderView]
+-[RGLImageData setConvertedBorderView:]
+-[RGLImageData previewViewBounds]
+-[RGLImageData setPreviewViewBounds:]
+-[RGLImageData deviceOrientation]
+-[RGLImageData setDeviceOrientation:]
+-[RGLImageData lightType]
+-[RGLImageData setLightType:]
+-[RGLImageData resolutionType]
+-[RGLImageData setResolutionType:]
+-[RGLImageData isRecognized]
+-[RGLImageData isRecognizedSyncronizeDataQueue]
+-[RGLImageData setIsRecognizedSyncronizeDataQueue:]
+-[RGLImageData .cxx_destruct]
+___block_descriptor_41_e8_32s_e5_v8?0l
+_OBJC_IVAR_$_RGLImageData._isRecognized
+_OBJC_IVAR_$_RGLImageData._image
+_OBJC_IVAR_$_RGLImageData._deviceOrientation
+_OBJC_IVAR_$_RGLImageData._lightType
+_OBJC_IVAR_$_RGLImageData._resolutionType
+_OBJC_IVAR_$_RGLImageData._isRecognizedSyncronizeDataQueue
+_OBJC_IVAR_$_RGLImageData._convertedBorderView
+_OBJC_IVAR_$_RGLImageData._previewViewBounds
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Helpers/RGLImageData.m
+DocumentReader/Engine/Helpers/RGLImageData.m
+DocumentReader/Engine/Helpers/RGLImageData.h
+__32-[RGLImageData setIsRecognized:]_block_invoke
+-[NSURL(MD5) rgl_md5]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSURL/NSURL+RGLMD5.m
+DocumentReader/Engine/Extensions/NSURL/NSURL+RGLMD5.m
+-[RGLStackImageData init]
+-[RGLStackImageData push:]
+___26-[RGLStackImageData push:]_block_invoke
+-[RGLStackImageData pop]
+___Block_byref_object_copy_
+___Block_byref_object_dispose_
+___24-[RGLStackImageData pop]_block_invoke
+___copy_helper_block_e8_32s40r
+___destroy_helper_block_e8_32s40r
+-[RGLStackImageData peek]
+___25-[RGLStackImageData peek]_block_invoke
+-[RGLStackImageData isEmpty]
+___28-[RGLStackImageData isEmpty]_block_invoke
+-[RGLStackImageData clear]
+___26-[RGLStackImageData clear]_block_invoke
+-[RGLStackImageData isFull]
+___27-[RGLStackImageData isFull]_block_invoke
+-[RGLStackImageData objectAtIndex:]
+___35-[RGLStackImageData objectAtIndex:]_block_invoke
+-[RGLStackImageData count]
+-[RGLStackImageData stackUVImageSyncronizeDataQueue]
+-[RGLStackImageData setStackUVImageSyncronizeDataQueue:]
+-[RGLStackImageData arrayStackData]
+-[RGLStackImageData setArrayStackData:]
+-[RGLStackImageData .cxx_destruct]
+___block_descriptor_48_e8_32s40r_e5_v8?0l
+___block_descriptor_56_e8_32s40r_e5_v8?0l
+_OBJC_IVAR_$_RGLStackImageData._count
+_OBJC_IVAR_$_RGLStackImageData._stackUVImageSyncronizeDataQueue
+_OBJC_IVAR_$_RGLStackImageData._arrayStackData
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Helpers/RGLStackImageData.m
+DocumentReader/Engine/Helpers/RGLStackImageData.m
+DocumentReader/Engine/Helpers/RGLStackImageData.h
+__35-[RGLStackImageData objectAtIndex:]_block_invoke
+__27-[RGLStackImageData isFull]_block_invoke
+__26-[RGLStackImageData clear]_block_invoke
+__28-[RGLStackImageData isEmpty]_block_invoke
+__25-[RGLStackImageData peek]_block_invoke
+__destroy_helper_block_e8_32s40r
+__copy_helper_block_e8_32s40r
+__24-[RGLStackImageData pop]_block_invoke
+__Block_byref_object_dispose_
+__Block_byref_object_copy_
+__26-[RGLStackImageData push:]_block_invoke
+-[RGLRFIDNativeSession setRfidStatus:]
+-[RGLRFIDNativeSession tagReaderSession:didInvalidateWithError:]
+-[RGLRFIDNativeSession tagReaderSessionDidBecomeActive:]
+-[RGLRFIDNativeSession tagReaderSession:didDetectTags:]
+___55-[RGLRFIDNativeSession tagReaderSession:didDetectTags:]_block_invoke
+-[RGLRFIDNativeSession connect:]
+-[RGLRFIDNativeSession connectionTimerEnd]
+-[RGLRFIDNativeSession sendData:]
+___33-[RGLRFIDNativeSession sendData:]_block_invoke
+-[RGLRFIDNativeSession invalidateSessionWithErrorMessage:]
+-[RGLRFIDNativeSession restartSession]
++[RGLRFIDNativeSession isReadingAvailable:]
+-[RGLRFIDNativeSession delegate]
+-[RGLRFIDNativeSession setDelegate:]
+-[RGLRFIDNativeSession rfidStatus]
+-[RGLRFIDNativeSession tagSession]
+-[RGLRFIDNativeSession setTagSession:]
+-[RGLRFIDNativeSession activeTag]
+-[RGLRFIDNativeSession setActiveTag:]
+-[RGLRFIDNativeSession connectionTimer]
+-[RGLRFIDNativeSession setConnectionTimer:]
+-[RGLRFIDNativeSession connectionCallback]
+-[RGLRFIDNativeSession setConnectionCallback:]
+-[RGLRFIDNativeSession .cxx_destruct]
+___clang_at_available_requires_core_foundation_framework
+___clang_at_available_requires_core_foundation_framework.cold.1
+___block_descriptor_48_e8_32s40w_e17_v16?0"NSError"8l
+___block_descriptor_40_e8_32s_e34_v32?0"NSData"8C16C20"NSError"24l
+__OBJC_PROTOCOL_$_NFCTagReaderSessionDelegate
+__OBJC_LABEL_PROTOCOL_$_NFCTagReaderSessionDelegate
+__OBJC_PROTOCOL_$_RGLRFIDSession
+__OBJC_LABEL_PROTOCOL_$_RGLRFIDSession
+_OBJC_IVAR_$_RGLRFIDNativeSession._delegate
+_OBJC_IVAR_$_RGLRFIDNativeSession._rfidStatus
+_OBJC_IVAR_$_RGLRFIDNativeSession._tagSession
+_OBJC_IVAR_$_RGLRFIDNativeSession._activeTag
+_OBJC_IVAR_$_RGLRFIDNativeSession._connectionTimer
+_OBJC_IVAR_$_RGLRFIDNativeSession._connectionCallback
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/RFID/RGLRFIDNativeSession.m
+DocumentReader/Engine/RFID/RGLRFIDNativeSession.m
+DocumentReader/Engine/RFID/RGLRFIDNativeSession.h
+__33-[RGLRFIDNativeSession sendData:]_block_invoke
+__55-[RGLRFIDNativeSession tagReaderSession:didDetectTags:]_block_invoke
+-[RGLProgressBarView init]
+-[RGLProgressBarView initWithFrame:]
+-[RGLProgressBarView initWithCoder:]
+-[RGLProgressBarView setProgress:]
+-[RGLProgressBarView createCirclePath]
+-[RGLProgressBarView simpleShape]
+-[RGLProgressBarView progress]
+-[RGLProgressBarView shapeLayer]
+-[RGLProgressBarView setShapeLayer:]
+-[RGLProgressBarView progressLayer]
+-[RGLProgressBarView setProgressLayer:]
+-[RGLProgressBarView bgPath]
+-[RGLProgressBarView setBgPath:]
+-[RGLProgressBarView .cxx_destruct]
+_OBJC_IVAR_$_RGLProgressBarView._progress
+_OBJC_IVAR_$_RGLProgressBarView._bgPath
+_OBJC_IVAR_$_RGLProgressBarView._shapeLayer
+_OBJC_IVAR_$_RGLProgressBarView._progressLayer
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Views/RGLProgressBarView.m
+DocumentReader/Views/RGLProgressBarView.m
+DocumentReader/Views/RGLProgressBarView.h
+-[RGLPreviewView init]
+-[RGLPreviewView setSession:]
+-[RGLPreviewView session]
+-[RGLPreviewView showCaptureEffect]
+___35-[RGLPreviewView showCaptureEffect]_block_invoke
++[RGLPreviewView layerClass]
+-[RGLPreviewView videoPreviewLayer]
+-[RGLPreviewView captureView]
+-[RGLPreviewView .cxx_destruct]
+_OBJC_IVAR_$_RGLPreviewView._videoPreviewLayer
+_OBJC_IVAR_$_RGLPreviewView._captureView
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Views/RGLPreviewView.m
+DocumentReader/Views/RGLPreviewView.m
+DocumentReader/Views/RGLPreviewView.h
+__35-[RGLPreviewView showCaptureEffect]_block_invoke
++[RGLJSONParser parse:imageResults:]
++[RGLJSONParser parseGraphicFields:resultType:pageIndex:]
++[RGLJSONParser rectFromDictionary:]
++[RGLJSONParser rectToDictionary:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Parsing/RGLJSONParser.m
+DocumentReader/Engine/Parsing/RGLJSONParser.m
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) activityIndicatorViewColorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) barcodeTypesInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) borderBackgroundImageInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) btDeviceNameInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameActiveColorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameBorderWidthInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameDefaultColorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameHideInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameShapeTypeInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameSizeInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) defaultCameraFrameSizeInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraPositionInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameWidthOfssetInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cornerViewLineLengthInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) didMotionControlEnabledInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) didSkipFocusingFramesInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) helpAnimationImageInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) multipageAnimationBackImageInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) multipageAnimationFrontImageInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) multipageProcessingInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) resultStatusBackgroundColorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) resultStatusPositionMultiplierInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) resultStatusTextColorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) resultStatusTextFontInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showCaptureButtonInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showChangeFrameSizeButtonInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showCloseButtonInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showSwapCameraButtonInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showTorchButtonInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showHelpAnimationInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showLogoInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showMaskViewInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showNextPageAnimationInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showResultMessagesInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showSkipNextPageButtonInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) showStatusMessagesInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) skipMultipageButtonBackgroundColorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) startNewPageInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) statusPositionMultiplierInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) statusTextColorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) statusTextFontInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) supportedOrientationsInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) tintColorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) isUseAuthenticatorInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) videoSessionPresetInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraStatusInCameraController:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameVerticalPositionMultiplier:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraFrameCornerRadius:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraBorderAspectRatioPortrait:]
+-[RGLDocReader(RGLDocumentReaderCameraViewControllerDelegate) cameraBorderAspectRatioLandscape:]
+__OBJC_PROTOCOL_$_RGLDocumentReaderCameraViewControllerDelegate
+__OBJC_LABEL_PROTOCOL_$_RGLDocumentReaderCameraViewControllerDelegate
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/RGLDocReader/RGLDocReader+RGLDocumentReaderCameraViewControllerDelegate.m
+DocumentReader/RGLDocReader/RGLDocReader+RGLDocumentReaderCameraViewControllerDelegate.m
+-[RGLValidity initWithJSON:]
+-[RGLValidity jsonDictionary]
++[RGLValidity initWithJSON:]
+-[RGLValidity notAfter]
+-[RGLValidity notBefore]
+-[RGLValidity .cxx_destruct]
+_OBJC_IVAR_$_RGLValidity._notAfter
+_OBJC_IVAR_$_RGLValidity._notBefore
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLValidity.m
+DocumentReader/Models/DocReaderResult/RFID/RGLValidity.m
+DocumentReader/Models/DocReaderResult/RFID/RGLValidity.h
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Constants/RGLConstants.m
++[RGLColors themeColor]
++[RGLColors rfidYellow]
++[RGLColors lightGray]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Helpers/RGLColors.m
+DocumentReader/Engine/Helpers/RGLColors.m
+-[RGLRFIDScenario init]
+-[RGLRFIDScenario initWithJSON:]
+-[RGLRFIDScenario rfidScenarioDictionary]
+-[RGLRFIDScenario correctedDictionaryByAutosettings:]
++[RGLRFIDScenario initWithJSON:]
+-[RGLRFIDScenario autoSettings]
+-[RGLRFIDScenario setAutoSettings:]
+-[RGLRFIDScenario signManagementAction]
+-[RGLRFIDScenario setSignManagementAction:]
+-[RGLRFIDScenario readingBuffer]
+-[RGLRFIDScenario setReadingBuffer:]
+-[RGLRFIDScenario onlineTAToSignDataType]
+-[RGLRFIDScenario setOnlineTAToSignDataType:]
+-[RGLRFIDScenario onlineTA]
+-[RGLRFIDScenario setOnlineTA:]
+-[RGLRFIDScenario writeEid]
+-[RGLRFIDScenario setWriteEid:]
+-[RGLRFIDScenario profilerType]
+-[RGLRFIDScenario setProfilerType:]
+-[RGLRFIDScenario authProcType]
+-[RGLRFIDScenario setAuthProcType:]
+-[RGLRFIDScenario baseSMProcedure]
+-[RGLRFIDScenario setBaseSMProcedure:]
+-[RGLRFIDScenario pacePasswordType]
+-[RGLRFIDScenario setPacePasswordType:]
+-[RGLRFIDScenario terminalType]
+-[RGLRFIDScenario setTerminalType:]
+-[RGLRFIDScenario universalAccessRights]
+-[RGLRFIDScenario setUniversalAccessRights:]
+-[RGLRFIDScenario authorizedRestrictedIdentification]
+-[RGLRFIDScenario setAuthorizedRestrictedIdentification:]
+-[RGLRFIDScenario auxVerificationCommunityID]
+-[RGLRFIDScenario setAuxVerificationCommunityID:]
+-[RGLRFIDScenario auxVerificationDateOfBirth]
+-[RGLRFIDScenario setAuxVerificationDateOfBirth:]
+-[RGLRFIDScenario skipAA]
+-[RGLRFIDScenario setSkipAA:]
+-[RGLRFIDScenario strictProcessing]
+-[RGLRFIDScenario setStrictProcessing:]
+-[RGLRFIDScenario pkdDSCertPriority]
+-[RGLRFIDScenario setPkdDSCertPriority:]
+-[RGLRFIDScenario pkdUseExternalCSCA]
+-[RGLRFIDScenario setPkdUseExternalCSCA:]
+-[RGLRFIDScenario trustedPKD]
+-[RGLRFIDScenario setTrustedPKD:]
+-[RGLRFIDScenario passiveAuth]
+-[RGLRFIDScenario setPassiveAuth:]
+-[RGLRFIDScenario paceStaticBinding]
+-[RGLRFIDScenario setPaceStaticBinding:]
+-[RGLRFIDScenario password]
+-[RGLRFIDScenario setPassword:]
+-[RGLRFIDScenario useSFI]
+-[RGLRFIDScenario setUseSFI:]
+-[RGLRFIDScenario pkdPA]
+-[RGLRFIDScenario setPkdPA:]
+-[RGLRFIDScenario pkdEAC]
+-[RGLRFIDScenario setPkdEAC:]
+-[RGLRFIDScenario readEPassport]
+-[RGLRFIDScenario setReadEPassport:]
+-[RGLRFIDScenario readEID]
+-[RGLRFIDScenario setReadEID:]
+-[RGLRFIDScenario readEDL]
+-[RGLRFIDScenario setReadEDL:]
+-[RGLRFIDScenario ePassportDataGroups]
+-[RGLRFIDScenario setEPassportDataGroups:]
+-[RGLRFIDScenario eIDDataGroups]
+-[RGLRFIDScenario setEIDDataGroups:]
+-[RGLRFIDScenario eDLDataGroups]
+-[RGLRFIDScenario setEDLDataGroups:]
+-[RGLRFIDScenario mrz]
+-[RGLRFIDScenario setMrz:]
+-[RGLRFIDScenario eSignPINDefault]
+-[RGLRFIDScenario setESignPINDefault:]
+-[RGLRFIDScenario eSignPINNewValue]
+-[RGLRFIDScenario setESignPINNewValue:]
+-[RGLRFIDScenario authorizedSTSignature]
+-[RGLRFIDScenario setAuthorizedSTSignature:]
+-[RGLRFIDScenario authorizedSTQSignature]
+-[RGLRFIDScenario setAuthorizedSTQSignature:]
+-[RGLRFIDScenario authorizedWriteDG17]
+-[RGLRFIDScenario setAuthorizedWriteDG17:]
+-[RGLRFIDScenario authorizedWriteDG18]
+-[RGLRFIDScenario setAuthorizedWriteDG18:]
+-[RGLRFIDScenario authorizedWriteDG19]
+-[RGLRFIDScenario setAuthorizedWriteDG19:]
+-[RGLRFIDScenario authorizedWriteDG20]
+-[RGLRFIDScenario setAuthorizedWriteDG20:]
+-[RGLRFIDScenario authorizedWriteDG21]
+-[RGLRFIDScenario setAuthorizedWriteDG21:]
+-[RGLRFIDScenario authorizedVerifyAge]
+-[RGLRFIDScenario setAuthorizedVerifyAge:]
+-[RGLRFIDScenario authorizedVerifyCommunityID]
+-[RGLRFIDScenario setAuthorizedVerifyCommunityID:]
+-[RGLRFIDScenario authorizedPrivilegedTerminal]
+-[RGLRFIDScenario setAuthorizedPrivilegedTerminal:]
+-[RGLRFIDScenario authorizedCANAllowed]
+-[RGLRFIDScenario setAuthorizedCANAllowed:]
+-[RGLRFIDScenario authorizedPINManagment]
+-[RGLRFIDScenario setAuthorizedPINManagment:]
+-[RGLRFIDScenario authorizedInstallCert]
+-[RGLRFIDScenario setAuthorizedInstallCert:]
+-[RGLRFIDScenario authorizedInstallQCert]
+-[RGLRFIDScenario setAuthorizedInstallQCert:]
+-[RGLRFIDScenario applyAmendments]
+-[RGLRFIDScenario setApplyAmendments:]
+-[RGLRFIDScenario .cxx_destruct]
+_OBJC_IVAR_$_RGLRFIDScenario._autoSettings
+_OBJC_IVAR_$_RGLRFIDScenario._onlineTA
+_OBJC_IVAR_$_RGLRFIDScenario._writeEid
+_OBJC_IVAR_$_RGLRFIDScenario._universalAccessRights
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedRestrictedIdentification
+_OBJC_IVAR_$_RGLRFIDScenario._auxVerificationCommunityID
+_OBJC_IVAR_$_RGLRFIDScenario._auxVerificationDateOfBirth
+_OBJC_IVAR_$_RGLRFIDScenario._skipAA
+_OBJC_IVAR_$_RGLRFIDScenario._strictProcessing
+_OBJC_IVAR_$_RGLRFIDScenario._pkdDSCertPriority
+_OBJC_IVAR_$_RGLRFIDScenario._pkdUseExternalCSCA
+_OBJC_IVAR_$_RGLRFIDScenario._trustedPKD
+_OBJC_IVAR_$_RGLRFIDScenario._passiveAuth
+_OBJC_IVAR_$_RGLRFIDScenario._paceStaticBinding
+_OBJC_IVAR_$_RGLRFIDScenario._useSFI
+_OBJC_IVAR_$_RGLRFIDScenario._readEPassport
+_OBJC_IVAR_$_RGLRFIDScenario._readEID
+_OBJC_IVAR_$_RGLRFIDScenario._readEDL
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedSTSignature
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedSTQSignature
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedWriteDG17
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedWriteDG18
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedWriteDG19
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedWriteDG20
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedWriteDG21
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedVerifyAge
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedVerifyCommunityID
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedPrivilegedTerminal
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedCANAllowed
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedPINManagment
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedInstallCert
+_OBJC_IVAR_$_RGLRFIDScenario._authorizedInstallQCert
+_OBJC_IVAR_$_RGLRFIDScenario._applyAmendments
+_OBJC_IVAR_$_RGLRFIDScenario._readingBuffer
+_OBJC_IVAR_$_RGLRFIDScenario._onlineTAToSignDataType
+_OBJC_IVAR_$_RGLRFIDScenario._profilerType
+_OBJC_IVAR_$_RGLRFIDScenario._signManagementAction
+_OBJC_IVAR_$_RGLRFIDScenario._authProcType
+_OBJC_IVAR_$_RGLRFIDScenario._baseSMProcedure
+_OBJC_IVAR_$_RGLRFIDScenario._pacePasswordType
+_OBJC_IVAR_$_RGLRFIDScenario._terminalType
+_OBJC_IVAR_$_RGLRFIDScenario._password
+_OBJC_IVAR_$_RGLRFIDScenario._pkdPA
+_OBJC_IVAR_$_RGLRFIDScenario._pkdEAC
+_OBJC_IVAR_$_RGLRFIDScenario._ePassportDataGroups
+_OBJC_IVAR_$_RGLRFIDScenario._eIDDataGroups
+_OBJC_IVAR_$_RGLRFIDScenario._eDLDataGroups
+_OBJC_IVAR_$_RGLRFIDScenario._mrz
+_OBJC_IVAR_$_RGLRFIDScenario._eSignPINDefault
+_OBJC_IVAR_$_RGLRFIDScenario._eSignPINNewValue
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/Scenario/RGLRFIDScenario.m
+DocumentReader/Models/Scenario/RGLRFIDScenario.m
+DocumentReader/Models/Scenario/RGLRFIDScenario.h
++[UIColor(RGLColor) rgl_rgbaWithR:g:b:]
++[UIColor(RGLColor) rgl_rgbaWithR:g:b:a:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/UIColor+RGLColor.m
+DocumentReader/Engine/Extensions/UIColor+RGLColor.m
+-[RGLDocumentView parentView]
+-[RGLDocumentView initWithFrame:]
+-[RGLDocumentView initWithStartPosition:]
+-[RGLDocumentView startHelpAnimationWithCompletion:]
+___52-[RGLDocumentView startHelpAnimationWithCompletion:]_block_invoke
+___52-[RGLDocumentView startHelpAnimationWithCompletion:]_block_invoke_2
+-[RGLDocumentView nextPageAnimationStart]
+___41-[RGLDocumentView nextPageAnimationStart]_block_invoke
+___41-[RGLDocumentView nextPageAnimationStart]_block_invoke_2
+-[RGLDocumentView changePositionToDocumentViewPosition:]
+-[RGLDocumentView showAnimationWithCompletion:]
+___47-[RGLDocumentView showAnimationWithCompletion:]_block_invoke
+___47-[RGLDocumentView showAnimationWithCompletion:]_block_invoke_2
+-[RGLDocumentView showForHelpAnimationWithCompletion:]
+___54-[RGLDocumentView showForHelpAnimationWithCompletion:]_block_invoke
+___54-[RGLDocumentView showForHelpAnimationWithCompletion:]_block_invoke_2
+-[RGLDocumentView scaleAnimationWithCompletion:]
+___48-[RGLDocumentView scaleAnimationWithCompletion:]_block_invoke
+___48-[RGLDocumentView scaleAnimationWithCompletion:]_block_invoke_2
+-[RGLDocumentView hideAnimationWithCompletion:]
+___47-[RGLDocumentView hideAnimationWithCompletion:]_block_invoke
+___47-[RGLDocumentView hideAnimationWithCompletion:]_block_invoke_2
+-[RGLDocumentView flipDocumentWithCompletion:]
+___46-[RGLDocumentView flipDocumentWithCompletion:]_block_invoke
+___46-[RGLDocumentView flipDocumentWithCompletion:]_block_invoke_2
+-[RGLDocumentView startRectWithParentView:rglDocumentViewPosition:]
++[RGLDocumentView startProportionMultiplier:]
++[RGLDocumentView endProportionMultiplier:]
++[RGLDocumentView calculateSizes:proportion:]
+-[RGLDocumentView dataSource]
+-[RGLDocumentView setDataSource:]
+-[RGLDocumentView helpAnimationImage]
+-[RGLDocumentView setHelpAnimationImage:]
+-[RGLDocumentView multipageFrontAnimationImage]
+-[RGLDocumentView setMultipageFrontAnimationImage:]
+-[RGLDocumentView multipageBackAnimationImage]
+-[RGLDocumentView setMultipageBackAnimationImage:]
+-[RGLDocumentView helpAnimationImageContentMode]
+-[RGLDocumentView setHelpAnimationImageContentMode:]
+-[RGLDocumentView multipageAnimationFrontImageContentMode]
+-[RGLDocumentView setMultipageAnimationFrontImageContentMode:]
+-[RGLDocumentView multipageAnimationBackImageContentMode]
+-[RGLDocumentView setMultipageAnimationBackImageContentMode:]
+-[RGLDocumentView .cxx_destruct]
+___block_descriptor_40_e8_32bs_e8_v12?0B8l
+___block_descriptor_48_e8_32s40bs_e8_v12?0B8l
+_OBJC_IVAR_$_RGLDocumentView._dataSource
+_OBJC_IVAR_$_RGLDocumentView._helpAnimationImage
+_OBJC_IVAR_$_RGLDocumentView._multipageFrontAnimationImage
+_OBJC_IVAR_$_RGLDocumentView._multipageBackAnimationImage
+_OBJC_IVAR_$_RGLDocumentView._helpAnimationImageContentMode
+_OBJC_IVAR_$_RGLDocumentView._multipageAnimationFrontImageContentMode
+_OBJC_IVAR_$_RGLDocumentView._multipageAnimationBackImageContentMode
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Views/RGLDocumentView.m
+DocumentReader/Views/RGLDocumentView.m
+DocumentReader/Views/RGLDocumentView.h
+__46-[RGLDocumentView flipDocumentWithCompletion:]_block_invoke_2
+__46-[RGLDocumentView flipDocumentWithCompletion:]_block_invoke
+__47-[RGLDocumentView hideAnimationWithCompletion:]_block_invoke_2
+__47-[RGLDocumentView hideAnimationWithCompletion:]_block_invoke
+__48-[RGLDocumentView scaleAnimationWithCompletion:]_block_invoke_2
+__48-[RGLDocumentView scaleAnimationWithCompletion:]_block_invoke
+__54-[RGLDocumentView showForHelpAnimationWithCompletion:]_block_invoke_2
+__54-[RGLDocumentView showForHelpAnimationWithCompletion:]_block_invoke
+__47-[RGLDocumentView showAnimationWithCompletion:]_block_invoke_2
+__47-[RGLDocumentView showAnimationWithCompletion:]_block_invoke
+__41-[RGLDocumentView nextPageAnimationStart]_block_invoke_2
+__41-[RGLDocumentView nextPageAnimationStart]_block_invoke
+__52-[RGLDocumentView startHelpAnimationWithCompletion:]_block_invoke_2
+__52-[RGLDocumentView startHelpAnimationWithCompletion:]_block_invoke
+-[RGLCertificateData initWithJSON:]
+-[RGLCertificateData jsonDictionary]
++[RGLCertificateData initWithJSON:]
+-[RGLCertificateData data]
+-[RGLCertificateData length]
+-[RGLCertificateData .cxx_destruct]
+_OBJC_IVAR_$_RGLCertificateData._data
+_OBJC_IVAR_$_RGLCertificateData._length
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLCertificateData.m
+DocumentReader/Models/DocReaderResult/RFID/RGLCertificateData.m
+DocumentReader/Models/DocReaderResult/RFID/RGLCertificateData.h
+-[RGLCamManualPhotoCaptureDelegate initWithPhotoSettings:withFrame:withCropRect:cameraPosition:photoAnimation:completion:]
+-[RGLCamManualPhotoCaptureDelegate didFinish:]
+-[RGLCamManualPhotoCaptureDelegate captureOutput:willCapturePhotoForResolvedSettings:]
+-[RGLCamManualPhotoCaptureDelegate captureOutput:didFinishProcessingPhotoSampleBuffer:previewPhotoSampleBuffer:resolvedSettings:bracketSettings:error:]
+-[RGLCamManualPhotoCaptureDelegate captureOutput:didFinishCaptureForResolvedSettings:error:]
+-[RGLCamManualPhotoCaptureDelegate requestedPhotoSettings]
+-[RGLCamManualPhotoCaptureDelegate willCapturePhotoAnimation]
+-[RGLCamManualPhotoCaptureDelegate completionBlock]
+-[RGLCamManualPhotoCaptureDelegate cropRect]
+-[RGLCamManualPhotoCaptureDelegate setCropRect:]
+-[RGLCamManualPhotoCaptureDelegate frame]
+-[RGLCamManualPhotoCaptureDelegate setFrame:]
+-[RGLCamManualPhotoCaptureDelegate jpegPhotoData]
+-[RGLCamManualPhotoCaptureDelegate setJpegPhotoData:]
+-[RGLCamManualPhotoCaptureDelegate cameraPosition]
+-[RGLCamManualPhotoCaptureDelegate setCameraPosition:]
+-[RGLCamManualPhotoCaptureDelegate .cxx_destruct]
+__OBJC_PROTOCOL_$_AVCapturePhotoCaptureDelegate
+__OBJC_LABEL_PROTOCOL_$_AVCapturePhotoCaptureDelegate
+_OBJC_IVAR_$_RGLCamManualPhotoCaptureDelegate._requestedPhotoSettings
+_OBJC_IVAR_$_RGLCamManualPhotoCaptureDelegate._willCapturePhotoAnimation
+_OBJC_IVAR_$_RGLCamManualPhotoCaptureDelegate._completionBlock
+_OBJC_IVAR_$_RGLCamManualPhotoCaptureDelegate._jpegPhotoData
+_OBJC_IVAR_$_RGLCamManualPhotoCaptureDelegate._cameraPosition
+_OBJC_IVAR_$_RGLCamManualPhotoCaptureDelegate._cropRect
+_OBJC_IVAR_$_RGLCamManualPhotoCaptureDelegate._frame
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Controllers/RGLCamManualPhotoCaptureDelegate.m
+DocumentReader/Controllers/RGLCamManualPhotoCaptureDelegate.m
+DocumentReader/Controllers/RGLCamManualPhotoCaptureDelegate.h
+-[NSDictionary(JSON) rgl_jsonString]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSDictionary+RGLJSON.m
+DocumentReader/Engine/Extensions/NSDictionary+RGLJSON.m
+-[RGLNetworkService initWithURL:headers:]
+-[RGLNetworkService invalidateAndCancel]
+-[RGLNetworkService getData:completion:]
+-[RGLNetworkService postData:progress:completion:]
+-[RGLNetworkService generateHeadersForRequest:headers:]
+-[RGLNetworkService URLSession:dataTask:didReceiveResponse:completionHandler:]
+-[RGLNetworkService URLSession:dataTask:didReceiveData:]
+-[RGLNetworkService URLSession:task:didCompleteWithError:]
+-[RGLNetworkService dealloc]
+-[RGLNetworkService responseStatusCode]
+-[RGLNetworkService setResponseStatusCode:]
+-[RGLNetworkService url]
+-[RGLNetworkService setUrl:]
+-[RGLNetworkService session]
+-[RGLNetworkService setSession:]
+-[RGLNetworkService buffer]
+-[RGLNetworkService setBuffer:]
+-[RGLNetworkService progress]
+-[RGLNetworkService setProgress:]
+-[RGLNetworkService completionHandler]
+-[RGLNetworkService setCompletionHandler:]
+-[RGLNetworkService progressHandler]
+-[RGLNetworkService setProgressHandler:]
+-[RGLNetworkService headers]
+-[RGLNetworkService setHeaders:]
+-[RGLNetworkService .cxx_destruct]
+__OBJC_PROTOCOL_$_NSURLSessionDelegate
+__OBJC_LABEL_PROTOCOL_$_NSURLSessionDelegate
+__OBJC_PROTOCOL_$_NSURLSessionTaskDelegate
+__OBJC_LABEL_PROTOCOL_$_NSURLSessionTaskDelegate
+__OBJC_PROTOCOL_$_NSURLSessionDataDelegate
+__OBJC_LABEL_PROTOCOL_$_NSURLSessionDataDelegate
+_OBJC_IVAR_$_RGLNetworkService._responseStatusCode
+_OBJC_IVAR_$_RGLNetworkService._url
+_OBJC_IVAR_$_RGLNetworkService._session
+_OBJC_IVAR_$_RGLNetworkService._buffer
+_OBJC_IVAR_$_RGLNetworkService._progress
+_OBJC_IVAR_$_RGLNetworkService._completionHandler
+_OBJC_IVAR_$_RGLNetworkService._progressHandler
+_OBJC_IVAR_$_RGLNetworkService._headers
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Network/RGLNetworkService.m
+DocumentReader/Engine/Network/RGLNetworkService.m
+DocumentReader/Engine/Network/RGLNetworkService.h
+-[RGLImageQuality initWithJSON:]
++[RGLImageQuality initWithJSON:]
+-[RGLImageQuality jsonDictionary]
+-[RGLImageQuality type]
+-[RGLImageQuality result]
+-[RGLImageQuality featureType]
+_OBJC_IVAR_$_RGLImageQuality._type
+_OBJC_IVAR_$_RGLImageQuality._result
+_OBJC_IVAR_$_RGLImageQuality._featureType
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/ImageQuality/RGLImageQuality.m
+DocumentReader/Models/DocReaderResult/ImageQuality/RGLImageQuality.h
+DocumentReader/Models/DocReaderResult/ImageQuality/RGLImageQuality.m
++[RGLTextFieldsParser parseOcrLexicalAnalyze:json:]
++[RGLTextFieldsParser createNewOcrLexicalFields:isLexMrzAdded:isLexVisualAdded:isLexBarcodeAdded:isLexRfidAdded:]
++[RGLTextFieldsParser parseExtendedValues:]
++[RGLTextFieldsParser sortJSONArrayForParse:]
++[RGLTextFieldsParser parseDocVisualExtendedInfo:resultType:json:]
++[RGLTextFieldsParser createTextFieldsDictionary:]
++[RGLTextFieldsParser extendMrzFieldWithLex:value:]
++[RGLTextFieldsParser extendVisualFieldWithLex:value:]
++[RGLTextFieldsParser extendBarcodeFieldWithLex:value:]
++[RGLTextFieldsParser extendRfidFieldWithLex:value:]
++[RGLTextFieldsParser verifyTextResultStatus:]
++[RGLTextFieldsParser verifyTextFieldStatus:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Parsing/RGLTextFieldsParser.m
+DocumentReader/Engine/Parsing/RGLTextFieldsParser.m
+-[NSString(RGLJSON) rgl_jsonDictionary]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSString/NSString+RGLJSON.m
+DocumentReader/Engine/Extensions/NSString/NSString+RGLJSON.m
+-[RGLAutoFocusLayer initWithCenterPoint:]
+-[RGLAutoFocusLayer prepareLayer:]
+-[RGLAutoFocusLayer calculatePath:centerPoint:]
+-[RGLAutoFocusLayer animationStart:]
+-[RGLAutoFocusLayer opacityAnimation]
+-[RGLAutoFocusLayer scaleAnimation:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Views/RGLAutoFocusLayer.m
+DocumentReader/Views/RGLAutoFocusLayer.m
++[NSFileManager(Backup) rgl_markForNotBackup:error:]
++[NSFileManager(Backup) rgl_copyFileAtPath:toPath:error:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSFileManager+RGLBackup.m
+DocumentReader/Engine/Extensions/NSFileManager+RGLBackup.m
+-[RGLDocumentPosition initWithJSON:]
++[RGLDocumentPosition initWithJSON:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/DocumentPosition/RGLDocumentPosition.m
+DocumentReader/Models/DocReaderResult/DocumentPosition/RGLDocumentPosition.m
+-[RGLDocReaderDocumentsDatabase initWithJSON:]
++[RGLDocReaderDocumentsDatabase initWithJSON:]
+-[RGLDocReaderDocumentsDatabase description]
+-[RGLDocReaderDocumentsDatabase databaseID]
+-[RGLDocReaderDocumentsDatabase version]
+-[RGLDocReaderDocumentsDatabase date]
+-[RGLDocReaderDocumentsDatabase databaseDescription]
+-[RGLDocReaderDocumentsDatabase countriesNumber]
+-[RGLDocReaderDocumentsDatabase documentsNumber]
+-[RGLDocReaderDocumentsDatabase .cxx_destruct]
+_OBJC_IVAR_$_RGLDocReaderDocumentsDatabase._databaseID
+_OBJC_IVAR_$_RGLDocReaderDocumentsDatabase._version
+_OBJC_IVAR_$_RGLDocReaderDocumentsDatabase._date
+_OBJC_IVAR_$_RGLDocReaderDocumentsDatabase._databaseDescription
+_OBJC_IVAR_$_RGLDocReaderDocumentsDatabase._countriesNumber
+_OBJC_IVAR_$_RGLDocReaderDocumentsDatabase._documentsNumber
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderVersion/RGLDocReaderDocumentsDatabase.m
+DocumentReader/Models/DocReaderVersion/RGLDocReaderDocumentsDatabase.m
+DocumentReader/Models/DocReaderVersion/RGLDocReaderDocumentsDatabase.h
+-[RGLAuthenticityCheck initWithAuthenticity:elements:pageIndex:]
+-[RGLAuthenticityCheck initWithJSON:]
+-[RGLAuthenticityCheck status]
+-[RGLAuthenticityCheck typeName]
+-[RGLAuthenticityCheck jsonDictionary]
++[RGLAuthenticityCheck initWithJSON:]
+-[RGLAuthenticityCheck type]
+-[RGLAuthenticityCheck elements]
+-[RGLAuthenticityCheck pageIndex]
+-[RGLAuthenticityCheck .cxx_destruct]
+_OBJC_IVAR_$_RGLAuthenticityCheck._type
+_OBJC_IVAR_$_RGLAuthenticityCheck._elements
+_OBJC_IVAR_$_RGLAuthenticityCheck._pageIndex
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Authenticity/RGLAuthenticityCheck.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLAuthenticityCheck.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLAuthenticityCheck.h
+-[RGLTAChallenge initWithJSON:]
++[RGLTAChallenge initWithJSON:]
+-[RGLTAChallenge data]
+-[RGLTAChallenge auxPCD]
+-[RGLTAChallenge challengePICC]
+-[RGLTAChallenge hashPK]
+-[RGLTAChallenge idPICC]
+-[RGLTAChallenge .cxx_destruct]
+_OBJC_IVAR_$_RGLTAChallenge._data
+_OBJC_IVAR_$_RGLTAChallenge._auxPCD
+_OBJC_IVAR_$_RGLTAChallenge._challengePICC
+_OBJC_IVAR_$_RGLTAChallenge._hashPK
+_OBJC_IVAR_$_RGLTAChallenge._idPICC
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/RFID/Authorization/RGLTAChallenge.m
+DocumentReader/Models/RFID/Authorization/RGLTAChallenge.m
+DocumentReader/Models/RFID/Authorization/RGLTAChallenge.h
+-[RGLDocReader(RGLImageReaderDataSource) selectedScenarioInImageReader:]
+-[RGLDocReader(RGLImageReaderDataSource) isOnlineModeInImageReader:]
+-[RGLDocReader(RGLImageReaderDataSource) needFaceCoordinateInImageReader:]
+-[RGLDocReader(RGLImageReaderDataSource) readBarcodeInImageReader:]
+-[RGLDocReader(RGLImageReaderDataSource) serviceURLInImageReader:]
+-[RGLDocReader(RGLImageReaderDataSource) isUseAuthenticatorInImageReader:]
+-[RGLDocReader(RGLImageReaderDataSource) frameKWHPortrait]
+-[RGLDocReader(RGLImageReaderDataSource) frameKWHLandscape]
+__OBJC_PROTOCOL_$_RGLImageReaderDataSource
+__OBJC_LABEL_PROTOCOL_$_RGLImageReaderDataSource
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/RGLDocReader/RGLDocReader+RGLImageReaderDataSource.m
+DocumentReader/RGLDocReader/RGLDocReader+RGLImageReaderDataSource.m
+-[RGLSignerInfo initWithJSON:]
+-[RGLSignerInfo jsonDictionary]
++[RGLSignerInfo initWithJSON:]
+-[RGLSignerInfo dataToHash]
+-[RGLSignerInfo digestAlgorithm]
+-[RGLSignerInfo paStatus]
+-[RGLSignerInfo signatureAlgorithm]
+-[RGLSignerInfo version]
+-[RGLSignerInfo issuer]
+-[RGLSignerInfo serialNumber]
+-[RGLSignerInfo signature]
+-[RGLSignerInfo signedAttributes]
+-[RGLSignerInfo subjectKeyIdentifier]
+-[RGLSignerInfo certificateChain]
+-[RGLSignerInfo notifications]
+-[RGLSignerInfo .cxx_destruct]
+_OBJC_IVAR_$_RGLSignerInfo._dataToHash
+_OBJC_IVAR_$_RGLSignerInfo._digestAlgorithm
+_OBJC_IVAR_$_RGLSignerInfo._paStatus
+_OBJC_IVAR_$_RGLSignerInfo._signatureAlgorithm
+_OBJC_IVAR_$_RGLSignerInfo._version
+_OBJC_IVAR_$_RGLSignerInfo._issuer
+_OBJC_IVAR_$_RGLSignerInfo._serialNumber
+_OBJC_IVAR_$_RGLSignerInfo._signature
+_OBJC_IVAR_$_RGLSignerInfo._signedAttributes
+_OBJC_IVAR_$_RGLSignerInfo._subjectKeyIdentifier
+_OBJC_IVAR_$_RGLSignerInfo._certificateChain
+_OBJC_IVAR_$_RGLSignerInfo._notifications
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLSignerInfo.m
+DocumentReader/Models/DocReaderResult/RFID/RGLSignerInfo.m
+DocumentReader/Models/DocReaderResult/RFID/RGLSignerInfo.h
+-[RGLInitializationResponse initWithJSON:]
++[RGLInitializationResponse initWithJSON:]
+-[RGLInitializationResponse status]
+-[RGLInitializationResponse message]
+-[RGLInitializationResponse showLogo]
+-[RGLInitializationResponse rfidAvailable]
+-[RGLInitializationResponse .cxx_destruct]
+_OBJC_IVAR_$_RGLInitializationResponse._status
+_OBJC_IVAR_$_RGLInitializationResponse._showLogo
+_OBJC_IVAR_$_RGLInitializationResponse._rfidAvailable
+_OBJC_IVAR_$_RGLInitializationResponse._message
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/InitializationResponse/RGLInitializationResponse.m
+DocumentReader/Models/InitializationResponse/RGLInitializationResponse.m
+DocumentReader/Models/InitializationResponse/RGLInitializationResponse.h
+-[RGLPAResourcesIssuer initWithJSON:]
++[RGLPAResourcesIssuer initWithJSON:]
+-[RGLPAResourcesIssuer data]
+-[RGLPAResourcesIssuer friendlyName]
+-[RGLPAResourcesIssuer attributes]
+-[RGLPAResourcesIssuer .cxx_destruct]
+_OBJC_IVAR_$_RGLPAResourcesIssuer._data
+_OBJC_IVAR_$_RGLPAResourcesIssuer._friendlyName
+_OBJC_IVAR_$_RGLPAResourcesIssuer._attributes
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/RFID/Authorization/RGLPAResourcesIssuer.m
+DocumentReader/Models/RFID/Authorization/RGLPAResourcesIssuer.m
+DocumentReader/Models/RFID/Authorization/RGLPAResourcesIssuer.h
+-[RGLPDF417Info initWithJSON:]
++[RGLPDF417Info initWithJSON:]
+-[RGLPDF417Info jsonDictionary]
+-[RGLPDF417Info errorLevel]
+-[RGLPDF417Info columns]
+-[RGLPDF417Info rows]
+_OBJC_IVAR_$_RGLPDF417Info._errorLevel
+_OBJC_IVAR_$_RGLPDF417Info._columns
+_OBJC_IVAR_$_RGLPDF417Info._rows
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Barcode/RGLPDF417Info.m
+DocumentReader/Models/DocReaderResult/Barcode/RGLPDF417Info.h
+DocumentReader/Models/DocReaderResult/Barcode/RGLPDF417Info.m
+-[RGLDocumentReaderValue initWithJSON:]
++[RGLDocumentReaderValue initWithJSON:]
+-[RGLDocumentReaderValue jsonDictionary]
+-[RGLDocumentReaderValue sourceType]
+-[RGLDocumentReaderValue value]
+-[RGLDocumentReaderValue originalValue]
+-[RGLDocumentReaderValue boundRect]
+-[RGLDocumentReaderValue validity]
+-[RGLDocumentReaderValue comparison]
+-[RGLDocumentReaderValue pageIndex]
+-[RGLDocumentReaderValue .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderValue._sourceType
+_OBJC_IVAR_$_RGLDocumentReaderValue._value
+_OBJC_IVAR_$_RGLDocumentReaderValue._originalValue
+_OBJC_IVAR_$_RGLDocumentReaderValue._validity
+_OBJC_IVAR_$_RGLDocumentReaderValue._comparison
+_OBJC_IVAR_$_RGLDocumentReaderValue._pageIndex
+_OBJC_IVAR_$_RGLDocumentReaderValue._boundRect
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderValue.m
+DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderValue.m
+DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderValue.h
+-[RGLScenario initWithIdentifier:frame:frameKWHLandscape:frameKWHPortrait:frameKWHDoublePageSpreadPortrait:frameKWHDoublePageSpreadLandscape:scenarioDescription:barcodeExt:faceExt:multiPageOff:caption:uvTorch:frameOrientation:seriesProcessMode:]
+-[RGLScenario initWithJSON:]
++[RGLScenario initWithJSON:]
++[RGLScenario arrayFromJSON:]
+-[RGLScenario description]
+-[RGLScenario identifier]
+-[RGLScenario frame]
+-[RGLScenario frameKWHLandscape]
+-[RGLScenario frameKWHPortrait]
+-[RGLScenario frameKWHDoublePageSpreadPortrait]
+-[RGLScenario frameKWHDoublePageSpreadLandscape]
+-[RGLScenario scenarioDescription]
+-[RGLScenario barcodeExt]
+-[RGLScenario faceExt]
+-[RGLScenario multiPageOff]
+-[RGLScenario seriesProcessMode]
+-[RGLScenario caption]
+-[RGLScenario uvTorch]
+-[RGLScenario frameOrientation]
+-[RGLScenario .cxx_destruct]
+_OBJC_IVAR_$_RGLScenario._barcodeExt
+_OBJC_IVAR_$_RGLScenario._faceExt
+_OBJC_IVAR_$_RGLScenario._multiPageOff
+_OBJC_IVAR_$_RGLScenario._seriesProcessMode
+_OBJC_IVAR_$_RGLScenario._uvTorch
+_OBJC_IVAR_$_RGLScenario._identifier
+_OBJC_IVAR_$_RGLScenario._frame
+_OBJC_IVAR_$_RGLScenario._frameKWHLandscape
+_OBJC_IVAR_$_RGLScenario._frameKWHPortrait
+_OBJC_IVAR_$_RGLScenario._frameKWHDoublePageSpreadPortrait
+_OBJC_IVAR_$_RGLScenario._frameKWHDoublePageSpreadLandscape
+_OBJC_IVAR_$_RGLScenario._scenarioDescription
+_OBJC_IVAR_$_RGLScenario._caption
+_OBJC_IVAR_$_RGLScenario._frameOrientation
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/Scenario/RGLScenario.m
+DocumentReader/Models/Scenario/RGLScenario.m
+DocumentReader/Models/Scenario/RGLScenario.h
+-[RGLElementRect initWithLeft:top:right:bottom:]
+-[RGLElementRect init]
+-[RGLElementRect initWithJSON:]
+-[RGLElementRect jsonDictionary]
++[RGLElementRect initWithJSON:]
+-[RGLElementRect bottom]
+-[RGLElementRect left]
+-[RGLElementRect right]
+-[RGLElementRect top]
+_OBJC_IVAR_$_RGLElementRect._bottom
+_OBJC_IVAR_$_RGLElementRect._left
+_OBJC_IVAR_$_RGLElementRect._right
+_OBJC_IVAR_$_RGLElementRect._top
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Authenticity/RGLElementRect.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLElementRect.h
+DocumentReader/Models/DocReaderResult/Authenticity/RGLElementRect.m
+-[RGLRFIDRegulaDeviceSession init]
+-[RGLRFIDRegulaDeviceSession connect:]
+___38-[RGLRFIDRegulaDeviceSession connect:]_block_invoke
+___38-[RGLRFIDRegulaDeviceSession connect:]_block_invoke_2
+___38-[RGLRFIDRegulaDeviceSession connect:]_block_invoke_3
+-[RGLRFIDRegulaDeviceSession invalidateSessionWithErrorMessage:]
+-[RGLRFIDRegulaDeviceSession restartSession]
+-[RGLRFIDRegulaDeviceSession sendData:]
+___39-[RGLRFIDRegulaDeviceSession sendData:]_block_invoke
+-[RGLRFIDRegulaDeviceSession bleError:]
+-[RGLRFIDRegulaDeviceSession cardStatusChanged:]
+-[RGLRFIDRegulaDeviceSession parametersResponse:]
+-[RGLRFIDRegulaDeviceSession receivedATRResponse:]
+-[RGLRFIDRegulaDeviceSession receivedAPDUResponse:]
+-[RGLRFIDRegulaDeviceSession deviceReady]
+-[RGLRFIDRegulaDeviceSession stopConnecting]
+-[RGLRFIDRegulaDeviceSession delegate]
+-[RGLRFIDRegulaDeviceSession setDelegate:]
+-[RGLRFIDRegulaDeviceSession rfidStatus]
+-[RGLRFIDRegulaDeviceSession setRfidStatus:]
+-[RGLRFIDRegulaDeviceSession bleManager]
+-[RGLRFIDRegulaDeviceSession setBleManager:]
+-[RGLRFIDRegulaDeviceSession connectionCallback]
+-[RGLRFIDRegulaDeviceSession setConnectionCallback:]
+-[RGLRFIDRegulaDeviceSession connectingIsStopped]
+-[RGLRFIDRegulaDeviceSession setConnectingIsStopped:]
+-[RGLRFIDRegulaDeviceSession powerOff]
+-[RGLRFIDRegulaDeviceSession setPowerOff:]
+-[RGLRFIDRegulaDeviceSession reading]
+-[RGLRFIDRegulaDeviceSession setReading:]
+-[RGLRFIDRegulaDeviceSession .cxx_destruct]
+___block_descriptor_40_e8_32w_e73_v40?0"CBCentralManager"8"CBPeripheral"16"NSDictionary"24"NSNumber"32l
+__OBJC_PROTOCOL_$_RGLDeviceManagerDelegate
+__OBJC_LABEL_PROTOCOL_$_RGLDeviceManagerDelegate
+_OBJC_IVAR_$_RGLRFIDRegulaDeviceSession._connectingIsStopped
+_OBJC_IVAR_$_RGLRFIDRegulaDeviceSession._powerOff
+_OBJC_IVAR_$_RGLRFIDRegulaDeviceSession._reading
+_OBJC_IVAR_$_RGLRFIDRegulaDeviceSession._delegate
+_OBJC_IVAR_$_RGLRFIDRegulaDeviceSession._rfidStatus
+_OBJC_IVAR_$_RGLRFIDRegulaDeviceSession._bleManager
+_OBJC_IVAR_$_RGLRFIDRegulaDeviceSession._connectionCallback
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/RFID/RGLRFIDRegulaDeviceSession.m
+DocumentReader/Engine/RFID/RGLRFIDRegulaDeviceSession.m
+DocumentReader/Engine/RFID/RGLRFIDRegulaDeviceSession.h
+__39-[RGLRFIDRegulaDeviceSession sendData:]_block_invoke
+__38-[RGLRFIDRegulaDeviceSession connect:]_block_invoke_3
+__38-[RGLRFIDRegulaDeviceSession connect:]_block_invoke_2
+__38-[RGLRFIDRegulaDeviceSession connect:]_block_invoke
+-[RGLRFIDNotify initWithCode:value:]
++[RGLRFIDNotify rfidDataFileTypeName:]
++[RGLRFIDNotify rfidErrorCodesName:]
+-[RGLRFIDNotify code]
+-[RGLRFIDNotify value]
+-[RGLRFIDNotify number]
+_OBJC_IVAR_$_RGLRFIDNotify._code
+_OBJC_IVAR_$_RGLRFIDNotify._number
+_OBJC_IVAR_$_RGLRFIDNotify._value
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/RFID/RGLRFIDNotify.m
+DocumentReader/Models/RFID/RGLRFIDNotify.h
+DocumentReader/Models/RFID/RGLRFIDNotify.m
+-[RGLPAAttribute initWithJSON:]
++[RGLPAAttribute initWithJSON:]
+-[RGLPAAttribute value]
+-[RGLPAAttribute type]
+-[RGLPAAttribute .cxx_destruct]
+_OBJC_IVAR_$_RGLPAAttribute._value
+_OBJC_IVAR_$_RGLPAAttribute._type
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/RFID/Authorization/RGLPAAttribute.m
+DocumentReader/Models/RFID/Authorization/RGLPAAttribute.m
+DocumentReader/Models/RFID/Authorization/RGLPAAttribute.h
++[RGLUIInterfaceOrientation rgl_videoOrientation:]
++[RGLUIInterfaceOrientation rgl_deviceOrientation:]
++[RGLUIInterfaceOrientation rgl_videoOrientationWithDeviceOrientation:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/RGLUIInterfaceOrientation.m
+DocumentReader/Engine/Extensions/RGLUIInterfaceOrientation.m
++[UIImage(RGLImage) rgl_imageWithName:]
++[UIImage(RGLImage) rgl_imageWithName:imageWithRenderingMode:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/UIImage/UIImage+RGLImage.m
+DocumentReader/Engine/Extensions/UIImage/UIImage+RGLImage.m
+-[RGLCardProperties initWithJSON:]
+-[RGLCardProperties jsonDictionary]
++[RGLCardProperties initWithJSON:]
+-[RGLCardProperties aTQA]
+-[RGLCardProperties aTQB]
+-[RGLCardProperties aTR]
+-[RGLCardProperties baudrate1]
+-[RGLCardProperties baudrate2]
+-[RGLCardProperties bitRateR]
+-[RGLCardProperties bitRateS]
+-[RGLCardProperties chipTypeA]
+-[RGLCardProperties mifareMemory]
+-[RGLCardProperties rfidType]
+-[RGLCardProperties sAK]
+-[RGLCardProperties support4]
+-[RGLCardProperties supportMifare]
+-[RGLCardProperties uID]
+-[RGLCardProperties .cxx_destruct]
+_OBJC_IVAR_$_RGLCardProperties._support4
+_OBJC_IVAR_$_RGLCardProperties._supportMifare
+_OBJC_IVAR_$_RGLCardProperties._aTQA
+_OBJC_IVAR_$_RGLCardProperties._aTQB
+_OBJC_IVAR_$_RGLCardProperties._aTR
+_OBJC_IVAR_$_RGLCardProperties._baudrate1
+_OBJC_IVAR_$_RGLCardProperties._baudrate2
+_OBJC_IVAR_$_RGLCardProperties._bitRateR
+_OBJC_IVAR_$_RGLCardProperties._bitRateS
+_OBJC_IVAR_$_RGLCardProperties._chipTypeA
+_OBJC_IVAR_$_RGLCardProperties._mifareMemory
+_OBJC_IVAR_$_RGLCardProperties._rfidType
+_OBJC_IVAR_$_RGLCardProperties._sAK
+_OBJC_IVAR_$_RGLCardProperties._uID
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLCardProperties.m
+DocumentReader/Models/DocReaderResult/RFID/RGLCardProperties.m
+DocumentReader/Models/DocReaderResult/RFID/RGLCardProperties.h
+-[RGLActivityIndicator init]
+-[RGLActivityIndicator setupUI]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Views/RGLActivityIndicator.m
+DocumentReader/Views/RGLActivityIndicator.m
+-[RGLeIDDataGroup init]
+-[RGLeIDDataGroup initWithJSON:]
+-[RGLeIDDataGroup dataGroupsDictionary]
++[RGLeIDDataGroup initWithJSON:]
+-[RGLeIDDataGroup dG15]
+-[RGLeIDDataGroup setDG15:]
+-[RGLeIDDataGroup dG16]
+-[RGLeIDDataGroup setDG16:]
+-[RGLeIDDataGroup dG17]
+-[RGLeIDDataGroup setDG17:]
+-[RGLeIDDataGroup dG18]
+-[RGLeIDDataGroup setDG18:]
+-[RGLeIDDataGroup dG19]
+-[RGLeIDDataGroup setDG19:]
+-[RGLeIDDataGroup dG20]
+-[RGLeIDDataGroup setDG20:]
+-[RGLeIDDataGroup dG21]
+-[RGLeIDDataGroup setDG21:]
+_OBJC_IVAR_$_RGLeIDDataGroup._dG15
+_OBJC_IVAR_$_RGLeIDDataGroup._dG16
+_OBJC_IVAR_$_RGLeIDDataGroup._dG17
+_OBJC_IVAR_$_RGLeIDDataGroup._dG18
+_OBJC_IVAR_$_RGLeIDDataGroup._dG19
+_OBJC_IVAR_$_RGLeIDDataGroup._dG20
+_OBJC_IVAR_$_RGLeIDDataGroup._dG21
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/Scenario/Rfid/RGLeIDDataGroup.m
+DocumentReader/Models/Scenario/Rfid/RGLeIDDataGroup.h
+DocumentReader/Models/Scenario/Rfid/RGLeIDDataGroup.m
+-[RGLDocumentReaderJsonResult initWithResults:]
+-[RGLDocumentReaderJsonResult initWithJSON:]
++[RGLDocumentReaderJsonResult initWithJSON:]
+-[RGLDocumentReaderJsonResult jsonDictionary]
+-[RGLDocumentReaderJsonResult results]
+-[RGLDocumentReaderJsonResult .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderJsonResult._results
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/JSONResult/RGLDocumentReaderJsonResult.m
+DocumentReader/Models/DocReaderResult/JSONResult/RGLDocumentReaderJsonResult.m
+DocumentReader/Models/DocReaderResult/JSONResult/RGLDocumentReaderJsonResult.h
+-[RGLBTDeviceHelpController init]
+-[RGLBTDeviceHelpController orientation]
+-[RGLBTDeviceHelpController viewDidLoad]
+-[RGLBTDeviceHelpController viewWillTransitionToSize:withTransitionCoordinator:]
+-[RGLBTDeviceHelpController updateViewConstraints]
+-[RGLBTDeviceHelpController disableConstraint:]
+-[RGLBTDeviceHelpController enableConstraint:]
+-[RGLBTDeviceHelpController initCloseButton]
+-[RGLBTDeviceHelpController initDescriptionLabel]
+-[RGLBTDeviceHelpController initTitleLabel]
+-[RGLBTDeviceHelpController initTorchImageView]
+-[RGLBTDeviceHelpController bulletString:]
+-[RGLBTDeviceHelpController closeTapped:]
+-[RGLBTDeviceHelpController isPowerOn]
+-[RGLBTDeviceHelpController setPowerOn:]
+-[RGLBTDeviceHelpController portraitConstraints]
+-[RGLBTDeviceHelpController setPortraitConstraints:]
+-[RGLBTDeviceHelpController landscapeRightConstraints]
+-[RGLBTDeviceHelpController setLandscapeRightConstraints:]
+-[RGLBTDeviceHelpController landscapeLeftConstraints]
+-[RGLBTDeviceHelpController setLandscapeLeftConstraints:]
+-[RGLBTDeviceHelpController closeButton]
+-[RGLBTDeviceHelpController setCloseButton:]
+-[RGLBTDeviceHelpController descriptionLabel]
+-[RGLBTDeviceHelpController setDescriptionLabel:]
+-[RGLBTDeviceHelpController titleLabel]
+-[RGLBTDeviceHelpController setTitleLabel:]
+-[RGLBTDeviceHelpController torchImageView]
+-[RGLBTDeviceHelpController setTorchImageView:]
+-[RGLBTDeviceHelpController .cxx_destruct]
+_OBJC_IVAR_$_RGLBTDeviceHelpController._portraitConstraints
+_OBJC_IVAR_$_RGLBTDeviceHelpController._landscapeRightConstraints
+_OBJC_IVAR_$_RGLBTDeviceHelpController._landscapeLeftConstraints
+_OBJC_IVAR_$_RGLBTDeviceHelpController._powerOn
+_OBJC_IVAR_$_RGLBTDeviceHelpController._closeButton
+_OBJC_IVAR_$_RGLBTDeviceHelpController._descriptionLabel
+_OBJC_IVAR_$_RGLBTDeviceHelpController._titleLabel
+_OBJC_IVAR_$_RGLBTDeviceHelpController._torchImageView
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Controllers/RGLBTDeviceHelpController.m
+DocumentReader/Controllers/RGLBTDeviceHelpController.m
+DocumentReader/Controllers/RGLBTDeviceHelpController.h
+UIDeviceOrientationIsLandscape
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.2.sdk/System/Library/Frameworks/UIKit.framework/Headers/UIDevice.h
+-[RGLBarcodePosition initWithJSON:]
++[RGLBarcodePosition initWithJSON:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/DocumentPosition/RGLBarcodePosition.m
+DocumentReader/Models/DocReaderResult/DocumentPosition/RGLBarcodePosition.m
+-[RGLDocumentReaderResults initWithDocumentTypes:textResult:graphicResult:jsonResult:documentPosition:barcodePosition:mrzPosition:imageQualityGroup:authenticityResults:rfidSessionData:chipPage:barcodeResult:]
+-[RGLDocumentReaderResults initWithJSON:]
+-[RGLDocumentReaderResults jsonDictionary]
+-[RGLDocumentReaderResults getTextFieldValueByType:]
+-[RGLDocumentReaderResults getTextFieldValueByType:lcid:]
+-[RGLDocumentReaderResults getTextFieldValueByType:lcid:source:]
+-[RGLDocumentReaderResults getTextFieldValueByType:lcid:source:original:]
+-[RGLDocumentReaderResults getTextFieldByType:]
+-[RGLDocumentReaderResults getTextFieldByType:lcid:]
+-[RGLDocumentReaderResults getGraphicFieldByType:source:pageIndex:light:]
+-[RGLDocumentReaderResults getGraphicFieldByType:source:pageIndex:]
+-[RGLDocumentReaderResults getGraphicFieldByType:source:]
+-[RGLDocumentReaderResults getGraphicFieldByType:]
+-[RGLDocumentReaderResults getGraphicFieldImageByType:source:pageIndex:light:]
+-[RGLDocumentReaderResults getGraphicFieldImageByType:source:pageIndex:]
+-[RGLDocumentReaderResults getGraphicFieldImageByType:source:]
+-[RGLDocumentReaderResults getGraphicFieldImageByType:]
+-[RGLDocumentReaderResults privateGetTextFieldValueByType:]
+-[RGLDocumentReaderResults privateGetTextFieldValueByType:lcid:]
+-[RGLDocumentReaderResults privateGetTextFieldValueByType:lcid:source:]
+-[RGLDocumentReaderResults privateGetTextFieldValueByType:lcid:source:original:]
+-[RGLDocumentReaderResults privateGetTextFieldByType:]
+-[RGLDocumentReaderResults privateGetTextFieldByType:lcid:]
+-[RGLDocumentReaderResults privateGetGraphicFieldByType:]
+-[RGLDocumentReaderResults privateGetGraphicFieldByType:source:]
+-[RGLDocumentReaderResults privateGetGraphicFieldByType:source:pageIndex:]
+-[RGLDocumentReaderResults privateGetGraphicFieldByType:source:pageIndex:light:]
+-[RGLDocumentReaderResults privateGetGraphicFieldImageByType:source:pageIndex:light:]
+-[RGLDocumentReaderResults privateGetGraphicFieldImageByType:source:pageIndex:]
+-[RGLDocumentReaderResults privateGetGraphicFieldImageByType:source:]
+-[RGLDocumentReaderResults privateGetGraphicFieldImageByType:]
+-[RGLDocumentReaderResults overallResult]
++[RGLDocumentReaderResults initWithJSON:]
+-[RGLDocumentReaderResults documentType]
+-[RGLDocumentReaderResults textResult]
+-[RGLDocumentReaderResults graphicResult]
+-[RGLDocumentReaderResults jsonResult]
+-[RGLDocumentReaderResults documentPosition]
+-[RGLDocumentReaderResults barcodePosition]
+-[RGLDocumentReaderResults mrzPosition]
+-[RGLDocumentReaderResults imageQualityGroup]
+-[RGLDocumentReaderResults authenticityResults]
+-[RGLDocumentReaderResults rfidSessionData]
+-[RGLDocumentReaderResults chipPage]
+-[RGLDocumentReaderResults resolutionType]
+-[RGLDocumentReaderResults barcodeResult]
+-[RGLDocumentReaderResults .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderResults._documentType
+_OBJC_IVAR_$_RGLDocumentReaderResults._textResult
+_OBJC_IVAR_$_RGLDocumentReaderResults._graphicResult
+_OBJC_IVAR_$_RGLDocumentReaderResults._jsonResult
+_OBJC_IVAR_$_RGLDocumentReaderResults._documentPosition
+_OBJC_IVAR_$_RGLDocumentReaderResults._barcodePosition
+_OBJC_IVAR_$_RGLDocumentReaderResults._mrzPosition
+_OBJC_IVAR_$_RGLDocumentReaderResults._imageQualityGroup
+_OBJC_IVAR_$_RGLDocumentReaderResults._authenticityResults
+_OBJC_IVAR_$_RGLDocumentReaderResults._rfidSessionData
+_OBJC_IVAR_$_RGLDocumentReaderResults._chipPage
+_OBJC_IVAR_$_RGLDocumentReaderResults._resolutionType
+_OBJC_IVAR_$_RGLDocumentReaderResults._barcodeResult
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RGLDocumentReaderResults.m
+DocumentReader/Models/DocReaderResult/RGLDocumentReaderResults.m
+DocumentReader/Models/DocReaderResult/RGLDocumentReaderResults.h
++[RGLDocumentReaderCoreWrapper prepareCallback:]
++[RGLDocumentReaderCoreWrapper resetCallback]
++[RGLDocumentReaderCoreWrapper isDocumentReaderCorePresented]
++[RGLDocumentReaderCoreWrapper process:inputImages:inputJSON:outputImages:outputJSON:]
++[RGLDocumentReaderCoreWrapper process:inputData:inputJSON:outputJSON:]
++[RGLDocumentReaderCoreWrapper addPKDCertificates:]
++[RGLDocumentReaderCoreWrapper clearPKDCertificatesStore]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/DocumentReaderCoreWrapper/RGLDocumentReaderCoreWrapper.m
+DocumentReader/Engine/DocumentReaderCoreWrapper/RGLDocumentReaderCoreWrapper.m
+-[RGLDocReaderVersion initWithJSON:]
++[RGLDocReaderVersion initWithJSON:]
+-[RGLDocReaderVersion description]
+-[RGLDocReaderVersion api]
+-[RGLDocReaderVersion setApi:]
+-[RGLDocReaderVersion core]
+-[RGLDocReaderVersion setCore:]
+-[RGLDocReaderVersion coreMode]
+-[RGLDocReaderVersion setCoreMode:]
+-[RGLDocReaderVersion database]
+-[RGLDocReaderVersion setDatabase:]
+-[RGLDocReaderVersion .cxx_destruct]
+_OBJC_IVAR_$_RGLDocReaderVersion._api
+_OBJC_IVAR_$_RGLDocReaderVersion._core
+_OBJC_IVAR_$_RGLDocReaderVersion._coreMode
+_OBJC_IVAR_$_RGLDocReaderVersion._database
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderVersion/RGLDocReaderVersion.m
+DocumentReader/Models/DocReaderVersion/RGLDocReaderVersion.m
+DocumentReader/Models/DocReaderVersion/RGLDocReaderVersion.h
+-[RGLDataGroup initWithJSON:]
+-[RGLDataGroup dataGroupsDictionary]
++[RGLDataGroup initWithJSON:]
+-[RGLDataGroup dG1]
+-[RGLDataGroup setDG1:]
+-[RGLDataGroup dG2]
+-[RGLDataGroup setDG2:]
+-[RGLDataGroup dG3]
+-[RGLDataGroup setDG3:]
+-[RGLDataGroup dG4]
+-[RGLDataGroup setDG4:]
+-[RGLDataGroup dG5]
+-[RGLDataGroup setDG5:]
+-[RGLDataGroup dG6]
+-[RGLDataGroup setDG6:]
+-[RGLDataGroup dG7]
+-[RGLDataGroup setDG7:]
+-[RGLDataGroup dG8]
+-[RGLDataGroup setDG8:]
+-[RGLDataGroup dG9]
+-[RGLDataGroup setDG9:]
+-[RGLDataGroup dG10]
+-[RGLDataGroup setDG10:]
+-[RGLDataGroup dG11]
+-[RGLDataGroup setDG11:]
+-[RGLDataGroup dG12]
+-[RGLDataGroup setDG12:]
+-[RGLDataGroup dG13]
+-[RGLDataGroup setDG13:]
+-[RGLDataGroup dG14]
+-[RGLDataGroup setDG14:]
+_OBJC_IVAR_$_RGLDataGroup._dG1
+_OBJC_IVAR_$_RGLDataGroup._dG2
+_OBJC_IVAR_$_RGLDataGroup._dG3
+_OBJC_IVAR_$_RGLDataGroup._dG4
+_OBJC_IVAR_$_RGLDataGroup._dG5
+_OBJC_IVAR_$_RGLDataGroup._dG6
+_OBJC_IVAR_$_RGLDataGroup._dG7
+_OBJC_IVAR_$_RGLDataGroup._dG8
+_OBJC_IVAR_$_RGLDataGroup._dG9
+_OBJC_IVAR_$_RGLDataGroup._dG10
+_OBJC_IVAR_$_RGLDataGroup._dG11
+_OBJC_IVAR_$_RGLDataGroup._dG12
+_OBJC_IVAR_$_RGLDataGroup._dG13
+_OBJC_IVAR_$_RGLDataGroup._dG14
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/Scenario/Rfid/RGLDataGroup.m
+DocumentReader/Models/Scenario/Rfid/RGLDataGroup.h
+DocumentReader/Models/Scenario/Rfid/RGLDataGroup.m
+-[RGLRFIDValue initWithJSON:]
+-[RGLRFIDValue jsonDictionary]
++[RGLRFIDValue initWithJSON:]
+-[RGLRFIDValue data]
+-[RGLRFIDValue length]
+-[RGLRFIDValue status]
+-[RGLRFIDValue type]
+-[RGLRFIDValue format]
+-[RGLRFIDValue .cxx_destruct]
+_OBJC_IVAR_$_RGLRFIDValue._data
+_OBJC_IVAR_$_RGLRFIDValue._length
+_OBJC_IVAR_$_RGLRFIDValue._status
+_OBJC_IVAR_$_RGLRFIDValue._type
+_OBJC_IVAR_$_RGLRFIDValue._format
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLRFIDValue.m
+DocumentReader/Models/DocReaderResult/RFID/RGLRFIDValue.m
+DocumentReader/Models/DocReaderResult/RFID/RGLRfidValue.h
+-[RGLDocumentReaderTextResult initWithJSON:]
++[RGLDocumentReaderTextResult initWithJSON:]
+-[RGLDocumentReaderTextResult jsonDictionary]
+-[RGLDocumentReaderTextResult sortByFieldType:]
+___47-[RGLDocumentReaderTextResult sortByFieldType:]_block_invoke
+-[RGLDocumentReaderTextResult fields]
+-[RGLDocumentReaderTextResult status]
+-[RGLDocumentReaderTextResult .cxx_destruct]
+___block_descriptor_33_e67_q24?0"RGLDocumentReaderTextField"8"RGLDocumentReaderTextField"16l
+_OBJC_IVAR_$_RGLDocumentReaderTextResult._fields
+_OBJC_IVAR_$_RGLDocumentReaderTextResult._status
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderTextResult.m
+DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderTextResult.m
+DocumentReader/Models/DocReaderResult/TextResult/RGLDocumentReaderTextResult.h
+__47-[RGLDocumentReaderTextResult sortByFieldType:]_block_invoke
+-[RGLAccessControlProcedureType initWithJSON:]
+-[RGLAccessControlProcedureType jsonDictionary]
++[RGLAccessControlProcedureType initWithJSON:]
+-[RGLAccessControlProcedureType activeOptionIdx]
+-[RGLAccessControlProcedureType notifications]
+-[RGLAccessControlProcedureType status]
+-[RGLAccessControlProcedureType type]
+-[RGLAccessControlProcedureType .cxx_destruct]
+_OBJC_IVAR_$_RGLAccessControlProcedureType._status
+_OBJC_IVAR_$_RGLAccessControlProcedureType._activeOptionIdx
+_OBJC_IVAR_$_RGLAccessControlProcedureType._notifications
+_OBJC_IVAR_$_RGLAccessControlProcedureType._type
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLAccessControlProcedureType.m
+DocumentReader/Models/DocReaderResult/RFID/RGLAccessControlProcedureType.m
+DocumentReader/Models/DocReaderResult/RFID/RGLAccessControlProcedureType.h
+-[RGLApplication initWithJSON:]
+-[RGLApplication jsonDictionary]
++[RGLApplication initWithJSON:]
+-[RGLApplication applicationID]
+-[RGLApplication dataHashAlgorithm]
+-[RGLApplication files]
+-[RGLApplication type]
+-[RGLApplication status]
+-[RGLApplication unicodeVersion]
+-[RGLApplication version]
+-[RGLApplication .cxx_destruct]
+_OBJC_IVAR_$_RGLApplication._status
+_OBJC_IVAR_$_RGLApplication._applicationID
+_OBJC_IVAR_$_RGLApplication._dataHashAlgorithm
+_OBJC_IVAR_$_RGLApplication._files
+_OBJC_IVAR_$_RGLApplication._type
+_OBJC_IVAR_$_RGLApplication._unicodeVersion
+_OBJC_IVAR_$_RGLApplication._version
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLApplication.m
+DocumentReader/Models/DocReaderResult/RFID/RGLApplication.m
+DocumentReader/Models/DocReaderResult/RFID/RGLApplication.h
+-[RGLCornerView init]
+-[RGLCornerView setShapeType:]
+-[RGLCornerView setLineColor:]
+-[RGLCornerView setLineWidth:]
+-[RGLCornerView setLineLength:]
+-[RGLCornerView drawCorners]
+-[RGLCornerView drawRect:]
+-[RGLCornerView lineLength]
+-[RGLCornerView lineWidth]
+-[RGLCornerView cornerRadius]
+-[RGLCornerView setCornerRadius:]
+-[RGLCornerView lineCap]
+-[RGLCornerView setLineCap:]
+-[RGLCornerView lineColor]
+-[RGLCornerView shapeType]
+-[RGLCornerView .cxx_destruct]
+_OBJC_IVAR_$_RGLCornerView._lineLength
+_OBJC_IVAR_$_RGLCornerView._lineColor
+_OBJC_IVAR_$_RGLCornerView._shapeType
+_OBJC_IVAR_$_RGLCornerView._lineCap
+_OBJC_IVAR_$_RGLCornerView._lineWidth
+_OBJC_IVAR_$_RGLCornerView._cornerRadius
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Views/RGLCornerView.m
+DocumentReader/Views/RGLCornerView.m
+DocumentReader/Views/RGLCornerView.h
+-[RGLDocumentReaderCameraViewController prefersStatusBarHidden]
+-[RGLDocumentReaderCameraViewController barcodeEnabled]
+-[RGLDocumentReaderCameraViewController faceEnabled]
+-[RGLDocumentReaderCameraViewController selectedMetadataTypes]
+-[RGLDocumentReaderCameraViewController orientation]
+-[RGLDocumentReaderCameraViewController scenario]
+-[RGLDocumentReaderCameraViewController init]
+-[RGLDocumentReaderCameraViewController viewDidLoad]
+___52-[RGLDocumentReaderCameraViewController viewDidLoad]_block_invoke
+___52-[RGLDocumentReaderCameraViewController viewDidLoad]_block_invoke.339
+___52-[RGLDocumentReaderCameraViewController viewDidLoad]_block_invoke.345
+-[RGLDocumentReaderCameraViewController viewWillTransitionToSize:withTransitionCoordinator:]
+-[RGLDocumentReaderCameraViewController viewWillAppear:]
+___56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke
+___56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke_2
+___56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke.411
+___56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke_2.416
+___56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke.423
+___56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke_2.440
+___56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke_3
+-[RGLDocumentReaderCameraViewController viewDidAppear:]
+___55-[RGLDocumentReaderCameraViewController viewDidAppear:]_block_invoke
+-[RGLDocumentReaderCameraViewController viewWillDisappear:]
+___59-[RGLDocumentReaderCameraViewController viewWillDisappear:]_block_invoke
+-[RGLDocumentReaderCameraViewController updateViewConstraints]
+-[RGLDocumentReaderCameraViewController traitCollectionDidChange:]
+-[RGLDocumentReaderCameraViewController disableConstraint:]
+-[RGLDocumentReaderCameraViewController checkConstraintForBarcodeMRZ:]
+-[RGLDocumentReaderCameraViewController setupSessionPreset]
+-[RGLDocumentReaderCameraViewController resetCurrentSessionPreset]
+-[RGLDocumentReaderCameraViewController decreaseExposureDuration:]
+-[RGLDocumentReaderCameraViewController cameraConfigurationLockerForWhiteBalance:exposureDurationLock:]
+-[RGLDocumentReaderCameraViewController supportedInterfaceOrientations]
+-[RGLDocumentReaderCameraViewController isCameraControllerPresentedModally]
+-[RGLDocumentReaderCameraViewController initCloseButton]
+-[RGLDocumentReaderCameraViewController initFlashButton]
+-[RGLDocumentReaderCameraViewController initPreviewView]
+-[RGLDocumentReaderCameraViewController initBleButton]
+-[RGLDocumentReaderCameraViewController initBatteryButton]
+-[RGLDocumentReaderCameraViewController initSwapCameraButton]
+-[RGLDocumentReaderCameraViewController initStatusLabel]
+-[RGLDocumentReaderCameraViewController initCaptureButton]
+-[RGLDocumentReaderCameraViewController initSkipMultipageButton]
+-[RGLDocumentReaderCameraViewController initResultStatus]
+-[RGLDocumentReaderCameraViewController initCustomLabel]
+-[RGLDocumentReaderCameraViewController initResultStatusView]
+-[RGLDocumentReaderCameraViewController initFrameSizeButton]
+-[RGLDocumentReaderCameraViewController initMaskView]
+-[RGLDocumentReaderCameraViewController initBorderView]
+-[RGLDocumentReaderCameraViewController initLogoLabel]
+-[RGLDocumentReaderCameraViewController initLogoImage]
+-[RGLDocumentReaderCameraViewController initFocusView]
+-[RGLDocumentReaderCameraViewController initCameraUnavailableLabel]
+-[RGLDocumentReaderCameraViewController initActivityIndicator]
+-[RGLDocumentReaderCameraViewController initBorderPlaceholderImage]
+-[RGLDocumentReaderCameraViewController closeTapped:]
+-[RGLDocumentReaderCameraViewController closeCameraViewController:]
+___67-[RGLDocumentReaderCameraViewController closeCameraViewController:]_block_invoke
+-[RGLDocumentReaderCameraViewController flashTapped:]
+-[RGLDocumentReaderCameraViewController swapTapped:]
+___52-[RGLDocumentReaderCameraViewController swapTapped:]_block_invoke
+___52-[RGLDocumentReaderCameraViewController swapTapped:]_block_invoke_2
+-[RGLDocumentReaderCameraViewController captureButtonTapped:]
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_2
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_3
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_4
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_5
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_6
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_7
+___copy_helper_block_e8_32s40s48w
+___copy_helper_block_e8_32s40s48s56w
+___copy_helper_block_e8_32s40s48s
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke.880
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_2.881
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_3.891
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_4.892
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_5.893
+___61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_6.894
+-[RGLDocumentReaderCameraViewController skipMultipageTapped:]
+-[RGLDocumentReaderCameraViewController photoScanningIsStarting:]
+-[RGLDocumentReaderCameraViewController changeFrameTapped:]
+-[RGLDocumentReaderCameraViewController tappedOnView:]
+-[RGLDocumentReaderCameraViewController setHiddenForFlashButton:]
+-[RGLDocumentReaderCameraViewController setHiddenForCloseButton:]
+-[RGLDocumentReaderCameraViewController setHiddenForCaptureButton:]
+-[RGLDocumentReaderCameraViewController setHiddenForSwapCameraButton:]
+-[RGLDocumentReaderCameraViewController setShowChangeFrameButton:]
+-[RGLDocumentReaderCameraViewController setVideoSessionPreset:]
+-[RGLDocumentReaderCameraViewController setAVCaptureDevicePosition:]
+-[RGLDocumentReaderCameraViewController updateFrameSizeState]
+-[RGLDocumentReaderCameraViewController moveFocusToDefaultPositionWithAnimation:]
+-[RGLDocumentReaderCameraViewController removeFocusLayer]
+-[RGLDocumentReaderCameraViewController showAlert:message:]
+-[RGLDocumentReaderCameraViewController maskRect:]
+-[RGLDocumentReaderCameraViewController cropRect]
+-[RGLDocumentReaderCameraViewController isShowLogo]
+-[RGLDocumentReaderCameraViewController updateDefaultStatusLabelTimer]
+-[RGLDocumentReaderCameraViewController removeDefaultStatusLabelTimer]
+-[RGLDocumentReaderCameraViewController resetDefaultStatus]
+-[RGLDocumentReaderCameraViewController updateResultStatusLabelTimer]
+-[RGLDocumentReaderCameraViewController removeResultStatusTimer]
+-[RGLDocumentReaderCameraViewController resetResultStatus]
+-[RGLDocumentReaderCameraViewController focus:point:continuousAuto:automaticMode:]
+-[RGLDocumentReaderCameraViewController focus:point:continuousAuto:automaticMode:animated:]
+-[RGLDocumentReaderCameraViewController addFocusLayer:automatiMode:]
+-[RGLDocumentReaderCameraViewController changeDefaultStatus:]
+-[RGLDocumentReaderCameraViewController changeResultStatus:]
+-[RGLDocumentReaderCameraViewController changeStatus:status:]
+-[RGLDocumentReaderCameraViewController hideView:view:]
+-[RGLDocumentReaderCameraViewController hideView:view:unhiddenAlpha:]
+___69-[RGLDocumentReaderCameraViewController hideView:view:unhiddenAlpha:]_block_invoke
+___69-[RGLDocumentReaderCameraViewController hideView:view:unhiddenAlpha:]_block_invoke.1019
+-[RGLDocumentReaderCameraViewController updateStatusLabelTextColor]
+-[RGLDocumentReaderCameraViewController setCameraStatusString:]
+-[RGLDocumentReaderCameraViewController setShowResultMessages:]
+-[RGLDocumentReaderCameraViewController setShowStatusMessages:]
+-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]
+___64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke
+___64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke_2
+___64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke_3
+___64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke_4
+___64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke_5
+-[RGLDocumentReaderCameraViewController notifyTintColorChanged]
+-[RGLDocumentReaderCameraViewController notifyResultStatusTextColorChanged]
+-[RGLDocumentReaderCameraViewController notifyResultStatusTextFontChanged]
+-[RGLDocumentReaderCameraViewController notifyCameraFrameDefaultColorChanged]
+-[RGLDocumentReaderCameraViewController notifyCameraFrameActiveColorChanged]
+-[RGLDocumentReaderCameraViewController notifyStatusTextColorChanged]
+-[RGLDocumentReaderCameraViewController notifyStatusTextFontChanged]
+-[RGLDocumentReaderCameraViewController notifyShowStatusMessagesChanged]
+-[RGLDocumentReaderCameraViewController notifyShowResultStatusMessagesChanged]
+-[RGLDocumentReaderCameraViewController notifyCameraStatusChanged]
+-[RGLDocumentReaderCameraViewController notifyCameraResultStatusChanged]
+-[RGLDocumentReaderCameraViewController notifyCameraFrameShapeTypeChanged]
+-[RGLDocumentReaderCameraViewController notifyMultipageButtonBackgroundColorChanged]
+-[RGLDocumentReaderCameraViewController notifyCameraFrameBorderWidthChanged]
+-[RGLDocumentReaderCameraViewController notifyActivityIndicatorColorChanged]
+-[RGLDocumentReaderCameraViewController notifyResultStatusBackgroundColorChanged]
+-[RGLDocumentReaderCameraViewController notifyCameraFrameLineLengthChanged]
+-[RGLDocumentReaderCameraViewController notifyCameraFrameOffsetWidthChanged]
+-[RGLDocumentReaderCameraViewController notifyShowBackgroundMaskChanged]
+-[RGLDocumentReaderCameraViewController notifyBorderBackgroundImageChanged]
+-[RGLDocumentReaderCameraViewController notifyBackgroundMaskAlphaChanged]
+-[RGLDocumentReaderCameraViewController notifyMultipageAnimationFrontImageContentModeChanged]
+-[RGLDocumentReaderCameraViewController notifyMultipageAnimationBackImageContentModeChanged]
+-[RGLDocumentReaderCameraViewController notifyBorderBackgroundImageContentModeChanged]
+-[RGLDocumentReaderCameraViewController notifyMultipageAnimationFrontImageChanged]
+-[RGLDocumentReaderCameraViewController notifyMultipageAnimationBackImageChanged]
+-[RGLDocumentReaderCameraViewController notifyCustomLabelStatusChanged]
+-[RGLDocumentReaderCameraViewController addObservers]
+-[RGLDocumentReaderCameraViewController subjectAreadDidChange:]
+-[RGLDocumentReaderCameraViewController sessionDidStartRunning:]
+___64-[RGLDocumentReaderCameraViewController sessionDidStartRunning:]_block_invoke
+-[RGLDocumentReaderCameraViewController sessionWasInterrupted:]
+___63-[RGLDocumentReaderCameraViewController sessionWasInterrupted:]_block_invoke
+-[RGLDocumentReaderCameraViewController sessionRuntimeError:]
+___61-[RGLDocumentReaderCameraViewController sessionRuntimeError:]_block_invoke
+-[RGLDocumentReaderCameraViewController sessionInterruptionEnded:]
+___66-[RGLDocumentReaderCameraViewController sessionInterruptionEnded:]_block_invoke
+___66-[RGLDocumentReaderCameraViewController sessionInterruptionEnded:]_block_invoke_2
+-[RGLDocumentReaderCameraViewController removeObservers]
+-[RGLDocumentReaderCameraViewController configureSession]
+___57-[RGLDocumentReaderCameraViewController configureSession]_block_invoke
+___57-[RGLDocumentReaderCameraViewController configureSession]_block_invoke_2
+-[RGLDocumentReaderCameraViewController setupMetadataOutput]
+___60-[RGLDocumentReaderCameraViewController setupMetadataOutput]_block_invoke
+-[RGLDocumentReaderCameraViewController removeMetdataOutput]
+-[RGLDocumentReaderCameraViewController setupCaptureDevice]
+___59-[RGLDocumentReaderCameraViewController setupCaptureDevice]_block_invoke
+-[RGLDocumentReaderCameraViewController photoSettingsDictionary]
+-[RGLDocumentReaderCameraViewController photoSettings]
+-[RGLDocumentReaderCameraViewController selectCamera]
+-[RGLDocumentReaderCameraViewController scanImage]
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_2
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_3
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_4
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_5
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_6
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_7
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_8
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_9
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_10
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_11
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_12
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_13
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_14
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_15
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_16
+___50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_17
+-[RGLDocumentReaderCameraViewController processParamChanged]
+-[RGLDocumentReaderCameraViewController faceMetadataInImageReader:]
+-[RGLDocumentReaderCameraViewController machineReadableMetadataInImageReader:]
+-[RGLDocumentReaderCameraViewController imageRectInImageReader:]
+-[RGLDocumentReaderCameraViewController borderViewFrameInImageReader:]
+-[RGLDocumentReaderCameraViewController torchDisabledInImageReader:]
+-[RGLDocumentReaderCameraViewController currentLightTypeInImageReader:]
+-[RGLDocumentReaderCameraViewController processStateInImageReader:]
+-[RGLDocumentReaderCameraViewController resolutionTypeInImageReader:]
+-[RGLDocumentReaderCameraViewController isValidMetadata:]
+-[RGLDocumentReaderCameraViewController deviceSearching]
+___56-[RGLDocumentReaderCameraViewController deviceSearching]_block_invoke
+-[RGLDocumentReaderCameraViewController deviceConnected]
+___56-[RGLDocumentReaderCameraViewController deviceConnected]_block_invoke
+-[RGLDocumentReaderCameraViewController deviceDisconnected]
+-[RGLDocumentReaderCameraViewController batteryLevel:]
+-[RGLDocumentReaderCameraViewController updateBatteryLevel:]
+-[RGLDocumentReaderCameraViewController torchStartFlashing]
+-[RGLDocumentReaderCameraViewController torchFinishFlashing]
+-[RGLDocumentReaderCameraViewController bluetoothAuthorized]
+-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]
+___92-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]_block_invoke
+___92-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]_block_invoke_2
+___92-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]_block_invoke.1303
+___92-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]_block_invoke_2.1304
+-[RGLDocumentReaderCameraViewController captureOutput:didOutputMetadataObjects:fromConnection:]
+___95-[RGLDocumentReaderCameraViewController captureOutput:didOutputMetadataObjects:fromConnection:]_block_invoke
+___95-[RGLDocumentReaderCameraViewController captureOutput:didOutputMetadataObjects:fromConnection:]_block_invoke_2
+-[RGLDocumentReaderCameraViewController generateUIImageDidOutputSampleBuffer:]
+-[RGLDocumentReaderCameraViewController generateImageDataFromSampleBuffer:lieghtType:]
+-[RGLDocumentReaderCameraViewController generateImageDataFromImage:lightType:]
+-[RGLDocumentReaderCameraViewController scanNextPage]
+___53-[RGLDocumentReaderCameraViewController scanNextPage]_block_invoke
+-[RGLDocumentReaderCameraViewController makeInternalLogic:imageSize:]
+-[RGLDocumentReaderCameraViewController updateBorderColorTimer]
+-[RGLDocumentReaderCameraViewController removeBorderColorTimer]
+-[RGLDocumentReaderCameraViewController resetBorderToDefault]
+-[RGLDocumentReaderCameraViewController showCaptureButton]
+-[RGLDocumentReaderCameraViewController invalidateCaptureButtonTimers]
+-[RGLDocumentReaderCameraViewController updateCameraScanMode]
+-[RGLDocumentReaderCameraViewController isCaptureButtonAvailable]
+-[RGLDocumentReaderCameraViewController internalBTDeviceConnect]
+___64-[RGLDocumentReaderCameraViewController internalBTDeviceConnect]_block_invoke
+-[RGLDocumentReaderCameraViewController parentView:]
+-[RGLDocumentReaderCameraViewController cameraPosition]
+-[RGLDocumentReaderCameraViewController setCameraPosition:]
+-[RGLDocumentReaderCameraViewController resultStatusLocked]
+-[RGLDocumentReaderCameraViewController setResultStatusLocked:]
+-[RGLDocumentReaderCameraViewController setupResult]
+-[RGLDocumentReaderCameraViewController setSetupResult:]
+-[RGLDocumentReaderCameraViewController latestImageSyncronizeDataQueue]
+-[RGLDocumentReaderCameraViewController setLatestImageSyncronizeDataQueue:]
+-[RGLDocumentReaderCameraViewController currentImageSyncronizeDataQueue]
+-[RGLDocumentReaderCameraViewController setCurrentImageSyncronizeDataQueue:]
+-[RGLDocumentReaderCameraViewController sessionQueue]
+-[RGLDocumentReaderCameraViewController setSessionQueue:]
+-[RGLDocumentReaderCameraViewController captureQueue]
+-[RGLDocumentReaderCameraViewController setCaptureQueue:]
+-[RGLDocumentReaderCameraViewController metadataObjectsQueue]
+-[RGLDocumentReaderCameraViewController setMetadataObjectsQueue:]
+-[RGLDocumentReaderCameraViewController showHelpPopup]
+-[RGLDocumentReaderCameraViewController setShowHelpPopup:]
+-[RGLDocumentReaderCameraViewController helpAnimationShowed]
+-[RGLDocumentReaderCameraViewController setHelpAnimationShowed:]
+-[RGLDocumentReaderCameraViewController showResultMessages]
+-[RGLDocumentReaderCameraViewController showStatusMessages]
+-[RGLDocumentReaderCameraViewController isSessionRunning]
+-[RGLDocumentReaderCameraViewController setSessionRunning:]
+-[RGLDocumentReaderCameraViewController isSessionPresentReady]
+-[RGLDocumentReaderCameraViewController setSessionPresentReady:]
+-[RGLDocumentReaderCameraViewController recognizeWasInterrupted]
+-[RGLDocumentReaderCameraViewController setRecognizeWasInterrupted:]
+-[RGLDocumentReaderCameraViewController skipNextPageRecognition]
+-[RGLDocumentReaderCameraViewController setSkipNextPageRecognition:]
+-[RGLDocumentReaderCameraViewController motionRate]
+-[RGLDocumentReaderCameraViewController setMotionRate:]
+-[RGLDocumentReaderCameraViewController cameraStatusString]
+-[RGLDocumentReaderCameraViewController session]
+-[RGLDocumentReaderCameraViewController setSession:]
+-[RGLDocumentReaderCameraViewController videoPreviewLayer]
+-[RGLDocumentReaderCameraViewController setVideoPreviewLayer:]
+-[RGLDocumentReaderCameraViewController metadataOutput]
+-[RGLDocumentReaderCameraViewController setMetadataOutput:]
+-[RGLDocumentReaderCameraViewController videoDeviceInput]
+-[RGLDocumentReaderCameraViewController setVideoDeviceInput:]
+-[RGLDocumentReaderCameraViewController captureDevice]
+-[RGLDocumentReaderCameraViewController setCaptureDevice:]
+-[RGLDocumentReaderCameraViewController motionManager]
+-[RGLDocumentReaderCameraViewController setMotionManager:]
+-[RGLDocumentReaderCameraViewController latestResult]
+-[RGLDocumentReaderCameraViewController setLatestResult:]
+-[RGLDocumentReaderCameraViewController setCameraControllerPresentedModally:]
+-[RGLDocumentReaderCameraViewController previewView]
+-[RGLDocumentReaderCameraViewController setPreviewView:]
+-[RGLDocumentReaderCameraViewController closeButton]
+-[RGLDocumentReaderCameraViewController setCloseButton:]
+-[RGLDocumentReaderCameraViewController flashButton]
+-[RGLDocumentReaderCameraViewController setFlashButton:]
+-[RGLDocumentReaderCameraViewController swapCameraButton]
+-[RGLDocumentReaderCameraViewController setSwapCameraButton:]
+-[RGLDocumentReaderCameraViewController bleButton]
+-[RGLDocumentReaderCameraViewController setBleButton:]
+-[RGLDocumentReaderCameraViewController batteryButton]
+-[RGLDocumentReaderCameraViewController setBatteryButton:]
+-[RGLDocumentReaderCameraViewController statusLabel]
+-[RGLDocumentReaderCameraViewController setStatusLabel:]
+-[RGLDocumentReaderCameraViewController captureButton]
+-[RGLDocumentReaderCameraViewController setCaptureButton:]
+-[RGLDocumentReaderCameraViewController skipMultipageButton]
+-[RGLDocumentReaderCameraViewController setSkipMultipageButton:]
+-[RGLDocumentReaderCameraViewController resultStatus]
+-[RGLDocumentReaderCameraViewController setResultStatus:]
+-[RGLDocumentReaderCameraViewController resultStatusView]
+-[RGLDocumentReaderCameraViewController setResultStatusView:]
+-[RGLDocumentReaderCameraViewController frameSizeButton]
+-[RGLDocumentReaderCameraViewController setFrameSizeButton:]
+-[RGLDocumentReaderCameraViewController maskView]
+-[RGLDocumentReaderCameraViewController setMaskView:]
+-[RGLDocumentReaderCameraViewController logoLabel]
+-[RGLDocumentReaderCameraViewController setLogoLabel:]
+-[RGLDocumentReaderCameraViewController logoImage]
+-[RGLDocumentReaderCameraViewController setLogoImage:]
+-[RGLDocumentReaderCameraViewController borderView]
+-[RGLDocumentReaderCameraViewController setBorderView:]
+-[RGLDocumentReaderCameraViewController focusView]
+-[RGLDocumentReaderCameraViewController setFocusView:]
+-[RGLDocumentReaderCameraViewController cameraUnavailableLabel]
+-[RGLDocumentReaderCameraViewController setCameraUnavailableLabel:]
+-[RGLDocumentReaderCameraViewController activityIndicator]
+-[RGLDocumentReaderCameraViewController setActivityIndicator:]
+-[RGLDocumentReaderCameraViewController multipageScaningView]
+-[RGLDocumentReaderCameraViewController setMultipageScaningView:]
+-[RGLDocumentReaderCameraViewController helpAnimationView]
+-[RGLDocumentReaderCameraViewController setHelpAnimationView:]
+-[RGLDocumentReaderCameraViewController borderPlaceholderImage]
+-[RGLDocumentReaderCameraViewController setBorderPlaceholderImage:]
+-[RGLDocumentReaderCameraViewController setBarcodeEnabled:]
+-[RGLDocumentReaderCameraViewController setFaceEnabled:]
+-[RGLDocumentReaderCameraViewController setSelectedMetadataTypes:]
+-[RGLDocumentReaderCameraViewController machineReadableMetadata]
+-[RGLDocumentReaderCameraViewController setMachineReadableMetadata:]
+-[RGLDocumentReaderCameraViewController faceMetadata]
+-[RGLDocumentReaderCameraViewController setFaceMetadata:]
+-[RGLDocumentReaderCameraViewController inProgressPhotoCaptureDelegates]
+-[RGLDocumentReaderCameraViewController setInProgressPhotoCaptureDelegates:]
+-[RGLDocumentReaderCameraViewController resolutionType]
+-[RGLDocumentReaderCameraViewController setResolutionType:]
+-[RGLDocumentReaderCameraViewController cameraScanMode]
+-[RGLDocumentReaderCameraViewController setCameraScanMode:]
+-[RGLDocumentReaderCameraViewController customLabel]
+-[RGLDocumentReaderCameraViewController setCustomLabel:]
+-[RGLDocumentReaderCameraViewController cameraViewControllerDelegate]
+-[RGLDocumentReaderCameraViewController setCameraViewControllerDelegate:]
+-[RGLDocumentReaderCameraViewController cameraViewControllerHandler]
+-[RGLDocumentReaderCameraViewController setCameraViewControllerHandler:]
+-[RGLDocumentReaderCameraViewController recognitionIsActive]
+-[RGLDocumentReaderCameraViewController showChangeFrameButton]
+-[RGLDocumentReaderCameraViewController currentCameraFrame]
+-[RGLDocumentReaderCameraViewController setCurrentCameraFrame:]
+-[RGLDocumentReaderCameraViewController imageReader]
+-[RGLDocumentReaderCameraViewController setImageReader:]
+-[RGLDocumentReaderCameraViewController photoImageReader]
+-[RGLDocumentReaderCameraViewController setPhotoImageReader:]
+-[RGLDocumentReaderCameraViewController portraitConstraints]
+-[RGLDocumentReaderCameraViewController setPortraitConstraints:]
+-[RGLDocumentReaderCameraViewController landscapeRightConstraints]
+-[RGLDocumentReaderCameraViewController setLandscapeRightConstraints:]
+-[RGLDocumentReaderCameraViewController landscapeLeftConstraints]
+-[RGLDocumentReaderCameraViewController setLandscapeLeftConstraints:]
+-[RGLDocumentReaderCameraViewController borderColorTimer]
+-[RGLDocumentReaderCameraViewController setBorderColorTimer:]
+-[RGLDocumentReaderCameraViewController removeTargetObjectOverlayLayersTimer]
+-[RGLDocumentReaderCameraViewController setRemoveTargetObjectOverlayLayersTimer:]
+-[RGLDocumentReaderCameraViewController changeTargetObjectPositionLayersTimer]
+-[RGLDocumentReaderCameraViewController setChangeTargetObjectPositionLayersTimer:]
+-[RGLDocumentReaderCameraViewController defaultStatusLabelTimer]
+-[RGLDocumentReaderCameraViewController setDefaultStatusLabelTimer:]
+-[RGLDocumentReaderCameraViewController resultStatusLabelTimer]
+-[RGLDocumentReaderCameraViewController setResultStatusLabelTimer:]
+-[RGLDocumentReaderCameraViewController removeAutoFocusLayerTimer]
+-[RGLDocumentReaderCameraViewController setRemoveAutoFocusLayerTimer:]
+-[RGLDocumentReaderCameraViewController showCaptureButtonDelayFromDetectTimer]
+-[RGLDocumentReaderCameraViewController setShowCaptureButtonDelayFromDetectTimer:]
+-[RGLDocumentReaderCameraViewController showCaptureButtonDelayFromStartTimer]
+-[RGLDocumentReaderCameraViewController setShowCaptureButtonDelayFromStartTimer:]
+-[RGLDocumentReaderCameraViewController focusLayerSemaphore]
+-[RGLDocumentReaderCameraViewController setFocusLayerSemaphore:]
+-[RGLDocumentReaderCameraViewController processState]
+-[RGLDocumentReaderCameraViewController setProcessState:]
+-[RGLDocumentReaderCameraViewController latestImageData]
+-[RGLDocumentReaderCameraViewController setLatestImageData:]
+-[RGLDocumentReaderCameraViewController currentInProcessImageData]
+-[RGLDocumentReaderCameraViewController setCurrentInProcessImageData:]
+-[RGLDocumentReaderCameraViewController bleManager]
+-[RGLDocumentReaderCameraViewController setBleManager:]
+-[RGLDocumentReaderCameraViewController focusLayer]
+-[RGLDocumentReaderCameraViewController setFocusLayer:]
+-[RGLDocumentReaderCameraViewController uvL1DataStack]
+-[RGLDocumentReaderCameraViewController setUvL1DataStack:]
+-[RGLDocumentReaderCameraViewController uvL2DataStack]
+-[RGLDocumentReaderCameraViewController setUvL2DataStack:]
+-[RGLDocumentReaderCameraViewController whiteL2DataStack]
+-[RGLDocumentReaderCameraViewController setWhiteL2DataStack:]
+-[RGLDocumentReaderCameraViewController maskPortraitOffset]
+-[RGLDocumentReaderCameraViewController setMaskPortraitOffset:]
+-[RGLDocumentReaderCameraViewController cameraFramePortraitLeftOffset]
+-[RGLDocumentReaderCameraViewController setCameraFramePortraitLeftOffset:]
+-[RGLDocumentReaderCameraViewController cameraFramePortraitRightOffset]
+-[RGLDocumentReaderCameraViewController setCameraFramePortraitRightOffset:]
+-[RGLDocumentReaderCameraViewController frameCounter]
+-[RGLDocumentReaderCameraViewController setFrameCounter:]
+-[RGLDocumentReaderCameraViewController photoOutput]
+-[RGLDocumentReaderCameraViewController setPhotoOutput:]
+-[RGLDocumentReaderCameraViewController .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraPosition
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._resultStatusLocked
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._portraitConstraints
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._landscapeRightConstraints
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._landscapeLeftConstraints
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._latestImageSyncronizeDataQueue
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._currentImageSyncronizeDataQueue
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._sessionQueue
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._captureQueue
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._metadataObjectsQueue
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._focusLayerSemaphore
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._motionManager
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._setupResult
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._session
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._focusLayer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._resolutionType
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._uvL1DataStack
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._uvL2DataStack
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._whiteL2DataStack
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._inProgressPhotoCaptureDelegates
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._sessionPresentReady
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._showChangeFrameButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._recognizeWasInterrupted
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._skipNextPageRecognition
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._currentCameraFrame
+___block_descriptor_40_e8_32w_e36_v24?0"CMDeviceMotion"8"NSError"16l
+___block_descriptor_40_e8_32s_e8_v12?0B8l
+___block_descriptor_32_e23_v16?0"UIAlertAction"8l
+___block_literal_global
+___block_descriptor_64_e8_32s40s48w_e5_v8?0l
+___block_descriptor_56_e8_32s40s48w_e37_v24?0"RGLDocumentReaderResults"8q16l
+___block_descriptor_64_e8_32s40s48s56w_e5_v8?0l
+___block_descriptor_40_e8_32s_e54_v24?0"RGLCamManualPhotoCaptureDelegate"8"UIImage"16l
+___block_descriptor_64_e8_32s40s48s_e5_v8?0l
+___block_descriptor_56_e8_32s40w_e5_v8?0l
+___block_descriptor_48_e8_32s40w_e37_v24?0"RGLDocumentReaderResults"8q16l
+___block_descriptor_56_e8_32s40s48w_e5_v8?0l
+___block_descriptor_40_e8_32s_e43_v24?0^{opaqueCMSampleBuffer=}8"NSError"16l
+___block_descriptor_56_e8_32s40s_e5_v8?0l
+___block_descriptor_49_e8_32s_e5_v8?0l
+___block_descriptor_41_e8_32s_e8_v12?0B8l
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraStatusString
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._showResultMessages
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._showStatusMessages
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._recognitionIsActive
+___block_descriptor_40_e8_32w_e8_v12?0B8l
+___block_descriptor_48_e8_32s_e5_v8?0l
+___block_descriptor_56_e8_32s40s48s_e15_v32?08Q16^B24l
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraScanMode
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._showHelpPopup
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._helpAnimationShowed
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._sessionRunning
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._motionRate
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._videoPreviewLayer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._metadataOutput
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._videoDeviceInput
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._captureDevice
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._latestResult
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraControllerPresentedModally
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._previewView
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._closeButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._flashButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._swapCameraButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._bleButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._batteryButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._statusLabel
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._captureButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._skipMultipageButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._resultStatus
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._resultStatusView
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._frameSizeButton
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._maskView
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._logoLabel
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._logoImage
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._borderView
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._focusView
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraUnavailableLabel
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._activityIndicator
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._multipageScaningView
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._helpAnimationView
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._borderPlaceholderImage
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._barcodeEnabled
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._faceEnabled
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._selectedMetadataTypes
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._machineReadableMetadata
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._faceMetadata
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._customLabel
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraViewControllerDelegate
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraViewControllerHandler
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._imageReader
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._photoImageReader
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._borderColorTimer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._removeTargetObjectOverlayLayersTimer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._changeTargetObjectPositionLayersTimer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._defaultStatusLabelTimer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._resultStatusLabelTimer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._removeAutoFocusLayerTimer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._showCaptureButtonDelayFromDetectTimer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._showCaptureButtonDelayFromStartTimer
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._processState
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._latestImageData
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._currentInProcessImageData
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._bleManager
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._maskPortraitOffset
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraFramePortraitLeftOffset
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._cameraFramePortraitRightOffset
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._frameCounter
+_OBJC_IVAR_$_RGLDocumentReaderCameraViewController._photoOutput
+__OBJC_PROTOCOL_$_RGLMaskViewDataSource
+__OBJC_LABEL_PROTOCOL_$_RGLMaskViewDataSource
+__OBJC_PROTOCOL_$_AVCaptureVideoDataOutputSampleBufferDelegate
+__OBJC_LABEL_PROTOCOL_$_AVCaptureVideoDataOutputSampleBufferDelegate
+__OBJC_PROTOCOL_$_AVCaptureMetadataOutputObjectsDelegate
+__OBJC_LABEL_PROTOCOL_$_AVCaptureMetadataOutputObjectsDelegate
+__OBJC_PROTOCOL_$_RGLImageReaderCameraDataSource
+__OBJC_LABEL_PROTOCOL_$_RGLImageReaderCameraDataSource
+__OBJC_PROTOCOL_$_RGLDocumentViewDataSource
+__OBJC_LABEL_PROTOCOL_$_RGLDocumentViewDataSource
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Controllers/RGLDocumentReaderCameraViewController.m
+DocumentReader/Controllers/RGLDocumentReaderCameraViewController.m
+DocumentReader/Controllers/RGLDocumentReaderCameraViewController.h
+__64-[RGLDocumentReaderCameraViewController internalBTDeviceConnect]_block_invoke
+__53-[RGLDocumentReaderCameraViewController scanNextPage]_block_invoke
+__95-[RGLDocumentReaderCameraViewController captureOutput:didOutputMetadataObjects:fromConnection:]_block_invoke_2
+__95-[RGLDocumentReaderCameraViewController captureOutput:didOutputMetadataObjects:fromConnection:]_block_invoke
+__92-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]_block_invoke_2.1304
+__92-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]_block_invoke.1303
+__92-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]_block_invoke_2
+__92-[RGLDocumentReaderCameraViewController captureOutput:didOutputSampleBuffer:fromConnection:]_block_invoke
+__56-[RGLDocumentReaderCameraViewController deviceConnected]_block_invoke
+__56-[RGLDocumentReaderCameraViewController deviceSearching]_block_invoke
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_17
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_16
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_15
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_14
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_13
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_12
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_11
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_10
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_9
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_8
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_7
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_6
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_5
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_4
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_3
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke_2
+__50-[RGLDocumentReaderCameraViewController scanImage]_block_invoke
+__59-[RGLDocumentReaderCameraViewController setupCaptureDevice]_block_invoke
+__60-[RGLDocumentReaderCameraViewController setupMetadataOutput]_block_invoke
+__57-[RGLDocumentReaderCameraViewController configureSession]_block_invoke_2
+__57-[RGLDocumentReaderCameraViewController configureSession]_block_invoke
+__66-[RGLDocumentReaderCameraViewController sessionInterruptionEnded:]_block_invoke_2
+__66-[RGLDocumentReaderCameraViewController sessionInterruptionEnded:]_block_invoke
+__61-[RGLDocumentReaderCameraViewController sessionRuntimeError:]_block_invoke
+__63-[RGLDocumentReaderCameraViewController sessionWasInterrupted:]_block_invoke
+__64-[RGLDocumentReaderCameraViewController sessionDidStartRunning:]_block_invoke
+__64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke_5
+__64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke_4
+__64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke_3
+__64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke_2
+__64-[RGLDocumentReaderCameraViewController setRecognitionIsActive:]_block_invoke
+__69-[RGLDocumentReaderCameraViewController hideView:view:unhiddenAlpha:]_block_invoke.1019
+__69-[RGLDocumentReaderCameraViewController hideView:view:unhiddenAlpha:]_block_invoke
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_6.894
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_5.893
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_4.892
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_3.891
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_2.881
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke.880
+__copy_helper_block_e8_32s40s48s
+__copy_helper_block_e8_32s40s48s56w
+__copy_helper_block_e8_32s40s48w
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_7
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_6
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_5
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_4
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_3
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke_2
+__61-[RGLDocumentReaderCameraViewController captureButtonTapped:]_block_invoke
+__52-[RGLDocumentReaderCameraViewController swapTapped:]_block_invoke_2
+__52-[RGLDocumentReaderCameraViewController swapTapped:]_block_invoke
+__67-[RGLDocumentReaderCameraViewController closeCameraViewController:]_block_invoke
+__59-[RGLDocumentReaderCameraViewController viewWillDisappear:]_block_invoke
+__55-[RGLDocumentReaderCameraViewController viewDidAppear:]_block_invoke
+__56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke_3
+__56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke_2.440
+__56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke.423
+__56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke_2.416
+__56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke.411
+__56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke_2
+__56-[RGLDocumentReaderCameraViewController viewWillAppear:]_block_invoke
+__52-[RGLDocumentReaderCameraViewController viewDidLoad]_block_invoke.345
+__52-[RGLDocumentReaderCameraViewController viewDidLoad]_block_invoke.339
+__52-[RGLDocumentReaderCameraViewController viewDidLoad]_block_invoke
+-[RGLImageQualityGroup initWithJSON:]
+-[RGLImageQualityGroup getQualityResultWithType:]
++[RGLImageQualityGroup initWithJSON:]
+-[RGLImageQualityGroup jsonDictionary]
+-[RGLImageQualityGroup count]
+-[RGLImageQualityGroup result]
+-[RGLImageQualityGroup imageQualityList]
+-[RGLImageQualityGroup .cxx_destruct]
+_OBJC_IVAR_$_RGLImageQualityGroup._count
+_OBJC_IVAR_$_RGLImageQualityGroup._result
+_OBJC_IVAR_$_RGLImageQualityGroup._imageQualityList
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/ImageQuality/RGLImageQualityGroup.m
+DocumentReader/Models/DocReaderResult/ImageQuality/RGLImageQualityGroup.m
+DocumentReader/Models/DocReaderResult/ImageQuality/RGLImageQualityGroup.h
++[RGLStatusVerifier verifyResultStatus:status:]
++[RGLStatusVerifier verifyFieldStatus:validity:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Parsing/RGLStatusVerifier.m
+DocumentReader/Engine/Parsing/RGLStatusVerifier.m
+-[RGLDocumentReaderCameraViewController(RGLImageReader) setImageReader:]
+-[RGLDocumentReaderCameraViewController(RGLImageReader) imageReader]
+-[RGLDocumentReaderCameraViewController(RGLImageReader) setPhotoImageReader:]
+-[RGLDocumentReaderCameraViewController(RGLImageReader) photoImageReader]
++[RGLDocumentReaderCameraViewController(RGLImageReader) showCameraViewControllerFromPresenter:imageReader:photoImageReader:delegate:handler:]
++[RGLDocumentReaderCameraViewController(RGLImageReader) prepareCameraViewControllerWithImageReader:photoImageReader:delegate:cameraViewController:handler:]
+_UIB_IMAGE_READER_KEY
+_UIB_PHOTO_IMAGE_READER_KEY
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Controllers/RGLDocumentReaderCameraViewController+RGLImageReader.m
+DocumentReader/Controllers/RGLDocumentReaderCameraViewController+RGLImageReader.m
+-[RGLFileData initWithJSON:]
+-[RGLFileData jsonDictionary]
++[RGLFileData initWithJSON:]
+-[RGLFileData data]
+-[RGLFileData length]
+-[RGLFileData status]
+-[RGLFileData type]
+-[RGLFileData .cxx_destruct]
+_OBJC_IVAR_$_RGLFileData._data
+_OBJC_IVAR_$_RGLFileData._length
+_OBJC_IVAR_$_RGLFileData._status
+_OBJC_IVAR_$_RGLFileData._type
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLFileData.m
+DocumentReader/Models/DocReaderResult/RFID/RGLFileData.m
+DocumentReader/Models/DocReaderResult/RFID/RGLFileData.h
+-[RGLDocumentReaderAuthenticityResult initWithAuthenticityChecks:]
+-[RGLDocumentReaderAuthenticityResult initWithJSON:]
+-[RGLDocumentReaderAuthenticityResult status]
+-[RGLDocumentReaderAuthenticityResult jsonDictionary]
++[RGLDocumentReaderAuthenticityResult initWithJSON:]
+-[RGLDocumentReaderAuthenticityResult checks]
+-[RGLDocumentReaderAuthenticityResult .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderAuthenticityResult._checks
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Authenticity/RGLDocumentReaderAuthenticityResult.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLDocumentReaderAuthenticityResult.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLDocumentReaderAuthenticityResult.h
+-[RGLProcessParams init]
+-[RGLProcessParams setDateFormat:]
+-[RGLProcessParams dateFormat]
+-[RGLProcessParams setSessionLogFolder:]
+-[RGLProcessParams processParamsDictionary]
+-[RGLProcessParams rfidParamsDictionary]
+-[RGLProcessParams coreParamsDictionary]
+-[RGLProcessParams scenario]
+-[RGLProcessParams setScenario:]
+-[RGLProcessParams captureButtonScenario]
+-[RGLProcessParams setCaptureButtonScenario:]
+-[RGLProcessParams logs]
+-[RGLProcessParams setLogs:]
+-[RGLProcessParams multipageProcessing]
+-[RGLProcessParams setMultipageProcessing:]
+-[RGLProcessParams disableFocusingCheck]
+-[RGLProcessParams setDisableFocusingCheck:]
+-[RGLProcessParams debugSaveImages]
+-[RGLProcessParams setDebugSaveImages:]
+-[RGLProcessParams debugSaveCroppedImages]
+-[RGLProcessParams setDebugSaveCroppedImages:]
+-[RGLProcessParams debugSaveLogs]
+-[RGLProcessParams setDebugSaveLogs:]
+-[RGLProcessParams documentIDList]
+-[RGLProcessParams setDocumentIDList:]
+-[RGLProcessParams sessionLogFolder]
+-[RGLProcessParams fieldTypesFilter]
+-[RGLProcessParams setFieldTypesFilter:]
+-[RGLProcessParams barcodeTypes]
+-[RGLProcessParams setBarcodeTypes:]
+-[RGLProcessParams measureSystem]
+-[RGLProcessParams setMeasureSystem:]
+-[RGLProcessParams returnUncroppedImage]
+-[RGLProcessParams setReturnUncroppedImage:]
+-[RGLProcessParams customParams]
+-[RGLProcessParams setCustomParams:]
+-[RGLProcessParams debugSaveRFIDSession]
+-[RGLProcessParams setDebugSaveRFIDSession:]
+-[RGLProcessParams doublePageSpread]
+-[RGLProcessParams setDoublePageSpread:]
+-[RGLProcessParams barcodeParserType]
+-[RGLProcessParams setBarcodeParserType:]
+-[RGLProcessParams .cxx_destruct]
+_OBJC_IVAR_$_RGLProcessParams._logs
+_OBJC_IVAR_$_RGLProcessParams._multipageProcessing
+_OBJC_IVAR_$_RGLProcessParams._disableFocusingCheck
+_OBJC_IVAR_$_RGLProcessParams._debugSaveImages
+_OBJC_IVAR_$_RGLProcessParams._debugSaveCroppedImages
+_OBJC_IVAR_$_RGLProcessParams._debugSaveLogs
+_OBJC_IVAR_$_RGLProcessParams._returnUncroppedImage
+_OBJC_IVAR_$_RGLProcessParams._debugSaveRFIDSession
+_OBJC_IVAR_$_RGLProcessParams._doublePageSpread
+_OBJC_IVAR_$_RGLProcessParams._dateFormat
+_OBJC_IVAR_$_RGLProcessParams._scenario
+_OBJC_IVAR_$_RGLProcessParams._captureButtonScenario
+_OBJC_IVAR_$_RGLProcessParams._documentIDList
+_OBJC_IVAR_$_RGLProcessParams._sessionLogFolder
+_OBJC_IVAR_$_RGLProcessParams._fieldTypesFilter
+_OBJC_IVAR_$_RGLProcessParams._barcodeTypes
+_OBJC_IVAR_$_RGLProcessParams._measureSystem
+_OBJC_IVAR_$_RGLProcessParams._customParams
+_OBJC_IVAR_$_RGLProcessParams._barcodeParserType
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/ProcessParams/RGLProcessParams.m
+DocumentReader/Models/ProcessParams/RGLProcessParams.m
+DocumentReader/Models/ProcessParams/RGLProcessParams.h
+-[RGLBleWrapper init]
+-[RGLBleWrapper callSelector:withObject:]
+-[RGLBleWrapper callSelector:]
+-[RGLBleWrapper callSelectorWithReturnValue:]
+-[RGLBleWrapper actionFlashOn]
+-[RGLBleWrapper connect]
+-[RGLBleWrapper connect:]
+-[RGLBleWrapper disconnect]
+-[RGLBleWrapper connectionState]
+-[RGLBleWrapper isFlashing]
+-[RGLBleWrapper isCommandWriting]
+-[RGLBleWrapper isPowerOn]
+-[RGLBleWrapper readBatteryLevel]
+-[RGLBleWrapper startPolling]
+-[RGLBleWrapper stopPolling]
+-[RGLBleWrapper powerOn]
+-[RGLBleWrapper powerOff]
+-[RGLBleWrapper xfrBlock:]
+-[RGLBleWrapper startDeviceScan:]
+-[RGLBleWrapper stopDeviceScan]
++[RGLBleWrapper isBTDeviceFrameworkPresented]
+-[RGLBleWrapper deviceSearching]
+-[RGLBleWrapper deviceStopSearching]
+-[RGLBleWrapper deviceConnecting]
+-[RGLBleWrapper deviceConnected]
+-[RGLBleWrapper deviceDisconnected]
+-[RGLBleWrapper batteryLevel:]
+-[RGLBleWrapper bleError:]
+-[RGLBleWrapper torchStartFlashing]
+-[RGLBleWrapper torchFinishFlashing]
+-[RGLBleWrapper cardStatusChanged:]
+-[RGLBleWrapper parametersResponse:]
+-[RGLBleWrapper receivedATRResponse:]
+-[RGLBleWrapper receivedAPDUResponse:]
+-[RGLBleWrapper deviceReady]
+-[RGLBleWrapper notifiedValue:]
+-[RGLBleWrapper bluetoothAuthorized]
+-[RGLBleWrapper delegate]
+-[RGLBleWrapper setDelegate:]
+-[RGLBleWrapper bluetoothManager]
+-[RGLBleWrapper setBluetoothManager:]
+-[RGLBleWrapper .cxx_destruct]
+_OBJC_IVAR_$_RGLBleWrapper._delegate
+_OBJC_IVAR_$_RGLBleWrapper._bluetoothManager
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/Bluetooth/RGLBleWrapper.m
+DocumentReader/Models/Bluetooth/RGLBleWrapper.m
+DocumentReader/Models/Bluetooth/RGLBleWrapper.h
+-[RGLAuthenticityElement initWithStatus:elementType:elementDiagnose:]
+-[RGLAuthenticityElement initWithJSON:]
+-[RGLAuthenticityElement jsonDictionary]
++[RGLAuthenticityElement initWithJSON:]
+-[RGLAuthenticityElement elementTypeName]
+-[RGLAuthenticityElement elementDiagnoseName]
+-[RGLAuthenticityElement status]
+-[RGLAuthenticityElement elementType]
+-[RGLAuthenticityElement elementDiagnose]
+_OBJC_IVAR_$_RGLAuthenticityElement._status
+_OBJC_IVAR_$_RGLAuthenticityElement._elementType
+_OBJC_IVAR_$_RGLAuthenticityElement._elementDiagnose
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Authenticity/RGLAuthenticityElement.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLAuthenticityElement.h
+DocumentReader/Models/DocReaderResult/Authenticity/RGLAuthenticityElement.m
+-[RGLPhotoIdentResult initWithJSON:]
+-[RGLPhotoIdentResult jsonDictionary]
++[RGLPhotoIdentResult initWithJSON:]
+-[RGLPhotoIdentResult area]
+-[RGLPhotoIdentResult lightIndex]
+-[RGLPhotoIdentResult reserved1]
+-[RGLPhotoIdentResult reserved2]
+-[RGLPhotoIdentResult reserved3]
+-[RGLPhotoIdentResult result]
+-[RGLPhotoIdentResult resultImages]
+-[RGLPhotoIdentResult sourceImage]
+-[RGLPhotoIdentResult .cxx_destruct]
+_OBJC_IVAR_$_RGLPhotoIdentResult._reserved1
+_OBJC_IVAR_$_RGLPhotoIdentResult._reserved2
+_OBJC_IVAR_$_RGLPhotoIdentResult._reserved3
+_OBJC_IVAR_$_RGLPhotoIdentResult._lightIndex
+_OBJC_IVAR_$_RGLPhotoIdentResult._result
+_OBJC_IVAR_$_RGLPhotoIdentResult._area
+_OBJC_IVAR_$_RGLPhotoIdentResult._resultImages
+_OBJC_IVAR_$_RGLPhotoIdentResult._sourceImage
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Authenticity/RGLPhotoIdentResult.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLPhotoIdentResult.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLPhotoIdentResult.h
+__CGSizeEqualToSize
+/Applications/Xcode.app/Contents/Developer/Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS13.2.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGGeometry.h
+-[RGLMrzPosition initWithJSON:]
++[RGLMrzPosition initWithJSON:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/DocumentPosition/RGLMrzPosition.m
+DocumentReader/Models/DocReaderResult/DocumentPosition/RGLMrzPosition.m
+-[RGLSecurityFeatureCheck initWithJSON:]
+-[RGLSecurityFeatureCheck jsonDictionary]
++[RGLSecurityFeatureCheck initWithJSON:]
+-[RGLSecurityFeatureCheck elementRect]
+-[RGLSecurityFeatureCheck .cxx_destruct]
+_OBJC_IVAR_$_RGLSecurityFeatureCheck._elementRect
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Authenticity/RGLSecurityFeatureCheck.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLSecurityFeatureCheck.m
+DocumentReader/Models/DocReaderResult/Authenticity/RGLSecurityFeatureCheck.h
+-[RGLAttribute initWithJSON:]
+-[RGLAttribute jsonDictionary]
++[RGLAttribute initWithJSON:]
+-[RGLAttribute type]
+-[RGLAttribute value]
+-[RGLAttribute .cxx_destruct]
+_OBJC_IVAR_$_RGLAttribute._type
+_OBJC_IVAR_$_RGLAttribute._value
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLAttribute.m
+DocumentReader/Models/DocReaderResult/RFID/RGLAttribute.m
+DocumentReader/Models/DocReaderResult/RFID/RGLAttribute.h
+-[RGLCameraImageReader startWithImages:orientation:handler:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/ImageReader/RGLImageReader/RGLCameraImageReader.m
+DocumentReader/Engine/ImageReader/RGLImageReader/RGLCameraImageReader.m
+-[RGLeDLDataGroup init]
++[RGLeDLDataGroup initWithJSON:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/Scenario/Rfid/RGLeDLDataGroup.m
+DocumentReader/Models/Scenario/Rfid/RGLeDLDataGroup.m
+-[RGLDocumentReaderDocumentType initWithJSON:]
++[RGLDocumentReaderDocumentType initWithJSON:]
+-[RGLDocumentReaderDocumentType jsonDictionary]
+-[RGLDocumentReaderDocumentType name]
+-[RGLDocumentReaderDocumentType documentID]
+-[RGLDocumentReaderDocumentType ICAOCode]
+-[RGLDocumentReaderDocumentType FDSID]
+-[RGLDocumentReaderDocumentType dType]
+-[RGLDocumentReaderDocumentType dFormat]
+-[RGLDocumentReaderDocumentType dMRZ]
+-[RGLDocumentReaderDocumentType dDescription]
+-[RGLDocumentReaderDocumentType dYear]
+-[RGLDocumentReaderDocumentType dCountryName]
+-[RGLDocumentReaderDocumentType pageIndex]
+-[RGLDocumentReaderDocumentType .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._dMRZ
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._name
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._documentID
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._ICAOCode
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._FDSID
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._dType
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._dFormat
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._dDescription
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._dYear
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._dCountryName
+_OBJC_IVAR_$_RGLDocumentReaderDocumentType._pageIndex
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RGLDocumentReaderDocumentType.m
+DocumentReader/Models/DocReaderResult/RGLDocumentReaderDocumentType.m
+DocumentReader/Models/DocReaderResult/RGLDocumentReaderDocumentType.h
+-[RGLDocumentReaderRFIDController init]
+-[RGLDocumentReaderRFIDController orientation]
+-[RGLDocumentReaderRFIDController supportedInterfaceOrientations]
+-[RGLDocumentReaderRFIDController isCameraControllerPresentedModally]
+-[RGLDocumentReaderRFIDController viewDidLoad]
+-[RGLDocumentReaderRFIDController viewWillTransitionToSize:withTransitionCoordinator:]
+-[RGLDocumentReaderRFIDController viewDidAppear:]
+-[RGLDocumentReaderRFIDController startPositionAnimation]
+-[RGLDocumentReaderRFIDController documentImageName]
+-[RGLDocumentReaderRFIDController initCloseButton]
+-[RGLDocumentReaderRFIDController updateViewConstraints]
+-[RGLDocumentReaderRFIDController enableConstraints:constraintsArray:]
+-[RGLDocumentReaderRFIDController closeTapped:]
++[RGLDocumentReaderRFIDController showRFIDViewController:docReader:handler:]
++[RGLDocumentReaderRFIDController prepareRFIDViewController:docReader:handler:]
+-[RGLDocumentReaderRFIDController startReadRFID]
+___48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke
+___48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke_2
+___48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke.177
+___48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke_2.178
+___48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke_3
+___48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke.181
+-[RGLDocumentReaderRFIDController forceFinishViewControllerWithAction:withResults:]
+___83-[RGLDocumentReaderRFIDController forceFinishViewControllerWithAction:withResults:]_block_invoke
+-[RGLDocumentReaderRFIDController closeRFIDViewController:]
+-[RGLDocumentReaderRFIDController docReader]
+-[RGLDocumentReaderRFIDController setDocReader:]
+-[RGLDocumentReaderRFIDController dFormat]
+-[RGLDocumentReaderRFIDController setDFormat:]
+-[RGLDocumentReaderRFIDController docFormatByMRZ]
+-[RGLDocumentReaderRFIDController setDocFormatByMRZ:]
+-[RGLDocumentReaderRFIDController portraitConstraints]
+-[RGLDocumentReaderRFIDController setPortraitConstraints:]
+-[RGLDocumentReaderRFIDController landscapeRightConstraints]
+-[RGLDocumentReaderRFIDController setLandscapeRightConstraints:]
+-[RGLDocumentReaderRFIDController landscapeLeftConstraints]
+-[RGLDocumentReaderRFIDController setLandscapeLeftConstraints:]
+-[RGLDocumentReaderRFIDController closeButton]
+-[RGLDocumentReaderRFIDController setCloseButton:]
+-[RGLDocumentReaderRFIDController needToForceFinishScan]
+-[RGLDocumentReaderRFIDController setNeedToForceFinishScan:]
+-[RGLDocumentReaderRFIDController errorDuringReading]
+-[RGLDocumentReaderRFIDController setErrorDuringReading:]
+-[RGLDocumentReaderRFIDController rfidReading]
+-[RGLDocumentReaderRFIDController setRfidReading:]
+-[RGLDocumentReaderRFIDController progressCounter]
+-[RGLDocumentReaderRFIDController setProgressCounter:]
+-[RGLDocumentReaderRFIDController progressIncrement]
+-[RGLDocumentReaderRFIDController setProgressIncrement:]
+-[RGLDocumentReaderRFIDController timer]
+-[RGLDocumentReaderRFIDController setTimer:]
+-[RGLDocumentReaderRFIDController rfidViewControllerHandler]
+-[RGLDocumentReaderRFIDController setRfidViewControllerHandler:]
+-[RGLDocumentReaderRFIDController rfidSendDataCallbackCompletion]
+-[RGLDocumentReaderRFIDController setRfidSendDataCallbackCompletion:]
+-[RGLDocumentReaderRFIDController animationBuilder]
+-[RGLDocumentReaderRFIDController setAnimationBuilder:]
+-[RGLDocumentReaderRFIDController sceneView]
+-[RGLDocumentReaderRFIDController setSceneView:]
+-[RGLDocumentReaderRFIDController .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._needToForceFinishScan
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._errorDuringReading
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._rfidReading
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._progressCounter
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._progressIncrement
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._portraitConstraints
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._landscapeLeftConstraints
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._landscapeRightConstraints
+___block_descriptor_48_e8_32s40w_e26_v24?0q8"RGLRFIDNotify"16l
+___block_descriptor_48_e8_32s40w_e53_v36?0q8"RGLDocumentReaderResults"16"NSString"24i32l
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._docReader
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._dFormat
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._docFormatByMRZ
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._closeButton
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._timer
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._rfidViewControllerHandler
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._rfidSendDataCallbackCompletion
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._animationBuilder
+_OBJC_IVAR_$_RGLDocumentReaderRFIDController._sceneView
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Controllers/RGLDocumentReaderRFIDController.m
+DocumentReader/Controllers/RGLDocumentReaderRFIDController.m
+DocumentReader/Controllers/RGLDocumentReaderRFIDController.h
+__83-[RGLDocumentReaderRFIDController forceFinishViewControllerWithAction:withResults:]_block_invoke
+__48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke.181
+__48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke_3
+__48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke_2.178
+__48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke.177
+__48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke_2
+__48-[RGLDocumentReaderRFIDController startReadRFID]_block_invoke
+-[RGLImageResultWrapper initWithImage:lightType:pageIndex:]
+-[RGLImageResultWrapper initWithImage:lightType:pageIndex:type:]
+-[RGLImageResultWrapper initWithImage:]
+-[RGLImageResultWrapper initWithImage:lightType:exposure:]
+-[RGLImageResultWrapper image]
+-[RGLImageResultWrapper setImage:]
+-[RGLImageResultWrapper pageIndex]
+-[RGLImageResultWrapper setPageIndex:]
+-[RGLImageResultWrapper light]
+-[RGLImageResultWrapper setLight:]
+-[RGLImageResultWrapper type]
+-[RGLImageResultWrapper setType:]
+-[RGLImageResultWrapper exposure]
+-[RGLImageResultWrapper setExposure:]
+-[RGLImageResultWrapper .cxx_destruct]
+_OBJC_IVAR_$_RGLImageResultWrapper._image
+_OBJC_IVAR_$_RGLImageResultWrapper._pageIndex
+_OBJC_IVAR_$_RGLImageResultWrapper._light
+_OBJC_IVAR_$_RGLImageResultWrapper._type
+_OBJC_IVAR_$_RGLImageResultWrapper._exposure
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/DocumentReaderCoreWrapper/RGLImageResultWrapper.m
+DocumentReader/Engine/DocumentReaderCoreWrapper/RGLImageResultWrapper.m
+DocumentReader/Engine/DocumentReaderCoreWrapper/RGLImageResultWrapper.h
+-[RGLCustomization init]
+-[RGLCustomization setTintColor:]
+-[RGLCustomization tintColor]
+-[RGLCustomization setResultStatusTextColor:]
+-[RGLCustomization resultStatusTextColor]
+-[RGLCustomization setResultStatusTextFont:]
+-[RGLCustomization resultStatusTextFont]
+-[RGLCustomization setCameraFrameDefaultColor:]
+-[RGLCustomization cameraFrameDefaultColor]
+-[RGLCustomization setCameraFrameActiveColor:]
+-[RGLCustomization cameraFrameActiveColor]
+-[RGLCustomization setStatusTextColor:]
+-[RGLCustomization statusTextColor]
+-[RGLCustomization setStatusTextFont:]
+-[RGLCustomization statusTextFont]
+-[RGLCustomization setShowStatusMessages:]
+-[RGLCustomization setShowResultStatusMessages:]
+-[RGLCustomization setStatus:]
+-[RGLCustomization setResultStatus:]
+-[RGLCustomization setCameraFrameShapeType:]
+-[RGLCustomization setMultipageButtonBackgroundColor:]
+-[RGLCustomization setCameraFrameBorderWidth:]
+-[RGLCustomization setActivityIndicatorColor:]
+-[RGLCustomization setResultStatusBackgroundColor:]
+-[RGLCustomization setCameraFrameLineLength:]
+-[RGLCustomization setCameraFrameOffsetWidth:]
+-[RGLCustomization setShowBackgroundMask:]
+-[RGLCustomization setBorderBackgroundImage:]
+-[RGLCustomization setBackgroundMaskAlpha:]
+-[RGLCustomization setMultipageAnimationFrontImageContentMode:]
+-[RGLCustomization setMultipageAnimationBackImageContentMode:]
+-[RGLCustomization setBorderBackgroundImageContentMode:]
+-[RGLCustomization setMultipageAnimationFrontImage:]
+-[RGLCustomization setMultipageAnimationBackImage:]
+-[RGLCustomization setCustomLabelStatus:]
+-[RGLCustomization showStatusMessages]
+-[RGLCustomization cameraViewController]
+-[RGLCustomization setCameraViewController:]
+-[RGLCustomization showHelpAnimation]
+-[RGLCustomization setShowHelpAnimation:]
+-[RGLCustomization helpAnimationImage]
+-[RGLCustomization setHelpAnimationImage:]
+-[RGLCustomization showResultStatusMessages]
+-[RGLCustomization status]
+-[RGLCustomization resultStatus]
+-[RGLCustomization statusPositionMultiplier]
+-[RGLCustomization setStatusPositionMultiplier:]
+-[RGLCustomization resultStatusPositionMultiplier]
+-[RGLCustomization setResultStatusPositionMultiplier:]
+-[RGLCustomization cameraFrameShapeType]
+-[RGLCustomization cameraFrameLineCap]
+-[RGLCustomization setCameraFrameLineCap:]
+-[RGLCustomization resultStatusBackgroundColor]
+-[RGLCustomization cameraFrameBorderWidth]
+-[RGLCustomization activityIndicatorColor]
+-[RGLCustomization multipageButtonBackgroundColor]
+-[RGLCustomization multipageAnimationFrontImage]
+-[RGLCustomization multipageAnimationBackImage]
+-[RGLCustomization cameraFrameLineLength]
+-[RGLCustomization cameraFramePortraitAspectRatio]
+-[RGLCustomization setCameraFramePortraitAspectRatio:]
+-[RGLCustomization cameraFrameLandscapeAspectRatio]
+-[RGLCustomization setCameraFrameLandscapeAspectRatio:]
+-[RGLCustomization cameraFrameOffsetWidth]
+-[RGLCustomization showNextPageAnimation]
+-[RGLCustomization setShowNextPageAnimation:]
+-[RGLCustomization showBackgroundMask]
+-[RGLCustomization borderBackgroundImage]
+-[RGLCustomization backgroundMaskAlpha]
+-[RGLCustomization helpAnimationImageContentMode]
+-[RGLCustomization setHelpAnimationImageContentMode:]
+-[RGLCustomization multipageAnimationFrontImageContentMode]
+-[RGLCustomization multipageAnimationBackImageContentMode]
+-[RGLCustomization borderBackgroundImageContentMode]
+-[RGLCustomization cameraFrameVerticalPositionMultiplier]
+-[RGLCustomization setCameraFrameVerticalPositionMultiplier:]
+-[RGLCustomization customStatusPositionMultiplier]
+-[RGLCustomization setCustomStatusPositionMultiplier:]
+-[RGLCustomization customLabelStatus]
+-[RGLCustomization cameraFrameCornerRadius]
+-[RGLCustomization setCameraFrameCornerRadius:]
+-[RGLCustomization torchButtonOnImage]
+-[RGLCustomization setTorchButtonOnImage:]
+-[RGLCustomization torchButtonOffImage]
+-[RGLCustomization setTorchButtonOffImage:]
+-[RGLCustomization closeButtonImage]
+-[RGLCustomization setCloseButtonImage:]
+-[RGLCustomization captureButtonImage]
+-[RGLCustomization setCaptureButtonImage:]
+-[RGLCustomization changeFrameButtonCollapseImage]
+-[RGLCustomization setChangeFrameButtonCollapseImage:]
+-[RGLCustomization changeFrameButtonExpandImage]
+-[RGLCustomization setChangeFrameButtonExpandImage:]
+-[RGLCustomization cameraSwitchButtonImage]
+-[RGLCustomization setCameraSwitchButtonImage:]
+-[RGLCustomization .cxx_destruct]
+_OBJC_IVAR_$_RGLCustomization._showStatusMessages
+_OBJC_IVAR_$_RGLCustomization._showHelpAnimation
+_OBJC_IVAR_$_RGLCustomization._showResultStatusMessages
+_OBJC_IVAR_$_RGLCustomization._showNextPageAnimation
+_OBJC_IVAR_$_RGLCustomization._showBackgroundMask
+_OBJC_IVAR_$_RGLCustomization._cameraFrameLineCap
+_OBJC_IVAR_$_RGLCustomization._tintColor
+_OBJC_IVAR_$_RGLCustomization._resultStatusTextColor
+_OBJC_IVAR_$_RGLCustomization._resultStatusTextFont
+_OBJC_IVAR_$_RGLCustomization._cameraFrameDefaultColor
+_OBJC_IVAR_$_RGLCustomization._cameraFrameActiveColor
+_OBJC_IVAR_$_RGLCustomization._statusTextColor
+_OBJC_IVAR_$_RGLCustomization._statusTextFont
+_OBJC_IVAR_$_RGLCustomization._cameraViewController
+_OBJC_IVAR_$_RGLCustomization._helpAnimationImage
+_OBJC_IVAR_$_RGLCustomization._status
+_OBJC_IVAR_$_RGLCustomization._resultStatus
+_OBJC_IVAR_$_RGLCustomization._statusPositionMultiplier
+_OBJC_IVAR_$_RGLCustomization._resultStatusPositionMultiplier
+_OBJC_IVAR_$_RGLCustomization._cameraFrameShapeType
+_OBJC_IVAR_$_RGLCustomization._resultStatusBackgroundColor
+_OBJC_IVAR_$_RGLCustomization._cameraFrameBorderWidth
+_OBJC_IVAR_$_RGLCustomization._activityIndicatorColor
+_OBJC_IVAR_$_RGLCustomization._multipageButtonBackgroundColor
+_OBJC_IVAR_$_RGLCustomization._multipageAnimationFrontImage
+_OBJC_IVAR_$_RGLCustomization._multipageAnimationBackImage
+_OBJC_IVAR_$_RGLCustomization._cameraFrameLineLength
+_OBJC_IVAR_$_RGLCustomization._cameraFramePortraitAspectRatio
+_OBJC_IVAR_$_RGLCustomization._cameraFrameLandscapeAspectRatio
+_OBJC_IVAR_$_RGLCustomization._cameraFrameOffsetWidth
+_OBJC_IVAR_$_RGLCustomization._borderBackgroundImage
+_OBJC_IVAR_$_RGLCustomization._backgroundMaskAlpha
+_OBJC_IVAR_$_RGLCustomization._helpAnimationImageContentMode
+_OBJC_IVAR_$_RGLCustomization._multipageAnimationFrontImageContentMode
+_OBJC_IVAR_$_RGLCustomization._multipageAnimationBackImageContentMode
+_OBJC_IVAR_$_RGLCustomization._borderBackgroundImageContentMode
+_OBJC_IVAR_$_RGLCustomization._cameraFrameVerticalPositionMultiplier
+_OBJC_IVAR_$_RGLCustomization._customStatusPositionMultiplier
+_OBJC_IVAR_$_RGLCustomization._customLabelStatus
+_OBJC_IVAR_$_RGLCustomization._cameraFrameCornerRadius
+_OBJC_IVAR_$_RGLCustomization._torchButtonOnImage
+_OBJC_IVAR_$_RGLCustomization._torchButtonOffImage
+_OBJC_IVAR_$_RGLCustomization._closeButtonImage
+_OBJC_IVAR_$_RGLCustomization._captureButtonImage
+_OBJC_IVAR_$_RGLCustomization._changeFrameButtonCollapseImage
+_OBJC_IVAR_$_RGLCustomization._changeFrameButtonExpandImage
+_OBJC_IVAR_$_RGLCustomization._cameraSwitchButtonImage
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/RGLCustomization.m
+DocumentReader/Models/RGLCustomization.m
+DocumentReader/Models/RGLCustomization.h
++[RGLLocalize string:]
++[RGLLocalize string:comment:argument:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/RGLLocalize.m
+DocumentReader/Engine/RGLLocalize.m
+-[RGLDocumentReaderBarcodeResult initWithFields:]
+-[RGLDocumentReaderBarcodeResult initWithJSON:]
++[RGLDocumentReaderBarcodeResult initWithJSON:]
+-[RGLDocumentReaderBarcodeResult jsonDictionary]
+-[RGLDocumentReaderBarcodeResult fields]
+-[RGLDocumentReaderBarcodeResult .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderBarcodeResult._fields
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/Barcode/RGLDocumentReaderBarcodeResult.m
+DocumentReader/Models/DocReaderResult/Barcode/RGLDocumentReaderBarcodeResult.m
+DocumentReader/Models/DocReaderResult/Barcode/RGLDocumentReaderBarcodeResult.h
+-[RGLExtension initWithJSON:]
+-[RGLExtension jsonDictionary]
++[RGLExtension initWithJSON:]
+-[RGLExtension data]
+-[RGLExtension type]
+-[RGLExtension .cxx_destruct]
+_OBJC_IVAR_$_RGLExtension._data
+_OBJC_IVAR_$_RGLExtension._type
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLExtension.m
+DocumentReader/Models/DocReaderResult/RFID/RGLExtension.m
+DocumentReader/Models/DocReaderResult/RFID/RGLExtension.h
+-[RGLLicense initWithJSON:]
++[RGLLicense initWithJSON:]
+-[RGLLicense expiryDate]
+-[RGLLicense countryFilter]
+-[RGLLicense isRfidAvailable]
+-[RGLLicense .cxx_destruct]
+_OBJC_IVAR_$_RGLLicense._rfidAvailable
+_OBJC_IVAR_$_RGLLicense._expiryDate
+_OBJC_IVAR_$_RGLLicense._countryFilter
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/License/RGLLicense.m
+DocumentReader/Models/License/RGLLicense.m
+DocumentReader/Models/License/RGLLicense.h
+-[RGLFunctionality init]
+-[RGLFunctionality setCameraFrame:]
+-[RGLFunctionality setShowTorchButton:]
+-[RGLFunctionality setShowCloseButton:]
+-[RGLFunctionality setShowCaptureButton:]
+-[RGLFunctionality setShowChangeFrameButton:]
+-[RGLFunctionality setShowCameraSwitchButton:]
+-[RGLFunctionality setVideoSessionPreset:]
+-[RGLFunctionality setCameraPosition:]
+-[RGLFunctionality setUseAuthenticator:]
+-[RGLFunctionality setRfidEnabled:]
+-[RGLFunctionality cameraViewController]
+-[RGLFunctionality setCameraViewController:]
+-[RGLFunctionality cameraFrame]
+-[RGLFunctionality showTorchButton]
+-[RGLFunctionality showCloseButton]
+-[RGLFunctionality showCaptureButton]
+-[RGLFunctionality showChangeFrameButton]
+-[RGLFunctionality showCameraSwitchButton]
+-[RGLFunctionality showSkipNextPageButton]
+-[RGLFunctionality setShowSkipNextPageButton:]
+-[RGLFunctionality skipFocusingFrames]
+-[RGLFunctionality setSkipFocusingFrames:]
+-[RGLFunctionality videoSessionPreset]
+-[RGLFunctionality videoCaptureMotionControl]
+-[RGLFunctionality setVideoCaptureMotionControl:]
+-[RGLFunctionality orientation]
+-[RGLFunctionality setOrientation:]
+-[RGLFunctionality onlineMode]
+-[RGLFunctionality setOnlineMode:]
+-[RGLFunctionality serviceURL]
+-[RGLFunctionality setServiceURL:]
+-[RGLFunctionality singleResult]
+-[RGLFunctionality setSingleResult:]
+-[RGLFunctionality cameraPosition]
+-[RGLFunctionality btDeviceName]
+-[RGLFunctionality setBtDeviceName:]
+-[RGLFunctionality isUseAuthenticator]
+-[RGLFunctionality rfidEnabled]
+-[RGLFunctionality showCaptureButtonDelayFromDetect]
+-[RGLFunctionality setShowCaptureButtonDelayFromDetect:]
+-[RGLFunctionality showCaptureButtonDelayFromStart]
+-[RGLFunctionality setShowCaptureButtonDelayFromStart:]
+-[RGLFunctionality .cxx_destruct]
+_OBJC_IVAR_$_RGLFunctionality._showTorchButton
+_OBJC_IVAR_$_RGLFunctionality._showCloseButton
+_OBJC_IVAR_$_RGLFunctionality._showCaptureButton
+_OBJC_IVAR_$_RGLFunctionality._showChangeFrameButton
+_OBJC_IVAR_$_RGLFunctionality._showCameraSwitchButton
+_OBJC_IVAR_$_RGLFunctionality._showSkipNextPageButton
+_OBJC_IVAR_$_RGLFunctionality._skipFocusingFrames
+_OBJC_IVAR_$_RGLFunctionality._videoCaptureMotionControl
+_OBJC_IVAR_$_RGLFunctionality._onlineMode
+_OBJC_IVAR_$_RGLFunctionality._singleResult
+_OBJC_IVAR_$_RGLFunctionality._useAuthenticator
+_OBJC_IVAR_$_RGLFunctionality._rfidEnabled
+_OBJC_IVAR_$_RGLFunctionality._cameraViewController
+_OBJC_IVAR_$_RGLFunctionality._cameraFrame
+_OBJC_IVAR_$_RGLFunctionality._videoSessionPreset
+_OBJC_IVAR_$_RGLFunctionality._orientation
+_OBJC_IVAR_$_RGLFunctionality._serviceURL
+_OBJC_IVAR_$_RGLFunctionality._cameraPosition
+_OBJC_IVAR_$_RGLFunctionality._btDeviceName
+_OBJC_IVAR_$_RGLFunctionality._showCaptureButtonDelayFromDetect
+_OBJC_IVAR_$_RGLFunctionality._showCaptureButtonDelayFromStart
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/RGLFunctionality.m
+DocumentReader/Models/RGLFunctionality.m
+DocumentReader/Models/RGLFunctionality.h
+-[RGLRFIDSessionData initWithJSON:]
+-[RGLRFIDSessionData jsonDictionary]
++[RGLRFIDSessionData initWithJSON:]
+-[RGLRFIDSessionData accessControls]
+-[RGLRFIDSessionData applications]
+-[RGLRFIDSessionData securityObjects]
+-[RGLRFIDSessionData cardProperties]
+-[RGLRFIDSessionData totalBytesReceived]
+-[RGLRFIDSessionData totalBytesSent]
+-[RGLRFIDSessionData status]
+-[RGLRFIDSessionData extLeSupport]
+-[RGLRFIDSessionData processTime]
+-[RGLRFIDSessionData sessionDataStatus]
+-[RGLRFIDSessionData .cxx_destruct]
+_OBJC_IVAR_$_RGLRFIDSessionData._status
+_OBJC_IVAR_$_RGLRFIDSessionData._extLeSupport
+_OBJC_IVAR_$_RGLRFIDSessionData._accessControls
+_OBJC_IVAR_$_RGLRFIDSessionData._applications
+_OBJC_IVAR_$_RGLRFIDSessionData._securityObjects
+_OBJC_IVAR_$_RGLRFIDSessionData._cardProperties
+_OBJC_IVAR_$_RGLRFIDSessionData._totalBytesReceived
+_OBJC_IVAR_$_RGLRFIDSessionData._totalBytesSent
+_OBJC_IVAR_$_RGLRFIDSessionData._processTime
+_OBJC_IVAR_$_RGLRFIDSessionData._sessionDataStatus
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLRFIDSessionData.m
+DocumentReader/Models/DocReaderResult/RFID/RGLRFIDSessionData.m
+DocumentReader/Models/DocReaderResult/RFID/RGLRfidSessionData.h
+-[RGLCertificateChain initWithJSON:]
+-[RGLCertificateChain jsonDictionary]
++[RGLCertificateChain initWithJSON:]
+-[RGLCertificateChain extensions]
+-[RGLCertificateChain fileName]
+-[RGLCertificateChain issuer]
+-[RGLCertificateChain notifications]
+-[RGLCertificateChain origin]
+-[RGLCertificateChain paStatus]
+-[RGLCertificateChain serialNumber]
+-[RGLCertificateChain signatureAlgorithm]
+-[RGLCertificateChain subject]
+-[RGLCertificateChain subjectPKAlgorithm]
+-[RGLCertificateChain type]
+-[RGLCertificateChain validity]
+-[RGLCertificateChain version]
+-[RGLCertificateChain .cxx_destruct]
+_OBJC_IVAR_$_RGLCertificateChain._extensions
+_OBJC_IVAR_$_RGLCertificateChain._fileName
+_OBJC_IVAR_$_RGLCertificateChain._issuer
+_OBJC_IVAR_$_RGLCertificateChain._notifications
+_OBJC_IVAR_$_RGLCertificateChain._origin
+_OBJC_IVAR_$_RGLCertificateChain._paStatus
+_OBJC_IVAR_$_RGLCertificateChain._serialNumber
+_OBJC_IVAR_$_RGLCertificateChain._signatureAlgorithm
+_OBJC_IVAR_$_RGLCertificateChain._subject
+_OBJC_IVAR_$_RGLCertificateChain._subjectPKAlgorithm
+_OBJC_IVAR_$_RGLCertificateChain._type
+_OBJC_IVAR_$_RGLCertificateChain._validity
+_OBJC_IVAR_$_RGLCertificateChain._version
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/RFID/RGLCertificateChain.m
+DocumentReader/Models/DocReaderResult/RFID/RGLCertificateChain.m
+DocumentReader/Models/DocReaderResult/RFID/RGLCertificateChain.h
+-[RGLePassportDataGroup init]
+-[RGLePassportDataGroup initWithJSON:]
+-[RGLePassportDataGroup dataGroupsDictionary]
++[RGLePassportDataGroup initWithJSON:]
+-[RGLePassportDataGroup dG15]
+-[RGLePassportDataGroup setDG15:]
+-[RGLePassportDataGroup dG16]
+-[RGLePassportDataGroup setDG16:]
+_OBJC_IVAR_$_RGLePassportDataGroup._dG15
+_OBJC_IVAR_$_RGLePassportDataGroup._dG16
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/Scenario/Rfid/RGLePassportDataGroup.m
+DocumentReader/Models/Scenario/Rfid/RGLePassportDataGroup.h
+DocumentReader/Models/Scenario/Rfid/RGLePassportDataGroup.m
+-[RGLDocumentReaderGraphicField initWithSourceType:fieldType:boundRect:value:light:pageIndex:]
+-[RGLDocumentReaderGraphicField initWithJSON:]
+-[RGLDocumentReaderGraphicField jsonDictionary]
++[RGLDocumentReaderGraphicField initWithJSON:]
++[RGLDocumentReaderGraphicField graphicFieldTypeName:]
++[RGLDocumentReaderGraphicField graphicFieldLightName:]
+-[RGLDocumentReaderGraphicField sourceType]
+-[RGLDocumentReaderGraphicField fieldType]
+-[RGLDocumentReaderGraphicField fieldName]
+-[RGLDocumentReaderGraphicField boundRect]
+-[RGLDocumentReaderGraphicField value]
+-[RGLDocumentReaderGraphicField lightType]
+-[RGLDocumentReaderGraphicField lightName]
+-[RGLDocumentReaderGraphicField pageIndex]
+-[RGLDocumentReaderGraphicField .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderGraphicField._sourceType
+_OBJC_IVAR_$_RGLDocumentReaderGraphicField._fieldType
+_OBJC_IVAR_$_RGLDocumentReaderGraphicField._fieldName
+_OBJC_IVAR_$_RGLDocumentReaderGraphicField._value
+_OBJC_IVAR_$_RGLDocumentReaderGraphicField._lightType
+_OBJC_IVAR_$_RGLDocumentReaderGraphicField._lightName
+_OBJC_IVAR_$_RGLDocumentReaderGraphicField._pageIndex
+_OBJC_IVAR_$_RGLDocumentReaderGraphicField._boundRect
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/GraphicResult/RGLDocumentReaderGraphicField.m
+DocumentReader/Models/DocReaderResult/GraphicResult/RGLDocumentReaderGraphicField.m
+DocumentReader/Models/DocReaderResult/GraphicResult/RGLDocumentReaderGraphicField.h
+-[RGLDocumentReaderGraphicResult initWithFields:]
+-[RGLDocumentReaderGraphicResult initWithJSON:]
++[RGLDocumentReaderGraphicResult initWithJSON:]
+-[RGLDocumentReaderGraphicResult jsonDictionary]
+-[RGLDocumentReaderGraphicResult fields]
+-[RGLDocumentReaderGraphicResult .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderGraphicResult._fields
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/GraphicResult/RGLDocumentReaderGraphicResult.m
+DocumentReader/Models/DocReaderResult/GraphicResult/RGLDocumentReaderGraphicResult.m
+DocumentReader/Models/DocReaderResult/GraphicResult/RGLDocumentReaderGraphicResult.h
+-[RGLRFIDNotificationHandler handleNotification:]
+-[RGLRFIDNotificationHandler currentRfidNotify]
+-[RGLRFIDNotificationHandler setCurrentRfidNotify:]
+-[RGLRFIDNotificationHandler .cxx_destruct]
+_OBJC_IVAR_$_RGLRFIDNotificationHandler._currentRfidNotify
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/RFID/RGLRFIDNotificationHandler.m
+DocumentReader/Engine/RFID/RGLRFIDNotificationHandler.m
+-[NSArray(RGLBarcodeType) rgl_identifiersArrayFromRGLBarcodeTypes]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSArray+RGLBarcodeType.m
+DocumentReader/Engine/Extensions/NSArray+RGLBarcodeType.m
+-[RGLDocumentReaderRegulaDeviceRFIDController init]
+-[RGLDocumentReaderRegulaDeviceRFIDController viewDidLoad]
+-[RGLDocumentReaderRegulaDeviceRFIDController viewDidAppear:]
+-[RGLDocumentReaderRegulaDeviceRFIDController initRfidImageView]
+-[RGLDocumentReaderRegulaDeviceRFIDController initRfidProcessingLabel]
+-[RGLDocumentReaderRegulaDeviceRFIDController initProgressView]
+-[RGLDocumentReaderRegulaDeviceRFIDController initCloseButton]
+-[RGLDocumentReaderRegulaDeviceRFIDController initCurrentDataGroupLabel]
+-[RGLDocumentReaderRegulaDeviceRFIDController initResultTableView]
+-[RGLDocumentReaderRegulaDeviceRFIDController closeTapped:]
+-[RGLDocumentReaderRegulaDeviceRFIDController tableView:cellForRowAtIndexPath:]
+-[RGLDocumentReaderRegulaDeviceRFIDController tableView:numberOfRowsInSection:]
++[RGLDocumentReaderRegulaDeviceRFIDController showRFIDViewController:docReader:handler:]
++[RGLDocumentReaderRegulaDeviceRFIDController prepareRFIDViewController:docReader:handler:]
++[RGLDocumentReaderRegulaDeviceRFIDController rfidProcessingStatusColor:]
++[RGLDocumentReaderRegulaDeviceRFIDController rfidProcessingStatus:]
++[RGLDocumentReaderRegulaDeviceRFIDController rfidProcessingStatusTopPosition:]
+-[RGLDocumentReaderRegulaDeviceRFIDController setCurrentRfidNotify:]
+___68-[RGLDocumentReaderRegulaDeviceRFIDController setCurrentRfidNotify:]_block_invoke
+-[RGLDocumentReaderRegulaDeviceRFIDController animateRfidImageWithStatus:]
+-[RGLDocumentReaderRegulaDeviceRFIDController animateRfidImageWithStatus:failStatus:completion:]
+-[RGLDocumentReaderRegulaDeviceRFIDController animateRfidImageWithStatus:failMessage:completion:]
+___97-[RGLDocumentReaderRegulaDeviceRFIDController animateRfidImageWithStatus:failMessage:completion:]_block_invoke
+-[RGLDocumentReaderRegulaDeviceRFIDController handleRFIDNotify:]
+___64-[RGLDocumentReaderRegulaDeviceRFIDController handleRFIDNotify:]_block_invoke
+___64-[RGLDocumentReaderRegulaDeviceRFIDController handleRFIDNotify:]_block_invoke.234
+-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke.253
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_2
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_3
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_4
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke.259
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_2.262
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_3.263
+___60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_4.264
+-[RGLDocumentReaderRegulaDeviceRFIDController restartReadingAfterFailWithCode:]
+___79-[RGLDocumentReaderRegulaDeviceRFIDController restartReadingAfterFailWithCode:]_block_invoke
+___79-[RGLDocumentReaderRegulaDeviceRFIDController restartReadingAfterFailWithCode:]_block_invoke_2
+___79-[RGLDocumentReaderRegulaDeviceRFIDController restartReadingAfterFailWithCode:]_block_invoke_3
+-[RGLDocumentReaderRegulaDeviceRFIDController closeRFIDViewControllerWithErrorMessage:]
+___87-[RGLDocumentReaderRegulaDeviceRFIDController closeRFIDViewControllerWithErrorMessage:]_block_invoke
+___87-[RGLDocumentReaderRegulaDeviceRFIDController closeRFIDViewControllerWithErrorMessage:]_block_invoke_2
+___87-[RGLDocumentReaderRegulaDeviceRFIDController closeRFIDViewControllerWithErrorMessage:]_block_invoke_3
+-[RGLDocumentReaderRegulaDeviceRFIDController closeRFIDViewController:]
+-[RGLDocumentReaderRegulaDeviceRFIDController docReader]
+-[RGLDocumentReaderRegulaDeviceRFIDController setDocReader:]
+-[RGLDocumentReaderRegulaDeviceRFIDController rfidImageView]
+-[RGLDocumentReaderRegulaDeviceRFIDController setRfidImageView:]
+-[RGLDocumentReaderRegulaDeviceRFIDController rfidProcessingLabel]
+-[RGLDocumentReaderRegulaDeviceRFIDController setRfidProcessingLabel:]
+-[RGLDocumentReaderRegulaDeviceRFIDController closeButton]
+-[RGLDocumentReaderRegulaDeviceRFIDController setCloseButton:]
+-[RGLDocumentReaderRegulaDeviceRFIDController progressView]
+-[RGLDocumentReaderRegulaDeviceRFIDController setProgressView:]
+-[RGLDocumentReaderRegulaDeviceRFIDController currentDataGroupLabel]
+-[RGLDocumentReaderRegulaDeviceRFIDController setCurrentDataGroupLabel:]
+-[RGLDocumentReaderRegulaDeviceRFIDController resultTableView]
+-[RGLDocumentReaderRegulaDeviceRFIDController setResultTableView:]
+-[RGLDocumentReaderRegulaDeviceRFIDController activityIndicator]
+-[RGLDocumentReaderRegulaDeviceRFIDController setActivityIndicator:]
+-[RGLDocumentReaderRegulaDeviceRFIDController rfidTopConstr]
+-[RGLDocumentReaderRegulaDeviceRFIDController setRfidTopConstr:]
+-[RGLDocumentReaderRegulaDeviceRFIDController rfidCenterPositionConstr]
+-[RGLDocumentReaderRegulaDeviceRFIDController setRfidCenterPositionConstr:]
+-[RGLDocumentReaderRegulaDeviceRFIDController statusArray]
+-[RGLDocumentReaderRegulaDeviceRFIDController setStatusArray:]
+-[RGLDocumentReaderRegulaDeviceRFIDController currentRfidNotify]
+-[RGLDocumentReaderRegulaDeviceRFIDController needToForceFinishScan]
+-[RGLDocumentReaderRegulaDeviceRFIDController setNeedToForceFinishScan:]
+-[RGLDocumentReaderRegulaDeviceRFIDController errorDuringReading]
+-[RGLDocumentReaderRegulaDeviceRFIDController setErrorDuringReading:]
+-[RGLDocumentReaderRegulaDeviceRFIDController rfidReading]
+-[RGLDocumentReaderRegulaDeviceRFIDController setRfidReading:]
+-[RGLDocumentReaderRegulaDeviceRFIDController progressCounter]
+-[RGLDocumentReaderRegulaDeviceRFIDController setProgressCounter:]
+-[RGLDocumentReaderRegulaDeviceRFIDController progressIncrement]
+-[RGLDocumentReaderRegulaDeviceRFIDController setProgressIncrement:]
+-[RGLDocumentReaderRegulaDeviceRFIDController timer]
+-[RGLDocumentReaderRegulaDeviceRFIDController setTimer:]
+-[RGLDocumentReaderRegulaDeviceRFIDController rfidViewControllerHandler]
+-[RGLDocumentReaderRegulaDeviceRFIDController setRfidViewControllerHandler:]
+-[RGLDocumentReaderRegulaDeviceRFIDController rfidSendDataCallbackCompletion]
+-[RGLDocumentReaderRegulaDeviceRFIDController setRfidSendDataCallbackCompletion:]
+-[RGLDocumentReaderRegulaDeviceRFIDController .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._needToForceFinishScan
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._errorDuringReading
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._rfidReading
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._progressCounter
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._progressIncrement
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._statusArray
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._currentRfidNotify
+___block_descriptor_48_e8_32s40w_e8_v12?0B8l
+___block_descriptor_60_e8_32s40s48w_e5_v8?0l
+___block_descriptor_52_e8_32s40w_e5_v8?0l
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._docReader
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._rfidImageView
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._rfidProcessingLabel
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._closeButton
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._progressView
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._currentDataGroupLabel
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._resultTableView
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._activityIndicator
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._rfidTopConstr
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._rfidCenterPositionConstr
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._timer
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._rfidViewControllerHandler
+_OBJC_IVAR_$_RGLDocumentReaderRegulaDeviceRFIDController._rfidSendDataCallbackCompletion
+__OBJC_PROTOCOL_$_UITableViewDataSource
+__OBJC_LABEL_PROTOCOL_$_UITableViewDataSource
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Controllers/RGLDocumentReaderRegulaDeviceRFIDController.m
+DocumentReader/Controllers/RGLDocumentReaderRegulaDeviceRFIDController.m
+DocumentReader/Controllers/RGLDocumentReaderRegulaDeviceRFIDController.h
+__87-[RGLDocumentReaderRegulaDeviceRFIDController closeRFIDViewControllerWithErrorMessage:]_block_invoke_3
+__87-[RGLDocumentReaderRegulaDeviceRFIDController closeRFIDViewControllerWithErrorMessage:]_block_invoke_2
+__87-[RGLDocumentReaderRegulaDeviceRFIDController closeRFIDViewControllerWithErrorMessage:]_block_invoke
+__79-[RGLDocumentReaderRegulaDeviceRFIDController restartReadingAfterFailWithCode:]_block_invoke_3
+__79-[RGLDocumentReaderRegulaDeviceRFIDController restartReadingAfterFailWithCode:]_block_invoke_2
+__79-[RGLDocumentReaderRegulaDeviceRFIDController restartReadingAfterFailWithCode:]_block_invoke
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_4.264
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_3.263
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_2.262
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke.259
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_4
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_3
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke_2
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke.253
+__60-[RGLDocumentReaderRegulaDeviceRFIDController startReadRFID]_block_invoke
+__64-[RGLDocumentReaderRegulaDeviceRFIDController handleRFIDNotify:]_block_invoke.234
+__64-[RGLDocumentReaderRegulaDeviceRFIDController handleRFIDNotify:]_block_invoke
+__97-[RGLDocumentReaderRegulaDeviceRFIDController animateRfidImageWithStatus:failMessage:completion:]_block_invoke
+__68-[RGLDocumentReaderRegulaDeviceRFIDController setCurrentRfidNotify:]_block_invoke
++[RGLConvert convertRect:fromImageSize:viewRect:]
++[RGLConvert convertRectToDictionary:]
++[RGLConvert convertImageFromSampleBuffer:frame:cropRect:cameraPosition:]
++[RGLConvert getImageFromCIImage:frame:cropRect:cameraPosition:]
++[RGLConvert convertPointToRect:toRect:]
++[RGLConvert convertPointsToRect:toRect:]
++[RGLConvert correctedAngle:orientation:]
++[RGLConvert flipYCoordinates:coordinatesSize:]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/RGLConvert.m
+DocumentReader/Engine/Extensions/RGLConvert.m
+-[RGLImageReader paramsWithImage:orientation:manualMetadata:]
+-[RGLImageReader boundsDictFromRect:]
+-[RGLImageReader convertCorners:toRect:]
+-[RGLImageReader barcodeMetadataConvertedType:]
+-[RGLImageReader startWithImages:orientation:handler:]
+-[RGLImageReader processStateFromJSON:]
+-[RGLImageReader dataSource]
+-[RGLImageReader setDataSource:]
+-[RGLImageReader cameraDataSource]
+-[RGLImageReader setCameraDataSource:]
+-[RGLImageReader captureButtonProcess]
+-[RGLImageReader setCaptureButtonProcess:]
+-[RGLImageReader .cxx_destruct]
+_OBJC_IVAR_$_RGLImageReader._captureButtonProcess
+_OBJC_IVAR_$_RGLImageReader._dataSource
+_OBJC_IVAR_$_RGLImageReader._cameraDataSource
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/ImageReader/RGLImageReader/RGLImageReader.m
+DocumentReader/Engine/ImageReader/RGLImageReader/RGLImageReader.m
+DocumentReader/Engine/ImageReader/RGLImageReader/RGLImageReader.h
+-[RGLDocumentReaderJsonResultGroup initWithJSON:]
++[RGLDocumentReaderJsonResultGroup initWithJSON:]
+-[RGLDocumentReaderJsonResultGroup jsonDictionary]
+-[RGLDocumentReaderJsonResultGroup resultType]
+-[RGLDocumentReaderJsonResultGroup lightType]
+-[RGLDocumentReaderJsonResultGroup pageIdx]
+-[RGLDocumentReaderJsonResultGroup jsonResult]
+-[RGLDocumentReaderJsonResultGroup .cxx_destruct]
+_OBJC_IVAR_$_RGLDocumentReaderJsonResultGroup._resultType
+_OBJC_IVAR_$_RGLDocumentReaderJsonResultGroup._lightType
+_OBJC_IVAR_$_RGLDocumentReaderJsonResultGroup._pageIdx
+_OBJC_IVAR_$_RGLDocumentReaderJsonResultGroup._jsonResult
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Models/DocReaderResult/JSONResult/RGLDocumentReaderJsonResultGroup.m
+DocumentReader/Models/DocReaderResult/JSONResult/RGLDocumentReaderJsonResultGroup.m
+DocumentReader/Models/DocReaderResult/JSONResult/RGLDocumentReaderJsonResultGroup.h
+-[RGLNFCAnimationBuilder initWithDocumentImage:]
+-[RGLNFCAnimationBuilder generateAreaInFrame:]
+-[RGLNFCAnimationBuilder calculatePhoneCenterPoint]
+-[RGLNFCAnimationBuilder startPositionAnimation]
+___48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke
+___48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke.54
+___48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke_2
+___48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke_3
+___48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke_4
+___48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke.72
+-[RGLNFCAnimationBuilder startReadingAnimation]
+-[RGLNFCAnimationBuilder stopPositionAnimation]
+-[RGLNFCAnimationBuilder stopReadingAnimation]
+-[RGLNFCAnimationBuilder phoneImageView]
+-[RGLNFCAnimationBuilder setPhoneImageView:]
+-[RGLNFCAnimationBuilder documentImageView]
+-[RGLNFCAnimationBuilder setDocumentImageView:]
+-[RGLNFCAnimationBuilder activityIndicator]
+-[RGLNFCAnimationBuilder setActivityIndicator:]
+-[RGLNFCAnimationBuilder .cxx_destruct]
+___block_descriptor_48_e8_32s_e15_v32?08Q16^B24l
+_OBJC_IVAR_$_RGLNFCAnimationBuilder._phoneImageView
+_OBJC_IVAR_$_RGLNFCAnimationBuilder._documentImageView
+_OBJC_IVAR_$_RGLNFCAnimationBuilder._activityIndicator
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Animation/RGLNFCAnimationBuilder.m
+DocumentReader/Engine/Animation/RGLNFCAnimationBuilder.m
+__48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke.72
+__48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke_4
+__48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke_3
+__48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke_2
+__48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke.54
+__48-[RGLNFCAnimationBuilder startPositionAnimation]_block_invoke
+-[NSString(RGLDatabaseURL) rgl_urlForDatabaseDescription]
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Extensions/NSString/NSString+RGLDatabaseURL.m
+DocumentReader/Engine/Extensions/NSString/NSString+RGLDatabaseURL.m
+/Users/administratorregula/regula/DocumentReaderAPI_Git/DocumentReader/Engine/Constants/RGLExternalConstants.m
+/Users/administratorregula/regula/DocumentReaderAPI_Git/build/DocumentReader.build/Release-iphoneos/DocumentReader.build/DerivedSources/DocumentReader_vers.c
