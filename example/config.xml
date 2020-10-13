@@ -21,6 +21,9 @@
         <edit-config file="AndroidManifest.xml" mode="merge" target="/manifest/application">
             <application android:requestLegacyExternalStorage="true" />
         </edit-config>
+        <config-file parent="/*" target="AndroidManifest.xml">
+            <uses-permission android:name="android.permission.NFC" />
+        </config-file>
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
