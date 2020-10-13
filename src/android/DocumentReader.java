@@ -566,7 +566,6 @@ public class DocumentReader extends CordovaPlugin {
 
     private IDocumentReaderCompletion getCompletion() {
         return (action, results, error) -> {
-            System.out.println("Received action: " + action);
             sendCompletion(action, results, error);
             if (action == DocReaderAction.ERROR || action == DocReaderAction.CANCEL || (action == DocReaderAction.COMPLETE && results.rfidResult == 1))
                 stopBackgroundRFID();
