@@ -36,4 +36,6 @@
             <string>$CAMERA_USAGE_DESCRIPTION</string>
         </config-file>
     </platform>
+    <config-file parent="/manifest/application" platform="android" target="AndroidManifest.xml">
+    </config-file>
 </widget>
