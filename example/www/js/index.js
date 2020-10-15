@@ -60,7 +60,7 @@ var app = {
 
         function recognizeAndroid() {
             var permissions = cordova.plugins.permissions
-            permissions.hasPermission(permissions.READ_EXTERNAL_STORAGE, function( status ){
+            permissions.checkPermission(permissions.READ_EXTERNAL_STORAGE, function( status ){
                 if ( status.hasPermission )
                     recognize()
                 else {
