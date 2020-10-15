@@ -1,0 +1,44 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-document-reader-api" version="5.2.0"
+  xmlns="http://apache.org/cordova/ns/plugins/1.0">
+  <name>DocumentReaderApi</name>
+  <description>Cordova plugin Document reader api</description>
+  <license>commercial</license>
+  <keywords>cordova,document,reader,docreader,regula,scanner,mrz</keywords>
+
+  <js-module name="DocumentReader" src="www/DocumentReader.js">
+    <clobbers target="DocumentReader" />
+  </js-module>
+
+  <platform name="ios">
+    <config-file target="config.xml" parent="/widget">
+      <feature name="DocumentReader">
+        <param name="ios-package" value="RGLDocumentReader" />
+      </feature>
+    </config-file>
+    <header-file src="src/ios/RGLDocumentReader.h" />
+    <source-file src="src/ios/RGLDocumentReader.m" />
+    <header-file src="src/ios/JsonConstructor.h" />
+    <source-file src="src/ios/JsonConstructor.m" />
+    <header-file src="src/ios/RegulaConfig.h" />
+    <source-file src="src/ios/RegulaConfig.m" />
+    <podspec>
+      <config/>
+      <pods>
+        <pod name="DocumentReader" spec="~> 5.2.1331" />
+      </pods>
+    </podspec>
+  </platform>
+
+  <platform name="android">
+    <config-file parent="/*" target="res/xml/config.xml">
+      <feature name="DocumentReader">
+        <param name="android-package" value="cordova.plugin.documentreader.DocumentReader" />
+      </feature>
+    </config-file>
+    <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+    <source-file src="src/android/DocumentReader.java" target-dir="src/cordova.plugin.documentreader" />
+    <source-file src="src/android/JSONConstructor.java" target-dir="src/cordova.plugin.documentreader" />
+    <source-file src="src/android/RegulaConfig.java" target-dir="src/cordova.plugin.documentreader" />
+  </platform>
+</plugin>
