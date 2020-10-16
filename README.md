@@ -24,6 +24,10 @@ $ cordova prepare
 4. Copy the `regula.license` file to the `example/www` folder.
 5. Android:
   * Run `cordova run android` inside `example` folder - this is just one way to run the app. You can also run it directly from within Android Studio.
+
+**Note**: if the gallery doesn't open, check if the following line is presented in the AndroidManifest.xml inside the `application` tag:
+`<activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@android:style/Theme.Holo.Light" />`
+
 6. iOS:
   * Run `cordova run ios` inside `example` folder - this is just one way to run the app. You can also run it directly from within Xcode.
 
