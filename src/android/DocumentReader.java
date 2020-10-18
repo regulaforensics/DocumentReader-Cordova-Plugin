@@ -282,7 +282,6 @@ public class DocumentReader extends CordovaPlugin {
         return true;
     }
 
-<<<<<<< HEAD
     private void startForegroundDispatch(final Activity activity) {
         IntentFilter[] filters = new IntentFilter[1];
         filters[0] = new IntentFilter();
@@ -304,8 +303,6 @@ public class DocumentReader extends CordovaPlugin {
         backgroundRFIDEnabled = false;
     }
 
-=======
->>>>>>> master
     private void getAvailableScenarios(Callback callback) throws JSONException {
         callback.success(JSONConstructor.generateList(Instance().availableScenarios, JSONConstructor::generateDocumentReaderScenario, getContext()).toString());
     }
