@@ -243,7 +243,7 @@ var app = {
                                         }
                                     )
                                 }
-                        }, function(e) { })
+                        }, function(e) { console.log(e) })
                     }
                     reader.readAsArrayBuffer(file)
         })}, function(e) { })
