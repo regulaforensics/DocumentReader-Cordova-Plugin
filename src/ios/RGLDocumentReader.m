@@ -317,7 +317,7 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void) addPKDCertificates:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
-    NSMutableArray<RGLPKDCertificate*>* certificates = [[RGLPKDCertificate init] alloc];
+    NSMutableArray *certificates = [[NSMutableArray alloc] init];
     for(NSDictionary* certificateJSON in input)
         [certificates addObject:[JSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
     [RGLDocReader.shared addPKDCertificates:certificates];
@@ -334,7 +334,11 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void) stopScanner:(Callback)successCallback :(Callback)errorCallback{
-    [RGLDocReader.shared stopScanner:^(){[self result:@"" :successCallback];}];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [RGLDocReader.shared stopScanner:^(){
+            [self result:@"" :successCallback];
+        }];
+    });
 }
 
 - (void) startNewSession:(Callback)successCallback :(Callback)errorCallback{
