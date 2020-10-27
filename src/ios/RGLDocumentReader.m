@@ -218,8 +218,8 @@ typedef void (^Callback)(NSString* response);
     [self result:@"getLicenseMessage() is an android-anly method" :successCallback];
 }
 
-- (void) initializeReader:(NSData*)license :(Callback)successCallback :(Callback)errorCallback{
-    [RGLDocReader.shared initializeReader:license completion:[self getInitCompletion :successCallback :errorCallback]];
+- (void) initializeReader:(NSString*)licenseString :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared initializeReader:[[NSData alloc] initWithBase64EncodedString:licenseString options:0] completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
 - (void) startRFIDReader:(Callback)successCallback :(Callback)errorCallback{
@@ -228,8 +228,8 @@ typedef void (^Callback)(NSString* response);
     });
 }
 
-- (void) initializeReaderWithDatabasePath:(NSData*)license :(NSString*)databasePath :(Callback)successCallback :(Callback)errorCallback{
-    [RGLDocReader.shared initializeReader:license databasePath:databasePath completion:[self getInitCompletion :successCallback :errorCallback]];
+- (void) initializeReaderWithDatabasePath:(NSString*)licenseString :(NSString*)databasePath :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared initializeReader:[[NSData alloc] initWithBase64EncodedString:licenseString options:0] databasePath:databasePath completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
 - (void) prepareDatabase:(NSString*)dbID :(Callback)successCallback :(Callback)errorCallback{
