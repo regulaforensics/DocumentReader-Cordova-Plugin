@@ -214,11 +214,11 @@ var app = {
                         var item = entries[i]
                         if (item.isFile) {
                             var findExt = item.name.split('.')
+                            var pkdResourceType = 0
                             if (findExt.length > 0)
                                 pkdResourceType = Enum.PKDResourceType.getType(findExt[findExt.length - 1].toLowerCase())
                             readFile("www/certificates/" + item.name, function (file, resType) {
                                 resType = resType[0]
-                                console.log("resType: " + resType)
                                 var certificates = []
                                 certificates.push({
                                     'binaryData': file,
