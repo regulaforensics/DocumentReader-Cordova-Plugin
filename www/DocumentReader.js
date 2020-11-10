@@ -5,6 +5,7 @@ class Scenario {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Scenario()
+
         result.frame = jsonObject["frame"]
         result.frameOrientation = jsonObject["frameOrientation"]
         result.uvTorch = jsonObject["uvTorch"]
@@ -19,6 +20,7 @@ class Scenario {
         result.name = jsonObject["name"]
         result.caption = jsonObject["caption"]
         result.description = jsonObject["description"]
+
         return result
     }
 }
@@ -27,10 +29,12 @@ class Rect {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Rect()
+
         result.bottom = jsonObject["bottom"]
         result.top = jsonObject["top"]
         result.left = jsonObject["left"]
         result.right = jsonObject["right"]
+
         return result
     }
 }
@@ -39,6 +43,7 @@ class DocumentReaderGraphicField {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderGraphicField()
+
         result.sourceType = jsonObject["sourceType"]
         result.fieldType = jsonObject["fieldType"]
         result.lightType = jsonObject["lightType"]
@@ -47,6 +52,7 @@ class DocumentReaderGraphicField {
         result.lightName = jsonObject["lightName"]
         result.value = jsonObject["value"]
         result.fieldRect = Rect.fromJson(jsonObject["fieldRect"])
+
         return result
     }
 }
@@ -55,10 +61,12 @@ class DocumentReaderGraphicResult {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderGraphicResult()
+
         result.fields = []
         if (jsonObject["fields"] != null)
             for (const i in jsonObject["fields"])
                 result.fields.push(DocumentReaderGraphicField.fromJson(jsonObject["fields"][i]))
+
         return result
     }
 }
@@ -67,6 +75,7 @@ class DocumentReaderValue {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderValue()
+
         result.pageIndex = jsonObject["pageIndex"]
         result.sourceType = jsonObject["sourceType"]
         result.validity = jsonObject["validity"]
@@ -76,8 +85,9 @@ class DocumentReaderValue {
         result.boundRect = Rect.fromJson(jsonObject["boundRect"])
         result.comparison = {}
         if (jsonObject["comparison"] != null)
-            for (const i in jsonObject["comparison"])
+            for (let i = 0; i < jsonObject["comparison"].length; i++)
                 result.comparison[i] = jsonObject["comparison"][i]
+
         return result
     }
 }
@@ -86,6 +96,7 @@ class DocumentReaderTextField {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderTextField()
+
         result.fieldType = jsonObject["fieldType"]
         result.lcid = jsonObject["lcid"]
         result.status = jsonObject["status"]
@@ -96,6 +107,7 @@ class DocumentReaderTextField {
         if (jsonObject["values"] != null)
             for (const i in jsonObject["values"])
                 result.values.push(DocumentReaderValue.fromJson(jsonObject["values"][i]))
+
         return result
     }
 }
@@ -104,11 +116,13 @@ class DocumentReaderTextResult {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderTextResult()
+
         result.status = jsonObject["status"]
         result.fields = []
         if (jsonObject["fields"] != null)
             for (const i in jsonObject["fields"])
                 result.fields.push(DocumentReaderTextField.fromJson(jsonObject["fields"][i]))
+
         return result
     }
 }
@@ -117,8 +131,10 @@ class Coordinate {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Coordinate()
+
         result.x = jsonObject["x"]
         result.y = jsonObject["y"]
+
         return result
     }
 }
@@ -127,6 +143,7 @@ class ElementPosition {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new ElementPosition()
+
         result.docFormat = jsonObject["docFormat"]
         result.width = jsonObject["width"]
         result.height = jsonObject["height"]
@@ -143,6 +160,7 @@ class ElementPosition {
         result.leftBottom = Coordinate.fromJson(jsonObject["leftBottom"])
         result.rightTop = Coordinate.fromJson(jsonObject["rightTop"])
         result.rightBottom = Coordinate.fromJson(jsonObject["rightBottom"])
+
         return result
     }
 }
@@ -151,9 +169,11 @@ class ImageQuality {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new ImageQuality()
+
         result.featureType = jsonObject["featureType"]
         result.result = jsonObject["result"]
         result.type = jsonObject["type"]
+
         return result
     }
 }
@@ -162,12 +182,14 @@ class ImageQualityGroup {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new ImageQualityGroup()
+
         result.count = jsonObject["count"]
         result.result = jsonObject["result"]
         result.imageQualityList = []
         if (jsonObject["imageQualityList"] != null)
             for (const i in jsonObject["imageQualityList"])
                 result.imageQualityList.push(ImageQuality.fromJson(jsonObject["imageQualityList"][i]))
+
         return result
     }
 }
@@ -176,6 +198,7 @@ class DocumentReaderDocumentType {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderDocumentType()
+
         result.pageIndex = jsonObject["pageIndex"]
         result.documentID = jsonObject["documentID"]
         result.dType = jsonObject["dType"]
@@ -190,30 +213,7 @@ class DocumentReaderDocumentType {
         if (jsonObject["FDSID"] != null)
             for (const i in jsonObject["FDSID"])
                 result.FDSID.push(jsonObject["FDSID"][i])
-        return result
-    }
-}
 
-class DocumentReaderJsonResultGroup {
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new DocumentReaderJsonResultGroup()
-        result.resultType = jsonObject["resultType"]
-        result.lightType = jsonObject["lightType"]
-        result.pageIdx = jsonObject["pageIdx"]
-        result.jsonResult = jsonObject["jsonResult"]
-        return result
-    }
-}
-
-class DocumentReaderJsonResult {
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new DocumentReaderJsonResult()
-        result.results = []
-        if (jsonObject["results"] != null)
-            for (const i in jsonObject["results"])
-                result.results.push(DocumentReaderJsonResultGroup.fromJson(jsonObject["results"][i]))
         return result
     }
 }
@@ -222,9 +222,11 @@ class DocumentReaderNotification {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderNotification()
+
         result.code = jsonObject["code"]
         result.value = jsonObject["value"]
         result.number = jsonObject["number"]
+
         return result
     }
 }
@@ -233,6 +235,7 @@ class AccessControlProcedureType {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new AccessControlProcedureType()
+
         result.activeOptionIdx = jsonObject["activeOptionIdx"]
         result.type = jsonObject["type"]
         result.status = jsonObject["status"]
@@ -240,6 +243,7 @@ class AccessControlProcedureType {
         if (jsonObject["notifications"] != null)
             for (const i in jsonObject["notifications"])
                 result.notifications.push(jsonObject["notifications"][i])
+
         return result
     }
 }
@@ -248,10 +252,12 @@ class FileData {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new FileData()
+
         result.length = jsonObject["length"]
         result.type = jsonObject["type"]
         result.status = jsonObject["status"]
         result.data = jsonObject["data"]
+
         return result
     }
 }
@@ -260,8 +266,10 @@ class CertificateData {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new CertificateData()
+
         result.length = jsonObject["length"]
         result.data = jsonObject["data"]
+
         return result
     }
 }
@@ -270,7 +278,9 @@ class SecurityObjectCertificates {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new SecurityObjectCertificates()
+
         result.securityObject = CertificateData.fromJson(jsonObject["securityObject"])
+
         return result
     }
 }
@@ -279,6 +289,7 @@ class File {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new File()
+
         result.readingTime = jsonObject["readingTime"]
         result.type = jsonObject["type"]
         result.pAStatus = jsonObject["pAStatus"]
@@ -302,6 +313,7 @@ class File {
         if (jsonObject["notifications"] != null)
             for (const i in jsonObject["notifications"])
                 result.notifications.push(jsonObject["notifications"][i])
+
         return result
     }
 }
@@ -310,6 +322,7 @@ class Application {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Application()
+
         result.type = jsonObject["type"]
         result.status = jsonObject["status"]
         result.applicationID = jsonObject["applicationID"]
@@ -320,6 +333,7 @@ class Application {
         if (jsonObject["files"] != null)
             for (const i in jsonObject["files"])
                 result.files.push(File.fromJson(jsonObject["files"][i]))
+
         return result
     }
 }
@@ -328,11 +342,13 @@ class Value {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Value()
+
         result.length = jsonObject["length"]
         result.type = jsonObject["type"]
         result.status = jsonObject["status"]
         result.data = jsonObject["data"]
         result.format = jsonObject["format"]
+
         return result
     }
 }
@@ -341,8 +357,10 @@ class Attribute {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Attribute()
+
         result.type = jsonObject["type"]
         result.value = Value.fromJson(jsonObject["value"])
+
         return result
     }
 }
@@ -351,12 +369,14 @@ class Authority {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Authority()
+
         result.data = jsonObject["data"]
         result.friendlyName = Value.fromJson(jsonObject["friendlyName"])
         result.attributes = []
         if (jsonObject["attributes"] != null)
             for (const i in jsonObject["attributes"])
                 result.attributes.push(Attribute.fromJson(jsonObject["attributes"][i]))
+
         return result
     }
 }
@@ -365,8 +385,10 @@ class Extension {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Extension()
+
         result.data = jsonObject["data"]
         result.type = jsonObject["type"]
+
         return result
     }
 }
@@ -375,8 +397,10 @@ class Validity {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Validity()
+
         result.notAfter = Value.fromJson(jsonObject["notAfter"])
         result.notBefore = Value.fromJson(jsonObject["notBefore"])
+
         return result
     }
 }
@@ -385,6 +409,7 @@ class CertificateChain {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new CertificateChain()
+
         result.origin = jsonObject["origin"]
         result.type = jsonObject["type"]
         result.version = jsonObject["version"]
@@ -404,6 +429,7 @@ class CertificateChain {
         if (jsonObject["extensions"] != null)
             for (const i in jsonObject["extensions"])
                 result.extensions.push(Extension.fromJson(jsonObject["extensions"][i]))
+
         return result
     }
 }
@@ -412,6 +438,7 @@ class SignerInfo {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new SignerInfo()
+
         result.version = jsonObject["version"]
         result.paStatus = jsonObject["paStatus"]
         result.dataToHash = jsonObject["dataToHash"]
@@ -433,6 +460,7 @@ class SignerInfo {
         if (jsonObject["certificateChain"] != null)
             for (const i in jsonObject["certificateChain"])
                 result.certificateChain.push(CertificateChain.fromJson(jsonObject["certificateChain"][i]))
+
         return result
     }
 }
@@ -441,6 +469,7 @@ class SecurityObject {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new SecurityObject()
+
         result.fileReference = jsonObject["fileReference"]
         result.version = jsonObject["version"]
         result.objectType = jsonObject["objectType"]
@@ -452,6 +481,7 @@ class SecurityObject {
         if (jsonObject["signerInfos"] != null)
             for (const i in jsonObject["signerInfos"])
                 result.signerInfos.push(SignerInfo.fromJson(jsonObject["signerInfos"][i]))
+
         return result
     }
 }
@@ -460,6 +490,7 @@ class CardProperties {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new CardProperties()
+
         result.aTQA = jsonObject["aTQA"]
         result.bitRateR = jsonObject["bitRateR"]
         result.bitRateS = jsonObject["bitRateS"]
@@ -474,6 +505,7 @@ class CardProperties {
         result.baudrate1 = jsonObject["baudrate1"]
         result.baudrate2 = jsonObject["baudrate2"]
         result.uID = jsonObject["uID"]
+
         return result
     }
 }
@@ -482,6 +514,7 @@ class RFIDSessionData {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new RFIDSessionData()
+
         result.totalBytesReceived = jsonObject["totalBytesReceived"]
         result.totalBytesSent = jsonObject["totalBytesSent"]
         result.status = jsonObject["status"]
@@ -501,6 +534,7 @@ class RFIDSessionData {
         if (jsonObject["securityObjects"] != null)
             for (const i in jsonObject["securityObjects"])
                 result.securityObjects.push(SecurityObject.fromJson(jsonObject["securityObjects"][i]))
+
         return result
     }
 }
@@ -509,6 +543,7 @@ class DocumentReaderAuthenticityCheck {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderAuthenticityCheck()
+
         result.type = jsonObject["type"]
         result.status = jsonObject["status"]
         result.typeName = jsonObject["typeName"]
@@ -517,6 +552,7 @@ class DocumentReaderAuthenticityCheck {
         if (jsonObject["elements"] != null)
             for (const i in jsonObject["elements"])
                 result.elements.push(DocumentReaderAuthenticityElement.fromJson(jsonObject["elements"][i]))
+
         return result
     }
 }
@@ -525,9 +561,11 @@ class PDF417Info {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new PDF417Info()
+
         result.errorLevel = jsonObject["errorLevel"]
         result.columns = jsonObject["columns"]
         result.rows = jsonObject["rows"]
+
         return result
     }
 }
@@ -536,6 +574,7 @@ class RFIDSessionDataStatus {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new RFIDSessionDataStatus()
+
         result.AA = jsonObject["AA"]
         result.BAC = jsonObject["BAC"]
         result.CA = jsonObject["CA"]
@@ -543,6 +582,7 @@ class RFIDSessionDataStatus {
         result.PACE = jsonObject["PACE"]
         result.TA = jsonObject["TA"]
         result.overallStatus = jsonObject["overallStatus"]
+
         return result
     }
 }
@@ -551,10 +591,12 @@ class DocumentReaderBarcodeResult {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderBarcodeResult()
+
         result.fields = []
         if (jsonObject["fields"] != null)
             for (const i in jsonObject["fields"])
                 result.fields.push(DocumentReaderBarcodeField.fromJson(jsonObject["fields"][i]))
+
         return result
     }
 }
@@ -563,6 +605,7 @@ class DocumentReaderBarcodeField {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderBarcodeField()
+
         result.barcodeType = jsonObject["barcodeType"]
         result.status = jsonObject["status"]
         result.pageIndex = jsonObject["pageIndex"]
@@ -571,6 +614,7 @@ class DocumentReaderBarcodeField {
         if (jsonObject["data"] != null)
             for (const i in jsonObject["data"])
                 result.data.push(jsonObject["data"][i])
+
         return result
     }
 }
@@ -579,11 +623,13 @@ class DocumentReaderAuthenticityResult {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderAuthenticityResult()
+
         result.status = jsonObject["status"]
         result.checks = []
         if (jsonObject["checks"] != null)
             for (const i in jsonObject["checks"])
                 result.checks.push(DocumentReaderAuthenticityCheck.fromJson(jsonObject["checks"][i]))
+
         return result
     }
 }
@@ -592,11 +638,13 @@ class DocumentReaderAuthenticityElement {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderAuthenticityElement()
+
         result.status = jsonObject["status"]
         result.elementType = jsonObject["elementType"]
         result.elementDiagnose = jsonObject["elementDiagnose"]
         result.elementTypeName = jsonObject["elementTypeName"]
         result.elementDiagnoseName = jsonObject["elementDiagnoseName"]
+
         return result
     }
 }
@@ -605,9 +653,11 @@ class DocumentReaderCompletion {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderCompletion()
+
         result.action = jsonObject["action"]
         result.results = DocumentReaderResults.fromJson(jsonObject["results"])
         result.error = Throwable.fromJson(jsonObject["error"])
+
         return result
     }
 }
@@ -616,6 +666,7 @@ class Throwable {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new Throwable()
+
         result.code = jsonObject["code"]
         result.domain = jsonObject["domain"]
         result.localizedMessage = jsonObject["localizedMessage"]
@@ -625,6 +676,7 @@ class Throwable {
         if (jsonObject["stackTrace"] != null)
             for (const i in jsonObject["stackTrace"])
                 result.stackTrace.push(StackTraceElement.fromJson(jsonObject["stackTrace"][i]))
+
         return result
     }
 }
@@ -633,114 +685,74 @@ class StackTraceElement {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new StackTraceElement()
+
         result.lineNumber = jsonObject["lineNumber"]
         result.isNativeMethod = jsonObject["isNativeMethod"]
         result.className = jsonObject["className"]
         result.fileName = jsonObject["fileName"]
         result.methodName = jsonObject["methodName"]
         result.string = jsonObject["string"]
+
         return result
     }
 }
 
 class DocumentReaderResults {
-    getTextFieldValueByType(map) {
-        const fieldType = map.fieldType
-        let lcid = 0
-        let source = -1
-        let original = false
-        if (map.lcid != null)
-            lcid = map.lcid
-        if (map.source != null)
-            source = map.source
-        if (map.original != null)
-            original = map.original
-        if (this.textResult != null) {
-            const field = this.findByTypeAndLcid(fieldType, lcid)
-            if (field != null) {
-                const value = this.findBySource(field, source)
-                if (value != null) {
-                    if (original)
-                        return value.originalValue
-                    return value.value
-                }
-            }
-            return null
-        }
+    getTextFieldValueByType({ fieldType, lcid = 0, source = -1, original = false }) {
+        if (this.textResult == null) return null
+        const field = this.findByTypeAndLcid(fieldType, lcid)
+        if (field == null) return null
+        const value = this.findBySource(field, source)
+        if (value == null) return null
+        return original ? value.originalValue : value.value
     }
-
 
     getTextFieldStatusByType(fieldType, lcid = 0) {
-        if (this.textResult != null) {
-            const field = this.findByTypeAndLcid(fieldType, lcid)
-            if (field != null)
-                return field.status
-        }
-
-        return 0
+        if (this.textResult == null) return 0
+        const field = this.findByTypeAndLcid(fieldType, lcid)
+        return field != null ? field.status : 0
     }
 
-    getGraphicFieldImageByType(map) {
-        const fieldType = map.fieldType
-        let source = -1
-        let pageIndex = -1
-        let light = -1
-        if (map.source != null)
-            source = map.source
-        if (map.pageIndex != null)
-            pageIndex = map.pageIndex
-        if (map.light != null)
-            light = map.light
-        if (this.graphicResult != null) {
-            const foundFields = []
-            for (let field in this.graphicResult.fields) {
-                field = this.graphicResult.fields[field]
-                if (field.fieldType === fieldType)
-                    foundFields.push(field)
-            }
+    getGraphicFieldImageByType({ fieldType, source = -1, pageIndex = -1, light = -1 }) {
+        if (this.graphicResult == null) return null
+        const foundFields = []
 
-            if (source !== -1)
-                for (const index in foundFields)
-                    if (foundFields[index].sourceType !== source)
-                        foundFields.splice(index, 1)
-
-            if (light !== -1)
-                for (const index in foundFields)
-                    if (foundFields[index].light !== light)
-                        foundFields.splice(index, 1)
-
-            if (pageIndex !== -1)
-                for (const index in foundFields)
-                    if (foundFields[index].pageIndex !== pageIndex)
-                        foundFields.splice(index, 1)
-
-            if (foundFields.length > 0)
-                return foundFields[0].value
-        }
-        return null
+        for (const field of this.graphicResult.fields)
+            if (field.fieldType === fieldType)
+                foundFields.push(field)
+        if (source !== -1)
+            for (const index in foundFields)
+                if (foundFields[index].sourceType !== source)
+                    foundFields.splice(index, 1)
+        if (light !== -1)
+            for (const index in foundFields)
+                if (foundFields[index].lightType !== light)
+                    foundFields.splice(index, 1)
+        if (pageIndex !== -1)
+            for (const index in foundFields)
+                if (foundFields[index].pageIndex !== pageIndex)
+                    foundFields.splice(index, 1)
+        if (foundFields.length > 0)
+            return foundFields[0].value
     }
 
     getQualityResult(imageQualityCheckType, securityFeature = -1) {
         let resultSum = 2
-        if (this.imageQuality != null) {
-            for (const index in this.imageQuality.imageQualityList) {
-                const field = this.imageQuality.imageQualityList[index]
-                if (field.type === imageQualityCheckType) {
-                    if (securityFeature === -1) {
-                        if (field.result === 0) {
-                            resultSum = 0
-                            break
-                        }
+        if (this.imageQuality == null) return resultSum
 
-                        if (field.result === 1)
-                            resultSum = field.result
-                    } else if (field.featureType === securityFeature) {
-                        resultSum = field.result
+        for (const field of this.imageQuality.imageQualityList)
+            if (field.type === imageQualityCheckType)
+                if (securityFeature === -1) {
+                    if (field.result === 0) {
+                        resultSum = 0
                         break
                     }
+                    if (field.result === 1)
+                        resultSum = field.result
+                } else if (field.featureType === securityFeature) {
+                    resultSum = field.result
+                    break
                 }
-            }
-        }
 
         return resultSum
     }
@@ -749,26 +761,21 @@ class DocumentReaderResults {
         let field
         const foundFields = []
 
-        for (field in this.textResult.fields) {
-            field = this.textResult.fields[field]
+        for (field of this.textResult.fields)
             if (field.fieldType === type)
                 foundFields.push(field)
-        }
-
         if (foundFields.length <= 0)
             return null
 
         let foundField = null
 
-        for (field in foundFields) {
-            field = foundFields[field]
+        for (field of foundFields)
             if (lcid === 0) {
                 foundField = field
                 if (field.lcid === lcid)
                     break
             } else if (field.lcid === lcid)
                 return field
-        }
 
         return foundField
     }
@@ -785,19 +792,17 @@ class DocumentReaderResults {
             const visualVal = this.findBySource(field, 17)
             return visualVal != null ? visualVal : null
         }
-        for (let item in field.values) {
-            item = field.values[item]
+        for (const item of field.values)
             if (item.sourceType === sourceType)
                 return item
-        }
 
         return null
-
     }
 
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
         const result = new DocumentReaderResults()
+
         result.chipPage = jsonObject["chipPage"]
         result.overallResult = jsonObject["overallResult"]
         result.processingFinishedStatus = jsonObject["processingFinishedStatus"]
@@ -812,7 +817,7 @@ class DocumentReaderResults {
         result.barcodePosition = ElementPosition.fromJson(jsonObject["barcodePosition"])
         result.mrzPosition = ElementPosition.fromJson(jsonObject["mrzPosition"])
         result.imageQuality = ImageQualityGroup.fromJson(jsonObject["imageQuality"])
-        result.jsonResult = DocumentReaderJsonResult.fromJson(jsonObject["jsonResult"])
+        result.rawResult = jsonObject["rawResult"]
         result.documentReaderNotification = DocumentReaderNotification.fromJson(jsonObject["documentReaderNotification"])
         result.rfidSessionData = RFIDSessionData.fromJson(jsonObject["rfidSessionData"])
         result.authenticityResult = DocumentReaderAuthenticityResult.fromJson(jsonObject["authenticityResult"])
@@ -821,6 +826,7 @@ class DocumentReaderResults {
         if (jsonObject["documentType"] != null)
             for (const i in jsonObject["documentType"])
                 result.documentType.push(DocumentReaderDocumentType.fromJson(jsonObject["documentType"][i]))
+
         return result
     }
 }
@@ -4923,49 +4929,49 @@ const UIViewContentMode = {
 }
 
 const Enum = {
-   BarcodeResult: BarcodeResult,
-   BarcodeType: BarcodeType,
-   CameraTypes: CameraTypes,
-   CaptureMode: CaptureMode,
-   diDocType: diDocType,
-   DocFormat: DocFormat,
-   DocReaderAction: DocReaderAction,
-   DocReaderFrame: DocReaderFrame,
-   DocReaderOrientation: DocReaderOrientation,
-   eCheckDiagnose: eCheckDiagnose,
-   eCheckResult: eCheckResult,
-   eGraphicFieldType: eGraphicFieldType,
-   eImageQualityCheckType: eImageQualityCheckType,
-   eProcessGLCommands: eProcessGLCommands,
-   eRequestCommand: eRequestCommand,
-   eRFID_AccessControl_ProcedureType: eRFID_AccessControl_ProcedureType,
-   eRFID_AuthenticationProcedureType: eRFID_AuthenticationProcedureType,
-   eRFID_BaudRate: eRFID_BaudRate,
-   eRFID_CertificateType: eRFID_CertificateType,
-   eRFID_DataFile_Type: eRFID_DataFile_Type,
-   eRFID_NotificationAndErrorCodes: eRFID_NotificationAndErrorCodes,
-   eRFID_Password_Type: eRFID_Password_Type,
-   eRFID_SDK_ProfilerType: eRFID_SDK_ProfilerType,
-   eRFID_TerminalType: eRFID_TerminalType,
-   eRPRM_Authenticity: eRPRM_Authenticity,
-   eRPRM_FieldVerificationResult: eRPRM_FieldVerificationResult,
-   eRPRM_Lights: eRPRM_Lights,
-   eRPRM_ResultType: eRPRM_ResultType,
-   eRPRM_SecurityFeatureType: eRPRM_SecurityFeatureType,
-   eSignManagementAction: eSignManagementAction,
-   eVisualFieldType: eVisualFieldType,
-   FontStyle: FontStyle,
-   FrameShapeType: FrameShapeType,
-   LCID: LCID,
-   PKDResourceType: PKDResourceType,
-   ProcessingFinishedStatus: ProcessingFinishedStatus,
-   RGLMeasureSystem: RGLMeasureSystem,
-   ScenarioIdentifier: ScenarioIdentifier,
-   LineCap: LineCap,
-   UIInterfaceOrientationMask: UIInterfaceOrientationMask,
-   AVCaptureSessionPreset: AVCaptureSessionPreset,
-   AVCaptureDevicePosition: AVCaptureDevicePosition,
-   UIViewContentMode: UIViewContentMode,
+   BarcodeResult,
+   BarcodeType,
+   CameraTypes,
+   CaptureMode,
+   diDocType,
+   DocFormat,
+   DocReaderAction,
+   DocReaderFrame,
+   DocReaderOrientation,
+   eCheckDiagnose,
+   eCheckResult,
+   eGraphicFieldType,
+   eImageQualityCheckType,
+   eProcessGLCommands,
+   eRequestCommand,
+   eRFID_AccessControl_ProcedureType,
+   eRFID_AuthenticationProcedureType,
+   eRFID_BaudRate,
+   eRFID_CertificateType,
+   eRFID_DataFile_Type,
+   eRFID_NotificationAndErrorCodes,
+   eRFID_Password_Type,
+   eRFID_SDK_ProfilerType,
+   eRFID_TerminalType,
+   eRPRM_Authenticity,
+   eRPRM_FieldVerificationResult,
+   eRPRM_Lights,
+   eRPRM_ResultType,
+   eRPRM_SecurityFeatureType,
+   eSignManagementAction,
+   eVisualFieldType,
+   FontStyle,
+   FrameShapeType,
+   LCID,
+   PKDResourceType,
+   ProcessingFinishedStatus,
+   RGLMeasureSystem,
+   ScenarioIdentifier,
+   LineCap,
+   UIInterfaceOrientationMask,
+   AVCaptureSessionPreset,
+   AVCaptureDevicePosition,
+   UIViewContentMode,
 }
 
 const DocumentReader = {}

@@ -739,7 +739,7 @@
             resType = RGLPKDResourceTypeCertificate_PA;
             break;
     }
-    
+
     return [[RGLPKDCertificate alloc] initWithBinaryData:binaryData resourceType:(RGLPKDResourceType)resType privateKey:privateKey];
 }
 
