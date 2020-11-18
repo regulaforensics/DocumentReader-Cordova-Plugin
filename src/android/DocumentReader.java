@@ -459,7 +459,7 @@ public class DocumentReader extends CordovaPlugin {
         List<PKDCertificate> certificates = new ArrayList<>();
         for (int i = 0; i < certificatesJSON.length(); i++) {
             JSONObject certificate = certificatesJSON.getJSONObject(i);
-            certificates.add(new PKDCertificate(JSONConstructor.byteArrayFromJson(certificate.getJSONArray("binaryData")), certificate.getInt("resourceType"), certificate.has("certificate") ? JSONConstructor.byteArrayFromJson(certificate.getJSONArray("privateKey")) : null));
+            certificates.add(new PKDCertificate(Base64.decode(certificate.get("binaryData").toString(), Base64.DEFAULT), certificate.getInt("resourceType"), certificate.has("privateKey") ? Base64.decode(certificate.get("privateKey").toString(), Base64.DEFAULT) : null));
         }
         Instance().addPKDCertificates(certificates);
         callback.success();

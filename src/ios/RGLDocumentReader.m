@@ -218,8 +218,8 @@ typedef void (^Callback)(NSString* response);
     [self result:@"getLicenseMessage() is an android-anly method" :successCallback];
 }
 
-- (void) initializeReader:(NSData*)license :(Callback)successCallback :(Callback)errorCallback{
-    [RGLDocReader.shared initializeReader:license completion:[self getInitCompletion :successCallback :errorCallback]];
+- (void) initializeReader:(NSString*)licenseString :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared initializeReader:[[NSData alloc] initWithBase64EncodedString:licenseString options:0] completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
 - (void) startRFIDReader:(Callback)successCallback :(Callback)errorCallback{
@@ -228,8 +228,8 @@ typedef void (^Callback)(NSString* response);
     });
 }
 
-- (void) initializeReaderWithDatabasePath:(NSData*)license :(NSString*)databasePath :(Callback)successCallback :(Callback)errorCallback{
-    [RGLDocReader.shared initializeReader:license databasePath:databasePath completion:[self getInitCompletion :successCallback :errorCallback]];
+- (void) initializeReaderWithDatabasePath:(NSString*)licenseString :(NSString*)databasePath :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared initializeReader:[[NSData alloc] initWithBase64EncodedString:licenseString options:0] databasePath:databasePath completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
 - (void) prepareDatabase:(NSString*)dbID :(Callback)successCallback :(Callback)errorCallback{
@@ -317,7 +317,7 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void) addPKDCertificates:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
-    NSMutableArray<RGLPKDCertificate*>* certificates = [[RGLPKDCertificate init] alloc];
+    NSMutableArray *certificates = [[NSMutableArray alloc] init];
     for(NSDictionary* certificateJSON in input)
         [certificates addObject:[JSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
     [RGLDocReader.shared addPKDCertificates:certificates];
@@ -334,7 +334,11 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void) stopScanner:(Callback)successCallback :(Callback)errorCallback{
-    [RGLDocReader.shared stopScanner:^(){[self result:@"" :successCallback];}];
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [RGLDocReader.shared stopScanner:^(){
+            [self result:@"" :successCallback];
+        }];
+    });
 }
 
 - (void) startNewSession:(Callback)successCallback :(Callback)errorCallback{

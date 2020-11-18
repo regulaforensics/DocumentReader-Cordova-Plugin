@@ -32,7 +32,7 @@ var app = {
                 input.value = Scenario.fromJson(typeof scenarios[index] === "string" ? JSON.parse(scenarios[index]) : scenarios[index]).name
                 if (index == 0)
                     input.checked = true
-                input.onclick = function() { DocumentReader.setConfig({ processParams: { scenario: this.value } }, function (m) { }, function(e) { }) }
+                input.onclick = function () { DocumentReader.setConfig({ processParams: { scenario: this.value } }, function (m) { }, function (e) { }) }
                 input.style.display = "inline-block"
                 document.getElementById("scenariosRadioGroup").appendChild(input)
                 var label = document.createElement("span")
@@ -40,7 +40,7 @@ var app = {
                 label.style.display = "inline-block"
                 label.style.width = "200px"
                 label.radioButton = input
-                label.onclick = function() { this.radioButton.click() }
+                label.onclick = function () { this.radioButton.click() }
                 document.getElementById("scenariosRadioGroup").appendChild(label)
                 document.getElementById("scenariosRadioGroup").appendChild(document.createElement("br"))
             }
@@ -48,55 +48,58 @@ var app = {
                 document.getElementById("rfidCheckbox").disabled = false
                 document.getElementById("rfidCheckboxText").style.color = "black"
                 document.getElementById("rfidCheckboxText").innerHTML = "Process rfid reading"
-                document.getElementById("rfidCheckboxText").onclick = function() { document.getElementById("rfidCheckbox").click() }
-                document.getElementById("rfidCheckbox").onchange = function() { doRfid = this.checked }
+                document.getElementById("rfidCheckboxText").onclick = function () { document.getElementById("rfidCheckbox").click() }
+                document.getElementById("rfidCheckbox").onchange = function () { doRfid = this.checked }
             }
         }
 
         function scan() {
-            DocumentReader.showScanner(function(m) {
-            handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) { })
+            DocumentReader.showScanner(function (m) {
+                handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m)))
+            }, function (e) { })
         }
 
         function recognizeAndroid() {
             var permissions = cordova.plugins.permissions
-            permissions.checkPermission(permissions.READ_EXTERNAL_STORAGE, function( status ){
-                if ( status.hasPermission )
+            permissions.checkPermission(permissions.READ_EXTERNAL_STORAGE, function (status) {
+                if (status.hasPermission)
                     recognize()
                 else {
-                    permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, function success( status ) {
-                        if( status.hasPermission ) 
+                    permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, function success(status) {
+                        if (status.hasPermission)
                             recognize()
                     }, function error() {
-                        console.warn('READ_EXTERNAL_STORAGE permission denied');
+                        console.warn('READ_EXTERNAL_STORAGE permission denied')
                     })
                 }
             })
         }
 
         function stopRfid() {
-            hideRfidUI();
-            DocumentReader.stopRFIDReader(function(e) { }, function(e) { })
+            hideRfidUI()
+            DocumentReader.stopRFIDReader(function (e) { }, function (e) { })
         }
 
         function recognize() {
-            window.imagePicker.getPictures(function(results) {
-                    if (results.length > 0) {
-                        clearResults()
-                        document.getElementById("status").innerHTML = "copying image......"
-                        document.getElementById("status").style.backgroundColor = "grey"
-                    }
-                    window.resolveLocalFileSystemURL(results[0], function gotFile(fileEntry) { fileEntry.file(function(file) {
-                                var reader = new FileReader()
-                                reader.onloadend = function(e) {
-                                    var base64 = this.result.substring(23)
-                                    document.getElementById("status").innerHTML = "processing image......"
-                                    document.getElementById("status").style.backgroundColor = "grey"
-                                    DocumentReader.recognizeImage(base64, function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) { })
-                                }
-                                reader.readAsDataURL(file)
-                            })}, function(e) { })
-                    }, function(e){ }, { maximumImagesCount: 1 })
+            window.imagePicker.getPictures(function (results) {
+                if (results.length > 0) {
+                    clearResults()
+                    document.getElementById("status").innerHTML = "copying image......"
+                    document.getElementById("status").style.backgroundColor = "grey"
+                }
+                window.resolveLocalFileSystemURL(results[0], function gotFile(fileEntry) {
+                    fileEntry.file(function (file) {
+                        var reader = new FileReader()
+                        reader.onloadend = function (e) {
+                            var base64 = this.result.substring(23)
+                            document.getElementById("status").innerHTML = "processing image......"
+                            document.getElementById("status").style.backgroundColor = "grey"
+                            DocumentReader.recognizeImage(base64, function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
+                        }
+                        reader.readAsDataURL(file)
+                    })
+                }, function (e) { })
+            }, function (e) { }, { maximumImagesCount: 1 })
         }
 
         function handleCompletion(completion) {
@@ -147,7 +150,7 @@ var app = {
         }
 
         function updateRfidUI(results) {
-            if (results.code === Enum.eRFID_NotificationAndErrorCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP){
+            if (results.code === Enum.eRFID_NotificationAndErrorCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
                 rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.number)
                 document.getElementById("rfidDescription").innerHTML = rfidDescription
             }
@@ -158,17 +161,17 @@ var app = {
             rfidProgress = results.value
             document.getElementById("rfidProgress").value = rfidProgress
             if (window.cordova.platformId === 'ios')
-                DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + results.value + "%", function(e) { }, function(e) { })
+                DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + results.value + "%", function (e) { }, function (e) { })
         }
 
         function customRFID() {
             showRfidUI()
-            DocumentReader.readRFID(function(m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) { })
-          }
+            DocumentReader.readRFID(function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
+        }
 
         function usualRFID() {
             doRfid = false
-            DocumentReader.startRFIDReader(function(m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) { })
+            DocumentReader.startRFIDReader(function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
         }
 
         function handleResults(results) {
@@ -177,16 +180,16 @@ var app = {
                 accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_MRZ_STRINGS)
                 if (accessKey != null && accessKey != "") {
                     accessKey = accessKey.replace(/^/g, '').replace(/\n/g, '')
-                    DocumentReader.setRfidScenario({ mrz: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_MRZ }, function(m) { }, function(e) { })
+                    DocumentReader.setRfidScenario({ mrz: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_MRZ }, function (m) { }, function (e) { })
                 } else {
-                    accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_CARD_ACCESS_NUMBER);
+                    accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_CARD_ACCESS_NUMBER)
                     if (accessKey != null && accessKey != "")
-                        DocumentReader.setRfidScenario({ password: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_CAN }, function(m) { }, function(e) { })
+                        DocumentReader.setRfidScenario({ password: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_CAN }, function (m) { }, function (e) { })
                 }
                 //customRFID()
                 usualRFID()
             } else
-                displayResults(results);
+                displayResults(results)
         }
 
         function displayResults(results) {
@@ -204,49 +207,83 @@ var app = {
             document.getElementById("portraitImage").src = "img/portrait.png"
         }
 
-        window.resolveLocalFileSystemURL(cordova.file.applicationDirectory + "www/regula.license", function(fileEntry) { fileEntry.file(function(file) {
-                    var reader = new FileReader();
-                    reader.onloadend = function(e) {
-                        var license = this.result;
-                        DocumentReader.prepareDatabase("Full", function(message) {
-                                if (message != "database prepared")
-                                    document.getElementById("status").innerHTML = "Downloading database: " + message + "%";
-                                else {
-                                    document.getElementById("status").innerHTML = "Loading......";
-                                    DocumentReader.initializeReader(license, function(message) {
-                                            document.getElementById("status").innerHTML = "Ready"
-                                            document.getElementById("status").style.backgroundColor = "green"
-                                            document.getElementById("showScannerButton").addEventListener("click", scan)
-                                            if (window.cordova.platformId == "android")
-                                                document.getElementById("showImagePicker").addEventListener("click", recognizeAndroid)
-                                            if (window.cordova.platformId == "ios")
-                                                document.getElementById("showImagePicker").addEventListener("click", recognize)
-                                            DocumentReader.setConfig({
-                                                functionality: {
-                                                    videoCaptureMotionControl: true,
-                                                    showCaptureButton: true
-                                                }, customization: {
-                                                    showResultStatusMessages: true,
-                                                    showStatusMessages: true
-                                                }, processParams: {
-                                                    scenario: "Mrz",
-                                                    doRfid: false,
-                                                },
-                                            }, function(m) { }, function(e) { })
-                                            DocumentReader.getAvailableScenarios(function(s) {
-                                                    DocumentReader.isRFIDAvailableForUse(function(r) { postInitialize(JSON.parse(s), r) },
-                                                    function(e) { }) }, function(e) { })
-                                        }, function(error) {
-                                            console.log(error)
-                                            document.getElementById("status").innerHTML = error
-                                            document.getElementById("status").style.backgroundColor = "red"
-                                        }
-                                    )
-                                }
-                        }, function(e) { })
+        function addCertificates() {
+            window.resolveLocalFileSystemURL(cordova.file.applicationDirectory + "www/certificates/", function (fileSystem) {
+                fileSystem.createReader().readEntries(function (entries) {
+                    for (var i in entries) {
+                        var item = entries[i]
+                        if (item.isFile) {
+                            var findExt = item.name.split('.')
+                            var pkdResourceType = 0
+                            if (findExt.length > 0)
+                                pkdResourceType = Enum.PKDResourceType.getType(findExt[findExt.length - 1].toLowerCase())
+                            readFile("www/certificates/" + item.name, function (file, resType) {
+                                resType = resType[0]
+                                var certificates = []
+                                certificates.push({
+                                    'binaryData': file,
+                                    'resourceType': resType
+                                })
+                                DocumentReader.addPKDCertificates(certificates, function (s) {
+                                    console.log("certificate added")
+                                }, function (e) { console.log(e) })
+                            }, pkdResourceType)
+                        }
                     }
-                    reader.readAsArrayBuffer(file)
-        })}, function(e) { })
+                }, function (err) { console.log(err) })
+            }, function (err) { console.log(err) })
+        }
+
+        function readFile(path, callback, ...items) {
+            window.resolveLocalFileSystemURL(cordova.file.applicationDirectory + path, function (fileEntry) {
+                fileEntry.file(function (file) {
+                    var reader = new FileReader()
+                    reader.onloadend = function (e) {
+                        callback(this.result.substring(this.result.indexOf(',') + 1), items)
+                    }
+                    reader.readAsDataURL(file)
+                })
+            }, function (e) { console.log(JSON.stringify(e)) })
+        }
+
+        readFile("www/regula.license", function (license) {
+            DocumentReader.prepareDatabase("Full", function (message) {
+                if (message != "database prepared")
+                    document.getElementById("status").innerHTML = "Downloading database: " + message + "%"
+                else {
+                    document.getElementById("status").innerHTML = "Loading......"
+                    DocumentReader.initializeReader(license, function (message) {
+                        document.getElementById("status").innerHTML = "Ready"
+                        document.getElementById("status").style.backgroundColor = "green"
+                        document.getElementById("showScannerButton").addEventListener("click", scan)
+                        if (window.cordova.platformId == "android")
+                            document.getElementById("showImagePicker").addEventListener("click", recognizeAndroid)
+                        if (window.cordova.platformId == "ios")
+                            document.getElementById("showImagePicker").addEventListener("click", recognize)
+                        DocumentReader.setConfig({
+                            functionality: {
+                                videoCaptureMotionControl: true,
+                                showCaptureButton: true
+                            }, customization: {
+                                showResultStatusMessages: true,
+                                showStatusMessages: true
+                            }, processParams: {
+                                scenario: "Mrz",
+                                doRfid: false,
+                            },
+                        }, function (m) { }, function (e) { })
+                        DocumentReader.getAvailableScenarios(function (s) {
+                            DocumentReader.isRFIDAvailableForUse(function (r) { postInitialize(JSON.parse(s), r) }, function (e) { })
+                        }, function (e) { })
+                        addCertificates()
+                    }, function (error) {
+                        console.log(error)
+                        document.getElementById("status").innerHTML = error
+                        document.getElementById("status").style.backgroundColor = "red"
+                    })
+                }
+            }, function (e) { console.log(e) })
+        })
     },
 
     receivedEvent: function (id) {
