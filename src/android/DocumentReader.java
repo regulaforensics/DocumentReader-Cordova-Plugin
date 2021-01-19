@@ -583,7 +583,7 @@ public class DocumentReader extends CordovaPlugin {
             }
 
             @Override
-            public void onPrepareCompleted(boolean status, Throwable error) {
+            public void onPrepareCompleted(boolean status, DocumentReaderException error) {
                 if (status)
                     callback.success("database prepared");
                 else
