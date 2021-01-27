@@ -173,6 +173,10 @@ class ImageQuality {
         result.featureType = jsonObject["featureType"]
         result.result = jsonObject["result"]
         result.type = jsonObject["type"]
+        result.boundRects = []
+        if (jsonObject["boundRects"] != null)
+            for (const i in jsonObject["boundRects"])
+                result.boundRects.push(Rect.fromJson(jsonObject["boundRects"][i]))
 
         return result
     }
@@ -1166,6 +1170,21 @@ const DocReaderOrientation = {
     LANDSCAPE: 2,
 }
 
+const DocumentReaderException = {
+    NATIVE_JAVA_EXCEPTION: 0,
+    DOCUMENT_READER_STATE_EXCEPTION: 1,
+    DOCUMENT_READER_WRONG_INPUT: 2,
+    DOCUMENT_READER_BLE_EXCEPTION: 201,
+    DB_DOWNLOAD_ERROR: 301,
+    LICENSE_ABSENT_OR_CORRUPTED: 101,
+    LICENSE_INVALID_DATE: 102,
+    LICENSE_INVALID_VERSION: 103,
+    LICENSE_INVALID_DEVICE_ID: 104,
+    LICENSE_INVALID_SYSTEM_OR_APP_ID: 105,
+    LICENSE_NO_CAPABILITIES: 106,
+    LICENSE_NO_AUTHENTICITY: 107,
+}
+
 const eCheckDiagnose = {
     UNKNOWN: 0,
     PASS: 1,
@@ -1198,6 +1217,7 @@ const eCheckDiagnose = {
     VISIBLE_ELEMENT_ABSENT: 41,
     ELEMENT_SHOULD_BE_COLORED: 42,
     ELEMENT_SHOULD_BE_GRAYSCALE: 43,
+    PHOTO_WHITE_IR_DONT_MATCH: 44,
     UV_DULL_PAPER_MRZ: 50,
     FALSE_LUMINISCENCE_IN_MRZ: 51,
     UV_DULL_PAPER_PHOTO: 52,
@@ -1207,6 +1227,7 @@ const eCheckDiagnose = {
     BAD_AREA_IN_AXIAL: 60,
     FALSE_IPI_PARAMETERS: 65,
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: 80,
+    FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: 81,
     OVI_IR_INVISIBLE: 90,
     OVI_INSUFFICIENT_AREA: 91,
     OVI_COLOR_INVARIABLE: 92,
@@ -1217,6 +1238,8 @@ const eCheckDiagnose = {
     HOLOGRAM_ELEMENT_ABSENT: 100,
     HOLOGRAM_SIDE_TOP_IMAGES_ABSENT: 101,
     HOLOGRAM_ELEMENT_PRESENT: 102,
+    HOLOGRAM_FRAMES_IS_ABSENT: 103,
+    HOLOGRAM_HOLO_FIELD_IS_ABSENT: 104,
     PHOTO_PATTERN_INTERRUPTED: 110,
     PHOTO_PATTERN_SHIFTED: 111,
     PHOTO_PATTERN_DIFFERENT_COLORS: 112,
@@ -1241,13 +1264,21 @@ const eCheckDiagnose = {
     PORTRAIT_COMPARISON_PORTRAITS_DIFFER: 150,
     PORTRAIT_COMPARISON_NO_SERVICE_REPLY: 151,
     PORTRAIT_COMPARISON_SERVICE_ERROR: 152,
-    PPORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: 153,
+    PORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: 153,
     PORTRAIT_COMPARISON_NO_LIVE_PHOTO: 154,
     PORTRAIT_COMPARISON_NO_SERVICE_LICENSE: 155,
     PORTRAIT_COMPARISON_NO_PORTRAIT_DETECTED: 156,
     MOBILE_IMAGES_UNSUITABLE_LIGHT_CONDITIONS: 160,
     MOBILE_IMAGES_WHITE_UV_NO_DIFFERENCE: 161,
-    LAST_DIAGNOSE_VALUE: 162,
+    FINGERPRINTS_COMPARISON_MISMATCH: 170,
+    HOLO_PHOTO_FACE_NOT_DETECTED: 180,
+    HOLO_PHOTO_FACE_COMPARISON_FAILED: 181,
+    HOLO_PHOTO_FACE_GLARE_IN_CENTER_ABSENT: 182,
+    HOLO_ELEMENT_SHAPE_ERROR: 183,
+    ALGORITHM_STEPS_ERROR: 184,
+    HOLO_AREAS_NOT_LOADED: 185,
+    FINISHED_BY_TIMEOUT: 186,
+    LAST_DIAGNOSE_VALUE: 190,
 }
 
 const eCheckResult = {
@@ -1336,6 +1367,8 @@ const eImageQualityCheckType = {
     IQC_IMAGE_GLARES: 0,
     IQC_IMAGE_FOCUS: 1,
     IQC_IMAGE_RESOLUTION: 2,
+    IQC_PERSPECTIVE: 3,
+    IQC_BOUNDS: 4,
 }
 
 const eProcessGLCommands = {
@@ -5037,6 +5070,7 @@ const Enum = {
    DocReaderAction,
    DocReaderFrame,
    DocReaderOrientation,
+   DocumentReaderException,
    eCheckDiagnose,
    eCheckResult,
    eGraphicFieldType,
@@ -5110,26 +5144,26 @@ DocumentReader.resetConfiguration = (successCallback, errorCallback) => cordova.
 DocumentReader.clearPKDCertificates = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearPKDCertificates"])
 DocumentReader.readRFID = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["readRFID"])
 DocumentReader.getRfidSessionStatus = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getRfidSessionStatus"])
-DocumentReader.setEnableCoreLogs = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setEnableCoreLogs", arg0])
-DocumentReader.addPKDCertificates = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", arg0])
-DocumentReader.setCameraSessionIsPaused = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setCameraSessionIsPaused", arg0])
-DocumentReader.getScenario = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getScenario", arg0])
-DocumentReader.recognizeImages = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImages", arg0])
-DocumentReader.showScannerWithCameraID = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["showScannerWithCameraID", arg0])
-DocumentReader.runAutoUpdate = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["runAutoUpdate", arg0])
-DocumentReader.setConfig = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setConfig", arg0])
-DocumentReader.setRfidScenario = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidScenario", arg0])
-DocumentReader.initializeReader = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReader", arg0])
-DocumentReader.initializeReaderWithDatabasePath = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabasePath", arg0, arg1])
-DocumentReader.prepareDatabase = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["prepareDatabase", arg0])
-DocumentReader.recognizeImage = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImage", arg0])
-DocumentReader.setRfidSessionStatus = (arg0, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidSessionStatus", arg0])
-DocumentReader.recognizeImageFrame = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageFrame", arg0, arg1])
-DocumentReader.recognizeImageWithOpts = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithOpts", arg0, arg1])
-DocumentReader.recognizeVideoFrame = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeVideoFrame", arg0, arg1])
-DocumentReader.showScannerWithCameraIDAndOpts = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["showScannerWithCameraIDAndOpts", arg0, arg1])
-DocumentReader.recognizeImageWithImageInputParams = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithImageInputParams", arg0, arg1])
-DocumentReader.recognizeImageWithCameraMode = (arg0, arg1, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithCameraMode", arg0, arg1])
+DocumentReader.setEnableCoreLogs = (logs, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setEnableCoreLogs", logs])
+DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", certificates])
+DocumentReader.setCameraSessionIsPaused = (paused, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setCameraSessionIsPaused", paused])
+DocumentReader.getScenario = (scenario, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getScenario", scenario])
+DocumentReader.recognizeImages = (images, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImages", images])
+DocumentReader.showScannerWithCameraID = (cameraID, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["showScannerWithCameraID", cameraID])
+DocumentReader.runAutoUpdate = (databaseType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["runAutoUpdate", databaseType])
+DocumentReader.setConfig = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setConfig", config])
+DocumentReader.setRfidScenario = (scenario, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidScenario", scenario])
+DocumentReader.initializeReader = (license, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReader", license])
+DocumentReader.prepareDatabase = (databaseType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["prepareDatabase", databaseType])
+DocumentReader.recognizeImage = (image, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImage", image])
+DocumentReader.setRfidSessionStatus = (status, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidSessionStatus", status])
+DocumentReader.initializeReaderWithDatabasePath = (license, path, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabasePath", license, path])
+DocumentReader.recognizeImageFrame = (image, params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageFrame", image, params])
+DocumentReader.recognizeImageWithOpts = (image, options, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithOpts", image, options])
+DocumentReader.recognizeVideoFrame = (byteString, params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeVideoFrame", byteString, params])
+DocumentReader.showScannerWithCameraIDAndOpts = (cameraID, options, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["showScannerWithCameraIDAndOpts", cameraID, options])
+DocumentReader.recognizeImageWithImageInputParams = (image, params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithImageInputParams", image, params])
+DocumentReader.recognizeImageWithCameraMode = (image, mode, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithCameraMode", image, mode])
 
 DocumentReader.DocumentReaderResults = DocumentReaderResults
 DocumentReader.Enum = Enum

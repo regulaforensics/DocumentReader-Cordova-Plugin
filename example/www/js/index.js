@@ -87,19 +87,16 @@ var app = {
                     document.getElementById("status").innerHTML = "copying image......"
                     document.getElementById("status").style.backgroundColor = "grey"
                 }
-                window.resolveLocalFileSystemURL(results[0], function gotFile(fileEntry) {
-                    fileEntry.file(function (file) {
-                        var reader = new FileReader()
-                        reader.onloadend = function (e) {
-                            var base64 = this.result.substring(23)
-                            document.getElementById("status").innerHTML = "processing image......"
-                            document.getElementById("status").style.backgroundColor = "grey"
-                            DocumentReader.recognizeImage(base64, function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
-                        }
-                        reader.readAsDataURL(file)
+                var images = []
+                for (var index in results)
+                    readFile(results[index], function (base64) {
+                        document.getElementById("status").innerHTML = "processing image......"
+                        document.getElementById("status").style.backgroundColor = "grey"
+                        images.push(base64)
+                        if (images.length === results.length)
+                            DocumentReader.recognizeImages(images, function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
                     })
-                }, function (e) { })
-            }, function (e) { }, { maximumImagesCount: 1 })
+            }, function (e) { }, { maximumImagesCount: 10 })
         }
 
         function handleCompletion(completion) {
@@ -235,7 +232,9 @@ var app = {
         }
 
         function readFile(path, callback, ...items) {
-            window.resolveLocalFileSystemURL(cordova.file.applicationDirectory + path, function (fileEntry) {
+            if (path.substring(0, 8) !== "file:///")
+                path = cordova.file.applicationDirectory + path
+            window.resolveLocalFileSystemURL(path, function (fileEntry) {
                 fileEntry.file(function (file) {
                     var reader = new FileReader()
                     reader.onloadend = function (e) {
