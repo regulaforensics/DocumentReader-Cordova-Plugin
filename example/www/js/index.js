@@ -8,7 +8,7 @@ var app = {
         document.getElementById("status").innerHTML = "loading......"
         document.getElementById("status").style.backgroundColor = "grey"
         var DocumentReaderResults = DocumentReader.DocumentReaderResults
-        var Scenario = DocumentReader.Scenario
+        var DocumentReaderScenario = DocumentReader.DocumentReaderScenario
         var Enum = DocumentReader.Enum
         var doRfid = false
         var isReadingRfid = false
@@ -29,14 +29,14 @@ var app = {
                 var input = document.createElement("input")
                 input.type = "radio"
                 input.name = "scenario"
-                input.value = Scenario.fromJson(typeof scenarios[index] === "string" ? JSON.parse(scenarios[index]) : scenarios[index]).name
+                input.value = DocumentReaderScenario.fromJson(typeof scenarios[index] === "string" ? JSON.parse(scenarios[index]) : scenarios[index]).name
                 if (index == 0)
                     input.checked = true
                 input.onclick = function () { DocumentReader.setConfig({ processParams: { scenario: this.value } }, function (m) { }, function (e) { }) }
                 input.style.display = "inline-block"
                 document.getElementById("scenariosRadioGroup").appendChild(input)
                 var label = document.createElement("span")
-                label.innerHTML = Scenario.fromJson(typeof scenarios[index] === "string" ? JSON.parse(scenarios[index]) : scenarios[index]).name
+                label.innerHTML = DocumentReaderScenario.fromJson(typeof scenarios[index] === "string" ? JSON.parse(scenarios[index]) : scenarios[index]).name
                 label.style.display = "inline-block"
                 label.style.width = "200px"
                 label.radioButton = input

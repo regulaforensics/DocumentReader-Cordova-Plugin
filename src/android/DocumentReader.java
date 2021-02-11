@@ -14,10 +14,10 @@ import com.regula.documentreader.api.completions.IDocumentReaderCompletion;
 import com.regula.documentreader.api.completions.IDocumentReaderInitCompletion;
 import com.regula.documentreader.api.completions.IDocumentReaderPrepareCompletion;
 import com.regula.documentreader.api.enums.DocReaderAction;
+import com.regula.documentreader.api.errors.DocumentReaderException;
 import com.regula.documentreader.api.params.ImageInputParam;
 import com.regula.documentreader.api.params.rfid.PKDCertificate;
 import com.regula.documentreader.api.results.DocumentReaderResults;
-import com.regula.documentreader.api.errors.DocumentReaderException;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -305,7 +305,7 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void getAvailableScenarios(Callback callback) throws JSONException {
-        callback.success(JSONConstructor.generateList(Instance().availableScenarios, JSONConstructor::generateDocumentReaderScenario, getContext()).toString());
+        callback.success(JSONConstructor.generateList(Instance().availableScenarios, JSONConstructor::generateDocumentReaderScenario).toString());
     }
 
     private void getAPIVersion(Callback callback) {
@@ -354,19 +354,19 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void getConfig(Callback callback) throws JSONException {
-        callback.success(RegulaConfig.getConfig(Instance(), getContext()).toString());
+        callback.success(RegulaConfig.getConfig(Instance()).toString());
     }
 
     private void getRfidScenario(Callback callback) {
         callback.success(Instance().rfidScenario().toJson());
     }
 
-    private void selectedScenario(Callback callback) throws JSONException {
-        callback.success(JSONConstructor.generateDocumentReaderScenario(Instance().getScenario(Instance().processParams().getScenario())).toString());
+    private void selectedScenario(Callback callback) {
+        callback.success(JSONConstructor.generateDocumentReaderScenarioFull(Instance().getScenario(Instance().processParams().getScenario())).toString());
     }
 
-    private void getScenario(Callback callback, String scenario) throws JSONException {
-        callback.success(JSONConstructor.generateDocumentReaderScenario(Instance().getScenario(scenario)).toString());
+    private void getScenario(Callback callback, String scenario) {
+        callback.success(JSONConstructor.generateDocumentReaderScenarioFull(Instance().getScenario(scenario)).toString());
     }
 
     private void getLicenseExpiryDate(Callback callback) {
@@ -417,7 +417,7 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void recognizeImageWithImageInputParams(@SuppressWarnings("unused") Callback callback, String base64Image, final JSONObject params) throws JSONException {
-        Instance().recognizeImage(JSONConstructor.bitmapFromBase64(base64Image), new ImageInputParam(params.getInt("width"), params.getInt("height"), params.getInt("type")), getCompletion());
+        Instance().recognizeImage(Helpers.bitmapFromBase64(base64Image), new ImageInputParam(params.getInt("width"), params.getInt("height"), params.getInt("type")), getCompletion());
     }
 
     private void recognizeImageWithOpts(Callback callback, String base64Image, final JSONObject opts) throws JSONException {
@@ -427,14 +427,14 @@ public class DocumentReader extends CordovaPlugin {
 
     private void recognizeImage(@SuppressWarnings("unused") Callback callback, String base64Image) {
         stopBackgroundRFID();
-        Instance().recognizeImage(JSONConstructor.bitmapFromBase64(base64Image), getCompletion());
+        Instance().recognizeImage(Helpers.bitmapFromBase64(base64Image), getCompletion());
     }
 
     private void recognizeImages(@SuppressWarnings("unused") Callback callback, JSONArray base64Images) throws JSONException {
         stopBackgroundRFID();
         Bitmap[] images = new Bitmap[base64Images.length()];
         for (int i = 0; i < images.length; i++)
-            images[i] = JSONConstructor.bitmapFromBase64(base64Images.getString(i));
+            images[i] = Helpers.bitmapFromBase64(base64Images.getString(i));
         Instance().recognizeImages(images, getCompletion());
     }
 
@@ -472,7 +472,7 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void recognizeImageFrame(@SuppressWarnings("unused") Callback callback, String base64Image, final JSONObject opts) throws JSONException {
-        Instance().recognizeImageFrame(JSONConstructor.bitmapFromBase64(base64Image), new ImageInputParam(opts.getInt("width"), opts.getInt("height"), opts.getInt("type")), getCompletion());
+        Instance().recognizeImageFrame(Helpers.bitmapFromBase64(base64Image), new ImageInputParam(opts.getInt("width"), opts.getInt("height"), opts.getInt("type")), getCompletion());
     }
 
     private void recognizeVideoFrame(@SuppressWarnings("unused") Callback callback, String byteString, final JSONObject opts) throws JSONException {
