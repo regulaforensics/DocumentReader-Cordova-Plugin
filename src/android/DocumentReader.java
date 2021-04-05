@@ -26,6 +26,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -84,6 +85,12 @@ public class DocumentReader extends CordovaPlugin {
 
     private void sendCompletion(int action, DocumentReaderResults results, Throwable error) {
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, JSONConstructor.generateCompletion(action, results, error, getContext()).toString());
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void sendVideoEncoderCompletion(String sessionId, File file) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, JSONConstructor.generateVideoEncoderCompletion(sessionId, file).toString());
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
     }
@@ -595,9 +602,10 @@ public class DocumentReader extends CordovaPlugin {
 
     private IDocumentReaderInitCompletion getInitCompletion(Callback callback) {
         return (success, error) -> {
-            if (success)
+            if (success) {
+                Instance().setVideoEncoderCompletion(this::sendVideoEncoderCompletion);
                 callback.success("init completed");
-            else
+            } else
                 callback.error("Init failed:" + error);
         };
     }
