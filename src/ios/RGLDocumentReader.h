@@ -6,7 +6,7 @@
 
 @class DocReader;
 
-@interface RGLDocumentReader : CDVPlugin
+@interface RGLDocumentReader : CDVPlugin<RGLRecordScanningProcessDelegate>
 
 @property (class) CDVInvokedUrlCommand* _Nullable command;
 @property (class) NSNumber* _Nullable databasePercentageDownloaded;

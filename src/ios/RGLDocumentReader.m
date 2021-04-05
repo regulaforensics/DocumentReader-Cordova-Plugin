@@ -55,6 +55,16 @@ typedef void (^Callback)(NSString* response);
     };
 }
 
+- (void)didFinishRecordingToFile:(NSURL *)fileURL {
+    NSString* callbackId = RGLDocumentReader.command.callbackId;
+    [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateVideoEncoderCompletion:fileURL :nil]] :callbackId];
+}
+
+- (void)didFailWithError:(NSError *)error {
+    NSString* callbackId = RGLDocumentReader.command.callbackId;
+    [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateVideoEncoderCompletion:nil :error]] :callbackId];
+}
+
 - (void) exec:(CDVInvokedUrlCommand*)command {
     [RGLDocumentReader setCommand:command];
     NSMutableArray* args = [[NSMutableArray alloc] init];
@@ -467,11 +477,17 @@ typedef void (^Callback)(NSString* response);
     [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:availableScenarios options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :successCallback];
 }
 
+- (NSURL *)recordingOutputFileURL {
+    NSArray *paths = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory inDomains:NSUserDomainMask];
+    return [paths[0] URLByAppendingPathComponent:@"video.mov"];
+}
+
 -(RGLDocumentReaderInitializationCompletion)getInitCompletion:(Callback)successCallback :(Callback)errorCallback{
     return ^(BOOL successful, NSError * _Nullable error ) {
-        if (successful)
+        if (successful){
+            [RGLDocReader shared].functionality.recordScanningProcessDelegate = self;
             [self result:@"init complete" :successCallback];
-        else
+        }else
             [self result:[NSString stringWithFormat:@"%@/%@", @"init failed: ", error.description] :errorCallback];
     };
 }
