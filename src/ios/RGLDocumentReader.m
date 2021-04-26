@@ -37,22 +37,32 @@ typedef void (^Callback)(NSString* response);
 -(RGLDocumentReaderCompletion _Nonnull)getCompletion {
     NSString* callbackId = RGLDocumentReader.command.callbackId;
     return ^(RGLDocReaderAction action, RGLDocumentReaderResults * _Nullable results, NSError * _Nullable error) {
-        [self sendEvent:[JSONConstructor generateCompletion:[JSONConstructor generateDocReaderAction: action] :results :error :nil] :callbackId];
+        [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateCompletion:[JSONConstructor generateDocReaderAction: action] :results :error :nil]] :callbackId];
     };
 }
 
 -(RGLRFIDProcessCompletion _Nonnull)getRFIDCompletion {
     NSString* callbackId = RGLDocumentReader.command.callbackId;
     return ^(RGLRFIDCompleteAction action, RGLDocumentReaderResults * _Nullable results, NSError * _Nullable error, RGLRFIDErrorCodes errorCode) {
-        [self sendEvent:[JSONConstructor generateCompletion:[JSONConstructor generateRFIDCompleteAction: action] :results :error :nil] :callbackId];
+        [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateCompletion:[JSONConstructor generateRFIDCompleteAction: action] :results :error :nil]] :callbackId];
     };
 }
 
 -(RGLRFIDNotificationCallback _Nonnull)getRFIDNotificationCallback {
     NSString* callbackId = RGLDocumentReader.command.callbackId;
     return ^(RGLRFIDNotificationAction notificationAction, RGLRFIDNotify* _Nullable notify) {
-        [self sendEvent:[JSONConstructor generateCompletion:[JSONConstructor generateRFIDNotificationAction:notificationAction] :nil :nil :notify] :callbackId];
+        [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateCompletion:[JSONConstructor generateRFIDNotificationAction:notificationAction] :nil :nil :notify]] :callbackId];
     };
+}
+
+- (void)didFinishRecordingToFile:(NSURL *)fileURL {
+    NSString* callbackId = RGLDocumentReader.command.callbackId;
+    [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateVideoEncoderCompletion:fileURL :nil]] :callbackId];
+}
+
+- (void)didFailWithError:(NSError *)error {
+    NSString* callbackId = RGLDocumentReader.command.callbackId;
+    [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateVideoEncoderCompletion:nil :error]] :callbackId];
 }
 
 - (void) exec:(CDVInvokedUrlCommand*)command {
@@ -330,7 +340,7 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void) selectedScenario:(Callback)successCallback :(Callback)errorCallback{
-    [self result:[JSONConstructor generateScenario:RGLDocReader.shared.selectedScenario] :successCallback];
+    [self result:[JSONConstructor dictToString:[JSONConstructor generateRGLScenario:RGLDocReader.shared.selectedScenario]] :successCallback];
 }
 
 - (void) stopScanner:(Callback)successCallback :(Callback)errorCallback{
@@ -452,7 +462,7 @@ typedef void (^Callback)(NSString* response);
     BOOL success = false;
     for(RGLScenario *scenario in RGLDocReader.shared.availableScenarios)
         if([scenario.identifier isEqualToString:scenarioID]){
-            [self result:[JSONConstructor generateScenario:scenario] :successCallback];
+            [self result:[JSONConstructor dictToString:[JSONConstructor generateRGLScenario:scenario]] :successCallback];
             success = true;
             break;
         }
@@ -463,15 +473,16 @@ typedef void (^Callback)(NSString* response);
 - (void) getAvailableScenarios:(Callback)successCallback :(Callback)errorCallback{
     NSMutableArray *availableScenarios = [[NSMutableArray alloc] init];
     for(RGLScenario *scenario in RGLDocReader.shared.availableScenarios)
-        [availableScenarios addObject:[JSONConstructor generateScenario:scenario]];
+        [availableScenarios addObject:[JSONConstructor dictToString:[JSONConstructor generateRGLScenario:scenario]]];
     [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:availableScenarios options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :successCallback];
 }
 
 -(RGLDocumentReaderInitializationCompletion)getInitCompletion:(Callback)successCallback :(Callback)errorCallback{
     return ^(BOOL successful, NSError * _Nullable error ) {
-        if (successful)
+        if (successful){
+            [RGLDocReader shared].functionality.recordScanningProcessDelegate = self;
             [self result:@"init complete" :successCallback];
-        else
+        }else
             [self result:[NSString stringWithFormat:@"%@/%@", @"init failed: ", error.description] :errorCallback];
     };
 }
