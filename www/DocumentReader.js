@@ -244,6 +244,7 @@ class ImageQualityGroup {
         if (jsonObject["imageQualityList"] != null)
             for (const i in jsonObject["imageQualityList"])
                 result.imageQualityList.push(ImageQuality.fromJson(jsonObject["imageQualityList"][i]))
+        result.pageIndex = jsonObject["pageIndex"]
 
         return result
     }
@@ -750,6 +751,32 @@ class StackTraceElement {
     }
 }
 
+class PKDCertificate {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new PKDCertificate()
+
+        result.binaryData = jsonObject["binaryData"]
+        result.resourceType = jsonObject["resourceType"]
+        result.privateKey = jsonObject["privateKey"]
+
+        return result
+    }
+}
+
+class ImageInputParam {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new ImageInputParam()
+
+        result.width = jsonObject["width"]
+        result.height = jsonObject["height"]
+        result.type = jsonObject["type"]
+
+        return result
+    }
+}
+
 class DocumentReaderResults {
     getTextFieldValueByType({ fieldType, lcid = 0, source = -1, original = false }) {
         if (this.textResult == null) return null
@@ -789,11 +816,19 @@ class DocumentReaderResults {
             return foundFields[0].value
     }
 
-    getQualityResult(imageQualityCheckType, securityFeature = -1) {
+    getQualityResult(imageQualityCheckType, securityFeature = -1, pageIndex = 0) {
         let resultSum = 2
         if (this.imageQuality == null) return resultSum
 
-        for (const field of this.imageQuality.imageQualityList)
+        let imageQualityGroup
+
+        for (const iq of this.imageQuality)
+            if (iq != null && iq.pageIndex === pageIndex)
+                imageQualityGroup = iq
+        if (imageQualityGroup == null)
+            return resultSum
+
+        for (const field of imageQualityGroup.imageQualityList)
             if (field.type === imageQualityCheckType)
                 if (securityFeature === -1) {
                     if (field.result === 0) {
