@@ -244,6 +244,7 @@ class ImageQualityGroup {
         if (jsonObject["imageQualityList"] != null)
             for (const i in jsonObject["imageQualityList"])
                 result.imageQualityList.push(ImageQuality.fromJson(jsonObject["imageQualityList"][i]))
+        result.pageIndex = jsonObject["pageIndex"]
 
         return result
     }
@@ -750,6 +751,32 @@ class StackTraceElement {
     }
 }
 
+class PKDCertificate {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new PKDCertificate()
+
+        result.binaryData = jsonObject["binaryData"]
+        result.resourceType = jsonObject["resourceType"]
+        result.privateKey = jsonObject["privateKey"]
+
+        return result
+    }
+}
+
+class ImageInputParam {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new ImageInputParam()
+
+        result.width = jsonObject["width"]
+        result.height = jsonObject["height"]
+        result.type = jsonObject["type"]
+
+        return result
+    }
+}
+
 class DocumentReaderResults {
     getTextFieldValueByType({ fieldType, lcid = 0, source = -1, original = false }) {
         if (this.textResult == null) return null
@@ -789,11 +816,19 @@ class DocumentReaderResults {
             return foundFields[0].value
     }
 
-    getQualityResult(imageQualityCheckType, securityFeature = -1) {
+    getQualityResult(imageQualityCheckType, securityFeature = -1, pageIndex = 0) {
         let resultSum = 2
         if (this.imageQuality == null) return resultSum
 
-        for (const field of this.imageQuality.imageQualityList)
+        let imageQualityGroup
+
+        for (const iq of this.imageQuality)
+            if (iq != null && iq.pageIndex === pageIndex)
+                imageQualityGroup = iq
+        if (imageQualityGroup == null)
+            return resultSum
+
+        for (const field of imageQualityGroup.imageQualityList)
             if (field.type === imageQualityCheckType)
                 if (securityFeature === -1) {
                     if (field.result === 0) {
@@ -1265,6 +1300,7 @@ const eCheckDiagnose = {
     VISIBLE_ELEMENT_ABSENT: 41,
     ELEMENT_SHOULD_BE_COLORED: 42,
     ELEMENT_SHOULD_BE_GRAYSCALE: 43,
+    PHOTO_WHITE_IR_DONT_MATCH: 44,
     UV_DULL_PAPER_MRZ: 50,
     FALSE_LUMINISCENCE_IN_MRZ: 51,
     UV_DULL_PAPER_PHOTO: 52,
@@ -1274,6 +1310,7 @@ const eCheckDiagnose = {
     BAD_AREA_IN_AXIAL: 60,
     FALSE_IPI_PARAMETERS: 65,
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: 80,
+    FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: 81,
     OVI_IR_INVISIBLE: 90,
     OVI_INSUFFICIENT_AREA: 91,
     OVI_COLOR_INVARIABLE: 92,
@@ -1284,6 +1321,8 @@ const eCheckDiagnose = {
     HOLOGRAM_ELEMENT_ABSENT: 100,
     HOLOGRAM_SIDE_TOP_IMAGES_ABSENT: 101,
     HOLOGRAM_ELEMENT_PRESENT: 102,
+    HOLOGRAM_FRAMES_IS_ABSENT: 103,
+    HOLOGRAM_HOLO_FIELD_IS_ABSENT: 104,
     PHOTO_PATTERN_INTERRUPTED: 110,
     PHOTO_PATTERN_SHIFTED: 111,
     PHOTO_PATTERN_DIFFERENT_COLORS: 112,
@@ -1308,13 +1347,21 @@ const eCheckDiagnose = {
     PORTRAIT_COMPARISON_PORTRAITS_DIFFER: 150,
     PORTRAIT_COMPARISON_NO_SERVICE_REPLY: 151,
     PORTRAIT_COMPARISON_SERVICE_ERROR: 152,
-    PPORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: 153,
+    PORTRAIT_COMPARISON_NOT_ENOUGH_IMAGES: 153,
     PORTRAIT_COMPARISON_NO_LIVE_PHOTO: 154,
     PORTRAIT_COMPARISON_NO_SERVICE_LICENSE: 155,
     PORTRAIT_COMPARISON_NO_PORTRAIT_DETECTED: 156,
     MOBILE_IMAGES_UNSUITABLE_LIGHT_CONDITIONS: 160,
     MOBILE_IMAGES_WHITE_UV_NO_DIFFERENCE: 161,
-    LAST_DIAGNOSE_VALUE: 162,
+    FINGERPRINTS_COMPARISON_MISMATCH: 170,
+    HOLO_PHOTO_FACE_NOT_DETECTED: 180,
+    HOLO_PHOTO_FACE_COMPARISON_FAILED: 181,
+    HOLO_PHOTO_FACE_GLARE_IN_CENTER_ABSENT: 182,
+    HOLO_ELEMENT_SHAPE_ERROR: 183,
+    ALGORITHM_STEPS_ERROR: 184,
+    HOLO_AREAS_NOT_LOADED: 185,
+    FINISHED_BY_TIMEOUT: 186,
+    LAST_DIAGNOSE_VALUE: 190,
 }
 
 const eCheckResult = {
@@ -1406,6 +1453,8 @@ const eImageQualityCheckType = {
     IQC_IMAGE_COLORNESS: 3,
     IQC_PERSPECTIVE: 4,
     IQC_BOUNDS: 5,
+    IQC_SCREEN_CAPTURE: 6,
+    IQC_PORTRAIT: 7,
 }
 
 const eProcessGLCommands = {
@@ -3370,6 +3419,15 @@ const eVisualFieldType = {
     FT_CITIZENSHIP_STATUS: 625,
     FT_MILITARY_SERVICE_FROM: 626,
     FT_MILITARY_SERVICE_TO: 627,
+    FT_DLCLASSCODE_NT_FROM: 628,
+    FT_DLCLASSCODE_NT_TO: 629,
+    FT_DLCLASSCODE_NT_NOTES: 630,
+    FT_DLCLASSCODE_TN_FROM: 631,
+    FT_DLCLASSCODE_TN_TO: 632,
+    FT_DLCLASSCODE_TN_NOTES: 633,
+    FT_DLCLASSCODE_D3_FROM: 634,
+    FT_DLCLASSCODE_D3_TO: 635,
+    FT_DLCLASSCODE_D3_NOTES: 636,
 
     getTranslation: function (value) {
         switch (value) {
@@ -4527,6 +4585,24 @@ const eVisualFieldType = {
                 return "Military service from"
             case 627:
                 return "Military service to"
+            case 628:
+                return "DL category NT valid from"
+            case 629:
+                return "DL category NT valid to"
+            case 630:
+                return "DL category NT codes"
+            case 631:
+                return "DL category TN valid from"
+            case 632:
+                return "DL category TN valid to"
+            case 633:
+                return "DL category TN codes"
+            case 634:
+                return "DL category D3 valid from"
+            case 635:
+                return "DL category D3 valid to"
+            case 636:
+                return "DL category D3 codes"
             default:
                 return value
         }
