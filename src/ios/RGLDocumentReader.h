@@ -1,6 +1,6 @@
 #import <Cordova/CDVPlugin.h>
 #import <Foundation/Foundation.h>
-#import "JSONConstructor.h"
+#import "RGLJSONConstructor.h"
 #import "RegulaConfig.h"
 #import <DocumentReader/DocumentReader.h>
 
