@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api" version="0.0.68"
+<plugin id="cordova-plugin-document-reader-api" version="0.0.69"
   xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
@@ -18,8 +18,8 @@
     </config-file>
     <header-file src="src/ios/RGLDocumentReader.h" />
     <source-file src="src/ios/RGLDocumentReader.m" />
-    <header-file src="src/ios/RGLJSONConstructor.h" />
-    <source-file src="src/ios/RGLJSONConstructor.m" />
+    <header-file src="src/ios/RGLWJSONConstructor.h" />
+    <source-file src="src/ios/RGLWJSONConstructor.m" />
     <header-file src="src/ios/RegulaConfig.h" />
     <source-file src="src/ios/RegulaConfig.m" />
     <podspec>
