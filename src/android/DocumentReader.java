@@ -44,6 +44,13 @@ public class DocumentReader extends CordovaPlugin {
     private boolean backgroundRFIDEnabled = false;
     private Activity activity;
     JSONArray data;
+    private IRfidPKDCertificateCompletion paCertificateCompletion;
+    private IRfidPKDCertificateCompletion taCertificateCompletion;
+    private IRfidTASignatureCompletion taSignatureCompletion;
+    private final static String rfidNotificationCompletionEvent = "rfidNotificationCompletionEvent";
+    private final static String paCertificateCompletionEvent = "paCertificateCompletionEvent";
+    private final static String taCertificateCompletionEvent = "taCertificateCompletionEvent";
+    private final static String taSignatureCompletionEvent = "taSignatureCompletionEvent";
     private static int databaseDownloadProgress = 0;
 
     private Context getContext() {
@@ -89,7 +96,7 @@ public class DocumentReader extends CordovaPlugin {
         callbackContext.sendPluginResult(pluginResult);
     }
 
-    private void sendCompletion(int action, DocumentReaderResults results, Throwable error) {
+    private void sendCompletion(int action, DocumentReaderResults results, DocumentReaderException error) {
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, JSONConstructor.generateCompletion(action, results, error, getContext()).toString());
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
@@ -100,6 +107,30 @@ public class DocumentReader extends CordovaPlugin {
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
     }
+
+    private void sendIRfidNotificationCompletion(int notification) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, rfidNotificationCompletionEvent + notification);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void sendPACertificateCompletion(byte[] serialNumber, PAResourcesIssuer issuer) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, paCertificateCompletionEvent + JSONConstructor.generatePACertificateCompletion(serialNumber, issuer).toString());
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void sendTACertificateCompletion(String keyCAR) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, taCertificateCompletionEvent + keyCAR);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+    private void sendTASignatureCompletion(TAChallenge challenge) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, taSignatureCompletionEvent + JSONConstructor.generateTAChallenge(challenge).toString());
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
 
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) {
