@@ -148,6 +148,8 @@ typedef void (^Callback)(NSString* response);
         [self readRFID :successCallback :errorCallback];
     else if([action isEqualToString:@"getRfidSessionStatus"])
         [self getRfidSessionStatus :successCallback :errorCallback];
+    else if([action isEqualToString:@"setRfidDelegate"])
+        [self setRfidDelegate :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"setEnableCoreLogs"])
         [self setEnableCoreLogs :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"addPKDCertificates"])
@@ -234,6 +236,10 @@ typedef void (^Callback)(NSString* response);
 
 - (void) getLicenseMessage:(Callback)successCallback :(Callback)errorCallback{
     [self result:@"getLicenseMessage() is an android-only method" :successCallback];
+}
+
+- (void) initializeReaderWithDatabase:(NSString*)licenseString :(NSString*)databaseString :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"initializeReaderWithDatabase() is an android-only method" :successCallback];
 }
 
 - (void) initializeReader:(NSString*)licenseString :(Callback)successCallback :(Callback)errorCallback{
@@ -478,6 +484,60 @@ typedef void (^Callback)(NSString* response);
         [self result:@"Scenario unavailable" :errorCallback];
 }
 
+- (void) providePACertificates:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
+    if(paCertificateCompletion == nil){
+        [self result:@"paCertificateCompletion is nil" :errorCallback];
+        return;
+    }
+    NSMutableArray *certificates = [[NSMutableArray alloc] init];
+    for(NSDictionary* certificateJSON in input)
+        [certificates addObject:[RGLWJSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
+    paCertificateCompletion(certificates);
+    [self result:@"" :successCallback];
+}
+
+- (void) provideTACertificates:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
+    if(taCertificateCompletion == nil){
+        [self result:@"taCertificateCompletion is nil" :errorCallback];
+        return;
+    }
+    NSMutableArray *certificates = [[NSMutableArray alloc] init];
+    for(NSDictionary* certificateJSON in input)
+        [certificates addObject:[RGLWJSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
+    taCertificateCompletion(certificates);
+    [self result:@"" :successCallback];
+}
+
+- (void) provideTASignature:(NSString*)input :(Callback)successCallback :(Callback)errorCallback{
+    if(taSignatureCompletion == nil){
+        [self result:@"taSignatureCompletion is nil" :errorCallback];
+        return;
+    }
+    taSignatureCompletion([[NSData alloc] initWithBase64EncodedString:input options:0]);
+    [self result:@"" :successCallback];
+}
+
+- (void) setRfidDelegate:(NSNumber*)input :(Callback)successCallback :(Callback)errorCallback{
+    switch([input integerValue]){
+        case 0:
+            [RGLDocReader shared].rfidDelegate = nil;
+            break;
+        case 1:
+            if(rfidDelegateNoPA == nil)
+                rfidDelegateNoPA = [RFIDDelegateNoPA new];
+            [RGLDocReader shared].rfidDelegate = rfidDelegateNoPA;
+            break;
+        case 2:
+            [RGLDocReader shared].rfidDelegate = self;
+            break;
+        default:
+            [self result:@"wrong input" :errorCallback];
+            return;
+    }
+
+    [self result:@"" :successCallback];
+}
+
 - (void) getAvailableScenarios:(Callback)successCallback :(Callback)errorCallback{
     NSMutableArray *availableScenarios = [[NSMutableArray alloc] init];
     for(RGLScenario *scenario in RGLDocReader.shared.availableScenarios)
@@ -502,6 +562,32 @@ typedef void (^Callback)(NSString* response);
         else
             [self result:[NSString stringWithFormat:@"%@/%@", @"database preparation failed: ", error.description] :errorCallback];
     };
+}
+
+@end
+
+@implementation RFIDDelegateNoPA
+
+- (void)onRequestTACertificatesWithKey:(NSString *)keyCAR callback:(RGLRFIDCertificatesCallback)callback {
+    taCertificateCompletion = callback;
+    if(taCertificateCompletionEvent != nil)
+        taCertificateCompletionEvent(keyCAR);
+}
+
+- (void)onRequestTASignatureWithChallenge:(RGLTAChallenge *)challenge callback:(void(^)(NSData *signature))callback {
+    taSignatureCompletion = callback;
+    if(taSignatureCompletionEvent != nil)
+        taSignatureCompletionEvent([RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLTAChallenge:challenge]]);
+}
+
+- (void)didChipConnected {
+    if(rfidNotificationCompletionEvent != nil)
+        rfidNotificationCompletionEvent(@1); // int RFID_EVENT_CHIP_DETECTED = 1;
+}
+
+- (void)didReceivedError:(RGLRFIDErrorCodes)errorCode {
+    if(rfidNotificationCompletionEvent != nil)
+        rfidNotificationCompletionEvent(@2); // int RFID_EVENT_READING_ERROR = 2;
 }
 
 @end

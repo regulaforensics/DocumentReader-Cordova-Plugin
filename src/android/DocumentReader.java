@@ -261,6 +261,9 @@ public class DocumentReader extends CordovaPlugin {
                 case "getRfidSessionStatus":
                     getRfidSessionStatus(callback);
                     break;
+                case "setRfidDelegate":
+                    setRfidDelegate(callback, args(0));
+                    break;
                 case "setEnableCoreLogs":
                     setEnableCoreLogs(callback, args(0));
                     break;
@@ -640,6 +643,10 @@ public class DocumentReader extends CordovaPlugin {
 
     private void setCameraSessionIsPaused(Callback callback, @SuppressWarnings("unused") boolean ignored) {
         callback.error("setCameraSessionIsPaused() is an ios-only method");
+    }
+
+    private void setRfidDelegate(Callback callback, @SuppressWarnings("unused") int ignored) {
+        callback.error("setRfidDelegate() is an ios-only method");
     }
 
     private void getCameraSessionIsPaused(Callback callback) {

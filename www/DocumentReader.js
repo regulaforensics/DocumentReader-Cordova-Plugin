@@ -5189,6 +5189,12 @@ const ProcessingFinishedStatus = {
     TIMEOUT: 2,
 }
 
+const RFIDDelegate = {
+    NULL: 0,
+    NO_PA: 1,
+    FULL: 2,
+}
+
 const RGLMeasureSystem = {
     METRIC: 0,
     IMPERIAL: 1,
@@ -5310,6 +5316,7 @@ const Enum = {
    LCID,
    PKDResourceType,
    ProcessingFinishedStatus,
+   RFIDDelegate,
    RGLMeasureSystem,
    ScenarioIdentifier,
    LineCap,
@@ -5356,6 +5363,7 @@ DocumentReader.resetConfiguration = (successCallback, errorCallback) => cordova.
 DocumentReader.clearPKDCertificates = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearPKDCertificates"])
 DocumentReader.readRFID = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["readRFID"])
 DocumentReader.getRfidSessionStatus = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getRfidSessionStatus"])
+DocumentReader.setRfidDelegate = (delegate, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidDelegate", delegate])
 DocumentReader.setEnableCoreLogs = (logs, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setEnableCoreLogs", logs])
 DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", certificates])
 DocumentReader.setCameraSessionIsPaused = (paused, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setCameraSessionIsPaused", paused])
