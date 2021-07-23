@@ -6,9 +6,14 @@
 
 @class DocReader;
 
-@interface RGLDocumentReader : CDVPlugin<RGLRecordScanningProcessDelegate>
+@interface RGLDocumentReader : CDVPlugin<RGLRecordScanningProcessDelegate, RGLDocReaderRFIDDelegate>
 
 @property (class) CDVInvokedUrlCommand* _Nullable command;
 @property (class) NSNumber* _Nullable databasePercentageDownloaded;
 
+- (void) sendEvent:(NSString*_Nullable)data :(NSString*_Nonnull)callbackId;
+
+@end
+
+@interface RFIDDelegateNoPA : NSObject<RGLDocReaderRFIDDelegate>
 @end

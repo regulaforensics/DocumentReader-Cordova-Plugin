@@ -2,6 +2,40 @@
 #import "RGLDocumentReader.h"
 @import DocumentReader;
 
+RGLRFIDCertificatesCallback paCertificateCompletion;
+RGLRFIDCertificatesCallback taCertificateCompletion;
+typedef void (^RGLRFIDSignatureCallback)(NSData *signature);
+RGLRFIDSignatureCallback taSignatureCompletion;
+RFIDDelegateNoPA* rfidDelegateNoPA;
+RGLDocumentReader* plugin;
+NSString* rfidNotificationCompletionEvent = @"rfidNotificationCompletionEvent";
+NSString* paCertificateCompletionEvent = @"paCertificateCompletionEvent";
+NSString* taCertificateCompletionEvent = @"taCertificateCompletionEvent";
+NSString* taSignatureCompletionEvent = @"taSignatureCompletionEvent";
+
+@implementation RFIDDelegateNoPA
+
+- (void)onRequestTACertificatesWithKey:(NSString *)keyCAR callback:(RGLRFIDCertificatesCallback)callback {
+    taCertificateCompletion = callback;
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", taCertificateCompletionEvent, keyCAR] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)onRequestTASignatureWithChallenge:(RGLTAChallenge *)challenge callback:(void(^)(NSData *signature))callback {
+    taSignatureCompletion = callback;
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", taSignatureCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLTAChallenge:challenge]]] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)didChipConnected {
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"1"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_CHIP_DETECTED = 1;
+}
+
+- (void)didReceivedError:(RGLRFIDErrorCodes)errorCode {
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"2"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_READING_ERROR = 2;
+}
+
+@end
+
+
 @implementation RGLDocumentReader
 
 static NSNumber* _databasePercentageDownloaded;
@@ -65,8 +99,32 @@ typedef void (^Callback)(NSString* response);
     [self sendEvent:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateVideoEncoderCompletion:nil :error]] :callbackId];
 }
 
+- (void)onRequestPACertificatesWithSerial:(NSData *)serialNumber issuer:(RGLPAResourcesIssuer *)issuer callback:(RGLRFIDCertificatesCallback)callback {
+    paCertificateCompletion = callback;
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", paCertificateCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generatePACertificateCompletion:serialNumber :issuer]]] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)onRequestTACertificatesWithKey:(NSString *)keyCAR callback:(RGLRFIDCertificatesCallback)callback {
+    taCertificateCompletion = callback;
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", taCertificateCompletionEvent, keyCAR] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)onRequestTASignatureWithChallenge:(RGLTAChallenge *)challenge callback:(void(^)(NSData *signature))callback {
+    taSignatureCompletion = callback;
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", taSignatureCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLTAChallenge:challenge]]] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)didChipConnected {
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"1"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_CHIP_DETECTED = 1;
+}
+
+- (void)didReceivedError:(RGLRFIDErrorCodes)errorCode {
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"2"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_READING_ERROR = 2;
+}
+
 - (void) exec:(CDVInvokedUrlCommand*)command {
     [RGLDocumentReader setCommand:command];
+    plugin = self;
     NSMutableArray* args = [[NSMutableArray alloc] init];
     NSString* action = [[command arguments] objectAtIndex:0];
     for(int i = 1;i<[command arguments].count;i++)
@@ -562,32 +620,6 @@ typedef void (^Callback)(NSString* response);
         else
             [self result:[NSString stringWithFormat:@"%@/%@", @"database preparation failed: ", error.description] :errorCallback];
     };
-}
-
-@end
-
-@implementation RFIDDelegateNoPA
-
-- (void)onRequestTACertificatesWithKey:(NSString *)keyCAR callback:(RGLRFIDCertificatesCallback)callback {
-    taCertificateCompletion = callback;
-    if(taCertificateCompletionEvent != nil)
-        taCertificateCompletionEvent(keyCAR);
-}
-
-- (void)onRequestTASignatureWithChallenge:(RGLTAChallenge *)challenge callback:(void(^)(NSData *signature))callback {
-    taSignatureCompletion = callback;
-    if(taSignatureCompletionEvent != nil)
-        taSignatureCompletionEvent([RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLTAChallenge:challenge]]);
-}
-
-- (void)didChipConnected {
-    if(rfidNotificationCompletionEvent != nil)
-        rfidNotificationCompletionEvent(@1); // int RFID_EVENT_CHIP_DETECTED = 1;
-}
-
-- (void)didReceivedError:(RGLRFIDErrorCodes)errorCode {
-    if(rfidNotificationCompletionEvent != nil)
-        rfidNotificationCompletionEvent(@2); // int RFID_EVENT_READING_ERROR = 2;
 }
 
 @end
