@@ -293,8 +293,7 @@ var app = {
                         DocumentReader.getAvailableScenarios(function (s) {
                             DocumentReader.isRFIDAvailableForUse(function (r) { postInitialize(JSON.parse(s), r) }, function (e) { })
                         }, function (e) { })
-                        if (window.cordova.platformId == "ios")
-                            DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA, function (r) { }, function (e) { })
+                        DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA, function (r) { }, function (e) { })
                         // addCertificates()
                     }, function (error) {
                         console.log(error)
