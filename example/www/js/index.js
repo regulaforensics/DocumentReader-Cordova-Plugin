@@ -168,7 +168,26 @@ var app = {
 
         function usualRFID() {
             doRfid = false
-            DocumentReader.startRFIDReader(function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
+            var notification = "rfidNotificationCompletionEvent"
+            var paCert = "paCertificateCompletionEvent"
+            var taCert = "taCertificateCompletionEvent"
+            var taSig = "taSignatureCompletionEvent"
+            DocumentReader.startRFIDReader(function (m) {
+                if(m.substring(0, notification.length) === notification) {
+                    m = m.substring(notification.length, m.length)
+                    console.log(notification + ": " + m)
+                } else if(m.substring(0, paCert.length) === paCert) {
+                    m = m.substring(paCert.length, m.length)
+                    console.log(paCert + ": " + m)
+                } else if(m.substring(0, taCert.length) === taCert) {
+                    m = m.substring(taCert.length, m.length)
+                    console.log(taCert + ": " + m)
+                } else if(m.substring(0, taSig.length) === taSig) {
+                    m = m.substring(taSig.length, m.length)
+                    console.log(taSig + ": " + m)
+                } else
+                    handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m)))
+            }, function (e) { })
         }
 
         function handleResults(results) {
@@ -274,7 +293,8 @@ var app = {
                         DocumentReader.getAvailableScenarios(function (s) {
                             DocumentReader.isRFIDAvailableForUse(function (r) { postInitialize(JSON.parse(s), r) }, function (e) { })
                         }, function (e) { })
-                        addCertificates()
+                        DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA, function (r) { }, function (e) { })
+                        // addCertificates()
                     }, function (error) {
                         console.log(error)
                         document.getElementById("status").innerHTML = error

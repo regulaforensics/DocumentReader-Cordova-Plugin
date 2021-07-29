@@ -712,7 +712,25 @@ class DocumentReaderCompletion {
 
         result.action = jsonObject["action"]
         result.results = DocumentReaderResults.fromJson(jsonObject["results"])
-        result.error = Throwable.fromJson(jsonObject["error"])
+        result.error = DocumentReaderException.fromJson(jsonObject["error"])
+
+        return result
+    }
+}
+
+class DocumentReaderException {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DocumentReaderException()
+
+        result.errorCode = jsonObject["errorCode"]
+        result.localizedMessage = jsonObject["localizedMessage"]
+        result.message = jsonObject["message"]
+        result.string = jsonObject["string"]
+        result.stackTrace = []
+        if (jsonObject["stackTrace"] != null)
+            for (const i in jsonObject["stackTrace"])
+                result.stackTrace.push(StackTraceElement.fromJson(jsonObject["stackTrace"][i]))
 
         return result
     }
@@ -772,6 +790,55 @@ class ImageInputParam {
         result.width = jsonObject["width"]
         result.height = jsonObject["height"]
         result.type = jsonObject["type"]
+
+        return result
+    }
+}
+
+class PAResourcesIssuer {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new PAResourcesIssuer()
+
+        result.data = []
+        if (jsonObject["data"] != null)
+            for (const i in jsonObject["data"])
+                result.data.push(jsonObject["data"][i])
+        result.friendlyName = jsonObject["friendlyName"]
+        result.attributes = []
+        if (jsonObject["attributes"] != null)
+            for (const i in jsonObject["attributes"])
+                result.attributes.push(PAAttribute.fromJson(jsonObject["attributes"][i]))
+
+        return result
+    }
+}
+
+class PAAttribute {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new PAAttribute()
+
+        result.type = jsonObject["type"]
+        result.value = jsonObject["value"]
+
+        return result
+    }
+}
+
+class TAChallenge {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new TAChallenge()
+
+        result.data = []
+        if (jsonObject["data"] != null)
+            for (const i in jsonObject["data"])
+                result.data.push(jsonObject["data"][i])
+        result.auxPCD = jsonObject["auxPCD"]
+        result.challengePICC = jsonObject["challengePICC"]
+        result.hashPK = jsonObject["hashPK"]
+        result.idPICC = jsonObject["idPICC"]
 
         return result
     }
@@ -1266,6 +1333,25 @@ const DocReaderOrientation = {
     LANDSCAPE: 2,
     LANDSCAPE_LEFT: 3,
     LANDSCAPE_RIGHT: 4,
+}
+
+const DocumentReaderExceptionEnum = {
+    NATIVE_JAVA_EXCEPTION: 0,
+    DOCUMENT_READER_STATE_EXCEPTION: 1,
+    DOCUMENT_READER_WRONG_INPUT: 2,
+    INITIALIZATION_FAILED: 3,
+    DOCUMENT_READER_BLE_EXCEPTION: 201,
+    DB_DOWNLOAD_ERROR: 301,
+    LICENSE_ABSENT_OR_CORRUPTED: 101,
+    LICENSE_INVALID_DATE: 102,
+    LICENSE_INVALID_VERSION: 103,
+    LICENSE_INVALID_DEVICE_ID: 104,
+    LICENSE_INVALID_SYSTEM_OR_APP_ID: 105,
+    LICENSE_NO_CAPABILITIES: 106,
+    LICENSE_NO_AUTHENTICITY: 107,
+    LICENSE_NO_DATABASE: 110,
+    LICENSE_DATABASE_INCORRECT: 111,
+    FEATURE_BLUETOOTH_LE_NOT_SUPPORTED: 701,
 }
 
 const eCheckDiagnose = {
@@ -3428,6 +3514,7 @@ const eVisualFieldType = {
     FT_DLCLASSCODE_D3_FROM: 634,
     FT_DLCLASSCODE_D3_TO: 635,
     FT_DLCLASSCODE_D3_NOTES: 636,
+    FT_ALT_DATE_OF_EXPIRY: 637,
 
     getTranslation: function (value) {
         switch (value) {
@@ -4603,6 +4690,8 @@ const eVisualFieldType = {
                 return "DL category D3 valid to"
             case 636:
                 return "DL category D3 codes"
+            case 637:
+                return "Alternative date of expiry"
             default:
                 return value
         }
@@ -4619,6 +4708,12 @@ const FontStyle = {
 const FrameShapeType = {
     LINE: 0,
     CORNER: 1,
+}
+
+const IRfidNotificationCompletion = {
+    RFID_EVENT_CHIP_DETECTED: 1,
+    RFID_EVENT_READING_ERROR: 2,
+    RFID_EXTRA_ERROR_CODE: "rfid.error.code",
 }
 
 const LCID = {
@@ -5094,6 +5189,12 @@ const ProcessingFinishedStatus = {
     TIMEOUT: 2,
 }
 
+const RFIDDelegate = {
+    NULL: 0,
+    NO_PA: 1,
+    FULL: 2,
+}
+
 const RGLMeasureSystem = {
     METRIC: 0,
     IMPERIAL: 1,
@@ -5186,6 +5287,7 @@ const Enum = {
    DocReaderAction,
    DocReaderFrame,
    DocReaderOrientation,
+   DocumentReaderExceptionEnum,
    eCheckDiagnose,
    eCheckResult,
    eGraphicFieldType,
@@ -5210,9 +5312,11 @@ const Enum = {
    eVisualFieldType,
    FontStyle,
    FrameShapeType,
+   IRfidNotificationCompletion,
    LCID,
    PKDResourceType,
    ProcessingFinishedStatus,
+   RFIDDelegate,
    RGLMeasureSystem,
    ScenarioIdentifier,
    LineCap,
@@ -5259,6 +5363,7 @@ DocumentReader.resetConfiguration = (successCallback, errorCallback) => cordova.
 DocumentReader.clearPKDCertificates = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearPKDCertificates"])
 DocumentReader.readRFID = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["readRFID"])
 DocumentReader.getRfidSessionStatus = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getRfidSessionStatus"])
+DocumentReader.setRfidDelegate = (delegate, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidDelegate", delegate])
 DocumentReader.setEnableCoreLogs = (logs, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setEnableCoreLogs", logs])
 DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", certificates])
 DocumentReader.setCameraSessionIsPaused = (paused, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setCameraSessionIsPaused", paused])
@@ -5272,7 +5377,11 @@ DocumentReader.initializeReader = (license, successCallback, errorCallback) => c
 DocumentReader.prepareDatabase = (databaseType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["prepareDatabase", databaseType])
 DocumentReader.recognizeImage = (image, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImage", image])
 DocumentReader.setRfidSessionStatus = (status, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidSessionStatus", status])
+DocumentReader.providePACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["providePACertificates", certificates])
+DocumentReader.provideTACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTACertificates", certificates])
+DocumentReader.provideTASignature = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", certificates])
 DocumentReader.initializeReaderWithDatabasePath = (license, path, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabasePath", license, path])
+DocumentReader.initializeReaderWithDatabase = (license, db, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabase", license, db])
 DocumentReader.recognizeImageFrame = (image, params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageFrame", image, params])
 DocumentReader.recognizeImageWithOpts = (image, options, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithOpts", image, options])
 DocumentReader.recognizeVideoFrame = (byteString, params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeVideoFrame", byteString, params])

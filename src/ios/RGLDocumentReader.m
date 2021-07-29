@@ -2,6 +2,40 @@
 #import "RGLDocumentReader.h"
 @import DocumentReader;
 
+RGLRFIDCertificatesCallback paCertificateCompletion;
+RGLRFIDCertificatesCallback taCertificateCompletion;
+typedef void (^RGLRFIDSignatureCallback)(NSData *signature);
+RGLRFIDSignatureCallback taSignatureCompletion;
+RFIDDelegateNoPA* rfidDelegateNoPA;
+RGLDocumentReader* plugin;
+NSString* rfidNotificationCompletionEvent = @"rfidNotificationCompletionEvent";
+NSString* paCertificateCompletionEvent = @"paCertificateCompletionEvent";
+NSString* taCertificateCompletionEvent = @"taCertificateCompletionEvent";
+NSString* taSignatureCompletionEvent = @"taSignatureCompletionEvent";
+
+@implementation RFIDDelegateNoPA
+
+- (void)onRequestTACertificatesWithKey:(NSString *)keyCAR callback:(RGLRFIDCertificatesCallback)callback {
+    taCertificateCompletion = callback;
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", taCertificateCompletionEvent, keyCAR] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)onRequestTASignatureWithChallenge:(RGLTAChallenge *)challenge callback:(void(^)(NSData *signature))callback {
+    taSignatureCompletion = callback;
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", taSignatureCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLTAChallenge:challenge]]] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)didChipConnected {
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"1"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_CHIP_DETECTED = 1;
+}
+
+- (void)didReceivedError:(RGLRFIDErrorCodes)errorCode {
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"2"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_READING_ERROR = 2;
+}
+
+@end
+
+
 @implementation RGLDocumentReader
 
 static NSNumber* _databasePercentageDownloaded;
@@ -37,36 +71,60 @@ typedef void (^Callback)(NSString* response);
 -(RGLDocumentReaderCompletion _Nonnull)getCompletion {
     NSString* callbackId = RGLDocumentReader.command.callbackId;
     return ^(RGLDocReaderAction action, RGLDocumentReaderResults * _Nullable results, NSError * _Nullable error) {
-        [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateCompletion:[JSONConstructor generateDocReaderAction: action] :results :error :nil]] :callbackId];
+        [self sendEvent:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateCompletion:[RGLWJSONConstructor generateDocReaderAction: action] :results :error :nil]] :callbackId];
     };
 }
 
 -(RGLRFIDProcessCompletion _Nonnull)getRFIDCompletion {
     NSString* callbackId = RGLDocumentReader.command.callbackId;
     return ^(RGLRFIDCompleteAction action, RGLDocumentReaderResults * _Nullable results, NSError * _Nullable error, RGLRFIDErrorCodes errorCode) {
-        [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateCompletion:[JSONConstructor generateRFIDCompleteAction: action] :results :error :nil]] :callbackId];
+        [self sendEvent:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateCompletion:[RGLWJSONConstructor generateRFIDCompleteAction: action] :results :error :nil]] :callbackId];
     };
 }
 
 -(RGLRFIDNotificationCallback _Nonnull)getRFIDNotificationCallback {
     NSString* callbackId = RGLDocumentReader.command.callbackId;
     return ^(RGLRFIDNotificationAction notificationAction, RGLRFIDNotify* _Nullable notify) {
-        [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateCompletion:[JSONConstructor generateRFIDNotificationAction:notificationAction] :nil :nil :notify]] :callbackId];
+        [self sendEvent:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateCompletion:[RGLWJSONConstructor generateRFIDNotificationAction:notificationAction] :nil :nil :notify]] :callbackId];
     };
 }
 
 - (void)didFinishRecordingToFile:(NSURL *)fileURL {
     NSString* callbackId = RGLDocumentReader.command.callbackId;
-    [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateVideoEncoderCompletion:fileURL :nil]] :callbackId];
+    [self sendEvent:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateVideoEncoderCompletion:fileURL :nil]] :callbackId];
 }
 
 - (void)didFailWithError:(NSError *)error {
     NSString* callbackId = RGLDocumentReader.command.callbackId;
-    [self sendEvent:[JSONConstructor dictToString:[JSONConstructor generateVideoEncoderCompletion:nil :error]] :callbackId];
+    [self sendEvent:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateVideoEncoderCompletion:nil :error]] :callbackId];
+}
+
+- (void)onRequestPACertificatesWithSerial:(NSData *)serialNumber issuer:(RGLPAResourcesIssuer *)issuer callback:(RGLRFIDCertificatesCallback)callback {
+    paCertificateCompletion = callback;
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", paCertificateCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generatePACertificateCompletion:serialNumber :issuer]]] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)onRequestTACertificatesWithKey:(NSString *)keyCAR callback:(RGLRFIDCertificatesCallback)callback {
+    taCertificateCompletion = callback;
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", taCertificateCompletionEvent, keyCAR] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)onRequestTASignatureWithChallenge:(RGLTAChallenge *)challenge callback:(void(^)(NSData *signature))callback {
+    taSignatureCompletion = callback;
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", taSignatureCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLTAChallenge:challenge]]] :RGLDocumentReader.command.callbackId];
+}
+
+- (void)didChipConnected {
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"1"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_CHIP_DETECTED = 1;
+}
+
+- (void)didReceivedError:(RGLRFIDErrorCodes)errorCode {
+    [self sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"2"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_READING_ERROR = 2;
 }
 
 - (void) exec:(CDVInvokedUrlCommand*)command {
     [RGLDocumentReader setCommand:command];
+    plugin = self;
     NSMutableArray* args = [[NSMutableArray alloc] init];
     NSString* action = [[command arguments] objectAtIndex:0];
     for(int i = 1;i<[command arguments].count;i++)
@@ -148,6 +206,8 @@ typedef void (^Callback)(NSString* response);
         [self readRFID :successCallback :errorCallback];
     else if([action isEqualToString:@"getRfidSessionStatus"])
         [self getRfidSessionStatus :successCallback :errorCallback];
+    else if([action isEqualToString:@"setRfidDelegate"])
+        [self setRfidDelegate :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"setEnableCoreLogs"])
         [self setEnableCoreLogs :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"addPKDCertificates"])
@@ -174,8 +234,16 @@ typedef void (^Callback)(NSString* response);
         [self recognizeImage :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"setRfidSessionStatus"])
         [self setRfidSessionStatus :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"providePACertificates"])
+        [self providePACertificates :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"provideTACertificates"])
+        [self provideTACertificates :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"provideTASignature"])
+        [self provideTASignature :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"initializeReaderWithDatabasePath"])
         [self initializeReaderWithDatabasePath :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
+    else if([action isEqualToString:@"initializeReaderWithDatabase"])
+        [self initializeReaderWithDatabase :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
     else if([action isEqualToString:@"recognizeImageFrame"])
         [self recognizeImageFrame :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
     else if([action isEqualToString:@"recognizeImageWithOpts"])
@@ -226,6 +294,10 @@ typedef void (^Callback)(NSString* response);
 
 - (void) getLicenseMessage:(Callback)successCallback :(Callback)errorCallback{
     [self result:@"getLicenseMessage() is an android-only method" :successCallback];
+}
+
+- (void) initializeReaderWithDatabase:(NSString*)licenseString :(NSString*)databaseString :(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"initializeReaderWithDatabase() is an android-only method" :successCallback];
 }
 
 - (void) initializeReader:(NSString*)licenseString :(Callback)successCallback :(Callback)errorCallback{
@@ -329,7 +401,7 @@ typedef void (^Callback)(NSString* response);
 - (void) addPKDCertificates:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
     NSMutableArray *certificates = [[NSMutableArray alloc] init];
     for(NSDictionary* certificateJSON in input)
-        [certificates addObject:[JSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
+        [certificates addObject:[RGLWJSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
     [RGLDocReader.shared addPKDCertificates:certificates];
     [self result:@"" :successCallback];
 }
@@ -340,7 +412,7 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void) selectedScenario:(Callback)successCallback :(Callback)errorCallback{
-    [self result:[JSONConstructor dictToString:[JSONConstructor generateRGLScenario:RGLDocReader.shared.selectedScenario]] :successCallback];
+    [self result:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLScenario:RGLDocReader.shared.selectedScenario]] :successCallback];
 }
 
 - (void) stopScanner:(Callback)successCallback :(Callback)errorCallback{
@@ -462,7 +534,7 @@ typedef void (^Callback)(NSString* response);
     BOOL success = false;
     for(RGLScenario *scenario in RGLDocReader.shared.availableScenarios)
         if([scenario.identifier isEqualToString:scenarioID]){
-            [self result:[JSONConstructor dictToString:[JSONConstructor generateRGLScenario:scenario]] :successCallback];
+            [self result:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLScenario:scenario]] :successCallback];
             success = true;
             break;
         }
@@ -470,10 +542,64 @@ typedef void (^Callback)(NSString* response);
         [self result:@"Scenario unavailable" :errorCallback];
 }
 
+- (void) providePACertificates:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
+    if(paCertificateCompletion == nil){
+        [self result:@"paCertificateCompletion is nil" :errorCallback];
+        return;
+    }
+    NSMutableArray *certificates = [[NSMutableArray alloc] init];
+    for(NSDictionary* certificateJSON in input)
+        [certificates addObject:[RGLWJSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
+    paCertificateCompletion(certificates);
+    [self result:@"" :successCallback];
+}
+
+- (void) provideTACertificates:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{
+    if(taCertificateCompletion == nil){
+        [self result:@"taCertificateCompletion is nil" :errorCallback];
+        return;
+    }
+    NSMutableArray *certificates = [[NSMutableArray alloc] init];
+    for(NSDictionary* certificateJSON in input)
+        [certificates addObject:[RGLWJSONConstructor RGLPKDCertificateFromJson:certificateJSON]];
+    taCertificateCompletion(certificates);
+    [self result:@"" :successCallback];
+}
+
+- (void) provideTASignature:(NSString*)input :(Callback)successCallback :(Callback)errorCallback{
+    if(taSignatureCompletion == nil){
+        [self result:@"taSignatureCompletion is nil" :errorCallback];
+        return;
+    }
+    taSignatureCompletion([[NSData alloc] initWithBase64EncodedString:input options:0]);
+    [self result:@"" :successCallback];
+}
+
+- (void) setRfidDelegate:(NSNumber*)input :(Callback)successCallback :(Callback)errorCallback{
+    switch([input integerValue]){
+        case 0:
+            [RGLDocReader shared].rfidDelegate = nil;
+            break;
+        case 1:
+            if(rfidDelegateNoPA == nil)
+                rfidDelegateNoPA = [RFIDDelegateNoPA new];
+            [RGLDocReader shared].rfidDelegate = rfidDelegateNoPA;
+            break;
+        case 2:
+            [RGLDocReader shared].rfidDelegate = self;
+            break;
+        default:
+            [self result:@"wrong input" :errorCallback];
+            return;
+    }
+
+    [self result:@"" :successCallback];
+}
+
 - (void) getAvailableScenarios:(Callback)successCallback :(Callback)errorCallback{
     NSMutableArray *availableScenarios = [[NSMutableArray alloc] init];
     for(RGLScenario *scenario in RGLDocReader.shared.availableScenarios)
-        [availableScenarios addObject:[JSONConstructor dictToString:[JSONConstructor generateRGLScenario:scenario]]];
+        [availableScenarios addObject:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLScenario:scenario]]];
     [self result:[[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:availableScenarios options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding] :successCallback];
 }
 
