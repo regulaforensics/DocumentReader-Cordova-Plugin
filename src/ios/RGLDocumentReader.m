@@ -306,6 +306,10 @@ typedef void (^Callback)(NSString* response);
     [RGLDocReader.shared initializeReader:[[NSData alloc] initWithBase64EncodedString:licenseString options:0] completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
+- (void) parseCoreResults:(NSString*)json :(Callback)successCallback :(Callback)errorCallback{
+    [self result:[RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRGLDocumentReaderResults:[RGLDocumentReaderResults initWithRawString: json]]] :successCallback];
+}
+
 - (void) startRFIDReader:(Callback)successCallback :(Callback)errorCallback{
     dispatch_async(dispatch_get_main_queue(), ^{
         [RGLDocReader.shared startRFIDReaderFromPresenter:[[[UIApplication sharedApplication] keyWindow] rootViewController] completion:[self getCompletion]];
