@@ -7,10 +7,13 @@ var app = {
         this.receivedEvent('deviceready')
         document.getElementById("status").innerHTML = "loading......"
         document.getElementById("status").style.backgroundColor = "grey"
+        var http = cordova.plugin.http
         var DocumentReaderResults = DocumentReader.DocumentReaderResults
         var DocumentReaderScenario = DocumentReader.DocumentReaderScenario
         var Enum = DocumentReader.Enum
         var doRfid = false
+        var encryption = false
+        const ENCRYPTED_RESULT_SERVICE = "https://api.regulaforensics.com/api/process"
         var isReadingRfid = false
         var rfidUIHeader = "Reading RFID"
         var rfidUIHeaderColor = "black"
@@ -47,10 +50,15 @@ var app = {
             if (canRfid) {
                 document.getElementById("rfidCheckbox").disabled = false
                 document.getElementById("rfidCheckboxText").style.color = "black"
-                document.getElementById("rfidCheckboxText").innerHTML = "Process rfid reading"
+                document.getElementById("rfidCheckboxText").innerHTML = " Process rfid reading"
                 document.getElementById("rfidCheckboxText").onclick = function () { document.getElementById("rfidCheckbox").click() }
                 document.getElementById("rfidCheckbox").onchange = function () { doRfid = this.checked }
             }
+            document.getElementById("encryptionCheckbox").disabled = false
+            document.getElementById("encryptionCheckboxText").style.color = "black"
+            document.getElementById("encryptionCheckboxText").innerHTML = " Data encryption"
+            document.getElementById("encryptionCheckboxText").onclick = function () { document.getElementById("encryptionCheckbox").click() }
+            document.getElementById("encryptionCheckbox").onchange = function () { encryption = this.checked }
         }
 
         function scan() {
@@ -173,16 +181,16 @@ var app = {
             var taCert = "taCertificateCompletionEvent"
             var taSig = "taSignatureCompletionEvent"
             DocumentReader.startRFIDReader(function (m) {
-                if(m.substring(0, notification.length) === notification) {
+                if (m.substring(0, notification.length) === notification) {
                     m = m.substring(notification.length, m.length)
                     console.log(notification + ": " + m)
-                } else if(m.substring(0, paCert.length) === paCert) {
+                } else if (m.substring(0, paCert.length) === paCert) {
                     m = m.substring(paCert.length, m.length)
                     console.log(paCert + ": " + m)
-                } else if(m.substring(0, taCert.length) === taCert) {
+                } else if (m.substring(0, taCert.length) === taCert) {
                     m = m.substring(taCert.length, m.length)
                     console.log(taCert + ": " + m)
-                } else if(m.substring(0, taSig.length) === taSig) {
+                } else if (m.substring(0, taSig.length) === taSig) {
                     m = m.substring(taSig.length, m.length)
                     console.log(taSig + ": " + m)
                 } else
@@ -205,7 +213,33 @@ var app = {
                 //customRFID()
                 usualRFID()
             } else
-                displayResults(results)
+                if (encryption) {
+                    var input = JSON.parse(results.rawResult)
+                    var processParam = {
+                        alreadyCropped: true,
+                        scenario: "FullProcess"
+                    }
+                    var body = {
+                        List: input["ContainerList"]["List"],
+                        processParam: processParam
+                    }
+                    postRequest(body)
+                } else
+                    displayResults(results)
+        }
+
+        function postRequest(body) {
+            document.getElementById("status").innerHTML = "Getting results from server......"
+            document.getElementById("status").style.backgroundColor = "grey"
+            http.setDataSerializer('utf8')
+            http.post(ENCRYPTED_RESULT_SERVICE, JSON.stringify(body), { "content-type": "application/json; utf-8" }, function (response) {
+                DocumentReader.parseCoreResults(response.data, function (m) { 
+                    displayResults(DocumentReader.DocumentReaderResults.fromJson(JSON.parse(m))) }, function (e) { })
+            }, function (response) {
+                console.error(response.error)
+                document.getElementById("status").innerHTML = "Something went wrong!"
+                document.getElementById("status").style.backgroundColor = "red"
+            })
         }
 
         function displayResults(results) {

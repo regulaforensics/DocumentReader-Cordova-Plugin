@@ -5380,6 +5380,7 @@ DocumentReader.setRfidSessionStatus = (status, successCallback, errorCallback) =
 DocumentReader.providePACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["providePACertificates", certificates])
 DocumentReader.provideTACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTACertificates", certificates])
 DocumentReader.provideTASignature = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", certificates])
+DocumentReader.parseCoreResults = (json, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["parseCoreResults", json])
 DocumentReader.initializeReaderWithDatabasePath = (license, path, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabasePath", license, path])
 DocumentReader.initializeReaderWithDatabase = (license, db, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabase", license, db])
 DocumentReader.recognizeImageFrame = (image, params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageFrame", image, params])

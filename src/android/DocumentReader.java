@@ -24,6 +24,7 @@ import com.regula.documentreader.api.params.rfid.PKDCertificate;
 import com.regula.documentreader.api.params.rfid.authorization.PAResourcesIssuer;
 import com.regula.documentreader.api.params.rfid.authorization.TAChallenge;
 import com.regula.documentreader.api.results.DocumentReaderResults;
+import com.regula.documentreader.api.parser.DocReaderResultsJsonParser;
 
 import org.apache.cordova.CallbackContext;
 import org.apache.cordova.CordovaPlugin;
@@ -312,6 +313,9 @@ public class DocumentReader extends CordovaPlugin {
                 case "provideTASignature":
                     provideTASignature(callback, args(0));
                     break;
+                case "parseCoreResults":
+                    parseCoreResults(callback, args(0));
+                    break;
                 case "initializeReaderWithDatabasePath":
                     initializeReaderWithDatabasePath(callback, args(0), args(1));
                     break;
@@ -365,6 +369,11 @@ public class DocumentReader extends CordovaPlugin {
 
     private void getAvailableScenarios(Callback callback) throws JSONException {
         callback.success(JSONConstructor.generateList(Instance().availableScenarios, JSONConstructor::generateDocumentReaderScenario).toString());
+    }
+
+    private void parseCoreResults(Callback callback, String json) {
+        DocumentReaderResults results = (DocumentReaderResults) DocReaderResultsJsonParser.parseCoreResults(json).get("docReaderResults");
+        callback.success(JSONConstructor.generateDocumentReaderResults(results, getContext()).toString());
     }
 
     private void getAPIVersion(Callback callback) {

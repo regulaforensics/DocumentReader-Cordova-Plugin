@@ -240,6 +240,8 @@ typedef void (^Callback)(NSString* response);
         [self provideTACertificates :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"provideTASignature"])
         [self provideTASignature :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"parseCoreResults"])
+        [self parseCoreResults :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"initializeReaderWithDatabasePath"])
         [self initializeReaderWithDatabasePath :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
     else if([action isEqualToString:@"initializeReaderWithDatabase"])
