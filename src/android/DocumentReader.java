@@ -34,6 +34,8 @@ import org.json.JSONObject;
 import org.json.JSONException;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -157,6 +159,9 @@ public class DocumentReader extends CordovaPlugin {
         };
         try {
             switch (action) {
+                case "initializeReaderAutomatically":
+                    initializeReaderAutomatically(callback);
+                    break;
                 case "getAPIVersion":
                     getAPIVersion(callback);
                     break;
@@ -365,6 +370,22 @@ public class DocumentReader extends CordovaPlugin {
             return;
         NfcAdapter.getDefaultAdapter(getActivity()).disableForegroundDispatch(getActivity());
         backgroundRFIDEnabled = false;
+    }
+
+    private void initializeReaderAutomatically(Callback callback) throws JSONException {
+        if (!Instance().getDocumentReaderIsReady())
+            try {
+                InputStream is = getContext().getAssets().open("regula.license");
+                byte[] license = new byte[is.available()];
+                is.read(license);
+                Instance().initializeReader(getContext(), license, getInitCompletion(callback));
+                is.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+                callback.error("problem reading license(see logs)");
+            }
+        else
+            callback.success("already initialized");
     }
 
     private void getAvailableScenarios(Callback callback) throws JSONException {

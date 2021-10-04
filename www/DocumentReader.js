@@ -5328,6 +5328,7 @@ const Enum = {
 
 const DocumentReader = {}
 
+DocumentReader.initializeReaderAutomatically = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderAutomatically"])
 DocumentReader.getAPIVersion = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getAPIVersion"])
 DocumentReader.getAvailableScenarios = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getAvailableScenarios"])
 DocumentReader.isRFIDAvailableForUse = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["isRFIDAvailableForUse"])

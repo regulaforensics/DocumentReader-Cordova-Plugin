@@ -136,7 +136,9 @@ typedef void (^Callback)(NSString* response);
         [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_ERROR messageAsString:response] callbackId:command.callbackId];
     };
 
-    if([action isEqualToString:@"getAPIVersion"])
+    if([action isEqualToString:@"initializeReaderAutomatically"])
+        [self initializeReaderAutomatically :successCallback :errorCallback];
+    else if([action isEqualToString:@"getAPIVersion"])
         [self getAPIVersion :successCallback :errorCallback];
     else if([action isEqualToString:@"getAvailableScenarios"])
         [self getAvailableScenarios :successCallback :errorCallback];
@@ -260,6 +262,12 @@ typedef void (^Callback)(NSString* response);
         [self recognizeImageWithCameraMode :[args objectAtIndex:0] :[args objectAtIndex:1] :successCallback :errorCallback];
     else
         [self result:[NSString stringWithFormat:@"%@/%@", @"method not implemented: ", action] :errorCallback];
+}
+
+- (void) initializeReaderAutomatically:(Callback)successCallback :(Callback)errorCallback{
+    NSString *dataPath = [[NSBundle mainBundle] pathForResource:@"regula.license" ofType:nil];
+    NSData *licenseData = [NSData dataWithContentsOfFile:dataPath];
+    [RGLDocReader.shared initializeReader:licenseData completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
 - (void) resetConfiguration:(Callback)successCallback :(Callback)errorCallback{
