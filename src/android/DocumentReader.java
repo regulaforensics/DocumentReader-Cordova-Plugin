@@ -21,6 +21,7 @@ import com.regula.documentreader.api.completions.IRfidReaderRequest;
 import com.regula.documentreader.api.completions.IRfidTASignatureCompletion;
 import com.regula.documentreader.api.enums.DocReaderAction;
 import com.regula.documentreader.api.errors.DocumentReaderException;
+import com.regula.documentreader.api.params.DocReaderConfig;
 import com.regula.documentreader.api.params.ImageInputParam;
 import com.regula.documentreader.api.params.rfid.PKDCertificate;
 import com.regula.documentreader.api.params.rfid.authorization.PAResourcesIssuer;
