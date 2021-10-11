@@ -3515,6 +3515,9 @@ const eVisualFieldType = {
     FT_DLCLASSCODE_D3_TO: 635,
     FT_DLCLASSCODE_D3_NOTES: 636,
     FT_ALT_DATE_OF_EXPIRY: 637,
+    FT_DLCLASSCODE_CD_FROM: 638,
+    FT_DLCLASSCODE_CD_TO: 639,
+    FT_DLCLASSCODE_CD_NOTES: 640,
 
     getTranslation: function (value) {
         switch (value) {
@@ -4692,6 +4695,12 @@ const eVisualFieldType = {
                 return "DL category D3 codes"
             case 637:
                 return "Alternative date of expiry"
+            case 638:
+                return "DL category CD valid from"
+            case 639:
+                return "DL category CD valid to"
+            case 640:
+                return "DL category CD codes"
             default:
                 return value
         }
