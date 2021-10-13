@@ -267,7 +267,7 @@ typedef void (^Callback)(NSString* response);
 - (void) initializeReaderAutomatically:(Callback)successCallback :(Callback)errorCallback{
     NSString *dataPath = [[NSBundle mainBundle] pathForResource:@"regula.license" ofType:nil];
     NSData *licenseData = [NSData dataWithContentsOfFile:dataPath];
-    [RGLDocReader.shared initializeReader:licenseData completion:[self getInitCompletion :successCallback :errorCallback]];
+    [RGLDocReader.shared initializeReaderWithConfig:[RGLConfig configWithLicenseData:licenseData] completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
 - (void) resetConfiguration:(Callback)successCallback :(Callback)errorCallback{
@@ -311,7 +311,7 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void) initializeReader:(NSString*)licenseString :(Callback)successCallback :(Callback)errorCallback{
-    [RGLDocReader.shared initializeReader:[[NSData alloc] initWithBase64EncodedString:licenseString options:0] completion:[self getInitCompletion :successCallback :errorCallback]];
+    [RGLDocReader.shared initializeReaderWithConfig:[RGLConfig configWithLicenseData:[[NSData alloc] initWithBase64EncodedString:licenseString options:0]] completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
 - (void) parseCoreResults:(NSString*)json :(Callback)successCallback :(Callback)errorCallback{
@@ -325,7 +325,7 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void) initializeReaderWithDatabasePath:(NSString*)licenseString :(NSString*)databasePath :(Callback)successCallback :(Callback)errorCallback{
-    [RGLDocReader.shared initializeReader:[[NSData alloc] initWithBase64EncodedString:licenseString options:0] databasePath:databasePath completion:[self getInitCompletion :successCallback :errorCallback]];
+    [RGLDocReader.shared initializeReaderWithConfig:[RGLConfig configWithLicenseData:[[NSData alloc] initWithBase64EncodedString:licenseString options:0] licenseUpdateCheck:true databasePath:databasePath] completion:[self getInitCompletion :successCallback :errorCallback]];
 }
 
 - (void) prepareDatabase:(NSString*)dbID :(Callback)successCallback :(Callback)errorCallback{
