@@ -3515,6 +3515,9 @@ const eVisualFieldType = {
     FT_DLCLASSCODE_D3_TO: 635,
     FT_DLCLASSCODE_D3_NOTES: 636,
     FT_ALT_DATE_OF_EXPIRY: 637,
+    FT_DLCLASSCODE_CD_FROM: 638,
+    FT_DLCLASSCODE_CD_TO: 639,
+    FT_DLCLASSCODE_CD_NOTES: 640,
 
     getTranslation: function (value) {
         switch (value) {
@@ -4692,6 +4695,12 @@ const eVisualFieldType = {
                 return "DL category D3 codes"
             case 637:
                 return "Alternative date of expiry"
+            case 638:
+                return "DL category CD valid from"
+            case 639:
+                return "DL category CD valid to"
+            case 640:
+                return "DL category CD codes"
             default:
                 return value
         }
@@ -5328,6 +5337,7 @@ const Enum = {
 
 const DocumentReader = {}
 
+DocumentReader.initializeReaderAutomatically = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderAutomatically"])
 DocumentReader.getAPIVersion = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getAPIVersion"])
 DocumentReader.getAvailableScenarios = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getAvailableScenarios"])
 DocumentReader.isRFIDAvailableForUse = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["isRFIDAvailableForUse"])
@@ -5380,6 +5390,7 @@ DocumentReader.setRfidSessionStatus = (status, successCallback, errorCallback) =
 DocumentReader.providePACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["providePACertificates", certificates])
 DocumentReader.provideTACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTACertificates", certificates])
 DocumentReader.provideTASignature = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", certificates])
+DocumentReader.parseCoreResults = (json, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["parseCoreResults", json])
 DocumentReader.initializeReaderWithDatabasePath = (license, path, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabasePath", license, path])
 DocumentReader.initializeReaderWithDatabase = (license, db, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabase", license, db])
 DocumentReader.recognizeImageFrame = (image, params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageFrame", image, params])
