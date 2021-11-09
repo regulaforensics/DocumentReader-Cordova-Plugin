@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
 import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.util.Base64;
 
 import com.regula.documentreader.api.completions.IDocumentReaderCompletion;
@@ -115,7 +116,7 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void sendIRfidNotificationCompletion(int notification) {
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, rfidNotificationCompletionEvent + notification);
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, rfidNotificationCompletionEvent + JSONConstructor.generateRfidNotificationCompletion(notification, value).toString());
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
     }
@@ -608,7 +609,7 @@ public class DocumentReader extends CordovaPlugin {
             delegate = getIRfidReaderRequestNoPA();
         if (rfidDelegate == RFIDDelegate.FULL)
             delegate = getIRfidReaderRequest();
-        Instance().startRFIDReader(getContext(), getCompletion(), delegate, getIRfidNotificationCompletion());
+        Instance().startRFIDReader(getContext(), getCompletion(), delegate, this::sendIRfidNotificationCompletion);
     }
 
     private void stopRFIDReader(Callback callback) {
@@ -716,7 +717,7 @@ public class DocumentReader extends CordovaPlugin {
     private IDocumentReaderCompletion getCompletion() {
         return (action, results, error) -> {
             sendCompletion(action, results, error);
-            if (action == DocReaderAction.ERROR || action == DocReaderAction.CANCEL || (action == DocReaderAction.COMPLETE && results.rfidResult == 1))
+            if (action == DocReaderAction.ERROR || action == DocReaderAction.CANCEL || (action == DocReaderAction.COMPLETE && results != null && results.rfidResult == 1))
                 stopBackgroundRFID();
         };
     }
@@ -802,10 +803,5 @@ public class DocumentReader extends CordovaPlugin {
         public static final int NULL = 0;
         public static final int NO_PA = 1;
         public static final int FULL = 2;
-    }
-
-
-    private IRfidNotificationCompletion getIRfidNotificationCompletion() {
-        return (notificationType, value) -> sendIRfidNotificationCompletion(notificationType);
     }
 }

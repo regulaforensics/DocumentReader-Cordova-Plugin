@@ -26,11 +26,11 @@ NSString* taSignatureCompletionEvent = @"taSignatureCompletionEvent";
 }
 
 - (void)didChipConnected {
-    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"1"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_CHIP_DETECTED = 1;
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRfidNotificationCompletion:1]]] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_CHIP_DETECTED = 1;
 }
 
 - (void)didReceivedError:(RGLRFIDErrorCodes)errorCode {
-    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"2"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_READING_ERROR = 2;
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRfidNotificationCompletionWithError:2:errorCode]]] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_READING_ERROR = 2;
 }
 
 @end
@@ -115,11 +115,11 @@ typedef void (^Callback)(NSString* response);
 }
 
 - (void)didChipConnected {
-    [self sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"1"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_CHIP_DETECTED = 1;
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRfidNotificationCompletion:1]]] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_CHIP_DETECTED = 1;
 }
 
 - (void)didReceivedError:(RGLRFIDErrorCodes)errorCode {
-    [self sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, @"2"] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_READING_ERROR = 2;
+    [plugin sendEvent:[NSString stringWithFormat:@"%@%@", rfidNotificationCompletionEvent, [RGLWJSONConstructor dictToString:[RGLWJSONConstructor generateRfidNotificationCompletionWithError:2:errorCode]]] :RGLDocumentReader.command.callbackId]; // int RFID_EVENT_READING_ERROR = 2;
 }
 
 - (void) exec:(CDVInvokedUrlCommand*)command {

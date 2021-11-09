@@ -718,6 +718,18 @@ class DocumentReaderCompletion {
     }
 }
 
+class RfidNotificationCompletion {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new RfidNotificationCompletion()
+
+        result.notification = jsonObject["notification"]
+        result.value = jsonObject["value"]
+
+        return result
+    }
+}
+
 class DocumentReaderException {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
