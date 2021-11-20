@@ -16,7 +16,6 @@ import android.util.Base64;
 import com.regula.documentreader.api.completions.IDocumentReaderCompletion;
 import com.regula.documentreader.api.completions.IDocumentReaderInitCompletion;
 import com.regula.documentreader.api.completions.IDocumentReaderPrepareCompletion;
-import com.regula.documentreader.api.completions.IRfidNotificationCompletion;
 import com.regula.documentreader.api.completions.IRfidPKDCertificateCompletion;
 import com.regula.documentreader.api.completions.IRfidReaderRequest;
 import com.regula.documentreader.api.completions.IRfidTASignatureCompletion;
@@ -115,7 +114,7 @@ public class DocumentReader extends CordovaPlugin {
         callbackContext.sendPluginResult(pluginResult);
     }
 
-    private void sendIRfidNotificationCompletion(int notification) {
+    private void sendIRfidNotificationCompletion(int notification, Bundle value) {
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, rfidNotificationCompletionEvent + JSONConstructor.generateRfidNotificationCompletion(notification, value).toString());
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);

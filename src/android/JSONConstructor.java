@@ -1,6 +1,6 @@
 package cordova.plugin.documentreader;
 
-import static cordova.plugin.documentreader.api.completions.IRfidNotificationCompletion.RFID_EXTRA_ERROR_CODE;
+import static com.regula.documentreader.api.completions.IRfidNotificationCompletion.RFID_EXTRA_ERROR_CODE;
 
 import android.content.Context;
 import android.graphics.Bitmap;
