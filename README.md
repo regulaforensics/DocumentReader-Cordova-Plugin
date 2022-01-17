@@ -42,7 +42,7 @@ If you have issues with license verification when running the application, pleas
 6. You placed the `license` into the correct folder as described [here](#how-to-build-demo-application).
 
 ## Documentation
-You can find documentation on API [here](https://docs.regulaforensics.com/cordova).
+You can find documentation on API [here](https://docs.regulaforensics.com/develop/doc-reader-sdk/mobile/cordova).
 
 ## Additional information
 If you have any technical questions, feel free to [contact](mailto:cordova.support@regulaforensics.com) us or create issue [here](https://github.com/regulaforensics/DocumentReader-Cordova-Plugin/issues).
