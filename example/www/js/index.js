@@ -1,9 +1,9 @@
 var app = {
-    initialize: function () {
+    initialize: function() {
         document.addEventListener('deviceready', this.onDeviceReady.bind(this), false)
     },
 
-    onDeviceReady: function () {
+    onDeviceReady: function() {
         this.receivedEvent('deviceready')
         document.getElementById("status").innerHTML = "loading......"
         document.getElementById("status").style.backgroundColor = "grey"
@@ -35,7 +35,7 @@ var app = {
                 input.value = DocumentReaderScenario.fromJson(typeof scenarios[index] === "string" ? JSON.parse(scenarios[index]) : scenarios[index]).name
                 if (index == 0)
                     input.checked = true
-                input.onclick = function () { DocumentReader.setConfig({ processParams: { scenario: this.value } }, function (m) { }, function (e) { }) }
+                input.onclick = function() { DocumentReader.setConfig({ processParams: { scenario: this.value } }, function(m) {}, function(e) {}) }
                 input.style.display = "inline-block"
                 document.getElementById("scenariosRadioGroup").appendChild(input)
                 var label = document.createElement("span")
@@ -43,7 +43,7 @@ var app = {
                 label.style.display = "inline-block"
                 label.style.width = "200px"
                 label.radioButton = input
-                label.onclick = function () { this.radioButton.click() }
+                label.onclick = function() { this.radioButton.click() }
                 document.getElementById("scenariosRadioGroup").appendChild(label)
                 document.getElementById("scenariosRadioGroup").appendChild(document.createElement("br"))
             }
@@ -51,25 +51,25 @@ var app = {
                 document.getElementById("rfidCheckbox").disabled = false
                 document.getElementById("rfidCheckboxText").style.color = "black"
                 document.getElementById("rfidCheckboxText").innerHTML = " Process rfid reading"
-                document.getElementById("rfidCheckboxText").onclick = function () { document.getElementById("rfidCheckbox").click() }
-                document.getElementById("rfidCheckbox").onchange = function () { doRfid = this.checked }
+                document.getElementById("rfidCheckboxText").onclick = function() { document.getElementById("rfidCheckbox").click() }
+                document.getElementById("rfidCheckbox").onchange = function() { doRfid = this.checked }
             }
             document.getElementById("encryptionCheckbox").disabled = false
             document.getElementById("encryptionCheckboxText").style.color = "black"
             document.getElementById("encryptionCheckboxText").innerHTML = " Data encryption"
-            document.getElementById("encryptionCheckboxText").onclick = function () { document.getElementById("encryptionCheckbox").click() }
-            document.getElementById("encryptionCheckbox").onchange = function () { encryption = this.checked }
+            document.getElementById("encryptionCheckboxText").onclick = function() { document.getElementById("encryptionCheckbox").click() }
+            document.getElementById("encryptionCheckbox").onchange = function() { encryption = this.checked }
         }
 
         function scan() {
-            DocumentReader.showScanner(function (m) {
+            DocumentReader.showScanner(function(m) {
                 handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m)))
-            }, function (e) { })
+            }, function(e) {})
         }
 
         function recognizeAndroid() {
             var permissions = cordova.plugins.permissions
-            permissions.checkPermission(permissions.READ_EXTERNAL_STORAGE, function (status) {
+            permissions.checkPermission(permissions.READ_EXTERNAL_STORAGE, function(status) {
                 if (status.hasPermission)
                     recognize()
                 else {
@@ -85,11 +85,11 @@ var app = {
 
         function stopRfid() {
             hideRfidUI()
-            DocumentReader.stopRFIDReader(function (e) { }, function (e) { })
+            DocumentReader.stopRFIDReader(function(e) {}, function(e) {})
         }
 
         function recognize() {
-            window.imagePicker.getPictures(function (results) {
+            window.imagePicker.getPictures(function(results) {
                 if (results.length > 0) {
                     clearResults()
                     document.getElementById("status").innerHTML = "copying image......"
@@ -97,14 +97,14 @@ var app = {
                 }
                 var images = []
                 for (var index in results)
-                    readFile(results[index], function (base64) {
+                    readFile(results[index], function(base64) {
                         document.getElementById("status").innerHTML = "processing image......"
                         document.getElementById("status").style.backgroundColor = "grey"
                         images.push(base64)
                         if (images.length === results.length)
-                            DocumentReader.recognizeImages(images, function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
+                            DocumentReader.recognizeImages(images, function(m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) {})
                     })
-            }, function (e) { }, { maximumImagesCount: 10 })
+            }, function(e) {}, { maximumImagesCount: 10 })
         }
 
         function handleCompletion(completion) {
@@ -120,8 +120,8 @@ var app = {
                         hideRfidUI()
                         displayResults(completion.results)
                     }
-                else
-                    handleResults(completion.results)
+            else
+                handleResults(completion.results)
         }
 
         function showRfidUI() {
@@ -155,7 +155,7 @@ var app = {
         }
 
         function updateRfidUI(results) {
-            if (results.code === Enum.eRFID_NotificationAndErrorCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
+            if (results.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
                 rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.number)
                 document.getElementById("rfidDescription").innerHTML = rfidDescription
             }
@@ -166,12 +166,12 @@ var app = {
             rfidProgress = results.value
             document.getElementById("rfidProgress").value = rfidProgress
             if (window.cordova.platformId === 'ios')
-                DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + results.value + "%", function (e) { }, function (e) { })
+                DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + results.value + "%", function(e) {}, function(e) {})
         }
 
         function customRFID() {
             showRfidUI()
-            DocumentReader.readRFID(function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
+            DocumentReader.readRFID(function(m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function(e) {})
         }
 
         function usualRFID() {
@@ -180,7 +180,7 @@ var app = {
             var paCert = "paCertificateCompletionEvent"
             var taCert = "taCertificateCompletionEvent"
             var taSig = "taSignatureCompletionEvent"
-            DocumentReader.startRFIDReader(function (m) {
+            DocumentReader.startRFIDReader(function(m) {
                 if (m.substring(0, notification.length) === notification) {
                     m = m.substring(notification.length, m.length)
                     console.log(notification + ": " + m)
@@ -195,7 +195,7 @@ var app = {
                     console.log(taSig + ": " + m)
                 } else
                     handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m)))
-            }, function (e) { })
+            }, function(e) {})
         }
 
         function handleResults(results) {
@@ -204,38 +204,39 @@ var app = {
                 accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_MRZ_STRINGS)
                 if (accessKey != null && accessKey != "") {
                     accessKey = accessKey.replace(/^/g, '').replace(/\n/g, '')
-                    DocumentReader.setRfidScenario({ mrz: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_MRZ }, function (m) { }, function (e) { })
+                    DocumentReader.setRfidScenario({ mrz: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_MRZ }, function(m) {}, function(e) {})
                 } else {
                     accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_CARD_ACCESS_NUMBER)
                     if (accessKey != null && accessKey != "")
-                        DocumentReader.setRfidScenario({ password: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_CAN }, function (m) { }, function (e) { })
+                        DocumentReader.setRfidScenario({ password: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_CAN }, function(m) {}, function(e) {})
                 }
                 //customRFID()
                 usualRFID()
             } else
-                if (encryption) {
-                    var input = JSON.parse(results.rawResult)
-                    var processParam = {
-                        alreadyCropped: true,
-                        scenario: "FullProcess"
-                    }
-                    var body = {
-                        List: input["ContainerList"]["List"],
-                        processParam: processParam
-                    }
-                    postRequest(body)
-                } else
-                    displayResults(results)
+            if (encryption) {
+                var input = JSON.parse(results.rawResult)
+                var processParam = {
+                    alreadyCropped: true,
+                    scenario: "FullProcess"
+                }
+                var body = {
+                    List: input["ContainerList"]["List"],
+                    processParam: processParam
+                }
+                postRequest(body)
+            } else
+                displayResults(results)
         }
 
         function postRequest(body) {
             document.getElementById("status").innerHTML = "Getting results from server......"
             document.getElementById("status").style.backgroundColor = "grey"
             http.setDataSerializer('utf8')
-            http.post(ENCRYPTED_RESULT_SERVICE, JSON.stringify(body), { "content-type": "application/json; utf-8" }, function (response) {
-                DocumentReader.parseCoreResults(response.data, function (m) { 
-                    displayResults(DocumentReader.DocumentReaderResults.fromJson(JSON.parse(m))) }, function (e) { })
-            }, function (response) {
+            http.post(ENCRYPTED_RESULT_SERVICE, JSON.stringify(body), { "content-type": "application/json; utf-8" }, function(response) {
+                DocumentReader.parseCoreResults(response.data, function(m) {
+                    displayResults(DocumentReader.DocumentReaderResults.fromJson(JSON.parse(m)))
+                }, function(e) {})
+            }, function(response) {
                 console.error(response.error)
                 document.getElementById("status").innerHTML = "Something went wrong!"
                 document.getElementById("status").style.backgroundColor = "red"
@@ -258,8 +259,8 @@ var app = {
         }
 
         function addCertificates() {
-            window.resolveLocalFileSystemURL(cordova.file.applicationDirectory + "www/certificates/", function (fileSystem) {
-                fileSystem.createReader().readEntries(function (entries) {
+            window.resolveLocalFileSystemURL(cordova.file.applicationDirectory + "www/certificates/", function(fileSystem) {
+                fileSystem.createReader().readEntries(function(entries) {
                     for (var i in entries) {
                         var item = entries[i]
                         if (item.isFile) {
@@ -267,44 +268,44 @@ var app = {
                             var pkdResourceType = 0
                             if (findExt.length > 0)
                                 pkdResourceType = Enum.PKDResourceType.getType(findExt[findExt.length - 1].toLowerCase())
-                            readFile("www/certificates/" + item.name, function (file, resType) {
+                            readFile("www/certificates/" + item.name, function(file, resType) {
                                 resType = resType[0]
                                 var certificates = []
                                 certificates.push({
                                     'binaryData': file,
                                     'resourceType': resType
                                 })
-                                DocumentReader.addPKDCertificates(certificates, function (s) {
+                                DocumentReader.addPKDCertificates(certificates, function(s) {
                                     console.log("certificate added")
-                                }, function (e) { console.log(e) })
+                                }, function(e) { console.log(e) })
                             }, pkdResourceType)
                         }
                     }
-                }, function (err) { console.log(err) })
-            }, function (err) { console.log(err) })
+                }, function(err) { console.log(err) })
+            }, function(err) { console.log(err) })
         }
 
         function readFile(path, callback, ...items) {
             if (path.substring(0, 8) !== "file:///")
                 path = cordova.file.applicationDirectory + path
-            window.resolveLocalFileSystemURL(path, function (fileEntry) {
-                fileEntry.file(function (file) {
+            window.resolveLocalFileSystemURL(path, function(fileEntry) {
+                fileEntry.file(function(file) {
                     var reader = new FileReader()
-                    reader.onloadend = function (e) {
+                    reader.onloadend = function(e) {
                         callback(this.result.substring(this.result.indexOf(',') + 1), items)
                     }
                     reader.readAsDataURL(file)
                 })
-            }, function (e) { console.log(JSON.stringify(e)) })
+            }, function(e) { console.log(JSON.stringify(e)) })
         }
 
-        readFile("www/regula.license", function (license) {
-            DocumentReader.prepareDatabase("Full", function (message) {
+        readFile("www/regula.license", function(license) {
+            DocumentReader.prepareDatabase("Full", function(message) {
                 if (message != "database prepared")
                     document.getElementById("status").innerHTML = "Downloading database: " + message + "%"
                 else {
                     document.getElementById("status").innerHTML = "Loading......"
-                    DocumentReader.initializeReader(license, function (message) {
+                    DocumentReader.initializeReader(license, function(message) {
                         document.getElementById("status").innerHTML = "Ready"
                         document.getElementById("status").style.backgroundColor = "green"
                         document.getElementById("showScannerButton").addEventListener("click", scan)
@@ -316,30 +317,32 @@ var app = {
                             functionality: {
                                 videoCaptureMotionControl: true,
                                 showCaptureButton: true
-                            }, customization: {
+                            },
+                            customization: {
                                 showResultStatusMessages: true,
                                 showStatusMessages: true
-                            }, processParams: {
+                            },
+                            processParams: {
                                 scenario: "Mrz",
                                 doRfid: false,
                             },
-                        }, function (m) { }, function (e) { })
-                        DocumentReader.getAvailableScenarios(function (s) {
-                            DocumentReader.isRFIDAvailableForUse(function (r) { postInitialize(JSON.parse(s), r) }, function (e) { })
-                        }, function (e) { })
-                        DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA, function (r) { }, function (e) { })
-                        // addCertificates()
-                    }, function (error) {
+                        }, function(m) {}, function(e) {})
+                        DocumentReader.getAvailableScenarios(function(s) {
+                            DocumentReader.isRFIDAvailableForUse(function(r) { postInitialize(JSON.parse(s), r) }, function(e) {})
+                        }, function(e) {})
+                        DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA, function(r) {}, function(e) {})
+                            // addCertificates()
+                    }, function(error) {
                         console.log(error)
                         document.getElementById("status").innerHTML = error
                         document.getElementById("status").style.backgroundColor = "red"
                     })
                 }
-            }, function (e) { console.log(e) })
+            }, function(e) { console.log(e) })
         })
     },
 
-    receivedEvent: function (id) {
+    receivedEvent: function(id) {
         var parentElement = document.getElementById(id)
         var listeningElement = parentElement.querySelector('.listening')
         var receivedElement = parentElement.querySelector('.received')
