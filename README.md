@@ -24,6 +24,7 @@ $ cordova prepare
 4. Copy the `regula.license` file to the `example/www` folder.
 5. Change the application ID to the one you have specified during the registration at [licensing.regulaforensics.com](https://licensing.regulaforensics.com).
 6. Android:
+  * Run `npx jetify` inside `example` folder
   * Run `cordova run android` inside `example` folder - this is just one way to run the app. You can also run it directly from within Android Studio.
 
 **Note**: if the gallery doesn't open, check if the following line is presented in the AndroidManifest.xml inside the `application` tag:
