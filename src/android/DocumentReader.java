@@ -19,6 +19,7 @@ import com.regula.documentreader.api.completions.IDocumentReaderPrepareCompletio
 import com.regula.documentreader.api.completions.IRfidPKDCertificateCompletion;
 import com.regula.documentreader.api.completions.IRfidReaderRequest;
 import com.regula.documentreader.api.completions.IRfidTASignatureCompletion;
+import com.regula.documentreader.api.completions.ITccParamsCompletion;
 import com.regula.documentreader.api.enums.DocReaderAction;
 import com.regula.documentreader.api.errors.DocumentReaderException;
 import com.regula.documentreader.api.internal.core.CoreScenarioUtil;
@@ -325,6 +326,9 @@ public class DocumentReader extends CordovaPlugin {
                 case "parseCoreResults":
                     parseCoreResults(callback, args(0));
                     break;
+                case "setTCCParams":
+                    setTCCParams(callback, args(0));
+                    break;
                 case "initializeReaderWithDatabasePath":
                     initializeReaderWithDatabasePath(callback, args(0), args(1));
                     break;
@@ -437,6 +441,10 @@ public class DocumentReader extends CordovaPlugin {
 
     private void getDatabaseDocumentsNumber(Callback callback) {
         callback.success(Instance().version.database.documentsNumber);
+    }
+
+    private void setTCCParams(Callback callback, final JSONObject params) {
+        Instance().setTccParams(JSONConstructor.TCCParamsFromJSON(params), getTCCParamsCompletion(callback));
     }
 
     private void deinitializeReader(Callback callback) {
@@ -749,6 +757,15 @@ public class DocumentReader extends CordovaPlugin {
                 callback.success("init completed");
             } else
                 callback.error("Init failed:" + error);
+        };
+    }
+
+    private ITccParamsCompletion getTCCParamsCompletion(Callback callback) {
+        return (success, error) -> {
+            if (success)
+                callback.success("success");
+            else
+                callback.error("failed: " + error.getMessage());
         };
     }
 
