@@ -329,9 +329,6 @@ public class DocumentReader extends CordovaPlugin {
                 case "setTCCParams":
                     setTCCParams(callback, args(0));
                     break;
-                case "initializeReaderWithDatabasePath":
-                    initializeReaderWithDatabasePath(callback, args(0), args(1));
-                    break;
                 case "initializeReaderWithDatabase":
                     initializeReaderWithDatabase(callback, args(0), args(1));
                     break;
@@ -706,11 +703,6 @@ public class DocumentReader extends CordovaPlugin {
     @SuppressWarnings("unused")
     private void recognizeImageWithCameraMode(Callback callback, String base64, boolean mode) {
         callback.error("recognizeImageWithCameraMode() is an ios-only method");
-    }
-
-    @SuppressWarnings("unused")
-    private void initializeReaderWithDatabasePath(Callback callback, Object license, String path) {
-        callback.error("initializeReaderWithDatabasePath() is an ios-only method");
     }
 
     @SuppressWarnings("unused")
