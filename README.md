@@ -12,7 +12,7 @@ This repository contains the source code of the Document Reader API, and the sam
 * [Additional information](#additional-information)
 
 ## How to build the demo application
-1. Visit [licensing.regulaforensics.com](https://licensing.regulaforensics.com) to get a trial license (`regula.license` file). The license creation wizard will guide you through the necessary steps.
+1. Visit [client.regulaforensics.com](https://client.regulaforensics.com) to get a trial license (`regula.license` file). The license creation wizard will guide you through the necessary steps.
 2. Download or clone current repository using the command `git clone https://github.com/regulaforensics/DocumentReader-Cordova-Plugin.git`.
 3. Run the following commands in Terminal:
 ```bash
@@ -22,7 +22,7 @@ $ cordova prepare
 ```
 
 4. Copy the `regula.license` file to the `example/www` folder.
-5. Change the application ID to the one you have specified during the registration at [licensing.regulaforensics.com](https://licensing.regulaforensics.com).
+5. Change the application ID to the one you have specified during the registration at [client.regulaforensics.com](https://client.regulaforensics.com).
 6. Android:
   * Run `cordova run android` inside `example` folder - this is just one way to run the app. You can also run it directly from within Android Studio.
 
