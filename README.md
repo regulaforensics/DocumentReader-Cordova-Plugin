@@ -18,6 +18,7 @@ This repository contains the source code of the Document Reader API, and the sam
 ```bash
 $ cd example
 $ npm install
+$ npx jetify
 $ cordova prepare
 ```
 

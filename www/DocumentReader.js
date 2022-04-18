@@ -1682,6 +1682,7 @@ const eImageQualityCheckType = {
     IQC_BOUNDS: 5,
     IQC_SCREEN_CAPTURE: 6,
     IQC_PORTRAIT: 7,
+    IQC_HANDWRITTEN: 8,
 }
 
 const eLDS_ParsingErrorCodes = {
@@ -6081,7 +6082,7 @@ DocumentReader.providePACertificates = (certificates, successCallback, errorCall
 DocumentReader.provideTACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTACertificates", certificates])
 DocumentReader.provideTASignature = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", certificates])
 DocumentReader.parseCoreResults = (json, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["parseCoreResults", json])
-DocumentReader.initializeReaderWithDatabasePath = (license, path, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabasePath", license, path])
+DocumentReader.setTCCParams = (params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTCCParams", params])
 DocumentReader.initializeReaderWithDatabase = (license, db, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderWithDatabase", license, db])
 DocumentReader.recognizeImageFrame = (image, params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageFrame", image, params])
 DocumentReader.recognizeImageWithOpts = (image, options, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithOpts", image, options])
