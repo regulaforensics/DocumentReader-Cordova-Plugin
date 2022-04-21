@@ -23,7 +23,6 @@ $ cordova prepare
 ```
 
 4. Copy the `regula.license` file to the `example/www` folder.
-5. Change the application ID to the one you have specified during the registration at [client.regulaforensics.com](https://client.regulaforensics.com).
 6. Android:
   * Run `cordova run android` inside `example` folder - this is just one way to run the app. You can also run it directly from within Android Studio.
 
@@ -36,7 +35,6 @@ $ cordova prepare
 ### Troubleshooting license issues
 If you have issues with license verification when running the application, please verify that next is true:
 1. The OS, which you use, is specified in the license (e.g., Android and/or iOS).
-2. The application (Bundle) ID, which you use, is specified in the license.
 3. The license is valid (not expired).
 4. The date and time on the device, where you run the application, are valid.
 5. You use the latest release version of the Document Reader SDK.
