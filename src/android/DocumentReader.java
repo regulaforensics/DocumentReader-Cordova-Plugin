@@ -9,7 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
-import androidx.annotation.NonNull;
+import android.support.annotation.NonNull;
 import android.os.Bundle;
 import android.util.Base64;
 
