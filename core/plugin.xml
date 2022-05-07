@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<plugin id="cordova-plugin-document-reader-core" version="0.0.1" 
+  xmlns="http://apache.org/cordova/ns/plugins/1.0" 
+  xmlns:android="http://schemas.android.com/apk/res/android">
+  <name>DocumentReaderCore</name>
+  <platform name="ios">
+    <podspec>
+      <config/>
+      <pods>
+        <pod name="DocumentReaderFullRFID" spec="~> 6.3.6220" />
+      </pods>
+    </podspec>
+    <dependency id="cordova-plugin-add-swift-support" />
+  </platform>
+  <platform name="android">
+    <framework src="src/android/build.gradle" custom="true" type="gradleReference" />
+  </platform>
+</plugin>

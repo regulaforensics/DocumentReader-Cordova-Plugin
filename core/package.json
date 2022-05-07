@@ -1,9 +1,9 @@
 {
-  "name": "@regulaforensics/cordova-plugin-document-reader-api",
-  "version": "0.0.6",
-  "description": "Cordova plugin for reading and validation of identification documents (API framework)",
+  "name": "@regulaforensics/cordova-plugin-document-reader-core-fullrfid",
+  "version": "0.0.1",
+  "description": "Cordova plugin for reading and validation of identification documents (Core framework)",
   "cordova": {
-    "id": "@regulaforensics/cordova-plugin-document-reader-api",
+    "id": "@regulaforensics/cordova-plugin-document-reader-core-fullrfid",
     "platforms": [
       "ios",
       "android"
