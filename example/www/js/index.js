@@ -120,7 +120,9 @@ var app = {
                         hideRfidUI()
                         displayResults(completion.results)
                     }
-            else
+                else
+                    handleResults(completion.results)
+            if (completion.action === Enum.DocReaderAction.TIMEOUT)
                 handleResults(completion.results)
         }
 
@@ -201,15 +203,6 @@ var app = {
         function handleResults(results) {
             clearResults()
             if (doRfid && results != null && results.chipPage != 0) {
-                accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_MRZ_STRINGS)
-                if (accessKey != null && accessKey != "") {
-                    accessKey = accessKey.replace(/^/g, '').replace(/\n/g, '')
-                    DocumentReader.setRfidScenario({ mrz: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_MRZ }, function(m) {}, function(e) {})
-                } else {
-                    accessKey = results.getTextFieldValueByType(DocumentReader.Enum.eVisualFieldType.FT_CARD_ACCESS_NUMBER)
-                    if (accessKey != null && accessKey != "")
-                        DocumentReader.setRfidScenario({ password: accessKey, pacePasswordType: DocumentReader.Enum.eRFID_Password_Type.PPT_CAN }, function(m) {}, function(e) {})
-                }
                 //customRFID()
                 usualRFID()
             } else
