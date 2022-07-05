@@ -333,9 +333,6 @@ public class DocumentReader extends CordovaPlugin {
                 case "setTCCParams":
                     setTCCParams(callback, args(0));
                     break;
-                case "initializeReaderWithDatabase":
-                    initializeReaderWithDatabase(callback, args(0), args(1));
-                    break;
                 case "recognizeImageWithOpts":
                     recognizeImageWithOpts(callback, args(0), args(1));
                     break;
@@ -500,16 +497,9 @@ public class DocumentReader extends CordovaPlugin {
         callback.success(Instance().isRFIDAvailableForUse());
     }
 
-    private void initializeReader(Callback callback, Object license) {
+    private void initializeReader(Callback callback, JSONObject config) {
         if (!Instance().isReady())
-            Instance().initializeReader(getContext(), new DocReaderConfig(Base64.decode(license.toString(), Base64.DEFAULT)), getInitCompletion(callback));
-        else
-            callback.success("already initialized");
-    }
-
-    private void initializeReaderWithDatabase(Callback callback, Object license, Object db) {
-        if (!Instance().isReady())
-            Instance().initializeReader(getContext(), new DocReaderConfig(Base64.decode(license.toString(), Base64.DEFAULT), Base64.decode(db.toString(), Base64.DEFAULT)), getInitCompletion(callback));
+            Instance().initializeReader(getContext(), JSONConstructor.DocReaderConfigFromJSON(config), getInitCompletion(callback));
         else
             callback.success("already initialized");
     }

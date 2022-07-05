@@ -298,7 +298,10 @@ var app = {
                     document.getElementById("status").innerHTML = "Downloading database: " + message + "%"
                 else {
                     document.getElementById("status").innerHTML = "Loading......"
-                    DocumentReader.initializeReader(license, function(message) {
+                    DocumentReader.initializeReader({
+                        license: license,
+                        delayedNNLoad: true
+                    }, function(message) {
                         document.getElementById("status").innerHTML = "Ready"
                         document.getElementById("status").style.backgroundColor = "green"
                         document.getElementById("showScannerButton").addEventListener("click", scan)
