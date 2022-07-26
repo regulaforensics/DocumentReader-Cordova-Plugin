@@ -5892,6 +5892,15 @@ const LCID = {
     }
 }
 
+const MRZFormat = {
+    FORMAT_1X30: "1x30",
+    FORMAT_3X30: "3x30",
+    FORMAT_2X36: "2x36",
+    FORMAT_2X44: "2x44",
+    FORMAT_1X6: "1x6",
+    FORMAT_2X30: "2x30",
+}
+
 const PKDResourceType = {
     CERTIFICATE_PA: 0,
     CERTIFICATE_TA: 1,
@@ -6060,6 +6069,7 @@ const Enum = {
    FrameShapeType,
    IRfidNotificationCompletion,
    LCID,
+   MRZFormat,
    PKDResourceType,
    ProcessingFinishedStatus,
    RFIDDelegate,
@@ -6124,10 +6134,11 @@ DocumentReader.setRfidScenario = (scenario, successCallback, errorCallback) => c
 DocumentReader.initializeReader = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReader", config])
 DocumentReader.prepareDatabase = (databaseType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["prepareDatabase", databaseType])
 DocumentReader.recognizeImage = (image, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImage", image])
+DocumentReader.recognizeData = (data, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeData", data])
 DocumentReader.setRfidSessionStatus = (status, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidSessionStatus", status])
 DocumentReader.providePACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["providePACertificates", certificates])
 DocumentReader.provideTACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTACertificates", certificates])
-DocumentReader.provideTASignature = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", certificates])
+DocumentReader.provideTASignature = (signature, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", signature])
 DocumentReader.parseCoreResults = (json, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["parseCoreResults", json])
 DocumentReader.setTCCParams = (params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTCCParams", params])
 DocumentReader.recognizeImageWithOpts = (image, options, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithOpts", image, options])

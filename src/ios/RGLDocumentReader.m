@@ -236,6 +236,8 @@ typedef void (^Callback)(NSString* response);
         [self prepareDatabase :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"recognizeImage"])
         [self recognizeImage :[args objectAtIndex:0] :successCallback :errorCallback];
+    else if([action isEqualToString:@"recognizeData"])
+        [self recognizeData :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"setRfidSessionStatus"])
         [self setRfidSessionStatus :[args objectAtIndex:0] :successCallback :errorCallback];
     else if([action isEqualToString:@"providePACertificates"])
@@ -348,6 +350,10 @@ typedef void (^Callback)(NSString* response);
 
 - (void) recognizeImage:(NSMutableString*)base64 :(Callback)successCallback :(Callback)errorCallback{
     [self recognizeImageWith :base64 :false :successCallback :errorCallback];
+}
+
+- (void) recognizeData:(NSString*)data :(Callback)successCallback :(Callback)errorCallback{
+    [RGLDocReader.shared recognizeData :[[NSData alloc] initWithBase64EncodedString:data options:0] completion:[self getCompletion]];
 }
 
 - (void) recognizeImages:(NSArray*)input :(Callback)successCallback :(Callback)errorCallback{

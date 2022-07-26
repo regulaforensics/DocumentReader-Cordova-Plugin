@@ -315,6 +315,9 @@ public class DocumentReader extends CordovaPlugin {
                 case "recognizeImage":
                     recognizeImage(callback, args(0));
                     break;
+                case "recognizeData":
+                    recognizeData(callback, args(0));
+                    break;
                 case "setRfidSessionStatus":
                     setRfidSessionStatus(callback, args(0));
                     break;
@@ -522,6 +525,11 @@ public class DocumentReader extends CordovaPlugin {
     private void recognizeImage(@SuppressWarnings("unused") Callback callback, String base64Image) {
         stopBackgroundRFID();
         Instance().recognizeImage(Helpers.bitmapFromBase64(base64Image), getCompletion());
+    }
+
+    private void recognizeData(@SuppressWarnings("unused") Callback callback, Object data) {
+        stopBackgroundRFID();
+        Instance().recognizeImage(Base64.decode(data.toString(), Base64.DEFAULT), getCompletion());
     }
 
     private void recognizeImages(@SuppressWarnings("unused") Callback callback, JSONArray base64Images) throws JSONException {

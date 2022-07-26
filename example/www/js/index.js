@@ -177,7 +177,6 @@ var app = {
         }
 
         function usualRFID() {
-            doRfid = false
             var notification = "rfidNotificationCompletionEvent"
             var paCert = "paCertificateCompletionEvent"
             var taCert = "taCertificateCompletionEvent"
