@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-	implementation ('com.regula.documentreader:api:6.4.7224'){
+	implementation ('com.regula.documentreader:api:6.5.7488'){
         transitive = true
     }
 }
