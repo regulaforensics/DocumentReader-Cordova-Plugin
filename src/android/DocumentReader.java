@@ -352,7 +352,8 @@ public class DocumentReader extends CordovaPlugin {
                     recognizeImagesWithImageInputs(callback, args(0));
                     break;
             }
-        } catch (Exception ignored) {
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return true;
     }
