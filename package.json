@@ -1,9 +1,9 @@
 {
-  "name": "@regulaforensics/cordova-plugin-document-reader-api-beta",
-  "version": "0.0.137",
+  "name": "@regulaforensics/cordova-plugin-document-reader-beta",
+  "version": "0.0.1",
   "description": "Cordova plugin for reading and validation of identification documents (API framework)",
   "cordova": {
-    "id": "@regulaforensics/cordova-plugin-document-reader-api-beta",
+    "id": "@regulaforensics/cordova-plugin-document-reader-beta",
     "platforms": [
       "ios",
       "android"

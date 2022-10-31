@@ -1,17 +1,11 @@
 repositories {
-	jcenter()
-	maven{
-		url "https://maven.google.com"
-	}
-	maven{
-		url "https://maven.regulaforensics.com/RegulaDocumentReader"
-	}
-	maven {
-		url "https://maven.regulaforensics.com/RegulaDocumentReader/Beta"
-	}
+    maven {
+        url "https://maven.regulaforensics.com/RegulaDocumentReader/Beta"
+    }
 }
 
 dependencies {
+    //noinspection GradleDependency
 	implementation ('com.regula.documentreader:api:6.6.7582'){
         transitive = true
     }

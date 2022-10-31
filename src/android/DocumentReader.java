@@ -9,9 +9,10 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
-import androidx.annotation.NonNull;
 import android.os.Bundle;
 import android.util.Base64;
+
+import androidx.annotation.NonNull;
 
 import com.regula.documentreader.api.completions.IDocumentReaderCompletion;
 import com.regula.documentreader.api.completions.IDocumentReaderInitCompletion;
@@ -23,6 +24,7 @@ import com.regula.documentreader.api.completions.ITccParamsCompletion;
 import com.regula.documentreader.api.enums.DocReaderAction;
 import com.regula.documentreader.api.errors.DocumentReaderException;
 import com.regula.documentreader.api.internal.core.CoreScenarioUtil;
+import com.regula.documentreader.api.params.Device7310Config;
 import com.regula.documentreader.api.params.DocReaderConfig;
 import com.regula.documentreader.api.params.ImageInputData;
 import com.regula.documentreader.api.internal.params.ImageInputParam;
@@ -57,9 +59,15 @@ public class DocumentReader extends CordovaPlugin {
     private IRfidPKDCertificateCompletion taCertificateCompletion;
     private IRfidTASignatureCompletion taSignatureCompletion;
     private final static String rfidNotificationCompletionEvent = "rfidNotificationCompletionEvent";
+
     private final static String paCertificateCompletionEvent = "paCertificateCompletionEvent";
     private final static String taCertificateCompletionEvent = "taCertificateCompletionEvent";
     private final static String taSignatureCompletionEvent = "taSignatureCompletionEvent";
+
+    private final static String bleOnServiceConnectedEvent = "bleOnServiceConnectedEvent";
+    private final static String bleOnServiceDisconnectedEvent = "bleOnServiceDisconnectedEvent";
+    private final static String bleOnDeviceReadyEvent = "bleOnDeviceReadyEvent";
+
     private static int databaseDownloadProgress = 0;
 
     private Context getContext() {
@@ -118,13 +126,13 @@ public class DocumentReader extends CordovaPlugin {
     }
 
     private void sendIRfidNotificationCompletion(int notification, Bundle value) {
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, rfidNotificationCompletionEvent + JSONConstructor.generateRfidNotificationCompletion(notification, value).toString());
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, rfidNotificationCompletionEvent + JSONConstructor.generateRfidNotificationCompletion(notification, value));
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
     }
 
     private void sendPACertificateCompletion(byte[] serialNumber, PAResourcesIssuer issuer) {
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, paCertificateCompletionEvent + JSONConstructor.generatePACertificateCompletion(serialNumber, issuer).toString());
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, paCertificateCompletionEvent + JSONConstructor.generatePACertificateCompletion(serialNumber, issuer));
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
     }
@@ -135,7 +143,23 @@ public class DocumentReader extends CordovaPlugin {
         callbackContext.sendPluginResult(pluginResult);
     }
     private void sendTASignatureCompletion(TAChallenge challenge) {
-        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, taSignatureCompletionEvent + JSONConstructor.generateTAChallenge(challenge).toString());
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, taSignatureCompletionEvent + JSONConstructor.generateTAChallenge(challenge));
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+    private void sendBleOnServiceConnectedEvent(boolean isBleManagerConnected) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, bleOnServiceConnectedEvent + isBleManagerConnected);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void sendBleOnServiceDisconnectedEvent() {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, bleOnServiceDisconnectedEvent);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+    private void sendBleOnDeviceReadyEvent() {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, bleOnDeviceReadyEvent);
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
     }
@@ -167,6 +191,15 @@ public class DocumentReader extends CordovaPlugin {
             switch (action) {
                 case "initializeReaderAutomatically":
                     initializeReaderAutomatically(callback);
+                    break;
+                case "isBlePermissionsGranted":
+                    isBlePermissionsGranted(callback);
+                    break;
+                case "startBluetoothService":
+                    startBluetoothService(callback);
+                    break;
+                case "initializeReaderDevice7310Config":
+                    initializeReaderDevice7310Config(callback);
                     break;
                 case "getAPIVersion":
                     getAPIVersion(callback);
@@ -393,6 +426,37 @@ public class DocumentReader extends CordovaPlugin {
                 e.printStackTrace();
                 callback.error("problem reading license(see logs)");
             }
+        else
+            callback.success("already initialized");
+    }
+
+    private void isBlePermissionsGranted(Callback callback) {
+        callback.success(BluetoothUtil.Companion.isBlePermissionsGranted(getActivity()));
+    }
+
+    private void startBluetoothService(Callback callback) {
+        BluetoothUtil.Companion.startBluetoothService(
+                getActivity(),
+                isBleManagerConnected -> {
+                    sendBleOnServiceConnectedEvent(isBleManagerConnected);
+                    return null;
+                },
+                () -> {
+                    sendBleOnServiceDisconnectedEvent();
+                    return null;
+                },
+                () -> {
+                    sendBleOnDeviceReadyEvent();
+                    return null;
+                }
+        );
+        callback.success();
+    }
+
+    private void initializeReaderDevice7310Config(Callback callback) {
+        if (BluetoothUtil.Companion.getBleManager() == null) callback.error("bleManager is null");
+        if (!Instance().isReady())
+            Instance().initializeReader(getContext(), new Device7310Config(BluetoothUtil.Companion.getBleManager()), getInitCompletion(callback));
         else
             callback.success("already initialized");
     }
@@ -700,7 +764,7 @@ public class DocumentReader extends CordovaPlugin {
         callback.error("getCameraSessionIsPaused() is an ios-only method");
     }
 
-    private void stopRFIDReaderWithErrorMessage(Callback callback, String message) {
+    private void stopRFIDReaderWithErrorMessage(Callback callback, @SuppressWarnings("unused") String message) {
         callback.error("stopRFIDReaderWithErrorMessage() is an ios-only method");
     }
 

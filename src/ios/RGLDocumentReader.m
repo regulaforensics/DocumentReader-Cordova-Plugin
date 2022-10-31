@@ -138,6 +138,12 @@ typedef void (^Callback)(NSString* response);
 
     if([action isEqualToString:@"initializeReaderAutomatically"])
         [self initializeReaderAutomatically :successCallback :errorCallback];
+    else if([action isEqualToString:@"isBlePermissionsGranted"])
+        [self isBlePermissionsGranted :successCallback :errorCallback];
+    else if([action isEqualToString:@"startBluetoothService"])
+        [self startBluetoothService :successCallback :errorCallback];
+    else if([action isEqualToString:@"initializeReaderDevice7310Config"])
+        [self initializeReaderDevice7310Config :successCallback :errorCallback];
     else if([action isEqualToString:@"getAPIVersion"])
         [self getAPIVersion :successCallback :errorCallback];
     else if([action isEqualToString:@"getAvailableScenarios"])
@@ -268,6 +274,18 @@ typedef void (^Callback)(NSString* response);
     NSString *dataPath = [[NSBundle mainBundle] pathForResource:@"regula.license" ofType:nil];
     NSData *licenseData = [NSData dataWithContentsOfFile:dataPath];
     [RGLDocReader.shared initializeReaderWithConfig:[RGLConfig configWithLicenseData:licenseData] completion:[self getInitCompletion :successCallback :errorCallback]];
+}
+
+- (void) isBlePermissionsGranted:(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"isBlePermissionsGranted() is an android-only method" :errorCallback];
+}
+
+- (void) startBluetoothService:(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"startBluetoothService() is an android-only method" :errorCallback];
+}
+
+- (void) initializeReaderDevice7310Config:(Callback)successCallback :(Callback)errorCallback{
+    [self result:@"initializeReaderDevice7310Config() is an android-only method" :errorCallback];
 }
 
 - (void) resetConfiguration:(Callback)successCallback :(Callback)errorCallback{
