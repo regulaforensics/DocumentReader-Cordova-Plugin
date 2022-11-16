@@ -140,6 +140,11 @@ class DocumentReaderValue {
         if (jsonObject["comparison"] != null)
             for (const i in jsonObject["comparison"])
                 result.comparison[i] = jsonObject["comparison"][i]
+        result.originalSymbols = []
+        if (jsonObject["originalSymbols"] != null)
+            for (const i in jsonObject["originalSymbols"])
+                result.originalSymbols.push(DocumentReaderSymbol.fromJson(jsonObject["originalSymbols"][i]))
+        result.rfidOrigin = DocumentReaderRfidOrigin.fromJson(jsonObject["rfidOrigin"])
 
         return result
     }
@@ -155,11 +160,20 @@ class DocumentReaderTextField {
         result.status = jsonObject["status"]
         result.lcidName = jsonObject["lcidName"]
         result.fieldName = jsonObject["fieldName"]
-        result.value = DocumentReaderValue.fromJson(jsonObject["value"])
+        result.value = jsonObject["value"]
+        result.getValue = DocumentReaderValue.fromJson(jsonObject["getValue"])
         result.values = []
         if (jsonObject["values"] != null)
             for (const i in jsonObject["values"])
                 result.values.push(DocumentReaderValue.fromJson(jsonObject["values"][i]))
+        result.comparisonList = []
+        if (jsonObject["comparisonList"] != null)
+            for (const i in jsonObject["comparisonList"])
+                result.comparisonList.push(DocumentReaderComparison.fromJson(jsonObject["comparisonList"][i]))
+        result.validityList = []
+        if (jsonObject["validityList"] != null)
+            for (const i in jsonObject["validityList"])
+                result.validityList.push(DocumentReaderValidity.fromJson(jsonObject["validityList"][i]))
 
         return result
     }
@@ -171,6 +185,12 @@ class DocumentReaderTextResult {
         const result = new DocumentReaderTextResult()
 
         result.status = jsonObject["status"]
+        result.comparisonStatus = jsonObject["comparisonStatus"]
+        result.validityStatus = jsonObject["validityStatus"]
+        result.availableSourceList = []
+        if (jsonObject["availableSourceList"] != null)
+            for (const i in jsonObject["availableSourceList"])
+                result.availableSourceList.push(DocumentReaderTextSource.fromJson(jsonObject["availableSourceList"][i]))
         result.fields = []
         if (jsonObject["fields"] != null)
             for (const i in jsonObject["fields"])
@@ -716,46 +736,7 @@ class DocumentReaderException {
         const result = new DocumentReaderException()
 
         result.errorCode = jsonObject["errorCode"]
-        result.localizedMessage = jsonObject["localizedMessage"]
         result.message = jsonObject["message"]
-        result.string = jsonObject["string"]
-        result.stackTrace = []
-        if (jsonObject["stackTrace"] != null)
-            for (const i in jsonObject["stackTrace"])
-                result.stackTrace.push(StackTraceElement.fromJson(jsonObject["stackTrace"][i]))
-
-        return result
-    }
-}
-
-class Throwable {
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new Throwable()
-
-        result.localizedMessage = jsonObject["localizedMessage"]
-        result.message = jsonObject["message"]
-        result.string = jsonObject["string"]
-        result.stackTrace = []
-        if (jsonObject["stackTrace"] != null)
-            for (const i in jsonObject["stackTrace"])
-                result.stackTrace.push(StackTraceElement.fromJson(jsonObject["stackTrace"][i]))
-
-        return result
-    }
-}
-
-class StackTraceElement {
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new StackTraceElement()
-
-        result.lineNumber = jsonObject["lineNumber"]
-        result.isNativeMethod = jsonObject["isNativeMethod"]
-        result.className = jsonObject["className"]
-        result.fileName = jsonObject["fileName"]
-        result.methodName = jsonObject["methodName"]
-        result.string = jsonObject["string"]
 
         return result
     }
@@ -928,43 +909,6 @@ class BytesData {
     }
 }
 
-class DocumentReaderUvFiberElement {
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new DocumentReaderUvFiberElement()
-
-        result.rectArray = []
-        if (jsonObject["rectArray"] != null)
-            for (const i in jsonObject["rectArray"])
-                result.rectArray.push(DocReaderFieldRect.fromJson(jsonObject["rectArray"][i]))
-        result.rectCount = jsonObject["rectCount"]
-        result.expectedCount = jsonObject["expectedCount"]
-        result.width = []
-        if (jsonObject["width"] != null)
-            for (const i in jsonObject["width"])
-                result.width.push(jsonObject["width"][i])
-        result.length = []
-        if (jsonObject["length"] != null)
-            for (const i in jsonObject["length"])
-                result.length.push(jsonObject["length"][i])
-        result.area = []
-        if (jsonObject["area"] != null)
-            for (const i in jsonObject["area"])
-                result.area.push(jsonObject["area"][i])
-        result.colorValues = []
-        if (jsonObject["colorValues"] != null)
-            for (const i in jsonObject["colorValues"])
-                result.colorValues.push(jsonObject["colorValues"][i])
-        result.status = jsonObject["status"]
-        result.elementType = jsonObject["elementType"]
-        result.elementDiagnose = jsonObject["elementDiagnose"]
-        result.elementTypeName = jsonObject["elementTypeName"]
-        result.elementDiagnoseName = jsonObject["elementDiagnoseName"]
-
-        return result
-    }
-}
-
 class ImageInputData {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
@@ -980,6 +924,87 @@ class ImageInputData {
         if (jsonObject["imgBytes"] != null)
             for (const i in jsonObject["imgBytes"])
                 result.imgBytes.push(jsonObject["imgBytes"][i])
+
+        return result
+    }
+}
+
+class DocReaderDocumentsDatabase {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DocReaderDocumentsDatabase()
+
+        result.databaseID = jsonObject["databaseID"]
+        result.version = jsonObject["version"]
+        result.date = jsonObject["date"]
+        result.databaseDescription = jsonObject["databaseDescription"]
+        result.countriesNumber = jsonObject["countriesNumber"]
+        result.documentsNumber = jsonObject["documentsNumber"]
+
+        return result
+    }
+}
+
+class DocumentReaderComparison {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DocumentReaderComparison()
+
+        result.sourceTypeLeft = jsonObject["sourceTypeLeft"]
+        result.sourceTypeRight = jsonObject["sourceTypeRight"]
+        result.status = jsonObject["status"]
+
+        return result
+    }
+}
+
+class DocumentReaderRfidOrigin {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DocumentReaderRfidOrigin()
+
+        result.dg = jsonObject["dg"]
+        result.dgTag = jsonObject["dgTag"]
+        result.entryView = jsonObject["entryView"]
+        result.tagEntry = jsonObject["tagEntry"]
+
+        return result
+    }
+}
+
+class DocumentReaderTextSource {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DocumentReaderTextSource()
+
+        result.sourceType = jsonObject["sourceType"]
+        result.source = jsonObject["source"]
+        result.validityStatus = jsonObject["validityStatus"]
+
+        return result
+    }
+}
+
+class DocumentReaderSymbol {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DocumentReaderSymbol()
+
+        result.code = jsonObject["code"]
+        result.rect = Rect.fromJson(jsonObject["rect"])
+        result.probability = jsonObject["probability"]
+
+        return result
+    }
+}
+
+class DocumentReaderValidity {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DocumentReaderValidity()
+
+        result.sourceType = jsonObject["sourceType"]
+        result.status = jsonObject["status"]
 
         return result
     }
@@ -1200,6 +1225,7 @@ const eRPRM_Authenticity = {
     BARCODE_FORMAT_CHECK: 65536,
     KINEGRAM: 131072,
     HOLOGRAMS_DETECTION: 524288,
+    MRZ: 8388608,
 }
 
 const eRFID_ErrorCodes = {
@@ -2269,6 +2295,7 @@ const eCheckDiagnose = {
     FALSE_IPI_PARAMETERS: 65,
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: 80,
     FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: 81,
+    FIELD_POS_CORRECTOR_PHOTO_REPLACED: 82,
     OVI_IR_INVISIBLE: 90,
     OVI_INSUFFICIENT_AREA: 91,
     OVI_COLOR_INVARIABLE: 92,
@@ -2321,7 +2348,9 @@ const eCheckDiagnose = {
     FINISHED_BY_TIMEOUT: 186,
     HOLO_PHOTO_DOCUMENT_OUTSIDE_FRAME: 187,
     LIVENESS_DEPTH_CHECK_FAILED: 190,
-    LAST_DIAGNOSE_VALUE: 200,
+    MRZ_QUALITY_WRONG_MRZ_DPI: 200,
+    MRZ_QUALITY_WRONG_BACKGROUND: 201,
+    LAST_DIAGNOSE_VALUE: 210,
 }
 
 const RFIDDelegate = {
@@ -6154,6 +6183,10 @@ const Enum = {
 const DocumentReader = {}
 
 DocumentReader.initializeReaderAutomatically = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderAutomatically"])
+DocumentReader.isBlePermissionsGranted = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["isBlePermissionsGranted"])
+DocumentReader.startBluetoothService = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startBluetoothService"])
+DocumentReader.initializeReaderBleDeviceConfig = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["initializeReaderBleDeviceConfig"])
+DocumentReader.getTag = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTag"])
 DocumentReader.getAPIVersion = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getAPIVersion"])
 DocumentReader.getAvailableScenarios = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getAvailableScenarios"])
 DocumentReader.isRFIDAvailableForUse = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["isRFIDAvailableForUse"])
@@ -6194,6 +6227,8 @@ DocumentReader.setRfidDelegate = (delegate, successCallback, errorCallback) => c
 DocumentReader.setEnableCoreLogs = (logs, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setEnableCoreLogs", logs])
 DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", certificates])
 DocumentReader.setCameraSessionIsPaused = (paused, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setCameraSessionIsPaused", paused])
+DocumentReader.setTag = (tag, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTag", tag])
+DocumentReader.checkDatabaseUpdate = (databaseId, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["checkDatabaseUpdate", databaseId])
 DocumentReader.getScenario = (scenario, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getScenario", scenario])
 DocumentReader.recognizeImages = (images, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImages", images])
 DocumentReader.showScannerWithCameraID = (cameraID, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["showScannerWithCameraID", cameraID])

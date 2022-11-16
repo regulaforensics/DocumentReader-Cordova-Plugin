@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api" version="6.5.0"
+<plugin id="cordova-plugin-document-reader-api" version="6.6.0"
   xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
@@ -23,9 +23,10 @@
     <header-file src="src/ios/RegulaConfig.h" />
     <source-file src="src/ios/RegulaConfig.m" />
     <podspec>
-      <config/>
+        <config>
+        </config>
       <pods>
-        <pod name="DocumentReader" spec="~> 6.5.2633" />
+        <pod name="DocumentReader" spec="~> 6.6.2753" />
       </pods>
     </podspec>
   </platform>
@@ -41,5 +42,6 @@
     <source-file src="src/android/JSONConstructor.java" target-dir="src/cordova.plugin.documentreader" />
     <source-file src="src/android/RegulaConfig.java" target-dir="src/cordova.plugin.documentreader" />
     <source-file src="src/android/Helpers.java" target-dir="src/cordova.plugin.documentreader" />
+    <source-file src="src/android/BluetoothUtil.kt" target-dir="java/cordova.plugin.documentreader" />
   </platform>
 </plugin>
