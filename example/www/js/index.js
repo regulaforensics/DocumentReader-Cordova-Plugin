@@ -242,12 +242,23 @@ var app = {
         }
 
         function displayResults(results) {
-            document.getElementById("status").innerHTML = results.getTextFieldValueByType({ fieldType: Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES })
-            document.getElementById("status").style.backgroundColor = "green"
-            if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE }) != null)
-                document.getElementById("documentImage").src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE })
-            if (results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT }) != null)
-                document.getElementById("portraitImage").src = "data:image/png;base64," + results.getGraphicFieldImageByType({ fieldType: Enum.eGraphicFieldType.GF_PORTRAIT })
+            if(results == null) return
+
+            DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES, function (value) {
+                document.getElementById("status").style.backgroundColor = "green"
+                document.getElementById("status").innerHTML = value
+              this.setState({ fullName: value })
+            }, function (error) { console.log(error) })
+
+            DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE, function (value) {
+                if(value != null)
+                    document.getElementById("documentImage").src = "data:image/png;base64," + value
+            }, function (error) { console.log(error) })
+
+            DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT, function (value) {
+                if(value != null)
+                    document.getElementById("portraitImage").src = "data:image/png;base64," + value
+            }, function (error) { console.log(error) })
         }
 
         function clearResults() {

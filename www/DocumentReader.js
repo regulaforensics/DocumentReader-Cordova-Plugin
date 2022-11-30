@@ -1011,148 +1011,6 @@ class DocumentReaderValidity {
 }
 
 class DocumentReaderResults {
-    getTextFieldValueByType({ fieldType, lcid = 0, source = -1, original = false }) {
-        if (this.textResult == null) return null
-        const field = this.findByTypeAndLcid(fieldType, lcid)
-        if (field == null) return null
-        const value = this.findBySource(field, source)
-        if (value == null) return null
-        return original ? value.originalValue : value.value
-    }
-
-    getTextFieldStatusByType(fieldType, lcid = 0) {
-        if (this.textResult == null) return 0
-        const field = this.findByTypeAndLcid(fieldType, lcid)
-        return field != null ? field.status : 0
-    }
-
-    getGraphicFieldImageByType({ fieldType, source = -1, pageIndex = -1, light = -1 }) {
-        if (this.graphicResult == null) return null
-        const foundFields = []
-
-        for (const field of this.graphicResult.fields)
-            if (field.fieldType === fieldType)
-                foundFields.push(field)
-        if (source !== -1)
-            for (const index in foundFields)
-                if (foundFields[index].sourceType !== source)
-                    foundFields.splice(index, 1)
-        if (light !== -1)
-            for (const index in foundFields)
-                if (foundFields[index].lightType !== light)
-                    foundFields.splice(index, 1)
-        if (pageIndex !== -1)
-            for (const index in foundFields)
-                if (foundFields[index].pageIndex !== pageIndex)
-                    foundFields.splice(index, 1)
-        if (foundFields.length > 0)
-            return foundFields[0].value
-    }
-
-    getQualityResult(imageQualityCheckType, securityFeature = -1, pageIndex = 0) {
-        let resultSum = 2
-        if (this.imageQuality == null) return resultSum
-
-        let imageQualityGroup
-
-        for (const iq of this.imageQuality)
-            if (iq != null && iq.pageIndex === pageIndex)
-                imageQualityGroup = iq
-        if (imageQualityGroup == null)
-            return resultSum
-
-        for (const field of imageQualityGroup.imageQualityList)
-            if (field.type === imageQualityCheckType)
-                if (securityFeature === -1) {
-                    if (field.result === 0) {
-                        resultSum = 0
-                        break
-                    }
-                    if (field.result === 1)
-                        resultSum = field.result
-                } else if (field.featureType === securityFeature) {
-                    resultSum = field.result
-                    break
-                }
-
-        return resultSum
-    }
-
-    findByTypeAndLcid(type, lcid) {
-        let field
-        const foundFields = []
-
-        for (field of this.textResult.fields)
-            if (field.fieldType === type)
-                foundFields.push(field)
-        if (foundFields.length <= 0)
-            return null
-
-        let foundField = null
-
-        for (field of foundFields)
-            if (lcid === 0) {
-                foundField = field
-                if (field.lcid === lcid)
-                    break
-            } else if (field.lcid === lcid)
-                return field
-
-        return foundField
-    }
-
-    findBySource(field, sourceType) {
-        let value
-        if (sourceType === -1) {
-            const mrzVal = this.findBySource(field, 3)
-            if (mrzVal != null)
-                return mrzVal
-            value = this.findBySource(field, 18)
-            if (value != null)
-                return value
-            const visualVal = this.findBySource(field, 17)
-            return visualVal != null ? visualVal : null
-        }
-        for (const item of field.values)
-            if (item.sourceType === sourceType)
-                return item
-
-        return null
-    }
-
-    getContainers(resultTypes) {
-        try {
-            const json = JSON.parse(this.rawResult)
-            const containerList = json.List
-            const resultArray = []
-            for (const container of containerList){
-                if (container == null || container.length == 0)
-                    continue
-                for (const resultType of resultTypes)
-                    if(resultType == container.result_type){
-                        resultArray.push(container)
-                        break
-                    }
-            }
-            if (resultArray.length == 0)
-                return null
-            const newContainerList = {}
-            newContainerList.List = resultArray
-            const newJson = {}
-            newJson.ContainerList = newContainerList
-            newJson.TransactionInfo = json.TransactionInfo
-        } catch (error) {
-            return null
-        }
-    }
-
-    getEncryptedContainers() {
-        return this.getContainers([
-            eRPRM_ResultType.RPRM_RESULT_TYPE_INTERNAL_RFID_SESSION,
-            eRPRM_ResultType.RPRM_RESULT_TYPE_INTERNAL_ENCRYPTED_RCL,
-            eRPRM_ResultType.RPRM_RESULT_TYPE_INTERNAL_LICENSE
-        ])
-    }
 
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
@@ -6250,6 +6108,24 @@ DocumentReader.recognizeVideoFrame = (byteString, params, successCallback, error
 DocumentReader.showScannerWithCameraIDAndOpts = (cameraID, options, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["showScannerWithCameraIDAndOpts", cameraID, options])
 DocumentReader.recognizeImageWithCameraMode = (image, mode, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithCameraMode", image, mode])
 DocumentReader.recognizeImagesWithImageInputs = (images, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImagesWithImageInputs", images])
+
+DocumentReader.getTextFieldValueByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByType", results.rawResult, fieldType])
+DocumentReader.getTextFieldValueByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeLcid", results.rawResult, fieldType, lcid])
+DocumentReader.getTextFieldValueByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeSource", results.rawResult, fieldType, source])
+DocumentReader.getTextFieldValueByTypeLcidSource = (results, fieldType, lcid, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeLcidSource", results.rawResult, fieldType, lcid, source])
+DocumentReader.getTextFieldValueByTypeSourceOriginal = (results, fieldType, source, original, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeSourceOriginal", results.rawResult, fieldType, source, original])
+DocumentReader.getTextFieldValueByTypeLcidSourceOriginal = (results, fieldType, lcid, source, original, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeLcidSourceOriginal", results.rawResult, fieldType, lcid, source, original])
+DocumentReader.getTextFieldByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldByType", results.rawResult, fieldType])
+DocumentReader.getTextFieldByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldByTypeLcid", results.rawResult, fieldType, lcid])
+DocumentReader.getGraphicFieldByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldByTypeSource", results.rawResult, fieldType, source])
+DocumentReader.getGraphicFieldByTypeSourcePageIndex = (results, fieldType, source, pageIndex, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex])
+DocumentReader.getGraphicFieldByTypeSourcePageIndexLight = (results, fieldType, source, pageIndex, light, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex, light])
+DocumentReader.getGraphicFieldImageByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldImageByType", results.rawResult, fieldType])
+DocumentReader.getGraphicFieldImageByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldImageByTypeSource", results.rawResult, fieldType, source])
+DocumentReader.getGraphicFieldImageByTypeSourcePageIndex = (results, fieldType, source, pageIndex, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldImageByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex])
+DocumentReader.getGraphicFieldImageByTypeSourcePageIndexLight = (results, fieldType, source, pageIndex, light, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldImageByTypeSourcePageIndexLight", results.rawResult, fieldType, source, pageIndex, light])
+DocumentReader.getContainers = (results, resultType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getContainers", results.rawResult, resultType])
+DocumentReader.getEncryptedContainers = (results, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getEncryptedContainers", results.rawResult])
 
 DocumentReader.DocumentReaderResults = DocumentReaderResults
 DocumentReader.Enum = Enum

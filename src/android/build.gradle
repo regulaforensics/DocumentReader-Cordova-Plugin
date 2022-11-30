@@ -1,3 +1,5 @@
+apply plugin: 'kotlin-android'
+
 repositories {
     maven {
         url "https://maven.regulaforensics.com/RegulaDocumentReader"
