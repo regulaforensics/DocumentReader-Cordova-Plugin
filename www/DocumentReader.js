@@ -1011,6 +1011,172 @@ class DocumentReaderValidity {
 }
 
 class DocumentReaderResults {
+    /**
+     * @deprecated Use DocumentReader.getTextFieldValueBy...()
+     */
+     getTextFieldValueByType({ fieldType, lcid = 0, source = -1, original = false }) {
+        if (this.textResult == null) return null
+        const field = this.findByTypeAndLcid(fieldType, lcid)
+        if (field == null) return null
+        const value = this.findBySource(field, source)
+        if (value == null) return null
+        return original ? value.originalValue : value.value
+    }
+
+    /**
+     * @deprecated
+     */
+    getTextFieldStatusByType(fieldType, lcid = 0) {
+        if (this.textResult == null) return 0
+        const field = this.findByTypeAndLcid(fieldType, lcid)
+        return field != null ? field.status : 0
+    }
+
+    /**
+     * @deprecated Use DocumentReader.getGraphicFieldImageBy...()
+     */
+    getGraphicFieldImageByType({ fieldType, source = -1, pageIndex = -1, light = -1 }) {
+        if (this.graphicResult == null) return null
+        const foundFields = []
+
+        for (const field of this.graphicResult.fields)
+            if (field.fieldType === fieldType)
+                foundFields.push(field)
+        if (source !== -1)
+            for (const index in foundFields)
+                if (foundFields[index].sourceType !== source)
+                    foundFields.splice(index, 1)
+        if (light !== -1)
+            for (const index in foundFields)
+                if (foundFields[index].lightType !== light)
+                    foundFields.splice(index, 1)
+        if (pageIndex !== -1)
+            for (const index in foundFields)
+                if (foundFields[index].pageIndex !== pageIndex)
+                    foundFields.splice(index, 1)
+        if (foundFields.length > 0)
+            return foundFields[0].value
+    }
+
+    /**
+     * @deprecated
+     */
+    getQualityResult(imageQualityCheckType, securityFeature = -1, pageIndex = 0) {
+        let resultSum = 2
+        if (this.imageQuality == null) return resultSum
+
+        let imageQualityGroup
+
+        for (const iq of this.imageQuality)
+            if (iq != null && iq.pageIndex === pageIndex)
+                imageQualityGroup = iq
+        if (imageQualityGroup == null)
+            return resultSum
+
+        for (const field of imageQualityGroup.imageQualityList)
+            if (field.type === imageQualityCheckType)
+                if (securityFeature === -1) {
+                    if (field.result === 0) {
+                        resultSum = 0
+                        break
+                    }
+                    if (field.result === 1)
+                        resultSum = field.result
+                } else if (field.featureType === securityFeature) {
+                    resultSum = field.result
+                    break
+                }
+
+        return resultSum
+    }
+
+    /**
+     * @deprecated
+     */
+    findByTypeAndLcid(type, lcid) {
+        let field
+        const foundFields = []
+
+        for (field of this.textResult.fields)
+            if (field.fieldType === type)
+                foundFields.push(field)
+        if (foundFields.length <= 0)
+            return null
+
+        let foundField = null
+
+        for (field of foundFields)
+            if (lcid === 0) {
+                foundField = field
+                if (field.lcid === lcid)
+                    break
+            } else if (field.lcid === lcid)
+                return field
+
+        return foundField
+    }
+
+    /**
+     * @deprecated
+     */
+    findBySource(field, sourceType) {
+        let value
+        if (sourceType === -1) {
+            const mrzVal = this.findBySource(field, 3)
+            if (mrzVal != null)
+                return mrzVal
+            value = this.findBySource(field, 18)
+            if (value != null)
+                return value
+            const visualVal = this.findBySource(field, 17)
+            return visualVal != null ? visualVal : null
+        }
+        for (const item of field.values)
+            if (item.sourceType === sourceType)
+                return item
+
+        return null
+    }
+
+    /**
+     * @deprecated Use DocumentReader.getContainers()
+     */
+    getContainers(resultTypes) {
+        try {
+            const json = JSON.parse(this.rawResult)
+            const containerList = json.List
+            const resultArray = []
+            for (const container of containerList){
+                if (container == null || container.length == 0)
+                    continue
+                for (const resultType of resultTypes)
+                    if(resultType == container.result_type){
+                        resultArray.push(container)
+                        break
+                    }
+            }
+            if (resultArray.length == 0)
+                return null
+            const newContainerList = {}
+            newContainerList.List = resultArray
+            const newJson = {}
+            newJson.ContainerList = newContainerList
+            newJson.TransactionInfo = json.TransactionInfo
+        } catch (error) {
+            return null
+        }
+    }
+
+    /**
+     * @deprecated DocumentReader.getEncryptedContainers()
+     */
+    getEncryptedContainers() {
+        return this.getContainers([
+            eRPRM_ResultType.RPRM_RESULT_TYPE_INTERNAL_RFID_SESSION,
+            eRPRM_ResultType.RPRM_RESULT_TYPE_INTERNAL_ENCRYPTED_RCL,
+            eRPRM_ResultType.RPRM_RESULT_TYPE_INTERNAL_LICENSE
+        ])
+    }
 
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
