@@ -1011,8 +1011,53 @@ class DocumentReaderValidity {
 }
 
 class DocumentReaderResults {
+
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DocumentReaderResults()
+
+        result.chipPage = jsonObject["chipPage"]
+        result.processingFinishedStatus = jsonObject["processingFinishedStatus"]
+        result.elapsedTime = jsonObject["elapsedTime"]
+        result.elapsedTimeRFID = jsonObject["elapsedTimeRFID"]
+        result.morePagesAvailable = jsonObject["morePagesAvailable"]
+        result.rfidResult = jsonObject["rfidResult"]
+        result.highResolution = jsonObject["highResolution"]
+        result.graphicResult = DocumentReaderGraphicResult.fromJson(jsonObject["graphicResult"])
+        result.textResult = DocumentReaderTextResult.fromJson(jsonObject["textResult"])
+        result.documentPosition = []
+        if (jsonObject["documentPosition"] != null)
+            for (const i in jsonObject["documentPosition"])
+                result.documentPosition.push(ElementPosition.fromJson(jsonObject["documentPosition"][i]))
+        result.barcodePosition = []
+        if (jsonObject["barcodePosition"] != null)
+            for (const i in jsonObject["barcodePosition"])
+                result.barcodePosition.push(ElementPosition.fromJson(jsonObject["barcodePosition"][i]))
+        result.mrzPosition = []
+        if (jsonObject["mrzPosition"] != null)
+            for (const i in jsonObject["mrzPosition"])
+                result.mrzPosition.push(ElementPosition.fromJson(jsonObject["mrzPosition"][i]))
+        result.imageQuality = []
+        if (jsonObject["imageQuality"] != null)
+            for (const i in jsonObject["imageQuality"])
+                result.imageQuality.push(ImageQualityGroup.fromJson(jsonObject["imageQuality"][i]))
+        result.rawResult = jsonObject["rawResult"]
+        result.documentReaderNotification = DocumentReaderNotification.fromJson(jsonObject["documentReaderNotification"])
+        result.rfidSessionData = RFIDSessionData.fromJson(jsonObject["rfidSessionData"])
+        result.authenticityResult = DocumentReaderAuthenticityResult.fromJson(jsonObject["authenticityResult"])
+        result.barcodeResult = DocumentReaderBarcodeResult.fromJson(jsonObject["barcodeResult"])
+        result.documentType = []
+        if (jsonObject["documentType"] != null)
+            for (const i in jsonObject["documentType"])
+                result.documentType.push(DocumentReaderDocumentType.fromJson(jsonObject["documentType"][i]))
+        result.status = DocumentReaderResultsStatus.fromJson(jsonObject["status"])
+        result.vdsncData = VDSNCData.fromJson(jsonObject["vdsncData"])
+
+        return result
+    }
+
     /**
-     * @deprecated Use DocumentReader.getTextFieldValueBy...()
+     * @deprecated Use DocumentReader.textFieldValueBy...()
      */
      getTextFieldValueByType({ fieldType, lcid = 0, source = -1, original = false }) {
         if (this.textResult == null) return null
@@ -1033,7 +1078,7 @@ class DocumentReaderResults {
     }
 
     /**
-     * @deprecated Use DocumentReader.getGraphicFieldImageBy...()
+     * @deprecated Use DocumentReader.graphicFieldImageBy...()
      */
     getGraphicFieldImageByType({ fieldType, source = -1, pageIndex = -1, light = -1 }) {
         if (this.graphicResult == null) return null
@@ -1139,7 +1184,7 @@ class DocumentReaderResults {
     }
 
     /**
-     * @deprecated Use DocumentReader.getContainers()
+     * @deprecated Use DocumentReader.containers()
      */
     getContainers(resultTypes) {
         try {
@@ -1168,7 +1213,7 @@ class DocumentReaderResults {
     }
 
     /**
-     * @deprecated DocumentReader.getEncryptedContainers()
+     * @deprecated DocumentReader.encryptedContainers()
      */
     getEncryptedContainers() {
         return this.getContainers([
@@ -1176,50 +1221,6 @@ class DocumentReaderResults {
             eRPRM_ResultType.RPRM_RESULT_TYPE_INTERNAL_ENCRYPTED_RCL,
             eRPRM_ResultType.RPRM_RESULT_TYPE_INTERNAL_LICENSE
         ])
-    }
-
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new DocumentReaderResults()
-
-        result.chipPage = jsonObject["chipPage"]
-        result.processingFinishedStatus = jsonObject["processingFinishedStatus"]
-        result.elapsedTime = jsonObject["elapsedTime"]
-        result.elapsedTimeRFID = jsonObject["elapsedTimeRFID"]
-        result.morePagesAvailable = jsonObject["morePagesAvailable"]
-        result.rfidResult = jsonObject["rfidResult"]
-        result.highResolution = jsonObject["highResolution"]
-        result.graphicResult = DocumentReaderGraphicResult.fromJson(jsonObject["graphicResult"])
-        result.textResult = DocumentReaderTextResult.fromJson(jsonObject["textResult"])
-        result.documentPosition = []
-        if (jsonObject["documentPosition"] != null)
-            for (const i in jsonObject["documentPosition"])
-                result.documentPosition.push(ElementPosition.fromJson(jsonObject["documentPosition"][i]))
-        result.barcodePosition = []
-        if (jsonObject["barcodePosition"] != null)
-            for (const i in jsonObject["barcodePosition"])
-                result.barcodePosition.push(ElementPosition.fromJson(jsonObject["barcodePosition"][i]))
-        result.mrzPosition = []
-        if (jsonObject["mrzPosition"] != null)
-            for (const i in jsonObject["mrzPosition"])
-                result.mrzPosition.push(ElementPosition.fromJson(jsonObject["mrzPosition"][i]))
-        result.imageQuality = []
-        if (jsonObject["imageQuality"] != null)
-            for (const i in jsonObject["imageQuality"])
-                result.imageQuality.push(ImageQualityGroup.fromJson(jsonObject["imageQuality"][i]))
-        result.rawResult = jsonObject["rawResult"]
-        result.documentReaderNotification = DocumentReaderNotification.fromJson(jsonObject["documentReaderNotification"])
-        result.rfidSessionData = RFIDSessionData.fromJson(jsonObject["rfidSessionData"])
-        result.authenticityResult = DocumentReaderAuthenticityResult.fromJson(jsonObject["authenticityResult"])
-        result.barcodeResult = DocumentReaderBarcodeResult.fromJson(jsonObject["barcodeResult"])
-        result.documentType = []
-        if (jsonObject["documentType"] != null)
-            for (const i in jsonObject["documentType"])
-                result.documentType.push(DocumentReaderDocumentType.fromJson(jsonObject["documentType"][i]))
-        result.status = DocumentReaderResultsStatus.fromJson(jsonObject["status"])
-        result.vdsncData = VDSNCData.fromJson(jsonObject["vdsncData"])
-
-        return result
     }
 }
 
@@ -6275,23 +6276,23 @@ DocumentReader.showScannerWithCameraIDAndOpts = (cameraID, options, successCallb
 DocumentReader.recognizeImageWithCameraMode = (image, mode, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithCameraMode", image, mode])
 DocumentReader.recognizeImagesWithImageInputs = (images, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImagesWithImageInputs", images])
 
-DocumentReader.getTextFieldValueByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByType", results.rawResult, fieldType])
-DocumentReader.getTextFieldValueByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeLcid", results.rawResult, fieldType, lcid])
-DocumentReader.getTextFieldValueByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeSource", results.rawResult, fieldType, source])
-DocumentReader.getTextFieldValueByTypeLcidSource = (results, fieldType, lcid, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeLcidSource", results.rawResult, fieldType, lcid, source])
-DocumentReader.getTextFieldValueByTypeSourceOriginal = (results, fieldType, source, original, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeSourceOriginal", results.rawResult, fieldType, source, original])
-DocumentReader.getTextFieldValueByTypeLcidSourceOriginal = (results, fieldType, lcid, source, original, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldValueByTypeLcidSourceOriginal", results.rawResult, fieldType, lcid, source, original])
-DocumentReader.getTextFieldByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldByType", results.rawResult, fieldType])
-DocumentReader.getTextFieldByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTextFieldByTypeLcid", results.rawResult, fieldType, lcid])
-DocumentReader.getGraphicFieldByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldByTypeSource", results.rawResult, fieldType, source])
-DocumentReader.getGraphicFieldByTypeSourcePageIndex = (results, fieldType, source, pageIndex, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex])
-DocumentReader.getGraphicFieldByTypeSourcePageIndexLight = (results, fieldType, source, pageIndex, light, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex, light])
-DocumentReader.getGraphicFieldImageByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldImageByType", results.rawResult, fieldType])
-DocumentReader.getGraphicFieldImageByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldImageByTypeSource", results.rawResult, fieldType, source])
-DocumentReader.getGraphicFieldImageByTypeSourcePageIndex = (results, fieldType, source, pageIndex, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldImageByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex])
-DocumentReader.getGraphicFieldImageByTypeSourcePageIndexLight = (results, fieldType, source, pageIndex, light, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getGraphicFieldImageByTypeSourcePageIndexLight", results.rawResult, fieldType, source, pageIndex, light])
-DocumentReader.getContainers = (results, resultType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getContainers", results.rawResult, resultType])
-DocumentReader.getEncryptedContainers = (results, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getEncryptedContainers", results.rawResult])
+DocumentReader.textFieldValueByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByType", results.rawResult, fieldType])
+DocumentReader.textFieldValueByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeLcid", results.rawResult, fieldType, lcid])
+DocumentReader.textFieldValueByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeSource", results.rawResult, fieldType, source])
+DocumentReader.textFieldValueByTypeLcidSource = (results, fieldType, lcid, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeLcidSource", results.rawResult, fieldType, lcid, source])
+DocumentReader.textFieldValueByTypeSourceOriginal = (results, fieldType, source, original, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeSourceOriginal", results.rawResult, fieldType, source, original])
+DocumentReader.textFieldValueByTypeLcidSourceOriginal = (results, fieldType, lcid, source, original, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeLcidSourceOriginal", results.rawResult, fieldType, lcid, source, original])
+DocumentReader.textFieldByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldByType", results.rawResult, fieldType])
+DocumentReader.textFieldByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldByTypeLcid", results.rawResult, fieldType, lcid])
+DocumentReader.graphicFieldByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["graphicFieldByTypeSource", results.rawResult, fieldType, source])
+DocumentReader.graphicFieldByTypeSourcePageIndex = (results, fieldType, source, pageIndex, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["graphicFieldByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex])
+DocumentReader.graphicFieldByTypeSourcePageIndexLight = (results, fieldType, source, pageIndex, light, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["graphicFieldByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex, light])
+DocumentReader.graphicFieldImageByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["graphicFieldImageByType", results.rawResult, fieldType])
+DocumentReader.graphicFieldImageByTypeSource = (results, fieldType, source, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["graphicFieldImageByTypeSource", results.rawResult, fieldType, source])
+DocumentReader.graphicFieldImageByTypeSourcePageIndex = (results, fieldType, source, pageIndex, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["graphicFieldImageByTypeSourcePageIndex", results.rawResult, fieldType, source, pageIndex])
+DocumentReader.graphicFieldImageByTypeSourcePageIndexLight = (results, fieldType, source, pageIndex, light, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["graphicFieldImageByTypeSourcePageIndexLight", results.rawResult, fieldType, source, pageIndex, light])
+DocumentReader.containers = (results, resultType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["containers", results.rawResult, resultType])
+DocumentReader.encryptedContainers = (results, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["encryptedContainers", results.rawResult])
 
 DocumentReader.DocumentReaderResults = DocumentReaderResults
 DocumentReader.Enum = Enum

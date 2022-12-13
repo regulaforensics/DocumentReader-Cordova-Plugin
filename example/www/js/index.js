@@ -244,18 +244,18 @@ var app = {
         function displayResults(results) {
             if(results == null) return
 
-            DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES, function (value) {
+            DocumentReader.textFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES, function (value) {
                 document.getElementById("status").style.backgroundColor = "green"
                 document.getElementById("status").innerHTML = value
               this.setState({ fullName: value })
             }, function (error) { console.log(error) })
 
-            DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE, function (value) {
+            DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE, function (value) {
                 if(value != null)
                     document.getElementById("documentImage").src = "data:image/png;base64," + value
             }, function (error) { console.log(error) })
 
-            DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT, function (value) {
+            DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT, function (value) {
                 if(value != null)
                     document.getElementById("portraitImage").src = "data:image/png;base64," + value
             }, function (error) { console.log(error) })
