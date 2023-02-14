@@ -150,7 +150,7 @@ var app = {
 
         function updateRfidUI(results) {
             if (results.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
-                rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.number)
+                rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.dataFileType)
                 document.getElementById("rfidDescription").innerHTML = rfidDescription
             }
             rfidUIHeader = "Reading RFID"
