@@ -90,22 +90,11 @@ var app = {
         }
 
         function recognize() {
-            window.imagePicker.getPictures(function (results) {
-                if (results.length > 0) {
-                    clearResults()
-                    document.getElementById("status").innerHTML = "copying image......"
-                    document.getElementById("status").style.backgroundColor = "grey"
-                }
-                var images = []
-                for (var index in results)
-                    readFile(results[index], function (base64) {
-                        document.getElementById("status").innerHTML = "processing image......"
-                        document.getElementById("status").style.backgroundColor = "grey"
-                        images.push(base64)
-                        if (images.length === results.length)
-                            DocumentReader.recognizeImages(images, function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
-                    })
-            }, function (e) { }, { maximumImagesCount: 10 })
+            window.imagePicker.getPictures(function (images) {
+                document.getElementById("status").innerHTML = "processing image......"
+                document.getElementById("status").style.backgroundColor = "grey"
+                DocumentReader.recognizeImages(images, function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
+            }, function (e) { }, { maximumImagesCount: 10, outputType: window.imagePicker.OutputType.BASE64_STRING })
         }
 
         function handleCompletion(completion) {
@@ -125,7 +114,7 @@ var app = {
                     handleResults(completion.results)
             if (completion.action === Enum.DocReaderAction.TIMEOUT)
                 handleResults(completion.results)
-            if(completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
+            if (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR)
                 isReadingRfid = false
         }
 
@@ -161,7 +150,7 @@ var app = {
 
         function updateRfidUI(results) {
             if (results.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
-                rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.number)
+                rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.dataFileType)
                 document.getElementById("rfidDescription").innerHTML = rfidDescription
             }
             rfidUIHeader = "Reading RFID"
@@ -242,21 +231,21 @@ var app = {
         }
 
         function displayResults(results) {
-            if(results == null) return
+            if (results == null) return
 
-            DocumentReader.getTextFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES, function (value) {
+            DocumentReader.textFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES, function (value) {
                 document.getElementById("status").style.backgroundColor = "green"
                 document.getElementById("status").innerHTML = value
-              this.setState({ fullName: value })
+                this.setState({ fullName: value })
             }, function (error) { console.log(error) })
 
-            DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE, function (value) {
-                if(value != null)
+            DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE, function (value) {
+                if (value != null)
                     document.getElementById("documentImage").src = "data:image/png;base64," + value
             }, function (error) { console.log(error) })
 
-            DocumentReader.getGraphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT, function (value) {
-                if(value != null)
+            DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_PORTRAIT, function (value) {
+                if (value != null)
                     document.getElementById("portraitImage").src = "data:image/png;base64," + value
             }, function (error) { console.log(error) })
         }

@@ -21,9 +21,12 @@
         <preference name="GradlePluginKotlinCodeStyle" value="official" />
         <preference name="GradlePluginKotlinVersion" value="1.7.10" />
         <preference name="android-minSdkVersion" value="21" />
-        <preference name="android-targetSdkVersion" value="33" />
+        <preference name="android-targetSdkVersion" value="31" />
         <preference name="AndroidXEnabled" value="true" />
         <allow-intent href="market:*" />
+        <config-file parent="/manifest/application" target="AndroidManifest.xml">
+            <activity android:label="@string/multi_app_name" android:name="com.synconset.MultiImageChooserActivity" android:theme="@style/Theme.AppCompat.Light" />
+        </config-file>
         <config-file parent="/*" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.NFC" />
             <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />

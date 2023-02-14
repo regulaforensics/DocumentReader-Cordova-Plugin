@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Base64;
 
@@ -396,56 +397,56 @@ public class DocumentReader extends CordovaPlugin {
                 case "recognizeImagesWithImageInputs":
                     recognizeImagesWithImageInputs(callback, args(0));
                     break;
-                case "getTextFieldValueByType":
-                    getTextFieldValueByType(callback, args(0), args(1));
+                case "textFieldValueByType":
+                    textFieldValueByType(callback, args(0), args(1));
                     break;
-                case "getTextFieldValueByTypeLcid":
-                    getTextFieldValueByTypeLcid(callback, args(0), args(1), args(2));
+                case "textFieldValueByTypeLcid":
+                    textFieldValueByTypeLcid(callback, args(0), args(1), args(2));
                     break;
-                case "getTextFieldValueByTypeSource":
-                    getTextFieldValueByTypeSource(callback, args(0), args(1), args(2));
+                case "textFieldValueByTypeSource":
+                    textFieldValueByTypeSource(callback, args(0), args(1), args(2));
                     break;
-                case "getTextFieldValueByTypeLcidSource":
-                    getTextFieldValueByTypeLcidSource(callback, args(0), args(1), args(2), args(3));
+                case "textFieldValueByTypeLcidSource":
+                    textFieldValueByTypeLcidSource(callback, args(0), args(1), args(2), args(3));
                     break;
-                case "getTextFieldValueByTypeSourceOriginal":
-                    getTextFieldValueByTypeSourceOriginal(callback, args(0), args(1), args(2), args(3));
+                case "textFieldValueByTypeSourceOriginal":
+                    textFieldValueByTypeSourceOriginal(callback, args(0), args(1), args(2), args(3));
                     break;
-                case "getTextFieldValueByTypeLcidSourceOriginal":
-                    getTextFieldValueByTypeLcidSourceOriginal(callback, args(0), args(1), args(2), args(3), args(4));
+                case "textFieldValueByTypeLcidSourceOriginal":
+                    textFieldValueByTypeLcidSourceOriginal(callback, args(0), args(1), args(2), args(3), args(4));
                     break;
-                case "getTextFieldByType":
-                    getTextFieldByType(callback, args(0), args(1));
+                case "textFieldByType":
+                    textFieldByType(callback, args(0), args(1));
                     break;
-                case "getTextFieldByTypeLcid":
-                    getTextFieldByTypeLcid(callback, args(0), args(1), args(2));
+                case "textFieldByTypeLcid":
+                    textFieldByTypeLcid(callback, args(0), args(1), args(2));
                     break;
-                case "getGraphicFieldByTypeSource":
-                    getGraphicFieldByTypeSource(callback, args(0), args(1), args(2));
+                case "graphicFieldByTypeSource":
+                    graphicFieldByTypeSource(callback, args(0), args(1), args(2));
                     break;
-                case "getGraphicFieldByTypeSourcePageIndex":
-                    getGraphicFieldByTypeSourcePageIndex(callback, args(0), args(1), args(2), args(3));
+                case "graphicFieldByTypeSourcePageIndex":
+                    graphicFieldByTypeSourcePageIndex(callback, args(0), args(1), args(2), args(3));
                     break;
-                case "getGraphicFieldByTypeSourcePageIndexLight":
-                    getGraphicFieldByTypeSourcePageIndexLight(callback, args(0), args(1), args(2), args(3), args(4));
+                case "graphicFieldByTypeSourcePageIndexLight":
+                    graphicFieldByTypeSourcePageIndexLight(callback, args(0), args(1), args(2), args(3), args(4));
                     break;
-                case "getGraphicFieldImageByType":
-                    getGraphicFieldImageByType(callback, args(0), args(1));
+                case "graphicFieldImageByType":
+                    graphicFieldImageByType(callback, args(0), args(1));
                     break;
-                case "getGraphicFieldImageByTypeSource":
-                    getGraphicFieldImageByTypeSource(callback, args(0), args(1), args(2));
+                case "graphicFieldImageByTypeSource":
+                    graphicFieldImageByTypeSource(callback, args(0), args(1), args(2));
                     break;
-                case "getGraphicFieldImageByTypeSourcePageIndex":
-                    getGraphicFieldImageByTypeSourcePageIndex(callback, args(0), args(1), args(2), args(3));
+                case "graphicFieldImageByTypeSourcePageIndex":
+                    graphicFieldImageByTypeSourcePageIndex(callback, args(0), args(1), args(2), args(3));
                     break;
-                case "getGraphicFieldImageByTypeSourcePageIndexLight":
-                    getGraphicFieldImageByTypeSourcePageIndexLight(callback, args(0), args(1), args(2), args(3), args(4));
+                case "graphicFieldImageByTypeSourcePageIndexLight":
+                    graphicFieldImageByTypeSourcePageIndexLight(callback, args(0), args(1), args(2), args(3), args(4));
                     break;
-                case "getContainers":
-                    getContainers(callback, args(0), args(1));
+                case "containers":
+                    containers(callback, args(0), args(1));
                     break;
-                case "getEncryptedContainers":
-                    getEncryptedContainers(callback, args(0));
+                case "encryptedContainers":
+                    encryptedContainers(callback, args(0));
                     break;
             }
         } catch (Exception e) {
@@ -464,8 +465,10 @@ public class DocumentReader extends CordovaPlugin {
         };
         Intent intent = new Intent(activity.getApplicationContext(), activity.getClass());
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-        @SuppressLint("UnspecifiedImmutableFlag")
-        PendingIntent pendingIntent = PendingIntent.getActivity(activity.getApplicationContext(), 0, intent, 0);
+        int flags = 0;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
+            flags = PendingIntent.FLAG_IMMUTABLE;
+        PendingIntent pendingIntent = PendingIntent.getActivity(activity.getApplicationContext(), 0, intent, flags);
         NfcAdapter.getDefaultAdapter(getActivity()).enableForegroundDispatch(activity, pendingIntent, filters, techList);
     }
 
@@ -516,6 +519,7 @@ public class DocumentReader extends CordovaPlugin {
         callback.success();
     }
 
+    @SuppressLint("MissingPermission")
     private void initializeReaderBleDeviceConfig(Callback callback) {
         if (BluetoothUtil.Companion.getBleManager() == null) callback.error("bleManager is null");
         if (!Instance().isReady())
@@ -833,37 +837,37 @@ public class DocumentReader extends CordovaPlugin {
         callback.success();
     }
 
-    private void getTextFieldValueByType(Callback callback, String raw, int fieldType) {
+    private void textFieldValueByType(Callback callback, String raw, int fieldType) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(results.getTextFieldValueByType(fieldType));
     }
 
-    private void getTextFieldValueByTypeLcid(Callback callback, String raw, int fieldType, int lcid) {
+    private void textFieldValueByTypeLcid(Callback callback, String raw, int fieldType, int lcid) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(results.getTextFieldValueByType(fieldType, lcid));
     }
 
-    private void getTextFieldValueByTypeSource(Callback callback, String raw, int fieldType, int source) {
+    private void textFieldValueByTypeSource(Callback callback, String raw, int fieldType, int source) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(results.getTextFieldValueByTypeAndSource(fieldType, source));
     }
 
-    private void getTextFieldValueByTypeLcidSource(Callback callback, String raw, int fieldType, int lcid, int source) {
+    private void textFieldValueByTypeLcidSource(Callback callback, String raw, int fieldType, int lcid, int source) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(results.getTextFieldValueByType(fieldType, lcid, source));
     }
 
-    private void getTextFieldValueByTypeSourceOriginal(Callback callback, String raw, int fieldType, int source, boolean original) {
+    private void textFieldValueByTypeSourceOriginal(Callback callback, String raw, int fieldType, int source, boolean original) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(results.getTextFieldValueByTypeAndSource(fieldType, source, original));
     }
 
-    private void getTextFieldValueByTypeLcidSourceOriginal(Callback callback, String raw, int fieldType, int lcid, int source, boolean original) {
+    private void textFieldValueByTypeLcidSourceOriginal(Callback callback, String raw, int fieldType, int lcid, int source, boolean original) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(results.getTextFieldValueByType(fieldType, lcid, source, original));
     }
 
-    private void getTextFieldByType(Callback callback, String raw, int fieldType) {
+    private void textFieldByType(Callback callback, String raw, int fieldType) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         DocumentReaderTextField result = results.getTextFieldByType(fieldType);
         if (result == null)
@@ -872,7 +876,7 @@ public class DocumentReader extends CordovaPlugin {
             callback.success(JSONConstructor.generateDocumentReaderTextField(result, getContext()).toString());
     }
 
-    private void getTextFieldByTypeLcid(Callback callback, String raw, int fieldType, int lcid) {
+    private void textFieldByTypeLcid(Callback callback, String raw, int fieldType, int lcid) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         DocumentReaderTextField result = results.getTextFieldByType(fieldType, lcid);
         if (result == null)
@@ -881,7 +885,7 @@ public class DocumentReader extends CordovaPlugin {
             callback.success(JSONConstructor.generateDocumentReaderTextField(result, getContext()).toString());
     }
 
-    private void getGraphicFieldByTypeSource(Callback callback, String raw, int fieldType, int source) {
+    private void graphicFieldByTypeSource(Callback callback, String raw, int fieldType, int source) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         DocumentReaderGraphicField result = results.getGraphicFieldByType(fieldType, source);
         if (result == null)
@@ -890,7 +894,7 @@ public class DocumentReader extends CordovaPlugin {
             callback.success(JSONConstructor.generateDocumentReaderGraphicField(result, getContext()).toString());
     }
 
-    private void getGraphicFieldByTypeSourcePageIndex(Callback callback, String raw, int fieldType, int source, int pageIndex) {
+    private void graphicFieldByTypeSourcePageIndex(Callback callback, String raw, int fieldType, int source, int pageIndex) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         DocumentReaderGraphicField result = results.getGraphicFieldByType(fieldType, source, pageIndex);
         if (result == null)
@@ -899,7 +903,7 @@ public class DocumentReader extends CordovaPlugin {
             callback.success(JSONConstructor.generateDocumentReaderGraphicField(result, getContext()).toString());
     }
 
-    private void getGraphicFieldByTypeSourcePageIndexLight(Callback callback, String raw, int fieldType, int source, int pageIndex, int light) {
+    private void graphicFieldByTypeSourcePageIndexLight(Callback callback, String raw, int fieldType, int source, int pageIndex, int light) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         DocumentReaderGraphicField result = results.getGraphicFieldByType(fieldType, source, pageIndex, light);
         if (result == null)
@@ -908,28 +912,28 @@ public class DocumentReader extends CordovaPlugin {
             callback.success(JSONConstructor.generateDocumentReaderGraphicField(result, getContext()).toString());
     }
 
-    private void getGraphicFieldImageByType(Callback callback, String raw, int fieldType) {
+    private void graphicFieldImageByType(Callback callback, String raw, int fieldType) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(Helpers.bitmapToBase64String(results.getGraphicFieldImageByType(fieldType)));
     }
 
-    private void getGraphicFieldImageByTypeSource(Callback callback, String raw, int fieldType, int source) {
+    private void graphicFieldImageByTypeSource(Callback callback, String raw, int fieldType, int source) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(Helpers.bitmapToBase64String(results.getGraphicFieldImageByType(fieldType, source)));
     }
 
-    private void getGraphicFieldImageByTypeSourcePageIndex(Callback callback, String raw, int fieldType, int source, int pageIndex) {
+    private void graphicFieldImageByTypeSourcePageIndex(Callback callback, String raw, int fieldType, int source, int pageIndex) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(Helpers.bitmapToBase64String(results.getGraphicFieldImageByType(fieldType, source, pageIndex)));
     }
 
-    private void getGraphicFieldImageByTypeSourcePageIndexLight(Callback callback, String raw, int fieldType, int source, int pageIndex, int light) {
+    private void graphicFieldImageByTypeSourcePageIndexLight(Callback callback, String raw, int fieldType, int source, int pageIndex, int light) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(Helpers.bitmapToBase64String(results.getGraphicFieldImageByType(fieldType, source, pageIndex, light)));
     }
 
     @SuppressLint("WrongConstant")
-    private void getContainers(Callback callback, String raw, JSONArray resultType) {
+    private void containers(Callback callback, String raw, JSONArray resultType) {
         try {
             DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
             callback.success(results.getContainers(JSONConstructor.intArrayFromJSON(resultType)));
@@ -939,7 +943,7 @@ public class DocumentReader extends CordovaPlugin {
         }
     }
 
-    private void getEncryptedContainers(Callback callback, String raw) {
+    private void encryptedContainers(Callback callback, String raw) {
         DocumentReaderResults results = DocumentReaderResults.fromRawResults(raw);
         callback.success(results.getEncryptedContainers());
     }
