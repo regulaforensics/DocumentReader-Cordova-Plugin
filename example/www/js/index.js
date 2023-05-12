@@ -8,9 +8,14 @@ var app = {
         document.getElementById("status").innerHTML = "loading......"
         document.getElementById("status").style.backgroundColor = "grey"
         var http = cordova.plugin.http
-        var DocumentReaderResults = DocumentReader.DocumentReaderResults
-        var DocumentReaderScenario = DocumentReader.DocumentReaderScenario
-        var Enum = DocumentReader.Enum
+
+        // This way you can import any class declared in DocumentReaderPlugin
+        var DocumentReader = DocumentReaderPlugin.DocumentReader
+        var DocumentReaderResults = DocumentReaderPlugin.DocumentReaderResults
+        var DocumentReaderScenario = DocumentReaderPlugin.DocumentReaderScenario
+        var DocumentReaderCompletion = DocumentReaderPlugin.DocumentReaderCompletion
+        var Enum = DocumentReaderPlugin.Enum
+
         var doRfid = false
         var encryption = false
         const ENCRYPTED_RESULT_SERVICE = "https://api.regulaforensics.com/api/process"
@@ -64,7 +69,7 @@ var app = {
 
         function scan() {
             DocumentReader.showScanner(function (m) {
-                handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m)))
+                handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m)))
             }, function (e) { })
         }
 
@@ -93,7 +98,7 @@ var app = {
             window.imagePicker.getPictures(function (images) {
                 document.getElementById("status").innerHTML = "processing image......"
                 document.getElementById("status").style.backgroundColor = "grey"
-                DocumentReader.recognizeImages(images, function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
+                DocumentReader.recognizeImages(images, function (m) { handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
             }, function (e) { }, { maximumImagesCount: 10, outputType: window.imagePicker.OutputType.BASE64_STRING })
         }
 
@@ -147,6 +152,7 @@ var app = {
         }
 
         function updateRfidUI(results) {
+            if (results.value == null) return
             if (results.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
                 rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.dataFileType)
                 document.getElementById("rfidDescription").innerHTML = rfidDescription
@@ -163,31 +169,33 @@ var app = {
 
         function customRFID() {
             showRfidUI()
-            DocumentReader.readRFID(function (m) { handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
+            DocumentReader.readRFID(function (m) { handleRfidCompletion(m) }, function (e) { })
         }
 
         function usualRFID() {
             isReadingRfid = true
+            DocumentReader.startRFIDReader(function (m) { handleRfidCompletion(m) }, function (e) { })
+        }
+
+        function handleRfidCompletion(raw) {
             var notification = "rfidNotificationCompletionEvent"
             var paCert = "paCertificateCompletionEvent"
             var taCert = "taCertificateCompletionEvent"
             var taSig = "taSignatureCompletionEvent"
-            DocumentReader.startRFIDReader(function (m) {
-                if (m.substring(0, notification.length) === notification) {
-                    m = m.substring(notification.length, m.length)
-                    console.log(notification + ": " + m)
-                } else if (m.substring(0, paCert.length) === paCert) {
-                    m = m.substring(paCert.length, m.length)
-                    console.log(paCert + ": " + m)
-                } else if (m.substring(0, taCert.length) === taCert) {
-                    m = m.substring(taCert.length, m.length)
-                    console.log(taCert + ": " + m)
-                } else if (m.substring(0, taSig.length) === taSig) {
-                    m = m.substring(taSig.length, m.length)
-                    console.log(taSig + ": " + m)
-                } else
-                    handleCompletion(DocumentReader.DocumentReaderCompletion.fromJson(JSON.parse(m)))
-            }, function (e) { })
+            if (raw.substring(0, notification.length) === notification) {
+                raw = raw.substring(notification.length, raw.length)
+                console.log(notification + ": " + raw)
+            } else if (raw.substring(0, paCert.length) === paCert) {
+                raw = raw.substring(paCert.length, raw.length)
+                console.log(paCert + ": " + raw)
+            } else if (raw.substring(0, taCert.length) === taCert) {
+                raw = raw.substring(taCert.length, raw.length)
+                console.log(taCert + ": " + raw)
+            } else if (raw.substring(0, taSig.length) === taSig) {
+                raw = raw.substring(taSig.length, raw.length)
+                console.log(taSig + ": " + raw)
+            } else
+                handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(raw)))
         }
 
         function handleResults(results) {

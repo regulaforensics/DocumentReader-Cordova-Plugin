@@ -1,5 +1,6 @@
 #import <Foundation/Foundation.h>
 #import "RGLWJSONConstructor.h"
+#pragma clang diagnostic ignored "-Wdeprecated-declarations"
 
 @implementation RGLWJSONConstructor
 
@@ -504,6 +505,7 @@
     result[@"lightType"] = @(input.lightType);
     result[@"lightName"] = input.lightName;
     result[@"pageIndex"] = @(input.pageIndex);
+    result[@"originalPageIndex"] = @(input.originalPageIndex);
 
     return result;
 }

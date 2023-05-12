@@ -251,6 +251,8 @@ class RegulaConfig {
             editor.setMultipageButtonBackgroundColor(opts.getString("multipageButtonBackgroundColor"));
         if (opts.has("tintColor"))
             editor.setTintColor(opts.getString("tintColor"));
+        if (opts.has("cameraPreviewBackgroundColor"))
+            editor.setCameraPreviewBackgroundColor(opts.getString("cameraPreviewBackgroundColor"));
         if (opts.has("activityIndicatorColor"))
             editor.setActivityIndicatorColor(opts.getString("activityIndicatorColor"));
         if (opts.has("showStatusMessages"))
@@ -400,6 +402,7 @@ class RegulaConfig {
         object.put("resultStatus", customization.getResultStatus());
         object.put("cameraFrameDefaultColor", customization.getCameraFrameDefaultColor());
         object.put("cameraFrameActiveColor", customization.getCameraFrameActiveColor());
+        object.put("cameraPreviewBackgroundColor", customization.getCameraPreviewBackgroundColor());
         object.put("statusTextColor", customization.getStatusTextColor());
         object.put("resultStatusTextColor", customization.getResultStatusTextColor());
         object.put("resultStatusBackgroundColor", customization.getResultStatusBackgroundColor());
