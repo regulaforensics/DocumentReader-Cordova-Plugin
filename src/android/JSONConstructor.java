@@ -576,6 +576,7 @@ class JSONConstructor {
             result.put("dType", input.dType);
             result.put("dFormat", input.dFormat);
             result.put("dMRZ", input.dMRZ);
+            result.put("isDeprecated", input.isDeprecated);
             result.put("name", input.name);
             result.put("ICAOCode", input.ICAOCode);
             result.put("dDescription", input.dDescription);

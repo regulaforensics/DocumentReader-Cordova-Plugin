@@ -281,6 +281,7 @@ class DocumentReaderDocumentType {
         result.dType = jsonObject["dType"]
         result.dFormat = jsonObject["dFormat"]
         result.dMRZ = jsonObject["dMRZ"]
+        result.isDeprecated = jsonObject["isDeprecated"]
         result.name = jsonObject["name"]
         result.ICAOCode = jsonObject["ICAOCode"]
         result.dDescription = jsonObject["dDescription"]
@@ -768,6 +769,8 @@ class ImageInputParam {
         result.width = jsonObject["width"]
         result.height = jsonObject["height"]
         result.type = jsonObject["type"]
+        result.disableFrameShiftIR = jsonObject["disableFrameShiftIR"]
+        result.doFlipYAxis = jsonObject["doFlipYAxis"]
 
         return result
     }
@@ -2384,16 +2387,17 @@ const eCheckDiagnose = {
     FINISHED_BY_TIMEOUT: 186,
     HOLO_PHOTO_DOCUMENT_OUTSIDE_FRAME: 187,
     LIVENESS_DEPTH_CHECK_FAILED: 190,
-    MRZQUALITY_WRONGSYMBOLPOSITION: 200,
+    MRZ_QUALITY_WRONG_SYMBOL_POSITION: 200,
     MRZ_QUALITY_WRONG_BACKGROUND: 201,
+    MRZ_QUALITY_WRONG_MRZ_WIDTH: 202,
+    MRZ_QUALITY_WRONG_MRZ_HEIGHT: 203,
+    MRZ_QUALITY_WRONG_LINE_POSITION: 204,
+    MRZ_QUALITY_WRONG_FONT_TYPE: 205,
+    OCR_QUALITY_TEXT_POSITION: 220,
+    OCR_QUALITY_INVALID_FONT: 221,
+    OCR_QUALITY_INVALID_BACKGROUND: 222,
+    LAS_INK_INVALID_LINES_FREQUENCY: 230,
     LAST_DIAGNOSE_VALUE: 240,
-    CHD_MRZQUALITY_WRONGMRZWIDTH: 202,
-    CHD_MRZQUALITY_WRONGMRZHEIGHT: 203,
-    CHD_MRZQUALITY_WRONGLINEPOSITION: 204,
-    CHD_OCRQUALITY_TEXTPOSITION: 220,
-    CHD_OCRQUALITY_INVALIDFONT: 221,
-    CHD_OCRQUALITY_INVALIDBACKGROUND: 222,
-    CHD_LASINK_INVALIDLINESFREQUENCY: 230,
 }
 
 const RFIDDelegate = {
@@ -3197,7 +3201,7 @@ const eRPRM_SecurityFeatureType = {
     SECURITY_FEATURE_TYPE_PHOTO_SHAPE: 26,
     SECURITY_FEATURE_TYPE_PHOTO_CORNERS: 27,
     DOCUMENT_CANCELLING_DETECTOR: 28,
-    SECURITYFEATURETYPE_LASINK: 43,
+    SECURITY_FEATURE_TYPE_LASINK: 43,
     SECURITY_FEATURE_TYPE_OCR: 28,
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSVISUAL: 29,
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSRFID: 30,

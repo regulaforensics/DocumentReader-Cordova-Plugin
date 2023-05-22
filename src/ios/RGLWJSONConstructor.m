@@ -8,6 +8,10 @@
     return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:input options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
 }
 
++(NSString*)arrayToString:(NSMutableArray*)input {
+    return [[NSString alloc] initWithData:[NSJSONSerialization dataWithJSONObject:input options:NSJSONWritingPrettyPrinted error:nil] encoding:NSUTF8StringEncoding];
+}
+
 +(NSMutableDictionary* _Nonnull)generateNSDictionary:(NSDictionary<NSNumber*, NSNumber*>* _Nullable)input {
     NSMutableDictionary *result = [NSMutableDictionary new];
     if(input == nil) return result;
@@ -612,6 +616,7 @@
     result[@"dType"] = @(input.dType);
     result[@"dFormat"] = @(input.dFormat);
     result[@"dMRZ"] = @(input.dMRZ);
+    result[@"isDeprecated"] = @(input.isDeprecated);
     result[@"dDescription"] = input.dDescription;
     result[@"dYear"] = input.dYear;
     result[@"dCountryName"] = input.dCountryName;
