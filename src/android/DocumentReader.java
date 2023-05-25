@@ -6,6 +6,8 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.IsoDep;
@@ -50,6 +52,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import static com.regula.documentreader.api.DocumentReader.Instance;
 
@@ -164,6 +167,12 @@ public class DocumentReader extends CordovaPlugin {
     }
     private void sendBleOnDeviceReadyEvent() {
         PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, bleOnDeviceReadyEvent);
+        pluginResult.setKeepCallback(true);
+        callbackContext.sendPluginResult(pluginResult);
+    }
+
+    private void sendOnCustomButtonTappedEvent(int tag) {
+        PluginResult pluginResult = new PluginResult(PluginResult.Status.OK, tag);
         pluginResult.setKeepCallback(true);
         callbackContext.sendPluginResult(pluginResult);
     }
@@ -396,6 +405,12 @@ public class DocumentReader extends CordovaPlugin {
                     break;
                 case "recognizeImagesWithImageInputs":
                     recognizeImagesWithImageInputs(callback, args(0));
+                    break;
+                case "setOnCustomButtonTappedListener":
+                    setOnCustomButtonTappedListener(callback);
+                    break;
+                case "setLanguage":
+                    setLanguage(callback, args(0));
                     break;
                 case "textFieldValueByType":
                     textFieldValueByType(callback, args(0), args(1));
@@ -790,6 +805,21 @@ public class DocumentReader extends CordovaPlugin {
     private void readRFID(@SuppressWarnings("unused") Callback callback) {
         backgroundRFIDEnabled = true;
         startForegroundDispatch(getActivity());
+    }
+
+    private void setOnCustomButtonTappedListener(Callback callback) {
+        Instance().setOnClickListener(view -> sendOnCustomButtonTappedEvent((int) view.getTag()));
+        callback.success();
+    }
+
+    private void setLanguage(Callback callback, String language) {
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Resources resources = getContext().getResources();
+        Configuration config = resources.getConfiguration();
+        config.setLocale(locale);
+        resources.updateConfiguration(config, resources.getDisplayMetrics());
+        callback.success();
     }
 
     private void providePACertificates(Callback callback, JSONArray certificatesJSON) throws JSONException {

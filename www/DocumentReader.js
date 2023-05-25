@@ -101,6 +101,7 @@ class DocumentReaderGraphicField {
         result.fieldType = jsonObject["fieldType"]
         result.lightType = jsonObject["lightType"]
         result.pageIndex = jsonObject["pageIndex"]
+        result.originalPageIndex = jsonObject["originalPageIndex"]
         result.fieldName = jsonObject["fieldName"]
         result.lightName = jsonObject["lightName"]
         result.value = jsonObject["value"]
@@ -280,6 +281,7 @@ class DocumentReaderDocumentType {
         result.dType = jsonObject["dType"]
         result.dFormat = jsonObject["dFormat"]
         result.dMRZ = jsonObject["dMRZ"]
+        result.isDeprecated = jsonObject["isDeprecated"]
         result.name = jsonObject["name"]
         result.ICAOCode = jsonObject["ICAOCode"]
         result.dDescription = jsonObject["dDescription"]
@@ -767,6 +769,8 @@ class ImageInputParam {
         result.width = jsonObject["width"]
         result.height = jsonObject["height"]
         result.type = jsonObject["type"]
+        result.disableFrameShiftIR = jsonObject["disableFrameShiftIR"]
+        result.doFlipYAxis = jsonObject["doFlipYAxis"]
 
         return result
     }
@@ -1258,6 +1262,11 @@ const eRPRM_Authenticity = {
     KINEGRAM: 131072,
     HOLOGRAMS_DETECTION: 524288,
     MRZ: 8388608,
+    STATUS_ONLY: 0x80000000,
+    OVI: 0x00000400,
+    LIVENESS: 0x00200000,
+    OCR: 0x00400000,
+    UV: 1 | 4 | 16,
 }
 
 const eRFID_ErrorCodes = {
@@ -2179,6 +2188,7 @@ const ScenarioIdentifier = {
     SCENARIO_OCR_FREE: "OcrFree",
     SCENARIO_CREDIT_CARD: "CreditCard",
     SCENARIO_CAPTURE: "Capture",
+    SCENARIO_BARCODE_AND_LOCATE: "BarcodeAndLocate",
 }
 
 const eRFID_AccessControl_ProcedureType = {
@@ -2381,9 +2391,18 @@ const eCheckDiagnose = {
     FINISHED_BY_TIMEOUT: 186,
     HOLO_PHOTO_DOCUMENT_OUTSIDE_FRAME: 187,
     LIVENESS_DEPTH_CHECK_FAILED: 190,
-    MRZ_QUALITY_WRONG_MRZ_DPI: 200,
+    MRZ_QUALITY_WRONG_SYMBOL_POSITION: 200,
     MRZ_QUALITY_WRONG_BACKGROUND: 201,
-    LAST_DIAGNOSE_VALUE: 210,
+    MRZ_QUALITY_WRONG_MRZ_WIDTH: 202,
+    MRZ_QUALITY_WRONG_MRZ_HEIGHT: 203,
+    MRZ_QUALITY_WRONG_LINE_POSITION: 204,
+    MRZ_QUALITY_WRONG_FONT_TYPE: 205,
+    OCR_QUALITY_TEXT_POSITION: 220,
+    OCR_QUALITY_INVALID_FONT: 221,
+    OCR_QUALITY_INVALID_BACKGROUND: 222,
+    LAS_INK_INVALID_LINES_FREQUENCY: 230,
+    LAST_DIAGNOSE_VALUE: 250,
+    DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: 240,
 }
 
 const RFIDDelegate = {
@@ -3157,7 +3176,7 @@ const BarcodeType = {
 }
 
 const eRPRM_SecurityFeatureType = {
-    NONE: -1,
+    SECURITY_FEATURE_TYPE_NONE: -1,
     SECURITY_FEATURE_TYPE_BLANK: 0,
     SECURITY_FEATURE_TYPE_FILL: 1,
     SECURITY_FEATURE_TYPE_PHOTO: 2,
@@ -3186,7 +3205,22 @@ const eRPRM_SecurityFeatureType = {
     SECURITY_FEATURE_TYPE_PHOTO_COLOR: 25,
     SECURITY_FEATURE_TYPE_PHOTO_SHAPE: 26,
     SECURITY_FEATURE_TYPE_PHOTO_CORNERS: 27,
-    DOCUMENT_CANCELLING_DETECTOR: 28,
+    SECURITY_FEATURE_TYPE_OCR: 28,
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVS_VISUAL: 29,
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVS_RFID: 30,
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVS_LIVE: 31,
+    SECURITY_FEATURE_TYPE_LIVENESS_DEPTH: 32,
+    SECURITY_FEATURE_TYPE_MICROTEXT: 33,
+    SECURITY_FEATURE_TYPE_FLUORESCENT_OBJECT: 34,
+    SECURITY_FEATURE_TYPE_LANDMARKS_CHECK: 35,
+    SECURITY_FEATURE_TYPE_FACE_PRESENCE: 36,
+    SECURITY_FEATURE_TYPE_FACE_ABSENCE: 38,
+    SECURITY_FEATURE_TYPE_LIVENESS_SCREEN_CAPTURE: 39,
+    SECURITY_FEATURE_TYPE_LIVENESS_ELECTRONIC_DEVICE: 40,
+    SECURITY_FEATURE_TYPE_LIVENESS_OVI: 41,
+    SECURITY_FEATURE_TYPE_BARCODE_SIZE_CHECK: 42,
+    SECURITY_FEATURE_TYPE_LAS_INK: 43,
+    SECURITY_FEATURE_TYPE_LIVENESS_MLI: 44,
 }
 
 const OnlineMode = {
@@ -4419,6 +4453,16 @@ const eVisualFieldType = {
     FT_DLCLASSCODE_PW_FROM: 654,
     FT_DLCLASSCODE_PW_NOTES: 655,
     FT_DLCLASSCODE_PW_TO: 656,
+    FT_DLCLASSCODE_EB_FROM: 657,
+    FT_DLCLASSCODE_EB_NOTES: 658,
+    FT_DLCLASSCODE_EB_TO: 659,
+    FT_DLCLASSCODE_EC_FROM: 660,
+    FT_DLCLASSCODE_EC_NOTES: 661,
+    FT_DLCLASSCODE_EC_TO: 662,
+    FT_DLCLASSCODE_EC1_FROM: 663,
+    FT_DLCLASSCODE_EC1_NOTES: 664,
+    FT_DLCLASSCODE_EC1_TO: 665,
+    FT_PLACE_OF_BIRTH_CITY: 666,
 
     getTranslation: function (value) {
         switch (value) {
@@ -6142,6 +6186,7 @@ const eRPRM_Lights = {
     RPRM_Light_IR_SIDE: 16,
     RPRM_Light_IR_Full: (8 | 16),
     RPRM_LIGHT_OVD: 67108864,
+    RPRM_LIGHT_WHITE_FULL_OVD: (6 | 67108864),
 
     getTranslation: function (value) {
         switch (value) {
@@ -6339,6 +6384,8 @@ DocumentReader.recognizeVideoFrame = (byteString, params, successCallback, error
 DocumentReader.showScannerWithCameraIDAndOpts = (cameraID, options, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["showScannerWithCameraIDAndOpts", cameraID, options])
 DocumentReader.recognizeImageWithCameraMode = (image, mode, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImageWithCameraMode", image, mode])
 DocumentReader.recognizeImagesWithImageInputs = (images, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognizeImagesWithImageInputs", images])
+DocumentReader.setOnCustomButtonTappedListener = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setOnCustomButtonTappedListener"])
+DocumentReader.setLanguage = (language, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setLanguage", language])
 
 DocumentReader.textFieldValueByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByType", results.rawResult, fieldType])
 DocumentReader.textFieldValueByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeLcid", results.rawResult, fieldType, lcid])
@@ -6358,9 +6405,70 @@ DocumentReader.graphicFieldImageByTypeSourcePageIndexLight = (results, fieldType
 DocumentReader.containers = (results, resultType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["containers", results.rawResult, resultType])
 DocumentReader.encryptedContainers = (results, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["encryptedContainers", results.rawResult])
 
-DocumentReader.DocumentReaderResults = DocumentReaderResults
-DocumentReader.Enum = Enum
-DocumentReader.DocumentReaderScenario = DocumentReaderScenario
-DocumentReader.DocumentReaderCompletion = DocumentReaderCompletion
+DocumentReaderPlugin = {}
 
-module.exports = DocumentReader
+DocumentReaderPlugin.DocumentReader = DocumentReader
+DocumentReaderPlugin.Enum = Enum
+
+DocumentReaderPlugin.DocumentReaderScenario = DocumentReaderScenario
+DocumentReaderPlugin.CoreDetailedScenario = CoreDetailedScenario
+DocumentReaderPlugin.FaceMetaData = FaceMetaData
+DocumentReaderPlugin.Bounds = Bounds
+DocumentReaderPlugin.Rect = Rect
+DocumentReaderPlugin.DocReaderFieldRect = DocReaderFieldRect
+DocumentReaderPlugin.DocumentReaderGraphicField = DocumentReaderGraphicField
+DocumentReaderPlugin.DocumentReaderGraphicResult = DocumentReaderGraphicResult
+DocumentReaderPlugin.DocumentReaderValue = DocumentReaderValue
+DocumentReaderPlugin.DocumentReaderTextField = DocumentReaderTextField
+DocumentReaderPlugin.DocumentReaderTextResult = DocumentReaderTextResult
+DocumentReaderPlugin.Coordinate = Coordinate
+DocumentReaderPlugin.ElementPosition = ElementPosition
+DocumentReaderPlugin.ImageQuality = ImageQuality
+DocumentReaderPlugin.ImageQualityGroup = ImageQualityGroup
+DocumentReaderPlugin.DocumentReaderDocumentType = DocumentReaderDocumentType
+DocumentReaderPlugin.DocumentReaderNotification = DocumentReaderNotification
+DocumentReaderPlugin.AccessControlProcedureType = AccessControlProcedureType
+DocumentReaderPlugin.FileData = FileData
+DocumentReaderPlugin.CertificateData = CertificateData
+DocumentReaderPlugin.SecurityObjectCertificates = SecurityObjectCertificates
+DocumentReaderPlugin.File = File
+DocumentReaderPlugin.Application = Application
+DocumentReaderPlugin.Value = Value
+DocumentReaderPlugin.Attribute = Attribute
+DocumentReaderPlugin.Authority = Authority
+DocumentReaderPlugin.Extension = Extension
+DocumentReaderPlugin.Validity = Validity
+DocumentReaderPlugin.CertificateChain = CertificateChain
+DocumentReaderPlugin.SignerInfo = SignerInfo
+DocumentReaderPlugin.SecurityObject = SecurityObject
+DocumentReaderPlugin.CardProperties = CardProperties
+DocumentReaderPlugin.RFIDSessionData = RFIDSessionData
+DocumentReaderPlugin.DocumentReaderAuthenticityCheck = DocumentReaderAuthenticityCheck
+DocumentReaderPlugin.PDF417Info = PDF417Info
+DocumentReaderPlugin.DocumentReaderBarcodeResult = DocumentReaderBarcodeResult
+DocumentReaderPlugin.DocumentReaderBarcodeField = DocumentReaderBarcodeField
+DocumentReaderPlugin.DocumentReaderAuthenticityResult = DocumentReaderAuthenticityResult
+DocumentReaderPlugin.DocumentReaderAuthenticityElement = DocumentReaderAuthenticityElement
+DocumentReaderPlugin.DocumentReaderCompletion = DocumentReaderCompletion
+DocumentReaderPlugin.RfidNotificationCompletion = RfidNotificationCompletion
+DocumentReaderPlugin.DocumentReaderException = DocumentReaderException
+DocumentReaderPlugin.PKDCertificate = PKDCertificate
+DocumentReaderPlugin.ImageInputParam = ImageInputParam
+DocumentReaderPlugin.PAResourcesIssuer = PAResourcesIssuer
+DocumentReaderPlugin.PAAttribute = PAAttribute
+DocumentReaderPlugin.TAChallenge = TAChallenge
+DocumentReaderPlugin.DocumentReaderResultsStatus = DocumentReaderResultsStatus
+DocumentReaderPlugin.DetailsOptical = DetailsOptical
+DocumentReaderPlugin.DetailsRFID = DetailsRFID
+DocumentReaderPlugin.VDSNCData = VDSNCData
+DocumentReaderPlugin.BytesData = BytesData
+DocumentReaderPlugin.ImageInputData = ImageInputData
+DocumentReaderPlugin.DocReaderDocumentsDatabase = DocReaderDocumentsDatabase
+DocumentReaderPlugin.DocumentReaderComparison = DocumentReaderComparison
+DocumentReaderPlugin.DocumentReaderRfidOrigin = DocumentReaderRfidOrigin
+DocumentReaderPlugin.DocumentReaderTextSource = DocumentReaderTextSource
+DocumentReaderPlugin.DocumentReaderSymbol = DocumentReaderSymbol
+DocumentReaderPlugin.DocumentReaderValidity = DocumentReaderValidity
+DocumentReaderPlugin.DocumentReaderResults = DocumentReaderResults
+
+module.exports = DocumentReaderPlugin

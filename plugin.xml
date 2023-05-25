@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api" version="6.7.5"
+<plugin id="cordova-plugin-document-reader-api" version="6.8.0"
   xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
@@ -13,20 +13,20 @@
   <platform name="ios">
     <config-file target="config.xml" parent="/widget">
       <feature name="DocumentReader">
-        <param name="ios-package" value="RGLDocumentReader" />
+        <param name="ios-package" value="RGLWDocumentReader" />
       </feature>
     </config-file>
-    <header-file src="src/ios/RGLDocumentReader.h" />
-    <source-file src="src/ios/RGLDocumentReader.m" />
+    <header-file src="src/ios/RGLWDocumentReader.h" />
+    <source-file src="src/ios/RGLWDocumentReader.m" />
     <header-file src="src/ios/RGLWJSONConstructor.h" />
     <source-file src="src/ios/RGLWJSONConstructor.m" />
-    <header-file src="src/ios/RegulaConfig.h" />
-    <source-file src="src/ios/RegulaConfig.m" />
+    <header-file src="src/ios/RGLWRegulaConfig.h" />
+    <source-file src="src/ios/RGLWRegulaConfig.m" />
     <podspec>
         <config>
         </config>
       <pods>
-        <pod name="DocumentReader" spec="6.7.2863" />
+        <pod name="DocumentReader" spec="6.8.2981" />
       </pods>
     </podspec>
   </platform>
