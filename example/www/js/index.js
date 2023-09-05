@@ -14,8 +14,11 @@ var app = {
         var DocumentReaderResults = DocumentReaderPlugin.DocumentReaderResults
         var DocumentReaderScenario = DocumentReaderPlugin.DocumentReaderScenario
         var DocumentReaderCompletion = DocumentReaderPlugin.DocumentReaderCompletion
+        var ScannerConfig = DocumentReaderPlugin.ScannerConfig
+        var RecognizeConfig = DocumentReaderPlugin.RecognizeConfig
         var Enum = DocumentReaderPlugin.Enum
 
+        var selectedScenario = "Mrz"
         var doRfid = false
         var encryption = false
         const ENCRYPTED_RESULT_SERVICE = "https://api.regulaforensics.com/api/process"
@@ -41,7 +44,7 @@ var app = {
                 input.value = DocumentReaderScenario.fromJson(typeof scenarios[index] === "string" ? JSON.parse(scenarios[index]) : scenarios[index]).name
                 if (index == 0)
                     input.checked = true
-                input.onclick = function () { DocumentReader.setConfig({ processParams: { scenario: this.value } }, function (m) { }, function (e) { }) }
+                input.onclick = function () { selectedScenario = this.value }
                 input.style.display = "inline-block"
                 document.getElementById("scenariosRadioGroup").appendChild(input)
                 var label = document.createElement("span")
@@ -68,7 +71,9 @@ var app = {
         }
 
         function scan() {
-            DocumentReader.showScanner(function (m) {
+            var config = new ScannerConfig()
+            config.scenario = selectedScenario
+            DocumentReader.scan(config, function (m) {
                 handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m)))
             }, function (e) { })
         }
@@ -95,14 +100,20 @@ var app = {
         }
 
         function recognize() {
-            window.imagePicker.getPictures(function (images) {
-                document.getElementById("status").innerHTML = "processing image......"
-                document.getElementById("status").style.backgroundColor = "grey"
-                DocumentReader.recognizeImages(images, function (m) { handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m))) }, function (e) { })
-            }, function (e) { }, { maximumImagesCount: 10, outputType: window.imagePicker.OutputType.BASE64_STRING })
+            // window.imagePicker.getPictures(function (images) {
+            //     document.getElementById("status").innerHTML = "processing image......"
+            //     document.getElementById("status").style.backgroundColor = "grey"
+            //     var config = new RecognizeConfig()
+            //     config.scenario = selectedScenario
+            //     config.images = images
+            //     DocumentReader.recognize(config, function (m) {
+            //         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m)))
+            //     }, function (e) { })
+            // }, function (e) { }, { maximumImagesCount: 10, outputType: window.imagePicker.OutputType.BASE64_STRING })
         }
 
         function handleCompletion(completion) {
+            console.log("DocReaderAction: " + completion.action)
             if (isReadingRfidCustomUi && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
                 hideRfidUI()
             if (isReadingRfidCustomUi && completion.action === Enum.DocReaderAction.NOTIFICATION)
@@ -153,7 +164,7 @@ var app = {
 
         function updateRfidUI(results) {
             if (results.value == null) return
-            if (results.code === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
+            if (results.notificationCode === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
                 rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.dataFileType)
                 document.getElementById("rfidDescription").innerHTML = rfidDescription
             }
@@ -161,10 +172,10 @@ var app = {
             document.getElementById("rfidUIHeader").innerHTML = rfidUIHeader
             rfidUIHeaderColor = "black"
             document.getElementById("rfidUIHeader").style.color = rfidUIHeaderColor
-            rfidProgress = results.value
+            rfidProgress = results.progress
             document.getElementById("rfidProgress").value = rfidProgress
             if (window.cordova.platformId === 'ios')
-                DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + results.value + "%", function (e) { }, function (e) { })
+                DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + results.progress + "%", function (e) { }, function (e) { })
         }
 
         function customRFID() {
