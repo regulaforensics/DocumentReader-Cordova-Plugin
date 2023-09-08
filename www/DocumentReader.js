@@ -59,7 +59,7 @@ class DocumentReaderGraphicField {
 
         result.sourceType = jsonObject["sourceType"]
         result.fieldType = jsonObject["fieldType"]
-        result.lightType = jsonObject["lightType"]
+        result.light = jsonObject["light"]
         result.pageIndex = jsonObject["pageIndex"]
         result.originalPageIndex = jsonObject["originalPageIndex"]
         result.fieldName = jsonObject["fieldName"]
