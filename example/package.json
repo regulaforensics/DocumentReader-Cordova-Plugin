@@ -13,8 +13,8 @@
   "author": "Regula Forensics Inc.",
   "license": "commercial",
   "dependencies": {
-    "@regulaforensics/cordova-plugin-document-reader-api-beta": "6.8.7606",
-    "@regulaforensics/cordova-plugin-document-reader-core-fullrfid-beta": "6.9.1",
+    "@regulaforensics/cordova-plugin-document-reader-api-beta": "6.8.7607",
+    "@regulaforensics/cordova-plugin-document-reader-core-fullrfid": "6.9.0",
     "cordova-android": "12.0.0",
     "cordova-ios": "7.0.0",
     "cordova-plugin-add-swift-support": "2.0.2",
@@ -29,7 +29,7 @@
         "CAMERA_USAGE_DESCRIPTION": "To take photo",
         "READ_EXTERNAL_STORAGE": "To choose photo"
       },
-      "@regulaforensics/cordova-plugin-document-reader-core-fullrfid-beta": {},
+      "@regulaforensics/cordova-plugin-document-reader-core-fullrfid": {},
       "cordova-plugin-file": {},
       "cordova-plugin-android-permissions": {},
       "cordova-plugin-advanced-http": {}
