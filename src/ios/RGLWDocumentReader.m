@@ -601,7 +601,7 @@ NSString* RGLWOnCustomButtonTappedEvent = @"onCustomButtonTappedEvent";
 -(void (^_Nullable)(NSProgress * _Nonnull progress))getProgressHandler {
     return ^(NSProgress * _Nonnull progress) {
         if(RGLWDocumentReader.databasePercentageDownloaded != [NSNumber numberWithDouble:progress.fractionCompleted * 100]){
-            sendEvent(RGLWDatabaseProgressEvent, [NSString stringWithFormat:@"%.0f", progress.fractionCompleted * 100]);
+            sendEvent(RGLWDatabaseProgressEvent, [NSNumber numberWithInt:(int)(progress.fractionCompleted * 100)]);
             [RGLWDocumentReader setDatabasePercentageDownloaded:[NSNumber numberWithDouble:progress.fractionCompleted * 100]];
         }
     };
