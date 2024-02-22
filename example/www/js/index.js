@@ -12,7 +12,7 @@ var app = {
                 showCaptureButton: true
             }, function (s) { }, function (e) { })
         }
-        
+
         this.receivedEvent('deviceready')
         document.getElementById("status").innerHTML = "loading......"
         document.getElementById("status").style.backgroundColor = "grey"
@@ -159,7 +159,7 @@ var app = {
             }
             document.getElementById("rfidUIHeader").innerHTML = "Reading RFID"
             document.getElementById("rfidUIHeader").style.color = "black"
-            if(notification.progress != null)
+            if (notification.progress != null)
                 document.getElementById("rfidProgress").value = notification.progress
         }
 
@@ -185,7 +185,7 @@ var app = {
         function handleResults(results) {
             clearResults()
             if (doRfid && !isReadingRfid && results != null) {
-//                customRFID()
+                // customRFID()
                 usualRFID()
             } else {
                 isReadingRfid = false
@@ -260,36 +260,28 @@ var app = {
         }
 
         readFile("www/regula.license", function (license) {
-            DocumentReader.prepareDatabase("Full", function (message) {
-                if (!JSON.parse(message).success)
-                    document.getElementById("status").innerHTML = "Downloading database: " + message + "%"
-                else {
-                    console.log("Database prepared")
-                    document.getElementById("status").innerHTML = "Loading......"
-                    var config = new DocReaderConfig()
-                    config.license = license
-                    config.delayedNNLoad = true
-                    DocumentReader.initializeReader(config, function (message) {
-                        callback = JSON.parse(message)
-                        if (!callback.success){
-                            console.log("Init error: " + callback.error.message)
-                            document.getElementById("status").innerHTML = "Init error: " + callback.error.message
-                            return
-                        }
-                        console.log("Init complete")
-                        document.getElementById("showScannerButton").addEventListener("click", scan)
-                        document.getElementById("showImagePicker").addEventListener("click", recognize)
-                        DocumentReader.getAvailableScenarios(function (s) {
-                            DocumentReader.getIsRFIDAvailableForUse(function (r) { postInitialize(JSON.parse(s), r) }, function (e) { })
-                        }, function (e) { })
-                        onInitialized()
-                    }, function (error) {
-                        console.log(error)
-                        document.getElementById("status").innerHTML = error
-                        document.getElementById("status").style.backgroundColor = "red"
-                    })
+            var config = new DocReaderConfig()
+            config.license = license
+            config.delayedNNLoad = true
+            DocumentReader.initializeReader(config, function (message) {
+                callback = JSON.parse(message)
+                if (!callback.success) {
+                    console.log("Init error: " + callback.error.message)
+                    document.getElementById("status").innerHTML = "Init error: " + callback.error.message
+                    return
                 }
-            }, function (e) { console.log(e) })
+                console.log("Init complete")
+                document.getElementById("showScannerButton").addEventListener("click", scan)
+                document.getElementById("showImagePicker").addEventListener("click", recognize)
+                DocumentReader.getAvailableScenarios(function (s) {
+                    DocumentReader.getIsRFIDAvailableForUse(function (r) { postInitialize(JSON.parse(s), r) }, function (e) { })
+                }, function (e) { })
+                onInitialized()
+            }, function (error) {
+                console.log(error)
+                document.getElementById("status").innerHTML = error
+                document.getElementById("status").style.backgroundColor = "red"
+            })
         })
     },
 

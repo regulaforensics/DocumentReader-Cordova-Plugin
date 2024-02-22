@@ -251,7 +251,7 @@ fun scan(config: JSONObject) {
 
 fun recognize(config: JSONObject) {
     stopBackgroundRFID()
-    Instance().recognize(context, recognizeConfigFromJSON(config), completion)
+    Instance().recognize(recognizeConfigFromJSON(config), completion)
 }
 
 fun startNewPage(callback: Callback) {
@@ -430,7 +430,6 @@ fun getInitCompletion(callback: Callback) = IDocumentReaderInitCompletion { succ
     if (success) {
         Instance().setVideoEncoderCompletion { _, file -> sendEvent(eventVideoEncoderCompletion, file.path) }
         Instance().setOnClickListener { sendEvent(onCustomButtonTappedEvent, it.tag) }
-        setupScaleType()
     }
     callback.success(generateSuccessCompletion(success, error))
 }
@@ -503,7 +502,7 @@ fun startForegroundDispatch() {
             else -> Unit
         }
     }
-    lifecycle.addObserver(lifecycleObserver)
+    context.runOnUiThread { lifecycle.addObserver(lifecycleObserver) }
 }
 
 fun enableForegroundDispatch(
@@ -519,7 +518,7 @@ fun stopBackgroundRFID() {
     backgroundRFIDEnabled = false
     if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))
         disableForegroundDispatch()
-    lifecycle.removeObserver(lifecycleObserver)
+    context.runOnUiThread { lifecycle.removeObserver(lifecycleObserver) }
 }
 
 // Weak references
