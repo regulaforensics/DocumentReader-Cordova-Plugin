@@ -1,12 +1,14 @@
 #import <Cordova/CDVPlugin.h>
 #import <Foundation/Foundation.h>
 #import "RGLWJSONConstructor.h"
-#import "RGLWRegulaConfig.h"
+#import "RGLWConfig.h"
 #import <DocumentReader/DocumentReader.h>
 
 @class DocReader;
 
-typedef void (^RGLWCallback)(NSString* _Nullable response);
+typedef void (^RGLWCallback)(id _Nullable response);
+typedef void (^RGLWEventSender)(NSString* _Nonnull event, id _Nullable data);
+typedef void (^RGLWRFIDSignatureCallback)(NSData * _Nonnull signature);
 
 @interface RGLWDocumentReader : CDVPlugin<RGLRecordScanningProcessDelegate,
                                             RGLDocReaderRFIDDelegate,
@@ -14,12 +16,13 @@ typedef void (^RGLWCallback)(NSString* _Nullable response);
 
 @property (class) CDVInvokedUrlCommand* _Nullable command;
 @property (class) NSNumber* _Nullable databasePercentageDownloaded;
-
-- (void) sendEvent:(NSString*_Nullable)data :(NSString*_Nonnull)callbackId;
+@property NSNumber* _Nonnull doRequestPACertificates;
+@property NSNumber* _Nonnull doRequestTACertificates;
+@property NSNumber* _Nonnull doRequestTASignature;
 
 @end
 
-typedef void (^RGLWRFIDSignatureCallback)(NSData * _Nonnull signature);
-
-@interface RGLWRFIDDelegateNoPA : NSObject<RGLDocReaderRFIDDelegate>
-@end
+NSString* _Nonnull RGLWCompletionEvent;
+NSString* _Nonnull RGLWDatabaseProgressEvent;
+NSString* _Nonnull RGLWVideoEncoderCompletionEvent;
+NSString* _Nonnull RGLWOnCustomButtonTappedEvent;

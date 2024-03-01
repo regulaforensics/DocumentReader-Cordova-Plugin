@@ -4,6 +4,15 @@ var app = {
     },
 
     onDeviceReady: function () {
+        function onInitialized() {
+            document.getElementById("status").innerHTML = "Ready"
+            document.getElementById("status").style.backgroundColor = "green"
+
+            DocumentReader.setFunctionality({
+                showCaptureButton: true
+            }, function (s) { }, function (e) { })
+        }
+
         this.receivedEvent('deviceready')
         document.getElementById("status").innerHTML = "loading......"
         document.getElementById("status").style.backgroundColor = "grey"
@@ -12,10 +21,12 @@ var app = {
         // This way you can import any class declared in DocumentReaderPlugin
         var DocumentReader = DocumentReaderPlugin.DocumentReader
         var DocumentReaderResults = DocumentReaderPlugin.DocumentReaderResults
+        var DocumentReaderNotification = DocumentReaderPlugin.DocumentReaderNotification
         var DocumentReaderScenario = DocumentReaderPlugin.DocumentReaderScenario
         var DocumentReaderCompletion = DocumentReaderPlugin.DocumentReaderCompletion
         var ScannerConfig = DocumentReaderPlugin.ScannerConfig
         var RecognizeConfig = DocumentReaderPlugin.RecognizeConfig
+        var DocReaderConfig = DocumentReaderPlugin.DocReaderConfig
         var Enum = DocumentReaderPlugin.Enum
 
         var selectedScenario = "Mrz"
@@ -34,7 +45,7 @@ var app = {
         document.getElementById("rfidUIHeader").style.color = rfidUIHeaderColor
         document.getElementById("rfidDescription").innerHTML = rfidDescription
         document.getElementById("rfidProgress").value = rfidProgress
-        document.getElementById("cancelButton").addEventListener("click", stopRfid)
+        document.getElementById("cancelButton").addEventListener("click", hideRfidUI)
 
         function postInitialize(scenarios, canRfid) {
             for (var index in scenarios) {
@@ -78,58 +89,42 @@ var app = {
             }, function (e) { })
         }
 
-        function recognizeAndroid() {
-            var permissions = cordova.plugins.permissions
-            permissions.checkPermission(permissions.READ_EXTERNAL_STORAGE, function (status) {
-                if (status.hasPermission)
-                    recognize()
-                else {
-                    permissions.requestPermission(permissions.READ_EXTERNAL_STORAGE, function success(status) {
-                        if (status.hasPermission)
-                            recognize()
-                    }, function error() {
-                        console.warn('READ_EXTERNAL_STORAGE permission denied')
-                    })
-                }
+        function recognize() {
+            navigator.camera.getPicture(function (result) {
+                document.getElementById("status").innerHTML = "processing image......"
+                document.getElementById("status").style.backgroundColor = "grey"
+                var config = new RecognizeConfig()
+                config.scenario = selectedScenario
+                config.image = result
+                DocumentReader.recognize(config, function (m) {
+                    handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m)))
+                }, function (e) { })
+            }, function (e) { }, {
+                destinationType: Camera.DestinationType.DATA_URL,
+                sourceType: Camera.PictureSourceType.PHOTOLIBRARY,
+                mediaType: Camera.MediaType.PICTURE
             })
         }
 
-        function stopRfid() {
-            hideRfidUI()
-            DocumentReader.stopRFIDReader(function (e) { }, function (e) { })
-        }
-
-        function recognize() {
-            // window.imagePicker.getPictures(function (images) {
-            //     document.getElementById("status").innerHTML = "processing image......"
-            //     document.getElementById("status").style.backgroundColor = "grey"
-            //     var config = new RecognizeConfig()
-            //     config.scenario = selectedScenario
-            //     config.images = images
-            //     DocumentReader.recognize(config, function (m) {
-            //         handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m)))
-            //     }, function (e) { })
-            // }, function (e) { }, { maximumImagesCount: 10, outputType: window.imagePicker.OutputType.BASE64_STRING })
-        }
-
         function handleCompletion(completion) {
-            console.log("DocReaderAction: " + completion.action)
-            if (isReadingRfidCustomUi && (completion.action === Enum.DocReaderAction.CANCEL || completion.action === Enum.DocReaderAction.ERROR))
-                hideRfidUI()
-            if (isReadingRfidCustomUi && completion.action === Enum.DocReaderAction.NOTIFICATION)
-                updateRfidUI(completion.results.documentReaderNotification)
-            if (completion.action === Enum.DocReaderAction.COMPLETE)
-                if (isReadingRfidCustomUi)
-                    if (completion.results.rfidResult !== 1)
-                        restartRfidUI()
-                    else {
-                        hideRfidUI()
-                        displayResults(completion.results)
-                    }
-                else
-                    handleResults(completion.results)
-            if (completion.action === Enum.DocReaderAction.TIMEOUT)
+            if (isReadingRfidCustomUi) {
+                if (completion.action == Enum.DocReaderAction.ERROR) restartRfidUI()
+                if (actionSuccess(completion.action) || actionError(completion.action)) {
+                    hideRfidUI()
+                    displayResults(completion.results)
+                }
+            } else if (actionSuccess(completion.action))
                 handleResults(completion.results)
+        }
+
+        function actionSuccess(action) {
+            if (action == Enum.DocReaderAction.COMPLETE || action == Enum.DocReaderAction.TIMEOUT) return true
+            return false
+        }
+
+        function actionError(action) {
+            if (action == Enum.DocReaderAction.CANCEL || action == Enum.DocReaderAction.ERROR) return true
+            return false
         }
 
         function showRfidUI() {
@@ -141,78 +136,56 @@ var app = {
 
         function hideRfidUI() {
             // show animation
+            DocumentReader.stopRFIDReader(function (s) { }, function (e) { });
             restartRfidUI()
             isReadingRfidCustomUi = false
             document.getElementById("rfidUI").style.display = isReadingRfidCustomUi ? "" : "none"
             document.getElementById("mainUI").style.display = !isReadingRfidCustomUi ? "" : "none"
-            rfidUIHeader = "Reading RFID"
-            document.getElementById("rfidUIHeader").innerHTML = rfidUIHeader
-            rfidUIHeaderColor = "black"
-            document.getElementById("rfidUIHeader").style.color = rfidUIHeaderColor
+            document.getElementById("rfidUIHeader").innerHTML = "Reading RFID"
+            document.getElementById("rfidUIHeader").style.color = "black"
         }
 
         function restartRfidUI() {
-            rfidUIHeaderColor = "red"
-            document.getElementById("rfidUIHeader").style.color = rfidUIHeaderColor
-            rfidUIHeader = "Failed!"
-            document.getElementById("rfidUIHeader").innerHTML = rfidUIHeader
-            rfidDescription = "Place your phone on top of the NFC tag"
-            document.getElementById("rfidDescription").innerHTML = rfidDescription
-            rfidProgress = -1
-            document.getElementById("rfidProgress").value = rfidProgress
+            document.getElementById("rfidUIHeader").style.color = "red"
+            document.getElementById("rfidUIHeader").innerHTML = "Failed!"
+            document.getElementById("rfidDescription").innerHTML = "Place your phone on top of the NFC tag"
+            document.getElementById("rfidProgress").value = -1
         }
 
-        function updateRfidUI(results) {
-            if (results.value == null) return
-            if (results.notificationCode === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
-                rfidDescription = Enum.eRFID_DataFile_Type.getTranslation(results.dataFileType)
+        function updateRfidUI(notification) {
+            if (notification.notificationCode === Enum.eRFID_NotificationCodes.RFID_NOTIFICATION_PCSC_READING_DATAGROUP) {
+                rfidDescription = "ERFIDDataFileType: " + notification.dataFileType
                 document.getElementById("rfidDescription").innerHTML = rfidDescription
             }
-            rfidUIHeader = "Reading RFID"
-            document.getElementById("rfidUIHeader").innerHTML = rfidUIHeader
-            rfidUIHeaderColor = "black"
-            document.getElementById("rfidUIHeader").style.color = rfidUIHeaderColor
-            rfidProgress = results.progress
-            document.getElementById("rfidProgress").value = rfidProgress
-            if (window.cordova.platformId === 'ios')
-                DocumentReader.setRfidSessionStatus(rfidDescription + "\n" + results.progress + "%", function (e) { }, function (e) { })
+            document.getElementById("rfidUIHeader").innerHTML = "Reading RFID"
+            document.getElementById("rfidUIHeader").style.color = "black"
+            if (notification.progress != null)
+                document.getElementById("rfidProgress").value = notification.progress
         }
 
         function customRFID() {
             showRfidUI()
-            DocumentReader.readRFID(function (m) { handleRfidCompletion(m) }, function (e) { })
+            DocumentReader.readRFID(false, false, false, function (m) { handleRfidCompletion(m) }, function (e) { })
         }
 
         function usualRFID() {
             isReadingRfid = true
-            DocumentReader.startRFIDReader(function (m) { handleRfidCompletion(m) }, function (e) { })
+            DocumentReader.startRFIDReader(false, false, false, function (m) { handleRfidCompletion(m) }, function (e) { })
         }
 
         function handleRfidCompletion(raw) {
-            var notification = "rfidNotificationCompletionEvent"
-            var paCert = "paCertificateCompletionEvent"
-            var taCert = "taCertificateCompletionEvent"
-            var taSig = "taSignatureCompletionEvent"
-            if (raw.substring(0, notification.length) === notification) {
-                raw = raw.substring(notification.length, raw.length)
-                console.log(notification + ": " + raw)
-            } else if (raw.substring(0, paCert.length) === paCert) {
-                raw = raw.substring(paCert.length, raw.length)
-                console.log(paCert + ": " + raw)
-            } else if (raw.substring(0, taCert.length) === taCert) {
-                raw = raw.substring(taCert.length, raw.length)
-                console.log(taCert + ": " + raw)
-            } else if (raw.substring(0, taSig.length) === taSig) {
-                raw = raw.substring(taSig.length, raw.length)
-                console.log(taSig + ": " + raw)
+            var id = "rfidOnProgressCompletion"
+            if (raw.substring(0, id.length) === id) {
+                raw = raw.substring(id.length, raw.length)
+                updateRfidUI(DocumentReaderNotification.fromJson(JSON.parse(raw)))
             } else
                 handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(raw)))
         }
 
         function handleResults(results) {
             clearResults()
-            if (doRfid && !isReadingRfid && results != null && results.chipPage != 0) {
-                //customRFID()
+            if (doRfid && !isReadingRfid && results != null) {
+                // customRFID()
                 usualRFID()
             } else {
                 isReadingRfid = false
@@ -253,7 +226,6 @@ var app = {
             DocumentReader.textFieldValueByType(results, Enum.eVisualFieldType.FT_SURNAME_AND_GIVEN_NAMES, function (value) {
                 document.getElementById("status").style.backgroundColor = "green"
                 document.getElementById("status").innerHTML = value
-                this.setState({ fullName: value })
             }, function (error) { console.log(error) })
 
             DocumentReader.graphicFieldImageByType(results, Enum.eGraphicFieldType.GF_DOCUMENT_IMAGE, function (value) {
@@ -273,33 +245,6 @@ var app = {
             document.getElementById("portraitImage").src = "img/portrait.png"
         }
 
-        function addCertificates() {
-            window.resolveLocalFileSystemURL(cordova.file.applicationDirectory + "www/certificates/", function (fileSystem) {
-                fileSystem.createReader().readEntries(function (entries) {
-                    for (var i in entries) {
-                        var item = entries[i]
-                        if (item.isFile) {
-                            var findExt = item.name.split('.')
-                            var pkdResourceType = 0
-                            if (findExt.length > 0)
-                                pkdResourceType = Enum.PKDResourceType.getType(findExt[findExt.length - 1].toLowerCase())
-                            readFile("www/certificates/" + item.name, function (file, resType) {
-                                resType = resType[0]
-                                var certificates = []
-                                certificates.push({
-                                    'binaryData': file,
-                                    'resourceType': resType
-                                })
-                                DocumentReader.addPKDCertificates(certificates, function (s) {
-                                    console.log("certificate added")
-                                }, function (e) { console.log(e) })
-                            }, pkdResourceType)
-                        }
-                    }
-                }, function (err) { console.log(err) })
-            }, function (err) { console.log(err) })
-        }
-
         function readFile(path, callback, ...items) {
             if (path.substring(0, 8) !== "file:///")
                 path = cordova.file.applicationDirectory + path
@@ -315,48 +260,28 @@ var app = {
         }
 
         readFile("www/regula.license", function (license) {
-            DocumentReader.prepareDatabase("Full", function (message) {
-                if (message != "database prepared")
-                    document.getElementById("status").innerHTML = "Downloading database: " + message + "%"
-                else {
-                    document.getElementById("status").innerHTML = "Loading......"
-                    DocumentReader.initializeReader({
-                        license: license,
-                        delayedNNLoad: true
-                    }, function (message) {
-                        document.getElementById("status").innerHTML = "Ready"
-                        document.getElementById("status").style.backgroundColor = "green"
-                        document.getElementById("showScannerButton").addEventListener("click", scan)
-                        if (window.cordova.platformId == "android")
-                            document.getElementById("showImagePicker").addEventListener("click", recognizeAndroid)
-                        if (window.cordova.platformId == "ios")
-                            document.getElementById("showImagePicker").addEventListener("click", recognize)
-                        DocumentReader.setConfig({
-                            functionality: {
-                                videoCaptureMotionControl: true,
-                                showCaptureButton: true
-                            },
-                            customization: {
-                                showResultStatusMessages: true,
-                                showStatusMessages: true
-                            },
-                            processParams: {
-                                scenario: "Mrz",
-                                doRfid: false,
-                            },
-                        }, function (m) { }, function (e) { })
-                        DocumentReader.getAvailableScenarios(function (s) {
-                            DocumentReader.isRFIDAvailableForUse(function (r) { postInitialize(JSON.parse(s), r) }, function (e) { })
-                        }, function (e) { })
-                        DocumentReader.setRfidDelegate(Enum.RFIDDelegate.NO_PA, function (r) { }, function (e) { })
-                        // addCertificates()
-                    }, function (error) {
-                        console.log(error)
-                        document.getElementById("status").innerHTML = error
-                        document.getElementById("status").style.backgroundColor = "red"
-                    })
+            var config = new DocReaderConfig()
+            config.license = license
+            config.delayedNNLoad = true
+            DocumentReader.initializeReader(config, function (message) {
+                callback = JSON.parse(message)
+                if (!callback.success) {
+                    console.log("Init error: " + callback.error.message)
+                    document.getElementById("status").innerHTML = "Init error: " + callback.error.message
+                    return
                 }
-            }, function (e) { console.log(e) })
+                console.log("Init complete")
+                document.getElementById("showScannerButton").addEventListener("click", scan)
+                document.getElementById("showImagePicker").addEventListener("click", recognize)
+                DocumentReader.getAvailableScenarios(function (s) {
+                    DocumentReader.getIsRFIDAvailableForUse(function (r) { postInitialize(JSON.parse(s), r) }, function (e) { })
+                }, function (e) { })
+                onInitialized()
+            }, function (error) {
+                console.log(error)
+                document.getElementById("status").innerHTML = error
+                document.getElementById("status").style.backgroundColor = "red"
+            })
         })
     },
 

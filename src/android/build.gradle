@@ -1,10 +1,10 @@
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 33
+    compileSdk 34
 
     defaultConfig {
-        targetSdkVersion 33
+        targetSdk 34
     }
 }
 
@@ -16,7 +16,7 @@ repositories {
 
 dependencies {
     //noinspection GradleDependency
-	implementation ('com.regula.documentreader:api:6.9.9406'){
+	implementation ('com.regula.documentreader:api:7.1.9667'){
         transitive = true
     }
 }

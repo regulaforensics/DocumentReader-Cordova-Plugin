@@ -16,6 +16,7 @@
     <allow-intent href="mailto:*" />
     <allow-intent href="geo:*" />
     <platform name="android">
+        <resource-file src="www/db.dat" target="app/src/main/assets/Regula/db.dat"/>
         <preference name="android-minSdkVersion" value="23" />
         <preference name="android-targetSdkVersion" value="34" />
         <allow-intent href="market:*" />
@@ -27,11 +28,14 @@
         </config-file>
     </platform>
     <platform name="ios">
+        <resource-file src="www/db.dat" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-        <preference name="CAMERA_USAGE_DESCRIPTION" default=" " />
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
             <string>To use camera</string>
+        </config-file>
+        <config-file target="*-Info.plist" parent="NSPhotoLibraryUsageDescription">
+            <string>To pick images</string>
         </config-file>
         <config-file target="*-Info.plist" parent="NFCReaderUsageDescription">
             <string>To use NFC</string>
