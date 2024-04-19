@@ -11,11 +11,11 @@ typedef void (^RGLWEventSender)(NSString* _Nonnull event, id _Nullable data);
 typedef void (^RGLWRFIDSignatureCallback)(NSData * _Nonnull signature);
 
 @interface RGLWDocumentReader : CDVPlugin<RGLRecordScanningProcessDelegate,
-                                            RGLDocReaderRFIDDelegate,
-                                            RGLCustomizationActionDelegate>
+                                          RGLDocReaderRFIDDelegate,
+                                          RGLCustomizationActionDelegate,
+                                          RGLDocReaderDatabaseFetchDelegate>
 
 @property (class) CDVInvokedUrlCommand* _Nullable command;
-@property (class) NSNumber* _Nullable databasePercentageDownloaded;
 @property NSNumber* _Nonnull doRequestPACertificates;
 @property NSNumber* _Nonnull doRequestTACertificates;
 @property NSNumber* _Nonnull doRequestTASignature;
