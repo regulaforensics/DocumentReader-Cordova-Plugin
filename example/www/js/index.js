@@ -7,10 +7,10 @@ var app = {
         function onInitialized() {
             document.getElementById("status").innerHTML = "Ready"
             document.getElementById("status").style.backgroundColor = "green"
-
-            DocumentReader.setFunctionality({
-                showCaptureButton: true
-            }, function (s) { }, function (e) { })
+            
+            var functionality = new Functionality()
+            functionality.showCaptureButton = true
+            DocumentReader.setFunctionality(functionality, function (s) { }, function (e) { })
         }
 
         this.receivedEvent('deviceready')
@@ -27,6 +27,7 @@ var app = {
         var ScannerConfig = DocumentReaderPlugin.ScannerConfig
         var RecognizeConfig = DocumentReaderPlugin.RecognizeConfig
         var DocReaderConfig = DocumentReaderPlugin.DocReaderConfig
+        var Functionality = DocumentReaderPlugin.Functionality
         var Enum = DocumentReaderPlugin.Enum
 
         var selectedScenario = "Mrz"
@@ -113,7 +114,7 @@ var app = {
                     hideRfidUI()
                     displayResults(completion.results)
                 }
-            } else if (actionSuccess(completion.action))
+            } else if (actionSuccess(completion.action) || actionError(completion.action))
                 handleResults(completion.results)
         }
 
@@ -184,7 +185,7 @@ var app = {
 
         function handleResults(results) {
             clearResults()
-            if (doRfid && !isReadingRfid && results != null) {
+            if (doRfid && !isReadingRfid && results != null && results.chipPage != 0) {
                 // customRFID()
                 usualRFID()
             } else {
