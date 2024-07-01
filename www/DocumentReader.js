@@ -1381,6 +1381,8 @@ class ProcessParams {
         result.imageOutputMaxWidth = jsonObject["imageOutputMaxWidth"]
         result.processAuth = jsonObject["processAuth"]
         result.convertCase = jsonObject["convertCase"]
+        result.logLevel = jsonObject["logLevel"]
+        result.mrzDetectMode = jsonObject["mrzDetectMode"]
         result.measureSystem = jsonObject["measureSystem"]
         result.forceDocID = jsonObject["forceDocID"]
         result.dateFormat = jsonObject["dateFormat"]
@@ -1771,6 +1773,7 @@ const CustomizationColor = {
     RFID_PROCESSING_SCREEN_PROGRESS_BAR: "rfidProcessingScreenProgressBar",
     RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND: "rfidProcessingScreenProgressBarBackground",
     RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT: "rfidProcessingScreenResultLabelText",
+    RFID_PROCESSING_SCREEN_LOADING_BAR: "rfidProcessingScreenLoadingBar",
 }
 
 const eRFID_ErrorCodes = {
@@ -2417,6 +2420,9 @@ const eCheckDiagnose = {
     FIELD_POS_CORRECTOR_HIGHLIGHT_IR: 80,
     FIELD_POS_CORRECTOR_GLARES_IN_PHOTO_AREA: 81,
     FIELD_POS_CORRECTOR_PHOTO_REPLACED: 82,
+    FIELD_POS_CORRECTOR_LANDMARKS_CHECK_ERROR: 83,
+    FIELD_POS_CORRECTOR_FACE_PRESENCE_CHECK_ERROR: 84,
+    FIELD_POS_CORRECTOR_FACE_ABSENCE_CHECK_ERROR: 85,
     OVI_IR_INVISIBLE: 90,
     OVI_INSUFFICIENT_AREA: 91,
     OVI_COLOR_INVARIABLE: 92,
@@ -2502,6 +2508,14 @@ const TextProcessing = {
     ocUppercase: 1,
     ocLowercase: 2,
     ocCapital: 3,
+}
+
+const LogLevel = {
+    FatalError: "FatalError",
+    Error: "Error",
+    Warning: "Warning",
+    Info: "Info",
+    Debug: "Debug",
 }
 
 const AnimationImage = {
@@ -4145,6 +4159,12 @@ const eRPRM_Lights = {
     RPRM_LIGHT_WHITE_FULL_OVD: (6 | 67108864),
 }
 
+const eMrzDetectionModes = {
+    DEFAULT: 0,
+    RESIZE_BINARIZE_WINDOW: 1,
+    BLUR_BEFORE_BINARIZATION: 2,
+}
+
 const Enum = {
    FontStyle,
    eRPRM_Authenticity,
@@ -4174,6 +4194,7 @@ const Enum = {
    eCheckDiagnose,
    RFIDDelegate,
    TextProcessing,
+   LogLevel,
    AnimationImage,
    ProcessingFinishedStatus,
    DocFormat,
@@ -4204,6 +4225,7 @@ const Enum = {
    CustomizationImage,
    DocReaderFrame,
    eRPRM_Lights,
+   eMrzDetectionModes,
 }
 
 const DocumentReader = {}
@@ -4216,6 +4238,10 @@ DocumentReader.getRfidSessionStatus = (successCallback, errorCallback) => cordov
 DocumentReader.setRfidSessionStatus = (status, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setRfidSessionStatus", status])
 DocumentReader.getTag = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTag"])
 DocumentReader.setTag = (tag, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTag", tag])
+DocumentReader.getTenant = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTenant"])
+DocumentReader.setTenant = (tenant, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTenant", tenant])
+DocumentReader.getEnv = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getEnv"])
+DocumentReader.setEnv = (env, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setEnv", env])
 DocumentReader.getFunctionality = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getFunctionality"])
 DocumentReader.setFunctionality = (functionality, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setFunctionality", functionality])
 DocumentReader.getProcessParams = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getProcessParams"])
