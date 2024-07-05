@@ -1393,6 +1393,7 @@ class ProcessParams {
         result.timeoutFromFirstDetect = jsonObject["timeoutFromFirstDetect"]
         result.timeoutFromFirstDocType = jsonObject["timeoutFromFirstDocType"]
         result.documentAreaMin = jsonObject["documentAreaMin"]
+        result.timeoutLiveness = jsonObject["timeoutLiveness"]
         result.documentIDList = []
         if (jsonObject["documentIDList"] != null)
             for (const i in jsonObject["documentIDList"])
