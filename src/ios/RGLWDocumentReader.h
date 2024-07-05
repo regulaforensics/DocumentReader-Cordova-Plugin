@@ -7,7 +7,7 @@
 @class DocReader;
 
 typedef void (^RGLWCallback)(id _Nullable response);
-typedef void (^RGLWEventSender)(NSString* _Nonnull event, id _Nullable data);
+typedef void (^RGLWEventSender)(NSString* _Nullable event, id _Nullable data);
 typedef void (^RGLWRFIDSignatureCallback)(NSData * _Nonnull signature);
 
 @interface RGLWDocumentReader : CDVPlugin<RGLRecordScanningProcessDelegate,

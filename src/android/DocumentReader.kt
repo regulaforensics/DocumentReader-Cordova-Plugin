@@ -104,6 +104,10 @@ fun exec(arguments: JSONArray, tempContext: CallbackContext) {
         "setRfidSessionStatus" -> setRfidSessionStatus(callback)
         "getTag" -> getTag(callback)
         "setTag" -> setTag(argsNullable(0))
+        "getTenant" -> getTenant(callback)
+        "setTenant" -> setTenant(argsNullable(0))
+        "getEnv" -> getEnv(callback)
+        "setEnv" -> setEnv(argsNullable(0))
         "getFunctionality" -> getFunctionality(callback)
         "setFunctionality" -> setFunctionality(args(0))
         "getProcessParams" -> getProcessParams(callback)
@@ -177,7 +181,6 @@ val context
     get() = activity
 
 var backgroundRFIDEnabled = false
-var databaseDownloadProgress = 0
 
 const val eventCompletion = "completion"
 const val eventDatabaseProgress = "database_progress"
@@ -212,6 +215,14 @@ fun setRfidSessionStatus(callback: Callback) = callback.error("setRfidSessionSta
 fun getTag(callback: Callback) = callback.success(Instance().tag)
 
 fun setTag(tag: String?) = tag.let { Instance().tag = it }
+
+fun getTenant(callback: Callback) = callback.success(Instance().tenant)
+
+fun setTenant(tag: String?) = tag.let { Instance().tenant = it }
+
+fun getEnv(callback: Callback) = callback.success(Instance().env)
+
+fun setEnv(tag: String?) = tag.let { Instance().env = it }
 
 fun getFunctionality(callback: Callback) = callback.success(getFunctionality(Instance().functionality()))
 
