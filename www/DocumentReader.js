@@ -1462,6 +1462,7 @@ class CustomizationColors {
         result.rfidProcessingScreenProgressBar = jsonObject["rfidProcessingScreenProgressBar"]
         result.rfidProcessingScreenProgressBarBackground = jsonObject["rfidProcessingScreenProgressBarBackground"]
         result.rfidProcessingScreenResultLabelText = jsonObject["rfidProcessingScreenResultLabelText"]
+        result.rfidProcessingScreenLoadingBar = jsonObject["rfidProcessingScreenLoadingBar"]
 
         return result
     }
