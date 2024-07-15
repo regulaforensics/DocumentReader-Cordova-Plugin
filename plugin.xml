@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api" version="7.3.535-rc"
+<plugin id="cordova-plugin-document-reader-api" version="7.3.536-rc"
   xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
@@ -26,7 +26,7 @@
         <config>
         </config>
       <pods>
-        <pod name="DocumentReaderStage" spec="7.3.3747" />
+        <pod name="DocumentReaderStage" spec="7.3.3748" />
       </pods>
     </podspec>
   </platform>
