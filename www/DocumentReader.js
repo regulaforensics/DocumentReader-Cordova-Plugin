@@ -1393,6 +1393,7 @@ class ProcessParams {
         result.timeoutFromFirstDetect = jsonObject["timeoutFromFirstDetect"]
         result.timeoutFromFirstDocType = jsonObject["timeoutFromFirstDocType"]
         result.documentAreaMin = jsonObject["documentAreaMin"]
+        result.timeoutLiveness = jsonObject["timeoutLiveness"]
         result.documentIDList = []
         if (jsonObject["documentIDList"] != null)
             for (const i in jsonObject["documentIDList"])
@@ -1461,6 +1462,7 @@ class CustomizationColors {
         result.rfidProcessingScreenProgressBar = jsonObject["rfidProcessingScreenProgressBar"]
         result.rfidProcessingScreenProgressBarBackground = jsonObject["rfidProcessingScreenProgressBarBackground"]
         result.rfidProcessingScreenResultLabelText = jsonObject["rfidProcessingScreenResultLabelText"]
+        result.rfidProcessingScreenLoadingBar = jsonObject["rfidProcessingScreenLoadingBar"]
 
         return result
     }
@@ -2494,7 +2496,7 @@ const eCheckDiagnose = {
     ICAO_IDB_SIGNATURE_MUST_BE_PRESENT: 246,
     ICAO_IDB_SIGNATURE_MUST_NOT_BE_PRESENT: 247,
     ICAO_IDB_CERTIFICATE_MUST_NOT_BE_PRESENT: 248,
-    LAST_DIAGNOSE_VALUE: 250,
+    INCORRECT_OBJECT_COLOR: 250,
 }
 
 const RFIDDelegate = {
@@ -3957,6 +3959,14 @@ const eVisualFieldType = {
     FT_DATE_OF_RETIREMENT: 681,
     FT_DOCUMENT_STATUS: 682,
     FT_SIGNATURE: 683,
+    FT_UNIQUE_CERTIFICATE_IDENTIFIER: 684,
+    FT_EMAIL: 685,
+    FT_DATE_OF_SPECIMEN_COLLECTION: 686,
+    FT_TYPE_OF_TESTING: 687,
+    FT_RESULT_OF_TESTING: 688,
+    FT_METHOD_OF_TESTING: 689,
+    FT_DIGITAL_TRAVEL_AUTHORIZATION_NUMBER: 690,
+    FT_DATE_OF_FIRST_POSITIVE_TEST_RESULT: 691,
 }
 
 const DocReaderOrientation = {
