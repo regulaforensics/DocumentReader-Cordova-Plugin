@@ -2,6 +2,7 @@
 #import <Foundation/Foundation.h>
 #import "RGLWJSONConstructor.h"
 #import "RGLWConfig.h"
+#import <CoreBluetooth/CoreBluetooth.h>
 #import <DocumentReader/DocumentReader.h>
 
 @class DocReader;
@@ -13,7 +14,9 @@ typedef void (^RGLWRFIDSignatureCallback)(NSData * _Nonnull signature);
 @interface RGLWDocumentReader : CDVPlugin<RGLRecordScanningProcessDelegate,
                                           RGLDocReaderRFIDDelegate,
                                           RGLCustomizationActionDelegate,
-                                          RGLDocReaderDatabaseFetchDelegate>
+                                          RGLDocReaderDatabaseFetchDelegate,
+                                          RGLBluetoothDelegate,
+                                          CBCentralManagerDelegate>
 
 @property (class) CDVInvokedUrlCommand* _Nullable command;
 @property NSNumber* _Nonnull doRequestPACertificates;

@@ -48,13 +48,30 @@ import org.json.JSONArray
 import org.json.JSONObject
 
 class DocumentReader : CordovaPlugin() {
-    override fun onNewIntent(intent: Intent) = newIntent(intent)
+    override fun onNewIntent(intent: Intent) {
+        newIntent(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        myOnActivityResult(requestCode, resultCode, intent)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) {
+        myOnRequestPermissionsResult(requestCode, permissions!!, grantResults!!)
+    }
+
     override fun execute(action: String, args: JSONArray, callbackContext: CallbackContext): Boolean {
         activity = cordova.activity
         exec(args, callbackContext)
         return true
     }
 }
+
+fun myOnActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+    onActivityResult(requestCode, resultCode, intent)
+}
+
+fun myOnRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) = onRequestPermissionsResult(requestCode, permissions!!, grantResults!!)
 
 fun sendEvent(event: String, data: Any? = "") {
     // These events are not working in cordova and ionic because they don't have a method
@@ -98,8 +115,6 @@ fun exec(arguments: JSONArray, tempContext: CallbackContext) {
     when (action) {
         "getDocumentReaderIsReady" -> getDocumentReaderIsReady(callback)
         "getDocumentReaderStatus" -> getDocumentReaderStatus(callback)
-        "isAuthenticatorAvailableForUse" -> isAuthenticatorAvailableForUse(callback)
-        "isBlePermissionsGranted" -> isBlePermissionsGranted(callback)
         "getRfidSessionStatus" -> getRfidSessionStatus(callback)
         "setRfidSessionStatus" -> setRfidSessionStatus(callback)
         "getTag" -> getTag(callback)
@@ -139,11 +154,13 @@ fun exec(arguments: JSONArray, tempContext: CallbackContext) {
         "addPKDCertificates" -> addPKDCertificates(callback, args(0))
         "clearPKDCertificates" -> clearPKDCertificates(callback)
         "startNewSession" -> startNewSession(callback)
-        "startBluetoothService" -> startBluetoothService()
+        "connectBluetoothDevice" -> connectBluetoothDevice(callback)
         "setLocalizationDictionary" -> setLocalizationDictionary(args(0))
         "getLicense" -> getLicense(callback)
         "getAvailableScenarios" -> getAvailableScenarios(callback)
         "getIsRFIDAvailableForUse" -> getIsRFIDAvailableForUse(callback)
+        "isAuthenticatorAvailableForUse" -> isAuthenticatorAvailableForUse(callback)
+        "isAuthenticatorRFIDAvailableForUse" -> isAuthenticatorRFIDAvailableForUse(callback)
         "getDocReaderVersion" -> getDocReaderVersion(callback)
         "getDocReaderDocumentsDatabase" -> getDocReaderDocumentsDatabase(callback)
         "textFieldValueByType" -> textFieldValueByType(callback, args(0), args(1))
@@ -164,6 +181,7 @@ fun exec(arguments: JSONArray, tempContext: CallbackContext) {
         "containers" -> containers(callback, args(0), args(1))
         "encryptedContainers" -> encryptedContainers(callback, args(0))
         "finalizePackage" -> finalizePackage(callback)
+        "endBackendTransaction" -> endBackendTransaction(callback)
         "getTranslation" -> getTranslation(callback, args(0), args(1))
     }
 }
@@ -193,20 +211,12 @@ const val eventPACertificateCompletion = "pa_certificate_completion"
 const val eventTACertificateCompletion = "ta_certificate_completion"
 const val eventTASignatureCompletion = "ta_signature_completion"
 
-const val bleOnServiceConnectedEvent = "bleOnServiceConnectedEvent"
-const val bleOnServiceDisconnectedEvent = "bleOnServiceDisconnectedEvent"
-const val bleOnDeviceReadyEvent = "bleOnDeviceReadyEvent"
-
 const val eventVideoEncoderCompletion = "video_encoder_completion"
 const val onCustomButtonTappedEvent = "onCustomButtonTappedEvent"
 
 fun getDocumentReaderIsReady(callback: Callback) = callback.success(Instance().isReady)
 
 fun getDocumentReaderStatus(callback: Callback) = callback.success(Instance().status)
-
-fun isAuthenticatorAvailableForUse(callback: Callback) = callback.success(Instance().isAuthenticatorAvailableForUse)
-
-fun isBlePermissionsGranted(callback: Callback) = callback.success(isBlePermissionsGranted((activity)))
 
 fun getRfidSessionStatus(callback: Callback) = callback.error("getRfidSessionStatus() is an ios-only method")
 
@@ -342,13 +352,6 @@ fun startNewSession(callback: Callback) {
     callback.success()
 }
 
-fun startBluetoothService() = startBluetoothService(
-    activity,
-    { sendEvent(bleOnServiceConnectedEvent, it) },
-    { sendEvent(bleOnServiceDisconnectedEvent) },
-    { sendEvent(bleOnDeviceReadyEvent) }
-)
-
 fun setLocalizationDictionary(dictionary: JSONObject) {
     localizationCallbacks = LocalizationCallbacks { if (dictionary.has(it)) dictionary.getString(it) else null }
     Instance().setLocalizationCallback(localizationCallbacks!!)
@@ -364,6 +367,10 @@ fun getAvailableScenarios(callback: Callback) {
 }
 
 fun getIsRFIDAvailableForUse(callback: Callback) = callback.success(Instance().isRFIDAvailableForUse)
+
+fun isAuthenticatorAvailableForUse(callback: Callback) = callback.success(Instance().isAuthenticatorAvailableForUse)
+
+fun isAuthenticatorRFIDAvailableForUse(callback: Callback) = callback.success(Instance().isAuthenticatorRFIDAvailableForUse)
 
 fun getDocReaderVersion(callback: Callback) = callback.success(generateDocReaderVersion(Instance().version))
 
@@ -404,6 +411,11 @@ fun containers(callback: Callback, raw: String, resultType: JSONArray) = callbac
 fun encryptedContainers(callback: Callback, raw: String) = callback.success(fromRawResults(raw).encryptedContainers)
 
 fun finalizePackage(callback: Callback) = Instance().finalizePackage { action, info, error -> callback.success(generateFinalizePackageCompletion(action, info, error)) }
+
+fun endBackendTransaction(callback: Callback) {
+    Instance().endBackendTransaction()
+    callback.success()
+}
 
 fun getTranslation(callback: Callback, className: String, value: Int) = when (className) {
     "RFIDErrorCodes" -> callback.success(eRFID_ErrorCodes.getTranslation(context, value))
@@ -485,12 +497,15 @@ var requestType = RfidReaderRequestType(
 )
 
 @Suppress("DEPRECATION")
-fun newIntent(intent: Intent) = if (intent.action == NfcAdapter.ACTION_TECH_DISCOVERED)
+fun newIntent(intent: Intent): Boolean {
+    if (intent.action != NfcAdapter.ACTION_TECH_DISCOVERED) return false
     Instance().readRFID(
         IsoDep.get(intent.getParcelableExtra(NfcAdapter.EXTRA_TAG)),
         rfidReaderCompletion,
         requestType.getRfidReaderRequest()
-    ) else Unit
+    )
+    return true
+}
 
 fun startForegroundDispatch() {
     backgroundRFIDEnabled = true
