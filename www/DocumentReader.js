@@ -702,7 +702,7 @@ class RegulaException {
         if (jsonObject == null) return null
         const result = new RegulaException()
 
-        result.errorCode = jsonObject["errorCode"]
+        result.code = jsonObject["code"]
         result.message = jsonObject["message"]
 
         return result
