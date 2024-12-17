@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api" version="7.4.620"
+<plugin id="cordova-plugin-document-reader-api" version="7.5.661"
   xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
@@ -15,6 +15,7 @@
       <feature name="DocumentReader">
         <param name="ios-package" value="RGLWDocumentReader" />
       </feature>
+      <preference name="deployment-target" value="12.0" />
     </config-file>
     <header-file src="src/ios/RGLWDocumentReader.h" />
     <source-file src="src/ios/RGLWDocumentReader.m" />
@@ -23,16 +24,17 @@
     <header-file src="src/ios/RGLWConfig.h" />
     <source-file src="src/ios/RGLWConfig.m" />
     <podspec>
-        <config>
-        </config>
+      <config>
+      </config>
       <pods>
-        <pod name="DocumentReader" spec="7.4.3900" />
+        <pod name="DocumentReader" spec="7.5.4211" />
       </pods>
     </podspec>
   </platform>
 
   <platform name="android">
     <config-file parent="/*" target="res/xml/config.xml">
+      <preference name="GradlePluginKotlinEnabled" value="true" />
       <feature name="DocumentReader">
         <param name="android-package" value="cordova.plugin.documentreader.DocumentReader" />
       </feature>

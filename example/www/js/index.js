@@ -238,6 +238,11 @@ var app = {
                 if (value != null)
                     document.getElementById("portraitImage").src = "data:image/png;base64," + value
             }, function (error) { console.log(error) })
+
+            DocumentReader.graphicFieldImageByTypeSource(results, Enum.eGraphicFieldType.GF_PORTRAIT, Enum.eRPRM_ResultType.RFID_RESULT_TYPE_RFID_IMAGE_DATA, function (value) {
+                if (value != null)
+                    document.getElementById("portraitImage").src = "data:image/png;base64," + value
+            }, function (error) { console.log(error) })
         }
 
         function clearResults() {
