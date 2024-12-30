@@ -14,7 +14,7 @@ repositories {
 
 dependencies {
     //noinspection GradleDependency
-	implementation ('com.regula.documentreader:api:7.5.10421'){
+	implementation ('com.regula.documentreader:api:7.5.10423'){
         transitive = true
     }
 }
