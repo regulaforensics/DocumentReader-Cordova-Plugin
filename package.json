@@ -1,6 +1,6 @@
 {
   "name": "@regulaforensics/cordova-plugin-document-reader-api",
-  "version": "7.6.674-nightly",
+  "version": "7.6.17-nightly",
   "description": "Cordova plugin for reading and validation of identification documents (API framework)",
   "cordova": {
     "id": "@regulaforensics/cordova-plugin-document-reader-api",
@@ -11,17 +11,13 @@
   },
   "max_body_size": "1000mb",
   "keywords": [
-    "cordova",
-    "documentreader",
-    "reader",
-    "scanner",
-    "regula"
+    "cordova", "documentreader", "reader", "scanner", "regula"
   ],
   "author": "RegulaForensics",
   "license": "commercial",
   "repository": {
-    "type": "git",
-    "url": "https://github.com/regulaforensics/DocumentReader-Cordova-Plugin.git"
+      "type": "git",
+      "url": "https://github.com/regulaforensics/DocumentReader-Cordova-Plugin.git"
   },
   "homepage": "https://mobile.regulaforensics.com",
   "publishConfig": {
