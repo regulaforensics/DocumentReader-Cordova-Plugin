@@ -1,8 +1,8 @@
 package cordova.plugin.documentreader
 
-import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.PendingIntent
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
@@ -47,31 +47,16 @@ import org.apache.cordova.PluginResult
 import org.json.JSONArray
 import org.json.JSONObject
 
-class DocumentReader : CordovaPlugin() {
-    override fun onNewIntent(intent: Intent) {
-        newIntent(intent)
-    }
+lateinit var callbackContext: CallbackContext
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        myOnActivityResult(requestCode, resultCode, intent)
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) {
-        myOnRequestPermissionsResult(requestCode, permissions!!, grantResults!!)
-    }
-
-    override fun execute(action: String, args: JSONArray, callbackContext: CallbackContext): Boolean {
-        activity = cordova.activity
-        exec(args, callbackContext)
-        return true
-    }
-}
-
-fun myOnActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-    onActivityResult(requestCode, resultCode, intent)
-}
-
-fun myOnRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?, grantResults: IntArray?) = onRequestPermissionsResult(requestCode, permissions!!, grantResults!!)
+lateinit var args: JSONArray
+lateinit var binding: CordovaPlugin
+val context: Context
+    get() = binding.cordova.context
+val activity: Activity
+    get() = binding.cordova.activity
+val lifecycle: Lifecycle
+    get() = (activity as AppCompatActivity).lifecycle
 
 fun sendEvent(event: String, data: Any? = "") {
     // These events are not working in cordova and ionic because they don't have a method
@@ -99,10 +84,34 @@ fun <T> argsNullable(index: Int): T? = if (args.get(index).toString() != "null")
     args.get(index) as T
 } else null
 
-lateinit var args: JSONArray
-lateinit var callbackContext: CallbackContext
-val lifecycle: Lifecycle
-    get() = (activity as AppCompatActivity).lifecycle
+class DocumentReader : CordovaPlugin() {
+    init {
+        binding = this
+    }
+
+    override fun onNewIntent(intent: Intent) {
+        newIntent(intent)
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+        myOnActivityResult(requestCode, resultCode, intent)
+    }
+
+    @Suppress("OVERRIDE_DEPRECATION")
+    override fun onRequestPermissionResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+        myOnRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun execute(action: String, args: JSONArray, callbackContext: CallbackContext): Boolean {
+        exec(args, callbackContext)
+        return true
+    }
+}
+
+fun requestPermissions(@Suppress("UNUSED_PARAMETER") activity: Activity, permissions: Array<String>, requestCode: Int) = binding.cordova.requestPermissions(binding, requestCode, permissions)
+fun startActivityForResult(@Suppress("UNUSED_PARAMETER") activity: Activity, intent: Intent, requestCode: Int) = binding.cordova.startActivityForResult(binding, intent, requestCode)
+fun myOnRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) = onRequestPermissionsResult(requestCode, permissions, grantResults)
+fun myOnActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) = onActivityResult(requestCode, resultCode, intent)
 
 fun exec(arguments: JSONArray, tempContext: CallbackContext) {
     args = arguments
@@ -191,14 +200,6 @@ interface Callback {
     fun success(data: Any? = "")
     fun error(message: String)
 }
-
-@SuppressLint("StaticFieldLeak")
-lateinit var activity: Activity
-lateinit var lifecycleObserver: LifecycleEventObserver
-val context
-    get() = activity
-
-var backgroundRFIDEnabled = false
 
 const val eventCompletion = "completion"
 const val eventDatabaseProgress = "database_progress"
@@ -507,6 +508,9 @@ fun newIntent(intent: Intent): Boolean {
     return true
 }
 
+var backgroundRFIDEnabled = false
+lateinit var lifecycleObserver: LifecycleEventObserver
+
 fun startForegroundDispatch() {
     backgroundRFIDEnabled = true
     val filters: Array<IntentFilter?> = arrayOfNulls(1)
@@ -514,9 +518,9 @@ fun startForegroundDispatch() {
     filters[0]!!.addAction(NfcAdapter.ACTION_TECH_DISCOVERED)
     filters[0]!!.addCategory(Intent.CATEGORY_DEFAULT)
     val techList = arrayOf(arrayOf("android.nfc.tech.IsoDep"))
-    val intent = Intent(context, context.javaClass)
+    val intent = Intent(activity, activity.javaClass)
     val flag = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) PendingIntent.FLAG_MUTABLE else 0
-    val pendingIntent = PendingIntent.getActivity(context, 0, intent, flag)
+    val pendingIntent = PendingIntent.getActivity(activity, 0, intent, flag)
 
     if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))
         enableForegroundDispatch(pendingIntent, filters, techList)
@@ -527,7 +531,7 @@ fun startForegroundDispatch() {
             else -> Unit
         }
     }
-    context.runOnUiThread { lifecycle.addObserver(lifecycleObserver) }
+    activity.runOnUiThread { lifecycle.addObserver(lifecycleObserver) }
 }
 
 fun enableForegroundDispatch(
@@ -536,14 +540,14 @@ fun enableForegroundDispatch(
     techList: Array<Array<String>>
 ) = NfcAdapter.getDefaultAdapter(context).enableForegroundDispatch(activity, pendingIntent, filters, techList)
 
-fun disableForegroundDispatch() = NfcAdapter.getDefaultAdapter(activity).disableForegroundDispatch(activity)
+fun disableForegroundDispatch() = NfcAdapter.getDefaultAdapter(context).disableForegroundDispatch(activity)
 
 fun stopBackgroundRFID() {
     if (!backgroundRFIDEnabled) return
     backgroundRFIDEnabled = false
     if (lifecycle.currentState.isAtLeast(Lifecycle.State.RESUMED))
         disableForegroundDispatch()
-    context.runOnUiThread { lifecycle.removeObserver(lifecycleObserver) }
+    activity.runOnUiThread { lifecycle.removeObserver(lifecycleObserver) }
 }
 
 // Weak references

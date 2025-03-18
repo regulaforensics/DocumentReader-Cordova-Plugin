@@ -996,6 +996,7 @@ class OnlineProcessingConfig {
         result.processParams = ProcessParams.fromJson(jsonObject["processParams"])
         result.imageFormat = jsonObject["imageFormat"]
         result.imageCompressionQuality = jsonObject["imageCompressionQuality"]
+        result.requestHeaders = jsonObject["requestHeaders"]
 
         return result
     }
@@ -1095,6 +1096,7 @@ class TransactionInfo {
 
         result.transactionId = jsonObject["transactionId"]
         result.tag = jsonObject["tag"]
+        result.sessionLogFolder = jsonObject["sessionLogFolder"]
 
         return result
     }
@@ -1179,6 +1181,7 @@ class Functionality {
         result.recordScanningProcess = jsonObject["recordScanningProcess"]
         result.manualMultipageMode = jsonObject["manualMultipageMode"]
         result.singleResult = jsonObject["singleResult"]
+        result.torchTurnedOn = jsonObject["torchTurnedOn"]
         result.showCaptureButtonDelayFromDetect = jsonObject["showCaptureButtonDelayFromDetect"]
         result.showCaptureButtonDelayFromStart = jsonObject["showCaptureButtonDelayFromStart"]
         result.rfidTimeout = jsonObject["rfidTimeout"]
@@ -1308,6 +1311,8 @@ class LivenessParams {
         result.checkMLI = jsonObject["checkMLI"]
         result.checkHolo = jsonObject["checkHolo"]
         result.checkED = jsonObject["checkED"]
+        result.checkBlackAndWhiteCopy = jsonObject["checkBlackAndWhiteCopy"]
+        result.checkDynaprint = jsonObject["checkDynaprint"]
 
         return result
     }
@@ -1333,6 +1338,7 @@ class AuthenticityParams {
         result.checkPhotoEmbedding = jsonObject["checkPhotoEmbedding"]
         result.checkPhotoComparison = jsonObject["checkPhotoComparison"]
         result.checkLetterScreen = jsonObject["checkLetterScreen"]
+        result.checkSecurityText = jsonObject["checkSecurityText"]
 
         return result
     }
@@ -1396,7 +1402,6 @@ class ProcessParams {
         result.dateFormat = jsonObject["dateFormat"]
         result.scenario = jsonObject["scenario"]
         result.captureButtonScenario = jsonObject["captureButtonScenario"]
-        result.sessionLogFolder = jsonObject["sessionLogFolder"]
         result.timeout = jsonObject["timeout"]
         result.timeoutFromFirstDetect = jsonObject["timeoutFromFirstDetect"]
         result.timeoutFromFirstDocType = jsonObject["timeoutFromFirstDocType"]
@@ -1670,27 +1675,11 @@ class EIDDataGroups {
     }
 }
 
-class DTCDataGroups {
+class DTCDataGroup {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
-        const result = new DTCDataGroups()
+        const result = new DTCDataGroup()
 
-        result.DG1 = jsonObject["DG1"]
-        result.DG2 = jsonObject["DG2"]
-        result.DG3 = jsonObject["DG3"]
-        result.DG4 = jsonObject["DG4"]
-        result.DG5 = jsonObject["DG5"]
-        result.DG6 = jsonObject["DG6"]
-        result.DG7 = jsonObject["DG7"]
-        result.DG8 = jsonObject["DG8"]
-        result.DG9 = jsonObject["DG9"]
-        result.DG10 = jsonObject["DG10"]
-        result.DG11 = jsonObject["DG11"]
-        result.DG12 = jsonObject["DG12"]
-        result.DG13 = jsonObject["DG13"]
-        result.DG14 = jsonObject["DG14"]
-        result.DG15 = jsonObject["DG15"]
-        result.DG16 = jsonObject["DG16"]
         result.DG17 = jsonObject["DG17"]
         result.DG18 = jsonObject["DG18"]
         result.DG22 = jsonObject["DG22"]
@@ -1742,6 +1731,7 @@ class RFIDScenario {
         result.proceedReadingAlways = jsonObject["proceedReadingAlways"]
         result.readDTC = jsonObject["readDTC"]
         result.mrzStrictCheck = jsonObject["mrzStrictCheck"]
+        result.loadCRLFromRemote = jsonObject["loadCRLFromRemote"]
         result.readingBuffer = jsonObject["readingBuffer"]
         result.onlineTAToSignDataType = jsonObject["onlineTAToSignDataType"]
         result.defaultReadingBufferSize = jsonObject["defaultReadingBufferSize"]
@@ -1761,7 +1751,7 @@ class RFIDScenario {
         result.eDLDataGroups = EDLDataGroups.fromJson(jsonObject["eDLDataGroups"])
         result.ePassportDataGroups = EPassportDataGroups.fromJson(jsonObject["ePassportDataGroups"])
         result.eIDDataGroups = EIDDataGroups.fromJson(jsonObject["eIDDataGroups"])
-        result.dtcDataGroups = DTCDataGroups.fromJson(jsonObject["dtcDataGroups"])
+        result.dtcDataGroups = DTCDataGroup.fromJson(jsonObject["dtcDataGroups"])
 
         return result
     }
@@ -2384,6 +2374,7 @@ const ViewContentMode = {
 
 const BarcodeResult = {
     NO_ERR: 0,
+    INVALID_RESULT: 140,
     NULL_PTR_ERR: -6001,
     BAD_ARG_ERR: -6002,
     SIZE_ERR: -6003,
@@ -2552,6 +2543,7 @@ const eCheckDiagnose = {
     OCR_QUALITY_INVALID_FONT: 221,
     OCR_QUALITY_INVALID_BACKGROUND: 222,
     LAS_INK_INVALID_LINES_FREQUENCY: 230,
+    DOC_LIVENESS_DOCUMENT_NOT_LIVE: 238,
     CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: 239,
     DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: 240,
     DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: 241,
@@ -4358,7 +4350,7 @@ DocumentReader.setTCCParams = (params, successCallback, errorCallback) => cordov
 DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", certificates])
 DocumentReader.clearPKDCertificates = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearPKDCertificates"])
 DocumentReader.startNewSession = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startNewSession"])
-DocumentReader.connectBluetoothDevice = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["connectBluetoothDevice"])
+DocumentReader.connectBluetoothDevice = (btDeviceName, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["connectBluetoothDevice", btDeviceName])
 DocumentReader.setLocalizationDictionary = (dictionary, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setLocalizationDictionary", dictionary])
 DocumentReader.getLicense = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getLicense"])
 DocumentReader.getAvailableScenarios = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getAvailableScenarios"])
@@ -4478,7 +4470,7 @@ DocumentReaderPlugin.Customization = Customization
 DocumentReaderPlugin.EDLDataGroups = EDLDataGroups
 DocumentReaderPlugin.EPassportDataGroups = EPassportDataGroups
 DocumentReaderPlugin.EIDDataGroups = EIDDataGroups
-DocumentReaderPlugin.DTCDataGroups = DTCDataGroups
+DocumentReaderPlugin.DTCDataGroup = DTCDataGroup
 DocumentReaderPlugin.RFIDScenario = RFIDScenario
 DocumentReaderPlugin.PrepareProgress = PrepareProgress
 
