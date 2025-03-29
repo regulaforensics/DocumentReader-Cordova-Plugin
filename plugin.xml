@@ -1,6 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="cordova-plugin-document-reader-api" version="7.5.667"
-  xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="7.6.54" xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
   <license>commercial</license>
@@ -15,7 +14,7 @@
       <feature name="DocumentReader">
         <param name="ios-package" value="RGLWDocumentReader" />
       </feature>
-      <preference name="deployment-target" value="12.0" />
+      <preference name="deployment-target" value="13.0" />
     </config-file>
     <header-file src="src/ios/RGLWDocumentReader.h" />
     <source-file src="src/ios/RGLWDocumentReader.m" />
@@ -25,9 +24,10 @@
     <source-file src="src/ios/RGLWConfig.m" />
     <podspec>
       <config>
+        <source url="https://github.com/CocoaPods/Specs.git"/>
       </config>
       <pods>
-        <pod name="DocumentReader" spec="7.5.4221" />
+        <pod name="DocumentReader" spec="7.6.4456" />
       </pods>
     </podspec>
   </platform>
