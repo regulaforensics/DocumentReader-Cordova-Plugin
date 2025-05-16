@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="8.1.101-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="7.7.102-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
   <license>commercial</license>
