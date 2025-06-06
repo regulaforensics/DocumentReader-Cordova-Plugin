@@ -1,17 +1,11 @@
-//
-//  JSONConstructor.kt
-//  DocumentReader
-//
-//  Created by Pavel Masiuk on 21.09.2023.
-//  Copyright © 2023 Regula. All rights reserved.
-//
 @file:SuppressLint("MissingPermission")
+@file:Suppress("unused")
 
-package cordova.plugin.documentreader
+package com.regula.plugin.documentreader
 
 import android.annotation.SuppressLint
-import android.content.Context
 import android.graphics.Bitmap
+import android.graphics.Matrix
 import android.graphics.Rect
 import android.graphics.Typeface
 import android.util.Pair
@@ -100,34 +94,22 @@ import com.regula.documentreader.api.results.rfid.SecurityObjectCertificates
 import com.regula.documentreader.api.results.rfid.SignerInfo
 import com.regula.documentreader.api.results.rfid.Validity
 import com.regula.documentreader.api.results.rfid.Value
-import cordova.plugin.documentreader.Convert.bitmapFromBase64
-import cordova.plugin.documentreader.Convert.bitmapToBase64
-import cordova.plugin.documentreader.Convert.byteArrayFromBase64
-import cordova.plugin.documentreader.Convert.generateByteArray
 import org.json.JSONArray
 import org.json.JSONObject
+import com.regula.plugin.documentreader.Convert.toBase64
+import com.regula.plugin.documentreader.Convert.toBitmap
+import com.regula.plugin.documentreader.Convert.toByteArray
 
-val weakReferencesHolder = mutableListOf<Any>()
+fun generateCompletion(action: Int, results: DocumentReaderResults?, error: RegulaException?) = mapOf(
+    "action" to action,
+    "results" to if (listOf(DocReaderAction.COMPLETE, DocReaderAction.MORE_PAGES_AVAILABLE, DocReaderAction.CANCEL, DocReaderAction.ERROR, DocReaderAction.TIMEOUT).contains(action)) generateDocumentReaderResults(results) else null,
+    "error" to generateRegulaException(error)
+).toJson()
 
-fun generateCompletion(action: Int, results: DocumentReaderResults?, error: RegulaException?, context: Context?) = object : JSONObject() { init {
-    put("action", action)
-    if (listOf(
-            DocReaderAction.COMPLETE,
-            DocReaderAction.MORE_PAGES_AVAILABLE,
-            DocReaderAction.CANCEL,
-            DocReaderAction.ERROR,
-            DocReaderAction.TIMEOUT
-        ).contains(action)
-    ) put("results", generateDocumentReaderResults(results, context))
-    put("error", generateRegulaException(error))
-}
-}
-
-fun generateSuccessCompletion(success: Boolean, error: RegulaException?) = object : JSONObject() { init {
-    put("success", success)
-    put("error", generateRegulaException(error))
-}
-}
+fun generateSuccessCompletion(success: Boolean, error: RegulaException?) = mapOf(
+    "success" to success,
+    "error" to generateRegulaException(error)
+).toJson()
 
 fun prepareProgressFromJSON(it: JSONObject) = PrepareProgress(
     it.getInt("downloadedBytes"),
@@ -140,342 +122,280 @@ fun generatePrepareProgress(it: PrepareProgress) = mapOf(
     "progress" to it.progress
 ).toJson()
 
-fun generatePACertificateCompletion(serialNumber: ByteArray?, issuer: PAResourcesIssuer?) = object : JSONObject() { init {
-    put("serialNumber", generateByteArray(serialNumber))
-    put("issuer", generatePAResourcesIssuer(issuer))
-}
-}
+fun generatePACertificateCompletion(serialNumber: ByteArray?, issuer: PAResourcesIssuer?) = mapOf(
+    "serialNumber" to serialNumber.toBase64(),
+    "issuer" to generatePAResourcesIssuer(issuer)
+).toJson()
 
-fun generateFinalizePackageCompletion(action: Int, info: TransactionInfo?, error: RegulaException?) = object : JSONObject() { init {
-    put("action", action)
-    put("info", generateTransactionInfo(info))
-    put("error", generateRegulaException(error))
-}
-}
+fun generateFinalizePackageCompletion(action: Int, info: TransactionInfo?, error: RegulaException?) = mapOf(
+    "action" to action,
+    "info" to generateTransactionInfo(info),
+    "error" to generateRegulaException(error)
+).toJson()
 
-fun regulaExceptionFromJSON(temp: JSONObject?) = temp?.let {
-    val input: JSONObject = temp
-
-    val code = input.optInt("code")
-    val message = input.optString("message")
-
-    RegulaException(code, message)
+fun regulaExceptionFromJSON(input: JSONObject?) = input?.let {
+    RegulaException(
+        it.optInt("code"),
+        it.optString("message")
+    )
 }
 
-fun generateRegulaException(temp: RegulaException?): JSONObject? = temp?.let {
-    object : JSONObject() { init {
-        val input: RegulaException = it
-        put("code", input.errorCode)
-        put("message", input.message)
-    }
-    }
+fun generateRegulaException(input: RegulaException?) = input?.let {
+    mapOf(
+        "code" to it.errorCode,
+        "message" to it.message
+    ).toJson()
 }
 
-fun transactionInfoFromJSON(temp: JSONObject?): TransactionInfo? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun transactionInfoFromJSON(input: JSONObject?) = input?.let {
     val result = TransactionInfo()
-
-    if (input.has("transactionId")) result.transactionId = input.getString("transactionId")
-    if (input.has("tag")) result.tag = input.getString("tag")
-    if (input.has("sessionLogFolder")) result.sessionLogFolder = input.getString("sessionLogFolder")
-
-    return result
+    result.transactionId = it.getStringOrNull("transactionId")
+    result.tag = it.getStringOrNull("tag")
+    result.sessionLogFolder = it.getStringOrNull("sessionLogFolder")
+    result
 }
 
-fun generateTransactionInfo(temp: TransactionInfo?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: TransactionInfo = temp
-
-    result.put("transactionId", input.transactionId)
-    result.put("tag", input.tag)
-    result.put("sessionLogFolder", input.sessionLogFolder)
-
-    return result
+fun generateTransactionInfo(input: TransactionInfo?) = input?.let {
+    mapOf(
+        "transactionId" to it.transactionId,
+        "tag" to it.tag,
+        "sessionLogFolder" to it.sessionLogFolder
+    ).toJson()
 }
 
-fun tccParamsFromJSON(input: JSONObject): TccParams {
+fun tccParamsFromJSON(input: JSONObject) = input.let {
     val result = TccParams()
-
-    if (input.has("serviceUrlTA")) result.serviceUrlTA = input.getString("serviceUrlTA")
-    if (input.has("serviceUrlPA")) result.serviceUrlPA = input.getString("serviceUrlPA")
-    if (input.has("pfxCertUrl")) result.pfxCertUrl = input.getString("pfxCertUrl")
-    if (input.has("pfxPassPhrase")) result.pfxPassPhrase = input.getString("pfxPassPhrase")
-    if (input.has("pfxCert")) result.pfxCert = byteArrayFromBase64(input.getString("pfxCert"))
-
-    return result
+    result.serviceUrlTA = it.getStringOrNull("serviceUrlTA")
+    result.serviceUrlPA = it.getStringOrNull("serviceUrlPA")
+    result.pfxCertUrl = it.getStringOrNull("pfxCertUrl")
+    result.pfxPassPhrase = it.getStringOrNull("pfxPassPhrase")
+    result.pfxCert = it.getStringOrNull("pfxCert").toByteArray()
+    result
 }
 
-fun generateTccParams(temp: TccParams?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: TccParams = temp
-
-    result.put("serviceUrlTA", input.serviceUrlTA)
-    result.put("serviceUrlPA", input.serviceUrlPA)
-    result.put("pfxCertUrl", input.pfxCertUrl)
-    result.put("pfxPassPhrase", input.pfxPassPhrase)
-    result.put("pfxCert", generateByteArray(input.pfxCert))
-
-    return result
+fun generateTccParams(input: TccParams?) = input?.let {
+    mapOf(
+        "serviceUrlTA" to it.serviceUrlTA,
+        "serviceUrlPA" to it.serviceUrlPA,
+        "pfxCertUrl" to it.pfxCertUrl,
+        "pfxPassPhrase" to it.pfxPassPhrase,
+        "pfxCert" to it.pfxCert.toBase64()
+    ).toJson()
 }
 
-fun docReaderConfigFromJSON(input: JSONObject): DocReaderConfig {
-    val license = byteArrayFromBase64(input.getString("license"))
-    var result = DocReaderConfig(license!!)
+fun initConfigFromJSON(input: JSONObject) = input.let {
+    val license = it.getString("license").toByteArray()!!
+    var result = DocReaderConfig(license)
+    if (it.has("customDb")) result = DocReaderConfig(license, it.getString("customDb").toByteArray()!!)
+    if (it.has("databasePath")) result = DocReaderConfig(license, it.getString("databasePath"))
 
-    if (input.has("customDb")) result = DocReaderConfig(license, byteArrayFromBase64(input.getString("customDb"))!!)
-    if (input.has("databasePath")) result = DocReaderConfig(license, input.getString("databasePath"))
-    if (input.has("licenseUpdate")) result.setLicenseUpdate(input.getBoolean("licenseUpdate"))
-    if (input.has("delayedNNLoad")) result.isDelayedNNLoad = input.getBoolean("delayedNNLoad")
-    if (input.has("blackList")) result.blackList = input.getJSONObject("blackList")
-
-    return result
+    if (it.has("licenseUpdate")) result.setLicenseUpdate(it.getBoolean("licenseUpdate"))
+    if (it.has("delayedNNLoad")) result.isDelayedNNLoad = it.getBoolean("delayedNNLoad")
+    result.blackList = it.getJSONObjectOrNull("blackList")
+    result
 }
 
-fun generateDocReaderConfig(temp: DocReaderConfig?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocReaderConfig = temp
-
-    result.put("license", generateByteArray(input.license))
-    result.put("customDb", generateByteArray(input.customDb))
-    result.put("databasePath", input.customDbPath)
-    result.put("licenseUpdate", input.isLicenseUpdate)
-    result.put("delayedNNLoad", input.isDelayedNNLoad)
-    result.put("blackList", input.blackList)
-
-    return result
+fun generateInitConfig(input: DocReaderConfig?) = input?.let {
+    mapOf(
+        "license" to it.license.toBase64(),
+        "customDb" to it.customDb.toBase64(),
+        "databasePath" to it.customDbPath,
+        "licenseUpdate" to it.isLicenseUpdate,
+        "delayedNNLoad" to it.isDelayedNNLoad,
+        "blackList" to it.blackList
+    ).toJson()
 }
 
-fun bleDeviceConfigFromJSON(input: JSONObject): BleDeviceConfig {
+fun initBleDeviceConfigFromJSON(input: JSONObject) = input.let {
     var result = BleDeviceConfig(bluetooth!!)
+    if (it.has("customDb")) result = BleDeviceConfig(bluetooth!!, it.getString("customDb").toByteArray())
 
-    if (input.has("customDb")) result = BleDeviceConfig(bluetooth!!, byteArrayFromBase64(input.getString("customDb")))
-    if (input.has("licenseUpdate")) result.setLicenseUpdate(input.getBoolean("licenseUpdate"))
-    if (input.has("delayedNNLoad")) result.isDelayedNNLoad = input.getBoolean("delayedNNLoad")
-    if (input.has("blackList")) result.blackList = input.getJSONObject("blackList")
-
-    return result
+    if (it.has("licenseUpdate")) result.setLicenseUpdate(it.getBoolean("licenseUpdate"))
+    if (it.has("delayedNNLoad")) result.isDelayedNNLoad = it.getBoolean("delayedNNLoad")
+    result.blackList = it.getJSONObjectOrNull("blackList")
+    result
 }
 
-fun scannerConfigFromJSON(input: JSONObject): ScannerConfig {
-    val builder = if (input.has("scenario")) ScannerConfig.Builder(input.getString("scenario"))
-    else ScannerConfig.Builder(onlineProcessingConfigFromJSON(input.getJSONObject("onlineProcessingConfig"))!!)
+fun scannerConfigFromJSON(input: JSONObject) = input.let {
+    val builder = if (it.has("scenario")) ScannerConfig.Builder(it.getString("scenario"))
+    else ScannerConfig.Builder(onlineProcessingConfigFromJSON(it.getJSONObject("onlineProcessingConfig"))!!)
 
-    if (input.has("onlineProcessingConfig")) builder.setOnlineProcessingConfig(onlineProcessingConfigFromJSON(input.getJSONObject("onlineProcessingConfig")))
-    if (input.has("livePortrait")) builder.setLivePortrait(bitmapFromBase64(input.getString("livePortrait"))!!)
-    if (input.has("extPortrait")) builder.setExtPortrait(bitmapFromBase64(input.getString("extPortrait"))!!)
-    if (input.has("cameraId")) builder.setCameraId(input.getInt("cameraId"))
-
-    return builder.build()
+    if (it.has("onlineProcessingConfig")) builder.setOnlineProcessingConfig(onlineProcessingConfigFromJSON(it.getJSONObject("onlineProcessingConfig")))
+    if (it.has("livePortrait")) builder.setLivePortrait(it.getString("livePortrait").toBitmap()!!)
+    if (it.has("extPortrait")) builder.setExtPortrait(it.getString("extPortrait").toBitmap()!!)
+    if (it.has("cameraId")) builder.setCameraId(it.getInt("cameraId"))
+    builder.build()
 }
 
-fun generateScannerConfig(temp: ScannerConfig?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: ScannerConfig = temp
-
-    result.put("scenario", input.scenario)
-    result.put("onlineProcessingConfig", generateOnlineProcessingConfig(input.onlineProcessingConfig))
-    result.put("livePortrait", bitmapToBase64(input.livePortrait))
-    result.put("extPortrait", bitmapToBase64(input.extPortrait))
-    result.put("cameraId", input.cameraId)
-
-    return result
+fun generateScannerConfig(input: ScannerConfig?) = input?.let {
+    mapOf(
+        "scenario" to it.scenario,
+        "onlineProcessingConfig" to generateOnlineProcessingConfig(it.onlineProcessingConfig),
+        "livePortrait" to it.livePortrait.toBase64(),
+        "extPortrait" to it.extPortrait.toBase64(),
+        "cameraId" to it.cameraId
+    ).toJson()
 }
 
-fun recognizeConfigFromJSON(input: JSONObject): RecognizeConfig {
-    val builder = if (input.has("scenario")) RecognizeConfig.Builder(input.getString("scenario"))
-    else RecognizeConfig.Builder(onlineProcessingConfigFromJSON(input.getJSONObject("onlineProcessingConfig"))!!)
+fun recognizeConfigFromJSON(input: JSONObject) = input.let {
+    val builder = if (it.has("scenario")) RecognizeConfig.Builder(it.getString("scenario"))
+    else RecognizeConfig.Builder(onlineProcessingConfigFromJSON(it.getJSONObject("onlineProcessingConfig"))!!)
 
-    if (input.has("oneShotIdentification")) builder.setOneShotIdentification(input.getBoolean("oneShotIdentification"))
-    if (input.has("dtc")) builder.setDTC(byteArrayFromBase64(input.getString("dtc"))!!)
-    if (input.has("livePortrait")) builder.setLivePortrait(bitmapFromBase64(input.getString("livePortrait"))!!)
-    if (input.has("extPortrait")) builder.setExtPortrait(bitmapFromBase64(input.getString("extPortrait"))!!)
-    if (input.has("image")) builder.setBitmap(bitmapFromBase64(input.getString("image"))!!)
-    if (input.has("data")) builder.setData(byteArrayFromBase64(input.getString("data"))!!)
-    if (input.has("images")) {
-        val base64Images = input.getJSONArray("images")
+    if (it.has("oneShotIdentification")) builder.setOneShotIdentification(it.getBoolean("oneShotIdentification"))
+    if (it.has("dtc")) builder.setDTC(it.getString("dtc").toByteArray()!!)
+    if (it.has("livePortrait")) builder.setLivePortrait(it.getString("livePortrait").toBitmap()!!)
+    if (it.has("extPortrait")) builder.setExtPortrait(it.getString("extPortrait").toBitmap()!!)
+    if (it.has("image")) builder.setBitmap(it.getString("image").toBitmap()!!)
+    if (it.has("data")) builder.setData(it.getString("data").toByteArray()!!)
+    if (it.has("images")) {
+        val base64Images = it.getJSONArray("images")
         val images = arrayOfNulls<Bitmap>(base64Images.length())
-        for (i in images.indices) images[i] = bitmapFromBase64(base64Images.getString(i))
+        for (i in images.indices) images[i] = base64Images.getString(i).toBitmap()
         builder.setBitmaps(images)
     }
-    if (input.has("imageInputData")) {
-        val base64InputData = input.getJSONArray("imageInputData")
+    if (it.has("imageInputData")) {
+        val base64InputData = it.getJSONArray("imageInputData")
         val inputData = arrayOfNulls<ImageInputData>(base64InputData.length())
         for (i in inputData.indices) inputData[i] = imageInputDataFromJSON(base64InputData.getJSONObject(i))
         builder.setImageInputData(inputData)
     }
-
-    return builder.build()
+    builder.build()
 }
 
-fun generateRecognizeConfig(temp: RecognizeConfig?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: RecognizeConfig = temp
+fun generateRecognizeConfig(input: RecognizeConfig?) = input?.let {
+    mapOf(
+        "scenario" to it.scenario,
+        "onlineProcessingConfig" to generateOnlineProcessingConfig(it.onlineProcessingConfig),
+        "oneShotIdentification" to it.oneShotIdentification,
+        "dtc" to it.dtc.toBase64(),
+        "livePortrait" to it.livePortrait.toBase64(),
+        "extPortrait" to it.extPortrait.toBase64(),
+        "image" to it.bitmap.toBase64(),
+        "data" to it.data.toBase64(),
+        "images" to
+                if (it.bitmaps == null) null
+                else {
+                    val array = JSONArray()
+                    for (bitmap in it.bitmaps!!) array.put(bitmap.toBase64())
+                    array
+                },
+        "imageInputData" to it.imageInputData.toJson(::generateImageInputData)
+    ).toJson()
+}
 
-    result.put("scenario", input.scenario)
-    result.put("onlineProcessingConfig", generateOnlineProcessingConfig(input.onlineProcessingConfig))
-    result.put("oneShotIdentification", input.oneShotIdentification)
-    result.put("dtc", generateByteArray(input.dtc))
-    result.put("livePortrait", bitmapToBase64(input.livePortrait))
-    result.put("extPortrait", bitmapToBase64(input.extPortrait))
-    result.put("image", bitmapToBase64(input.bitmap))
-    result.put("data", generateByteArray(input.data))
-    if (input.bitmaps == null)
-        result.put("images", null)
-    else {
-        val array = JSONArray()
-        for (bitmap in input.bitmaps!!) array.put(bitmapToBase64(bitmap))
-        result.put("images", array)
+fun backendProcessingConfigFromJSON(input: JSONObject?) = input?.let {
+    val result = BackendProcessingConfig(it.getString("url"))
+    if (it.has("httpHeaders")) {
+        val httpHeaders: MutableMap<String, String> = HashMap()
+        it.getJSONObject("httpHeaders").forEach { key, value -> httpHeaders[key] = value as String }
+        result.httpHeaders = httpHeaders
     }
-    result.put("imageInputData", generateArray(input.imageInputData, ::generateImageInputData))
-
-    return result
+    result.rfidServerSideChipVerification = it.getBooleanOrNull("rfidServerSideChipVerification")
+    result.timeoutConnection = it.getDoubleOrNull("timeoutConnection")
+    result
 }
 
-fun backendProcessingConfigFromJSON(temp: JSONObject?): BackendProcessingConfig? {
-    if (temp == null || !temp.has("url")) return null
-    val input: JSONObject = temp
-
-    val result = BackendProcessingConfig(input.getString("url"))
-    if (input.has("httpHeaders")) result.httpHeaders = stringMapFromJson(input.getJSONObject("httpHeaders"))
-    if (input.has("rfidServerSideChipVerification")) result.rfidServerSideChipVerification = input.getBoolean("rfidServerSideChipVerification")
-    if (input.has("timeoutConnection")) result.timeoutConnection = input.getDouble("timeoutConnection")
-
-    return result
+fun generateBackendProcessingConfig(input: BackendProcessingConfig?) = input?.let {
+    mapOf(
+        "url" to it.url,
+        "rfidServerSideChipVerification" to it.rfidServerSideChipVerification,
+        "timeoutConnection" to it.timeoutConnection,
+        "httpHeaders" to if (it.httpHeaders == null) null else {
+            val httpHeaders = JSONObject()
+            for ((key, value) in it.httpHeaders!!) httpHeaders.put(key, value)
+            httpHeaders
+        }
+    ).toJson()
 }
 
-fun generateBackendProcessingConfig(temp: BackendProcessingConfig?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: BackendProcessingConfig = temp
+val weakReferencesHolder = mutableListOf<Any>()
+fun onlineProcessingConfigFromJSON(input: JSONObject?) = input?.let {
+    val builder = OnlineProcessingConfig.Builder(it.getInt("mode"))
 
-    result.put("url", input.url)
-    result.put("httpHeaders", generateStringMap(input.httpHeaders))
-    result.put("rfidServerSideChipVerification", input.rfidServerSideChipVerification)
-    result.put("timeoutConnection", input.timeoutConnection)
-
-    return result
-}
-
-fun onlineProcessingConfigFromJSON(temp: JSONObject?): OnlineProcessingConfig? {
-    if (temp == null || !temp.has("mode")) return null
-    val input: JSONObject = temp
-    val builder = OnlineProcessingConfig.Builder(input.getInt("mode"))
-
-    if (input.has("imageFormat")) builder.setImageFormat(input.getInt("imageFormat"))
-    if (input.has("url")) builder.setUrl(input.getString("url"))
-    if (input.has("imageCompressionQuality")) builder.setImageCompressionQuality(input.getDouble("imageCompressionQuality").toFloat())
-    if (input.has("processParams")) builder.setProcessParams(processParamFromJSON(input.getJSONObject("processParams")))
-    if (input.has("requestHeaders")) {
+    if (it.has("imageFormat")) builder.setImageFormat(it.getInt("imageFormat"))
+    if (it.has("url")) builder.setUrl(it.getString("url"))
+    if (it.has("imageCompressionQuality")) builder.setImageCompressionQuality(it.getDouble("imageCompressionQuality").toFloat())
+    if (it.has("processParams")) builder.setProcessParams(processParamFromJSON(it.getJSONObject("processParams")))
+    if (it.has("requestHeaders")) {
         val listener = NetworkInterceptorListener { input.getJSONObject("requestHeaders").forEach { k, v -> it.setRequestProperty(k, v as String) } }
         weakReferencesHolder.add(listener)
         builder.setNetworkInterceptorListener(listener)
     }
-
-    return builder.build()
+    builder.build()
 }
 
-fun generateOnlineProcessingConfig(temp: OnlineProcessingConfig?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: OnlineProcessingConfig = temp
-
-    result.put("mode", input.mode)
-    result.put("url", input.url)
-    result.put("processParams", getProcessParams(input.processParam))
-    result.put("imageFormat", input.imageFormat)
-    result.put("imageCompressionQuality", input.imageCompressionQuality)
-
-    return result
+fun generateOnlineProcessingConfig(input: OnlineProcessingConfig?) = input?.let {
+    mapOf(
+        "mode" to it.mode,
+        "url" to it.url,
+        "processParams" to getProcessParams(it.processParam),
+        "imageFormat" to it.imageFormat,
+        "imageCompressionQuality" to it.imageCompressionQuality
+    ).toJson()
 }
 
-fun faceApiParamsFromJSON(temp: JSONObject?): FaceApiParams? {
+fun faceApiParamsFromJSON(input: JSONObject?) = input?.let {
     val result = FaceApiParams()
-    temp ?: return null
-    val input: JSONObject = temp
 
-    if (input.has("url") && !input.isNull("url")) result.url = input.getString("url")
-    if (input.has("mode") && !input.isNull("mode")) result.mode = input.getString("mode")
-    if (input.has("searchParams") && !input.isNull("searchParams")) result.search = faceApiSearchParamsFromJSON(input.getJSONObject("searchParams"))
-    if (input.has("threshold") && !input.isNull("threshold")) result.threshold = input.getInt("threshold")
-    if (input.has("serviceTimeout") && !input.isNull("serviceTimeout")) result.serviceTimeout = input.getInt("serviceTimeout")
-    if (input.has("proxy") && !input.isNull("proxy")) result.proxy = input.getString("proxy")
-    if (input.has("proxyPassword") && !input.isNull("proxyPassword")) result.proxyUserPwd = input.getString("proxyPassword")
-    if (input.has("proxyType") && !input.isNull("proxyType")) result.proxyType = input.getInt("proxyType")
+    if (it.has("url")) result.url = it.getString("url")
+    if (it.has("mode")) result.mode = it.getString("mode")
+    if (it.has("threshold") && !it.isNull("threshold")) result.threshold = it.getInt("threshold")
+    if (it.has("serviceTimeout") && !it.isNull("serviceTimeout")) result.serviceTimeout = it.getInt("serviceTimeout")
+    result.search = faceApiSearchParamsFromJSON(it.getJSONObjectOrNull("searchParams"))
+    result.proxy = it.getStringOrNull("proxy")
+    result.proxyUserPwd = it.getStringOrNull("proxyPassword")
+    result.proxyType = it.getIntOrNull("proxyType")
 
-    return result
+    result
 }
 
-fun generateFaceApiParams(temp: FaceApiParams?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: FaceApiParams = temp
-
-    result.put("url", input.url)
-    result.put("mode", input.mode)
-    result.put("searchParams", generateFaceApiSearchParams(input.search))
-    result.put("threshold", input.threshold)
-    result.put("serviceTimeout", input.serviceTimeout)
-    result.put("proxy", input.proxy)
-    result.put("proxyPassword", input.proxyUserPwd)
-    result.put("proxyType", input.proxyType)
-
-    return result
+fun generateFaceApiParams(input: FaceApiParams?) = input?.let {
+    mapOf(
+        "url" to it.url,
+        "mode" to it.mode,
+        "searchParams" to generateFaceApiSearchParams(it.search),
+        "threshold" to it.threshold,
+        "serviceTimeout" to it.serviceTimeout,
+        "proxy" to it.proxy,
+        "proxyPassword" to it.proxyUserPwd,
+        "proxyType" to it.proxyType
+    ).toJson()
 }
 
-fun faceApiSearchParamsFromJSON(temp: JSONObject?): FaceApiParams.Search? {
+fun faceApiSearchParamsFromJSON(input: JSONObject?) = input?.let {
     val result = FaceApiParams.Search()
-    temp ?: return null
-    val input: JSONObject = temp
 
-    if (input.has("limit") && !input.isNull("limit")) result.limit = input.getInt("limit")
-    if (input.has("threshold") && !input.isNull("threshold")) result.threshold = input.getDouble("threshold").toFloat()
-    if (input.has("groupIds") && !input.isNull("groupIds")) {
-        val jsonArrayGroupIds = input.getJSONArray("groupIds")
+    if (it.has("limit") && !it.isNull("limit")) result.limit = it.getInt("limit")
+    if (it.has("threshold") && !it.isNull("threshold")) result.threshold = it.getDouble("threshold").toFloat()
+    if (it.has("groupIds") && !it.isNull("groupIds")) {
+        val jsonArrayGroupIds = it.getJSONArray("groupIds")
         val groupIds = IntArray(jsonArrayGroupIds.length())
         for (i in 0 until jsonArrayGroupIds.length())
             groupIds[i] = jsonArrayGroupIds.getInt(i)
         result.groupIds = groupIds
     }
 
-    return result
+    result
 }
 
-fun generateFaceApiSearchParams(temp: FaceApiParams.Search?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: FaceApiParams.Search = temp
-
-    result.put("limit", input.limit)
-    result.put("threshold", input.threshold)
-    result.put("groupIds", input.groupIds.generate())
-
-    return result
+fun generateFaceApiSearchParams(input: FaceApiParams.Search?) = input?.let {
+    mapOf(
+        "limit" to it.limit,
+        "threshold" to it.threshold,
+        "groupIds" to it.groupIds.toJson()
+    ).toJson()
 }
 
-fun rfidParamsFromJSON(temp: JSONObject?): RFIDParams? {
+fun rfidParamsFromJSON(input: JSONObject?) = input?.let {
     val result = RFIDParams()
-    temp ?: return null
-    val input: JSONObject = temp
-
-    if (input.has("paIgnoreNotificationCodes")) result.paIgnoreNotificationCodes = input.getJSONArray("paIgnoreNotificationCodes").toIntArray()
-
-    return result
+    if (it.has("paIgnoreNotificationCodes")) result.paIgnoreNotificationCodes = it.getJSONArray("paIgnoreNotificationCodes").toIntArray()
+    result
 }
 
-fun generateRFIDParams(temp: RFIDParams?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: RFIDParams = temp
-
-    result.put("paIgnoreNotificationCodes", input.paIgnoreNotificationCodes.generate())
-
-    return result
+fun generateRFIDParams(input: RFIDParams?) = input?.let {
+    mapOf(
+        "paIgnoreNotificationCodes" to it.paIgnoreNotificationCodes.toJson()
+    ).toJson()
 }
 
 fun processParamFromJSON(input: JSONObject): ProcessParam {
@@ -550,9 +470,9 @@ fun rfidScenarioFromJSON(input: JSONObject): RfidScenario {
 
 fun generateRfidScenario(input: RfidScenario): JSONObject = getRfidScenario(input)
 
-fun customizationFromJSON(input: JSONObject, context: Context): ParamsCustomization {
+fun customizationFromJSON(input: JSONObject): ParamsCustomization {
     val result = ParamsCustomization()
-    setCustomization(result, input, context)
+    setCustomization(result, input)
     return result
 }
 
@@ -566,1662 +486,1293 @@ fun functionalityFromJSON(input: JSONObject): Functionality {
 
 fun generateFunctionality(input: Functionality): JSONObject = getFunctionality(input)
 
-fun glaresCheckParamsFromJSON(temp: JSONObject?): GlaresCheckParams? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun glaresCheckParamsFromJSON(input: JSONObject?) = input?.let {
     val result = GlaresCheckParams()
-
-    if (input.has("imgMarginPart")) result.imgMarginPart = input.getDouble("imgMarginPart")
-    if (input.has("maxGlaringPart")) result.maxGlaringPart = input.getDouble("maxGlaringPart")
-
-    return result
+    if (it.has("imgMarginPart")) result.imgMarginPart = it.getDouble("imgMarginPart")
+    if (it.has("maxGlaringPart")) result.maxGlaringPart = it.getDouble("maxGlaringPart")
+    result
 }
 
-fun generateGlaresCheckParams(temp: GlaresCheckParams?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: GlaresCheckParams = temp
-
-    result.put("imgMarginPart", input.imgMarginPart)
-    result.put("maxGlaringPart", input.maxGlaringPart)
-
-    return result
+fun generateGlaresCheckParams(input: GlaresCheckParams?) = input?.let {
+    mapOf(
+        "imgMarginPart" to it.imgMarginPart,
+        "maxGlaringPart" to it.maxGlaringPart
+    ).toJson()
 }
 
-fun typefaceFromJSON(input: JSONObject): Pair<Typeface, Int?> {
-    val name = input.getString("name")
-    val style = input.optInt("style", Typeface.NORMAL)
-    val size = if (input.has("size")) input.getInt("size") else null
-    return Pair(Typeface.create(name, style), size)
+fun typefaceFromJSON(it: JSONObject) = Pair(
+    Typeface.create(
+        it.getString("name"),
+        it.optInt("style", Typeface.NORMAL)
+    ),
+    if (it.has("size")) it.getInt("size") else null
+)
+
+fun generateTypeface(input: Typeface?, size: Int? = null) = input?.let {
+    mapOf(
+        "name" to "undefined",
+        "style" to it.style,
+        "size" to size
+    ).toJson()
 }
 
-fun generateTypeface(temp: Typeface?, size: Int? = null): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Typeface = temp
-
-    result.put("name", "undefined")
-    result.put("style", input.style)
-    result.put("size", size)
-
-    return result
+fun imageInputDataFromJSON(input: JSONObject?) = input?.let {
+    ImageInputData(
+        it.getString("image").toBitmap()!!,
+        it.getIntOrNull("light") ?: 6,
+        it.getIntOrNull("pageIndex") ?: 0
+    )
 }
 
-fun imageInputDataFromJSON(temp: JSONObject?): ImageInputData? {
-    if (temp == null || !temp.has("image")) return null
-    val input: JSONObject = temp
-
-    var light = 6
-    var pageIndex = 0
-    val image = bitmapFromBase64(input.getString("image"))!!
-    if (input.has("light")) light = input.getInt("light")
-    if (input.has("pageIndex")) pageIndex = input.getInt("pageIndex")
-
-    return ImageInputData(image, light, pageIndex)
+fun generateImageInputData(input: ImageInputData?) = input?.let {
+    mapOf(
+        "image" to it.bitmap.toBase64(),
+        "light" to it.light,
+        "pageIndex" to it.pageIndex
+    ).toJson()
 }
 
-fun generateImageInputData(temp: ImageInputData?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: ImageInputData = temp
-
-    result.put("image", bitmapToBase64(input.bitmap))
-    result.put("light", input.light)
-    result.put("pageIndex", input.pageIndex)
-
-    return result
-}
-
-fun pkdCertificateFromJSON(temp: JSONObject?): PKDCertificate? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun pkdCertificateFromJSON(input: JSONObject?) = input?.let {
     var resourceType = 0
     var binaryData = ByteArray(0)
 
-    if (input.has("resourceType")) resourceType = input.getInt("resourceType")
-    if (input.has("binaryData")) binaryData = byteArrayFromBase64(input.getString("binaryData"))!!
-    if (input.has("privateKey")) {
-        val privateKey = byteArrayFromBase64(input.getString("privateKey"))
+    if (it.has("resourceType")) resourceType = it.getInt("resourceType")
+    if (it.has("binaryData")) binaryData = it.getString("binaryData").toByteArray()!!
+    if (it.has("privateKey")) {
+        val privateKey = it.getString("privateKey").toByteArray()
         return PKDCertificate(binaryData, resourceType, privateKey)
     }
-    return PKDCertificate(binaryData, resourceType)
+    PKDCertificate(binaryData, resourceType)
 }
 
-fun generatePKDCertificate(temp: PKDCertificate?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: PKDCertificate = temp
-
-    result.put("resourceType", input.resourceType)
-    result.put("binaryData", generateByteArray(input.binaryData))
-    result.put("privateKey", generateByteArray(input.privateKey))
-
-    return result
+fun generatePKDCertificate(input: PKDCertificate?) = input?.let {
+    mapOf(
+        "resourceType" to it.resourceType,
+        "binaryData" to it.binaryData.toBase64(),
+        "privateKey" to it.privateKey.toBase64()
+    ).toJson()
 }
 
-fun documentReaderScenarioFromJSON(temp: JSONObject?): DocumentReaderScenario? {
-    temp ?: return null
-    val input: JSONObject = temp
-
-    val name = input.optString("name")
-    val caption = input.optString("caption")
-    val description = input.optString("description")
-    val multiPageOff = input.optBoolean("multiPageOff")
-    val frameKWHLandscape = input.optDouble("frameKWHLandscape")
-    val frameKWHPortrait = input.optDouble("frameKWHPortrait")
-    val frameKWHDoublePageSpreadPortrait = input.optDouble("frameKWHDoublePageSpreadPortrait")
-    val frameKWHDoublePageSpreadLandscape = input.optDouble("frameKWHDoublePageSpreadLandscape")
-    val frameOrientation = input.optInt("frameOrientation")
-    val uvTorch = input.optBoolean("uvTorch")
-    val faceExt = input.optBoolean("faceExt")
-    val seriesProcessMode = input.optBoolean("seriesProcessMode")
-    val manualCrop = input.optBoolean("manualCrop")
-
-    return DocumentReaderScenario(name, caption, description, if (multiPageOff) 1 else 0, frameKWHLandscape, frameKWHPortrait, frameKWHDoublePageSpreadPortrait, frameKWHDoublePageSpreadLandscape, frameOrientation, uvTorch, faceExt, seriesProcessMode, manualCrop, null)
+fun documentReaderScenarioFromJSON(input: JSONObject?) = input?.let {
+    DocumentReaderScenario(
+        it.optString("name"),
+        it.optString("caption"),
+        it.optString("description"),
+        if (it.optBoolean("multiPageOff")) 1 else 0,
+        it.optDouble("frameKWHLandscape"),
+        it.optDouble("frameKWHPortrait"),
+        it.optDouble("frameKWHDoublePageSpreadPortrait"),
+        it.optDouble("frameKWHDoublePageSpreadLandscape"),
+        it.optInt("frameOrientation"),
+        it.optBoolean("uvTorch"),
+        it.optBoolean("faceExt"),
+        it.optBoolean("seriesProcessMode"),
+        it.optBoolean("manualCrop"),
+        null
+    )
 }
 
-fun generateDocumentReaderScenario(temp: DocumentReaderScenario?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderScenario = temp
-
-    result.put("name", input.name)
-    result.put("caption", input.caption)
-    result.put("description", input.description)
-    result.put("multiPageOff", input.multiPageOff)
-    result.put("frameKWHLandscape", input.frameKWHLandscape)
-    result.put("frameKWHPortrait", input.frameKWHPortrait)
-    result.put("frameKWHDoublePageSpreadPortrait", input.frameKWHDoublePageSpreadPortrait)
-    result.put("frameKWHDoublePageSpreadLandscape", input.frameKWHDoublePageSpreadLandscape)
-    result.put("frameOrientation", input.frameOrientation)
-    result.put("uvTorch", input.uvTorch)
-    result.put("faceExt", input.faceExt)
-    result.put("seriesProcessMode", input.seriesProcessMode)
-    result.put("manualCrop", input.manualCrop)
-
-    return result
+fun generateDocumentReaderScenario(input: DocumentReaderScenario?) = input?.let {
+    mapOf(
+        "name" to it.name,
+        "caption" to it.caption,
+        "description" to it.description,
+        "multiPageOff" to it.multiPageOff,
+        "frameKWHLandscape" to it.frameKWHLandscape,
+        "frameKWHPortrait" to it.frameKWHPortrait,
+        "frameKWHDoublePageSpreadPortrait" to it.frameKWHDoublePageSpreadPortrait,
+        "frameKWHDoublePageSpreadLandscape" to it.frameKWHDoublePageSpreadLandscape,
+        "frameOrientation" to it.frameOrientation,
+        "uvTorch" to it.uvTorch,
+        "faceExt" to it.faceExt,
+        "seriesProcessMode" to it.seriesProcessMode,
+        "manualCrop" to it.manualCrop
+    ).toJson()
 }
 
-fun rectFromJSON(temp: JSONObject?): Rect? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun rectFromJSON(input: JSONObject?) = input?.let {
     val result = Rect()
 
-    result.bottom = input.optInt("bottom")
-    result.top = input.optInt("top")
-    result.left = input.optInt("left")
-    result.right = input.optInt("right")
+    result.bottom = it.optInt("bottom")
+    result.top = it.optInt("top")
+    result.left = it.optInt("left")
+    result.right = it.optInt("right")
 
-    return result
+    result
 }
 
-fun generateRect(temp: Rect?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Rect = temp
-
-    result.put("bottom", input.bottom)
-    result.put("top", input.top)
-    result.put("left", input.left)
-    result.put("right", input.right)
-
-    return result
+fun generateRect(input: Rect?) = input?.let {
+    mapOf(
+        "bottom" to it.bottom,
+        "top" to it.top,
+        "left" to it.left,
+        "right" to it.right
+    ).toJson()
 }
 
-fun docReaderFieldRectFromJSON(temp: JSONObject?): DocReaderFieldRect? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun docReaderFieldRectFromJSON(input: JSONObject?) = input?.let {
     val result = DocReaderFieldRect()
 
-    result.bottom = input.optInt("bottom")
-    result.top = input.optInt("top")
-    result.left = input.optInt("left")
-    result.right = input.optInt("right")
+    result.bottom = it.optInt("bottom")
+    result.top = it.optInt("top")
+    result.left = it.optInt("left")
+    result.right = it.optInt("right")
 
-    return result
+    result
 }
 
-fun generateDocReaderFieldRect(temp: DocReaderFieldRect?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocReaderFieldRect = temp
-
-    result.put("bottom", input.bottom)
-    result.put("top", input.top)
-    result.put("left", input.left)
-    result.put("right", input.right)
-
-    return result
+fun generateDocReaderFieldRect(input: DocReaderFieldRect?) = input?.let {
+    mapOf(
+        "bottom" to it.bottom,
+        "top" to it.top,
+        "left" to it.left,
+        "right" to it.right
+    ).toJson()
 }
 
-fun documentReaderGraphicFieldFromJSON(temp: JSONObject?): DocumentReaderGraphicField? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderGraphicFieldFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderGraphicField()
 
-    input.remove("value")
-    result.sourceType = input.optInt("sourceType")
-    result.fieldType = input.optInt("fieldType")
-    result.light = input.optInt("light")
-    result.pageIndex = input.optInt("pageIndex")
-    result.originalPageIndex = input.optInt("originalPageIndex")
-    result.boundRect = docReaderFieldRectFromJSON(input.optJSONObject("fieldRect"))
+    it.remove("value")
+    result.sourceType = it.optInt("sourceType")
+    result.fieldType = it.optInt("fieldType")
+    result.light = it.optInt("light")
+    result.pageIndex = it.optInt("pageIndex")
+    result.originalPageIndex = it.optInt("originalPageIndex")
+    result.boundRect = docReaderFieldRectFromJSON(it.optJSONObject("fieldRect"))
 
-    return result
+    result
 }
 
-fun generateDocumentReaderGraphicField(temp: DocumentReaderGraphicField?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderGraphicField = temp
-
-    result.put("sourceType", input.sourceType)
-    result.put("fieldType", input.fieldType)
-    result.put("light", input.light)
-    result.put("pageIndex", input.pageIndex)
-    result.put("originalPageIndex", input.originalPageIndex)
-    result.put("fieldName", eGraphicFieldType.getTranslation(context, input.fieldType))
-    result.put("lightName", eRPRM_Lights.getTranslation(context, input.light))
-    result.put("value", input.imageBase64())
-    result.put("fieldRect", generateDocReaderFieldRect(input.boundRect))
-
-    return result
+fun generateDocumentReaderGraphicField(input: DocumentReaderGraphicField?) = input?.let {
+    mapOf(
+        "sourceType" to it.sourceType,
+        "fieldType" to it.fieldType,
+        "light" to it.light,
+        "pageIndex" to it.pageIndex,
+        "originalPageIndex" to it.originalPageIndex,
+        "fieldName" to eGraphicFieldType.getTranslation(context, it.fieldType),
+        "lightName" to eRPRM_Lights.getTranslation(context, it.light),
+        "value" to it.imageBase64(),
+        "fieldRect" to generateDocReaderFieldRect(it.boundRect)
+    ).toJson()
 }
 
-fun documentReaderGraphicResultFromJSON(temp: JSONObject?): DocumentReaderGraphicResult? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderGraphicResultFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderGraphicResult()
-
-    result.fields = listFromJSON(input.optJSONArray("fields"), ::documentReaderGraphicFieldFromJSON)!!
-
-    return result
+    result.fields = it.optJSONArray("fields").toList(::documentReaderGraphicFieldFromJSON)!!
+    result
 }
 
-fun generateDocumentReaderGraphicResult(temp: DocumentReaderGraphicResult?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderGraphicResult = temp
-
-    result.put("fields", generateList(input.fields, ::generateDocumentReaderGraphicField, context))
-
-    return result
+fun generateDocumentReaderGraphicResult(input: DocumentReaderGraphicResult?) = input?.let {
+    mapOf(
+        "fields" to it.fields.toJson(::generateDocumentReaderGraphicField)
+    ).toJson()
 }
 
-fun documentReaderValueFromJSON(temp: JSONObject?): DocumentReaderValue? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderValueFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderValue()
 
-    result.pageIndex = input.optInt("pageIndex")
-    result.sourceType = input.optInt("sourceType")
-    result.probability = input.optInt("probability")
-    result.value = input.optString("value")
-    result.originalValue = input.optString("originalValue")
-    result.boundRect = rectFromJSON(input.optJSONObject("boundRect"))
-    result.originalSymbols = listFromJSON(input.optJSONArray("originalSymbols"), ::documentReaderSymbolFromJSON)!!
-    result.rfidOrigin = documentReaderRFIDOriginFromJSON(input.optJSONObject("rfidOrigin"))
+    result.pageIndex = it.optInt("pageIndex")
+    result.sourceType = it.optInt("sourceType")
+    result.probability = it.optInt("probability")
+    result.value = it.optString("value")
+    result.originalValue = it.optString("originalValue")
+    result.boundRect = rectFromJSON(it.optJSONObject("boundRect"))
+    result.originalSymbols = it.optJSONArray("originalSymbols").toList(::documentReaderSymbolFromJSON)!!
+    result.rfidOrigin = documentReaderRFIDOriginFromJSON(it.optJSONObject("rfidOrigin"))
 
-    return result
+    result
 }
 
-fun generateDocumentReaderValue(temp: DocumentReaderValue?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderValue = temp
-
-    result.put("pageIndex", input.pageIndex)
-    result.put("sourceType", input.sourceType)
-    result.put("probability", input.probability)
-    result.put("value", input.value)
-    result.put("originalValue", input.originalValue)
-    result.put("boundRect", generateRect(input.boundRect))
-    result.put("originalSymbols", generateList(input.originalSymbols, ::generateDocumentReaderSymbol))
-    result.put("rfidOrigin", generateDocumentReaderRFIDOrigin(input.rfidOrigin))
-
-    return result
+fun generateDocumentReaderValue(input: DocumentReaderValue?) = input?.let {
+    mapOf(
+        "pageIndex" to it.pageIndex,
+        "sourceType" to it.sourceType,
+        "probability" to it.probability,
+        "value" to it.value,
+        "originalValue" to it.originalValue,
+        "boundRect" to generateRect(it.boundRect),
+        "originalSymbols" to it.originalSymbols.toJson(::generateDocumentReaderSymbol),
+        "rfidOrigin" to generateDocumentReaderRFIDOrigin(it.rfidOrigin)
+    ).toJson()
 }
 
-fun documentReaderTextFieldFromJSON(temp: JSONObject?): DocumentReaderTextField? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderTextFieldFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderTextField()
 
-    input.remove("getValue")
-    result.fieldType = input.optInt("fieldType")
-    result.lcid = input.optInt("lcid")
-    result.status = input.optInt("status")
-    result.value = input.optString("value")
-    result.values = listFromJSON(input.optJSONArray("values"), ::documentReaderValueFromJSON)!!
-    result.comparisonList = listFromJSON(input.optJSONArray("comparisonList"), ::documentReaderComparisonFromJSON)!!
-    result.validityList = listFromJSON(input.optJSONArray("validityList"), ::documentReaderValidityFromJSON)!!
-    result.comparisonStatus = input.optInt("comparisonStatus")
-    result.validityStatus = input.optInt("validityStatus")
+    it.remove("getValue")
+    result.fieldType = it.optInt("fieldType")
+    result.lcid = it.optInt("lcid")
+    result.status = it.optInt("status")
+    result.value = it.optString("value")
+    result.values = it.optJSONArray("values").toList(::documentReaderValueFromJSON)!!
+    result.comparisonList = it.optJSONArray("comparisonList").toList(::documentReaderComparisonFromJSON)!!
+    result.validityList = it.optJSONArray("validityList").toList(::documentReaderValidityFromJSON)!!
+    result.comparisonStatus = it.optInt("comparisonStatus")
+    result.validityStatus = it.optInt("validityStatus")
 
-    return result
+    result
 }
 
-fun generateDocumentReaderTextField(temp: DocumentReaderTextField?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderTextField = temp
-
-    result.put("fieldType", input.fieldType)
-    result.put("lcid", input.lcid)
-    result.put("status", input.status)
-    result.put("lcidName", input.getLcidName(context!!))
-    result.put("fieldName", input.getFieldName(context))
-    result.put("value", input.value)
-    result.put("getValue", generateDocumentReaderValue(input.value()))
-    result.put("values", generateList(input.values, ::generateDocumentReaderValue))
-    result.put("comparisonList", generateList(input.comparisonList, ::generateDocumentReaderComparison))
-    result.put("validityList", generateList(input.validityList, ::generateDocumentReaderValidity))
-    result.put("comparisonStatus", input.comparisonStatus)
-    result.put("validityStatus", input.validityStatus)
-
-    return result
+fun generateDocumentReaderTextField(input: DocumentReaderTextField?) = input?.let {
+    mapOf(
+        "fieldType" to it.fieldType,
+        "lcid" to it.lcid,
+        "status" to it.status,
+        "lcidName" to it.getLcidName(context),
+        "fieldName" to it.getFieldName(context),
+        "value" to it.value,
+        "getValue" to generateDocumentReaderValue(it.value()),
+        "values" to it.values.toJson(::generateDocumentReaderValue),
+        "comparisonList" to it.comparisonList.toJson(::generateDocumentReaderComparison),
+        "validityList" to it.validityList.toJson(::generateDocumentReaderValidity),
+        "comparisonStatus" to it.comparisonStatus,
+        "validityStatus" to it.validityStatus
+    ).toJson()
 }
 
-fun documentReaderTextResultFromJSON(temp: JSONObject?): DocumentReaderTextResult? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderTextResultFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderTextResult()
 
-    result.status = input.optInt("status")
-    result.comparisonStatus = input.optInt("comparisonStatus")
-    result.validityStatus = input.optInt("validityStatus")
-    result.availableSourceList = listFromJSON(input.optJSONArray("availableSourceList"), ::documentReaderTextSourceFromJSON)!!
-    result.fields = listFromJSON(input.optJSONArray("fields"), ::documentReaderTextFieldFromJSON)!!
+    result.status = it.optInt("status")
+    result.comparisonStatus = it.optInt("comparisonStatus")
+    result.validityStatus = it.optInt("validityStatus")
+    result.availableSourceList = it.optJSONArray("availableSourceList").toList(::documentReaderTextSourceFromJSON)!!
+    result.fields = it.optJSONArray("fields").toList(::documentReaderTextFieldFromJSON)!!
 
-    return result
+    result
 }
 
-fun generateDocumentReaderTextResult(temp: DocumentReaderTextResult?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderTextResult = temp
-
-    result.put("status", input.status)
-    result.put("comparisonStatus", input.comparisonStatus)
-    result.put("validityStatus", input.validityStatus)
-    result.put("availableSourceList", generateList(input.availableSourceList, ::generateDocumentReaderTextSource))
-    result.put("fields", generateList(input.fields, ::generateDocumentReaderTextField, context))
-
-    return result
+fun generateDocumentReaderTextResult(input: DocumentReaderTextResult?) = input?.let {
+    mapOf(
+        "status" to it.status,
+        "comparisonStatus" to it.comparisonStatus,
+        "validityStatus" to it.validityStatus,
+        "availableSourceList" to it.availableSourceList.toJson(::generateDocumentReaderTextSource),
+        "fields" to it.fields.toJson(::generateDocumentReaderTextField)
+    ).toJson()
 }
 
-fun coordinateFromJSON(temp: JSONObject?): Coordinate? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun coordinateFromJSON(input: JSONObject?) = input?.let {
     val result = Coordinate()
-
-    result.x = input.optInt("x")
-    result.y = input.optInt("y")
-
-    return result
+    result.x = it.optInt("x")
+    result.y = it.optInt("y")
+    result
 }
 
-fun generateCoordinate(temp: Coordinate?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Coordinate = temp
-
-    result.put("x", input.x)
-    result.put("y", input.y)
-
-    return result
+fun generateCoordinate(input: Coordinate?) = input?.let {
+    mapOf(
+        "x" to it.x,
+        "y" to it.y
+    ).toJson()
 }
 
-fun elementPositionFromJSON(temp: JSONObject?): ElementPosition? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun elementPositionFromJSON(input: JSONObject?) = input?.let {
     val result = ElementPosition()
 
-    result.docFormat = input.optInt("docFormat")
-    result.width = input.optInt("width")
-    result.height = input.optInt("height")
-    result.dpi = input.optInt("dpi")
-    result.pageIndex = input.optInt("pageIndex")
-    result.inverse = input.optInt("inverse")
-    result.perspectiveTr = input.optInt("perspectiveTr")
-    result.objArea = input.optInt("objArea")
-    result.objIntAngleDev = input.optInt("objIntAngleDev")
-    result.resultStatus = input.optInt("resultStatus")
-    result.angle = input.optDouble("angle")
-    result.center = coordinateFromJSON(input.optJSONObject("center"))
-    result.leftTop = coordinateFromJSON(input.optJSONObject("leftTop"))
-    result.leftBottom = coordinateFromJSON(input.optJSONObject("leftBottom"))
-    result.rightTop = coordinateFromJSON(input.optJSONObject("rightTop"))
-    result.rightBottom = coordinateFromJSON(input.optJSONObject("rightBottom"))
+    result.docFormat = it.optInt("docFormat")
+    result.width = it.optInt("width")
+    result.height = it.optInt("height")
+    result.dpi = it.optInt("dpi")
+    result.pageIndex = it.optInt("pageIndex")
+    result.inverse = it.optInt("inverse")
+    result.perspectiveTr = it.optInt("perspectiveTr")
+    result.objArea = it.optInt("objArea")
+    result.objIntAngleDev = it.optInt("objIntAngleDev")
+    result.resultStatus = it.optInt("resultStatus")
+    result.angle = it.optDouble("angle")
+    result.center = coordinateFromJSON(it.optJSONObject("center"))
+    result.leftTop = coordinateFromJSON(it.optJSONObject("leftTop"))
+    result.leftBottom = coordinateFromJSON(it.optJSONObject("leftBottom"))
+    result.rightTop = coordinateFromJSON(it.optJSONObject("rightTop"))
+    result.rightBottom = coordinateFromJSON(it.optJSONObject("rightBottom"))
 
-    return result
+    result
 }
 
-fun generateElementPosition(temp: ElementPosition?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: ElementPosition = temp
-
-    result.put("docFormat", input.docFormat)
-    result.put("width", input.width)
-    result.put("height", input.height)
-    result.put("dpi", input.dpi)
-    result.put("pageIndex", input.pageIndex)
-    result.put("inverse", input.inverse)
-    result.put("perspectiveTr", input.perspectiveTr)
-    result.put("objArea", input.objArea)
-    result.put("objIntAngleDev", input.objIntAngleDev)
-    result.put("resultStatus", input.resultStatus)
-    result.put("angle", input.angle)
-    result.put("center", generateCoordinate(input.center))
-    result.put("leftTop", generateCoordinate(input.leftTop))
-    result.put("leftBottom", generateCoordinate(input.leftBottom))
-    result.put("rightTop", generateCoordinate(input.rightTop))
-    result.put("rightBottom", generateCoordinate(input.rightBottom))
-
-    return result
+fun generateElementPosition(input: ElementPosition?) = input?.let {
+    mapOf(
+        "docFormat" to it.docFormat,
+        "width" to it.width,
+        "height" to it.height,
+        "dpi" to it.dpi,
+        "pageIndex" to it.pageIndex,
+        "inverse" to it.inverse,
+        "perspectiveTr" to it.perspectiveTr,
+        "objArea" to it.objArea,
+        "objIntAngleDev" to it.objIntAngleDev,
+        "resultStatus" to it.resultStatus,
+        "angle" to it.angle,
+        "center" to generateCoordinate(it.center),
+        "leftTop" to generateCoordinate(it.leftTop),
+        "leftBottom" to generateCoordinate(it.leftBottom),
+        "rightTop" to generateCoordinate(it.rightTop),
+        "rightBottom" to generateCoordinate(it.rightBottom)
+    ).toJson()
 }
 
-fun imageQualityFromJSON(temp: JSONObject?): ImageQuality? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun imageQualityFromJSON(input: JSONObject?) = input?.let {
     val result = ImageQuality()
 
-    result.featureType = input.optInt("featureType")
-    result.result = input.optInt("result")
-    result.type = input.optInt("type")
-    result.boundRects = listFromJSON(input.optJSONArray("boundRects"), ::docReaderFieldRectFromJSON)!!
+    result.featureType = it.optInt("featureType")
+    result.result = it.optInt("result")
+    result.type = it.optInt("type")
+    result.boundRects = it.optJSONArray("boundRects").toList(::docReaderFieldRectFromJSON)!!
 
-    return result
+    result
 }
 
-fun generateImageQuality(temp: ImageQuality?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: ImageQuality = temp
-
-    result.put("featureType", input.featureType)
-    result.put("result", input.result)
-    result.put("type", input.type)
-    result.put("boundRects", generateList(input.boundRects, ::generateDocReaderFieldRect))
-
-    return result
+fun generateImageQuality(input: ImageQuality?) = input?.let {
+    mapOf(
+        "featureType" to it.featureType,
+        "result" to it.result,
+        "type" to it.type,
+        "boundRects" to it.boundRects.toJson(::generateDocReaderFieldRect)
+    ).toJson()
 }
 
-fun imageQualityGroupFromJSON(temp: JSONObject?): ImageQualityGroup? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun imageQualityGroupFromJSON(input: JSONObject?) = input?.let {
     val result = ImageQualityGroup()
 
-    result.count = input.optInt("count")
-    result.result = input.optInt("result")
-    result.pageIndex = input.optInt("pageIndex")
-    result.imageQualityList = listFromJSON(input.optJSONArray("imageQualityList"), ::imageQualityFromJSON)!!
+    result.count = it.optInt("count")
+    result.result = it.optInt("result")
+    result.pageIndex = it.optInt("pageIndex")
+    result.imageQualityList = it.optJSONArray("imageQualityList").toList(::imageQualityFromJSON)!!
 
-    return result
+    result
 }
 
-fun generateImageQualityGroup(temp: ImageQualityGroup?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: ImageQualityGroup = temp
-
-    result.put("count", input.count)
-    result.put("result", input.result)
-    result.put("imageQualityList", generateList(input.imageQualityList, ::generateImageQuality))
-    result.put("pageIndex", input.pageIndex)
-
-    return result
+fun generateImageQualityGroup(input: ImageQualityGroup?) = input?.let {
+    mapOf(
+        "count" to it.count,
+        "result" to it.result,
+        "imageQualityList" to it.imageQualityList.toJson(::generateImageQuality),
+        "pageIndex" to it.pageIndex
+    ).toJson()
 }
 
-fun cameraSizeFromJSON(input: JSONObject): Pair<Int, Int> {
-    val width = input.getInt("width")
-    val height = input.getInt("height")
-    return Pair(width, height)
+fun cameraSizeFromJSON(input: JSONObject) = input.let {
+    val width = it.getInt("width")
+    val height = it.getInt("height")
+    Pair(width, height)
 }
 
 fun generateCameraSize(width: Int?, height: Int?): JSONObject? {
     width ?: return null
     height ?: return null
-    val result = JSONObject()
-    result.put("width", width)
-    result.put("height", height)
-    return result
+    return mapOf(
+        "width" to width,
+        "height" to height
+    ).toJson()
 }
 
-fun documentReaderDocumentTypeFromJSON(temp: JSONObject?): DocumentReaderDocumentType? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderDocumentTypeFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderDocumentType()
 
-    result.pageIndex = input.optInt("pageIndex")
-    result.documentID = input.optInt("documentID")
-    result.dType = input.optInt("dType")
-    result.dFormat = input.optInt("dFormat")
-    result.dMRZ = input.optBoolean("dMRZ")
-    result.isDeprecated = input.optBoolean("isDeprecated")
-    result.name = input.optString("name")
-    result.ICAOCode = input.optString("ICAOCode")
-    result.dDescription = input.optString("dDescription")
-    result.dCountryName = input.optString("dCountryName")
-    result.dYear = input.optString("dYear")
-    result.FDSID = input.optJSONArray("FDSID").toIntArray()
+    result.pageIndex = it.optInt("pageIndex")
+    result.documentID = it.optInt("documentID")
+    result.dType = it.optInt("dType")
+    result.dFormat = it.optInt("dFormat")
+    result.dMRZ = it.optBoolean("dMRZ")
+    result.isDeprecated = it.optBoolean("isDeprecated")
+    result.name = it.optString("name")
+    result.ICAOCode = it.optString("ICAOCode")
+    result.dDescription = it.optString("dDescription")
+    result.dCountryName = it.optString("dCountryName")
+    result.dYear = it.optString("dYear")
+    result.FDSID = it.optJSONArray("FDSID").toIntArray()
 
-    return result
+    result
 }
 
-fun generateDocumentReaderDocumentType(temp: DocumentReaderDocumentType?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderDocumentType = temp
-
-    result.put("pageIndex", input.pageIndex)
-    result.put("documentID", input.documentID)
-    result.put("dType", input.dType)
-    result.put("dFormat", input.dFormat)
-    result.put("dMRZ", input.dMRZ)
-    result.put("isDeprecated", input.isDeprecated)
-    result.put("name", input.name)
-    result.put("ICAOCode", input.ICAOCode)
-    result.put("dDescription", input.dDescription)
-    result.put("dYear", input.dYear)
-    result.put("dCountryName", input.dCountryName)
-    result.put("FDSID", input.FDSID.generate())
-
-    return result
+fun generateDocumentReaderDocumentType(input: DocumentReaderDocumentType?) = input?.let {
+    mapOf(
+        "pageIndex" to it.pageIndex,
+        "documentID" to it.documentID,
+        "dType" to it.dType,
+        "dFormat" to it.dFormat,
+        "dMRZ" to it.dMRZ,
+        "isDeprecated" to it.isDeprecated,
+        "name" to it.name,
+        "ICAOCode" to it.ICAOCode,
+        "dDescription" to it.dDescription,
+        "dYear" to it.dYear,
+        "dCountryName" to it.dCountryName,
+        "FDSID" to it.FDSID.toJson()
+    ).toJson()
 }
 
-fun generateDocumentReaderNotification(temp: DocumentReaderNotification?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderNotification = temp
-
-    result.put("notificationCode", input.notificationCode)
-    result.put("dataFileType", input.dataFileType)
-    result.put("progress", input.progress)
-
-    return result
+fun generateDocumentReaderNotification(input: DocumentReaderNotification?) = input?.let {
+    mapOf(
+        "notificationCode" to it.notificationCode,
+        "dataFileType" to it.dataFileType,
+        "progress" to it.progress
+    ).toJson()
 }
 
-fun accessControlProcedureTypeFromJSON(temp: JSONObject?): AccessControlProcedureType? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun accessControlProcedureTypeFromJSON(input: JSONObject?) = input?.let {
     val result = AccessControlProcedureType()
 
-    result.activeOptionIdx = input.optInt("activeOptionIdx")
-    result.type = input.optInt("type")
-    result.status = input.optInt("status").toLong()
-    result.notifications = listFromJSON(input.optJSONArray("notifications")!!)
+    result.activeOptionIdx = it.optInt("activeOptionIdx")
+    result.type = it.optInt("type")
+    result.status = it.optInt("status").toLong()
+    result.notifications = it.optJSONArray("notifications")!!.toList()
 
-    return result
+    result
 }
 
-fun generateAccessControlProcedureType(temp: AccessControlProcedureType?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: AccessControlProcedureType = temp
-
-    result.put("activeOptionIdx", input.activeOptionIdx)
-    result.put("type", input.type)
-    result.put("status", input.status)
-    result.put("notifications", generateList(input.notifications))
-
-    return result
+fun generateAccessControlProcedureType(input: AccessControlProcedureType?) = input?.let {
+    mapOf(
+        "activeOptionIdx" to it.activeOptionIdx,
+        "type" to it.type,
+        "status" to it.status,
+        "notifications" to it.notifications.toJson()
+    ).toJson()
 }
 
-fun fileDataFromJSON(temp: JSONObject?): FileData? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun fileDataFromJSON(input: JSONObject?) = input?.let {
     val result = FileData()
 
-    result.length = input.optInt("length")
-    result.type = input.optInt("type")
-    result.status = input.optInt("status").toLong()
-    result.data = input.optString("data")
+    result.length = it.optInt("length")
+    result.type = it.optInt("type")
+    result.status = it.optInt("status").toLong()
+    result.data = it.optString("data")
 
-    return result
+    result
 }
 
-fun generateFileData(temp: FileData?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: FileData = temp
-
-    result.put("length", input.length)
-    result.put("type", input.type)
-    result.put("status", input.status)
-    result.put("data", input.data)
-
-    return result
+fun generateFileData(input: FileData?) = input?.let {
+    mapOf(
+        "length" to it.length,
+        "type" to it.type,
+        "status" to it.status,
+        "data" to it.data
+    ).toJson()
 }
 
-fun certificateDataFromJSON(temp: JSONObject?): CertificateData? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun certificateDataFromJSON(input: JSONObject?) = input?.let {
     val result = CertificateData()
-
-    result.length = input.optInt("length")
-    result.data = input.optString("data")
-
-    return result
+    result.length = it.optInt("length")
+    result.data = it.optString("data")
+    result
 }
 
-fun generateCertificateData(temp: CertificateData?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: CertificateData = temp
-
-    result.put("length", input.length)
-    result.put("data", input.data)
-
-    return result
+fun generateCertificateData(input: CertificateData?) = input?.let {
+    mapOf(
+        "length" to it.length,
+        "data" to it.data
+    ).toJson()
 }
 
-fun securityObjectCertificatesFromJSON(temp: JSONObject?): SecurityObjectCertificates? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun securityObjectCertificatesFromJSON(input: JSONObject?) = input?.let {
     val result = SecurityObjectCertificates()
-
-    result.securityObject = certificateDataFromJSON(input.optJSONObject("securityObject"))
-
-    return result
+    result.securityObject = certificateDataFromJSON(it.optJSONObject("securityObject"))
+    result
 }
 
-fun generateSecurityObjectCertificates(temp: SecurityObjectCertificates?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: SecurityObjectCertificates = temp
-
-    result.put("securityObject", generateCertificateData(input.securityObject))
-
-    return result
+fun generateSecurityObjectCertificates(input: SecurityObjectCertificates?) = input?.let {
+    mapOf(
+        "securityObject" to generateCertificateData(it.securityObject)
+    ).toJson()
 }
 
-fun fileFromJSON(temp: JSONObject?): File? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun fileFromJSON(input: JSONObject?) = input?.let {
     val result = File()
 
-    result.readingTime = input.optInt("readingTime")
-    result.type = input.optInt("type")
-    result.pAStatus = input.optLong("pAStatus")
-    result.readingStatus = input.optInt("readingStatus").toLong()
-    result.fileID = input.optString("fileID")
-    result.fileData = fileDataFromJSON(input.optJSONObject("fileData"))
-    result.certificates = securityObjectCertificatesFromJSON(input.optJSONObject("certificates"))
-    result.docFieldsText = listFromJSON(input.optJSONArray("docFieldsText")!!)
-    result.docFieldsGraphics = listFromJSON(input.optJSONArray("docFieldsGraphics")!!)
-    result.docFieldsOriginals = listFromJSON(input.optJSONArray("docFieldsOriginals")!!)
-    result.notifications = listFromJSON(input.optJSONArray("notifications")!!)
+    result.readingTime = it.optInt("readingTime")
+    result.type = it.optInt("type")
+    result.pAStatus = it.optLong("pAStatus")
+    result.readingStatus = it.optInt("readingStatus").toLong()
+    result.fileID = it.optString("fileID")
+    result.fileData = fileDataFromJSON(it.optJSONObject("fileData"))
+    result.certificates = securityObjectCertificatesFromJSON(it.optJSONObject("certificates"))
+    result.docFieldsText = it.optJSONArray("docFieldsText")!!.toList()
+    result.docFieldsGraphics = it.optJSONArray("docFieldsGraphics")!!.toList()
+    result.docFieldsOriginals = it.optJSONArray("docFieldsOriginals")!!.toList()
+    result.notifications = it.optJSONArray("notifications")!!.toList()
 
-    return result
+    result
 }
 
-fun generateFile(temp: File?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: File = temp
-
-    result.put("readingTime", input.readingTime)
-    result.put("type", input.type)
-    result.put("typeName", eRFID_DataFile_Type.getTranslation(context, input.type))
-    result.put("pAStatus", input.pAStatus)
-    result.put("readingStatus", input.readingStatus)
-    result.put("fileID", input.fileID)
-    result.put("fileData", generateFileData(input.fileData))
-    result.put("certificates", generateSecurityObjectCertificates(input.certificates))
-    result.put("docFieldsText", generateList(input.docFieldsText))
-    result.put("docFieldsGraphics", generateList(input.docFieldsGraphics))
-    result.put("docFieldsOriginals", generateList(input.docFieldsOriginals))
-    result.put("notifications", generateList(input.notifications))
-
-    return result
+fun generateFile(input: File?) = input?.let {
+    mapOf(
+        "readingTime" to it.readingTime,
+        "type" to it.type,
+        "typeName" to eRFID_DataFile_Type.getTranslation(context, it.type),
+        "pAStatus" to it.pAStatus,
+        "readingStatus" to it.readingStatus,
+        "fileID" to it.fileID,
+        "fileData" to generateFileData(it.fileData),
+        "certificates" to generateSecurityObjectCertificates(it.certificates),
+        "docFieldsText" to it.docFieldsText.toJson(),
+        "docFieldsGraphics" to it.docFieldsGraphics.toJson(),
+        "docFieldsOriginals" to it.docFieldsOriginals.toJson(),
+        "notifications" to it.notifications.toJson()
+    ).toJson()
 }
 
-fun applicationFromJSON(temp: JSONObject?): Application? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun applicationFromJSON(input: JSONObject?) = input?.let {
     val result = Application()
 
-    result.type = input.optInt("type")
-    result.status = input.optInt("status")
-    result.applicationID = input.optString("applicationID")
-    result.dataHashAlgorithm = input.optString("dataHashAlgorithm")
-    result.unicodeVersion = input.optString("unicodeVersion")
-    result.version = input.optString("version")
-    result.files = listFromJSON(input.optJSONArray("files"), ::fileFromJSON)!!
+    result.type = it.optInt("type")
+    result.status = it.optInt("status")
+    result.applicationID = it.optString("applicationID")
+    result.dataHashAlgorithm = it.optString("dataHashAlgorithm")
+    result.unicodeVersion = it.optString("unicodeVersion")
+    result.version = it.optString("version")
+    result.files = it.optJSONArray("files").toList(::fileFromJSON)!!
 
-    return result
+    result
 }
 
-fun generateApplication(temp: Application?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Application = temp
-
-    result.put("type", input.type)
-    result.put("status", input.status)
-    result.put("applicationID", input.applicationID)
-    result.put("dataHashAlgorithm", input.dataHashAlgorithm)
-    result.put("unicodeVersion", input.unicodeVersion)
-    result.put("version", input.version)
-    result.put("files", generateList(input.files, ::generateFile, context))
-
-    return result
+fun generateApplication(input: Application?) = input?.let {
+    mapOf(
+        "type" to it.type,
+        "status" to it.status,
+        "applicationID" to it.applicationID,
+        "dataHashAlgorithm" to it.dataHashAlgorithm,
+        "unicodeVersion" to it.unicodeVersion,
+        "version" to it.version,
+        "files" to it.files.toJson(::generateFile)
+    ).toJson()
 }
 
-fun valueFromJSON(temp: JSONObject?): Value? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun valueFromJSON(input: JSONObject?) = input?.let {
     val result = Value()
 
-    result.length = input.optInt("length")
-    result.type = input.optInt("type")
-    result.status = input.optInt("status").toLong()
-    result.data = input.optString("data")
-    result.format = input.optString("format")
+    result.length = it.optInt("length")
+    result.type = it.optInt("type")
+    result.status = it.optInt("status").toLong()
+    result.data = it.optString("data")
+    result.format = it.optString("format")
 
-    return result
+    result
 }
 
-fun generateValue(temp: Value?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Value = temp
-
-    result.put("length", input.length)
-    result.put("type", input.type)
-    result.put("status", input.status)
-    result.put("data", input.data)
-    result.put("format", input.format)
-
-    return result
+fun generateValue(input: Value?) = input?.let {
+    mapOf(
+        "length" to it.length,
+        "type" to it.type,
+        "status" to it.status,
+        "data" to it.data,
+        "format" to it.format
+    ).toJson()
 }
 
-fun attributeFromJSON(temp: JSONObject?): Attribute? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun attributeFromJSON(input: JSONObject?) = input?.let {
     val result = Attribute()
-
-    result.type = input.optString("type")
-    result.value = valueFromJSON(input.optJSONObject("value"))
-
-    return result
+    result.type = it.optString("type")
+    result.value = valueFromJSON(it.optJSONObject("value"))
+    result
 }
 
-fun generateAttribute(temp: Attribute?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Attribute = temp
-
-    result.put("type", input.type)
-    result.put("value", generateValue(input.value))
-
-    return result
+fun generateAttribute(input: Attribute?) = input?.let {
+    mapOf(
+        "type" to it.type,
+        "value" to generateValue(it.value)
+    ).toJson()
 }
 
-fun authorityFromJSON(temp: JSONObject?): Authority? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun authorityFromJSON(input: JSONObject?) = input?.let {
     val result = Authority()
-
-    result.data = input.optString("data")
-    result.friendlyName = valueFromJSON(input.optJSONObject("friendlyName"))
-    result.attributes = listFromJSON(input.optJSONArray("attributes"), ::attributeFromJSON)!!
-
-    return result
+    result.data = it.optString("data")
+    result.friendlyName = valueFromJSON(it.optJSONObject("friendlyName"))
+    result.attributes = it.optJSONArray("attributes").toList(::attributeFromJSON)!!
+    result
 }
 
-fun generateAuthority(temp: Authority?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Authority = temp
-
-    result.put("data", input.data)
-    result.put("friendlyName", generateValue(input.friendlyName))
-    result.put("attributes", generateList(input.attributes, ::generateAttribute))
-
-    return result
+fun generateAuthority(input: Authority?) = input?.let {
+    mapOf(
+        "data" to it.data,
+        "friendlyName" to generateValue(it.friendlyName),
+        "attributes" to it.attributes.toJson(::generateAttribute)
+    ).toJson()
 }
 
-fun extensionFromJSON(temp: JSONObject?): Extension? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun extensionFromJSON(input: JSONObject?) = input?.let {
     val result = Extension()
-
-    result.data = input.optString("data")
-    result.type = input.optString("type")
-
-    return result
+    result.data = it.optString("data")
+    result.type = it.optString("type")
+    result
 }
 
-fun generateExtension(temp: Extension?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Extension = temp
-
-    result.put("data", input.data)
-    result.put("type", input.type)
-
-    return result
+fun generateExtension(input: Extension?) = input?.let {
+    mapOf(
+        "data" to it.data,
+        "type" to it.type
+    ).toJson()
 }
 
-fun validityFromJSON(temp: JSONObject?): Validity? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun validityFromJSON(input: JSONObject?) = input?.let {
     val result = Validity()
-
-    result.notAfter = valueFromJSON(input.optJSONObject("notAfter"))
-    result.notBefore = valueFromJSON(input.optJSONObject("notBefore"))
-
-    return result
+    result.notAfter = valueFromJSON(it.optJSONObject("notAfter"))
+    result.notBefore = valueFromJSON(it.optJSONObject("notBefore"))
+    result
 }
 
-fun generateValidity(temp: Validity?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: Validity = temp
-
-    result.put("notAfter", generateValue(input.notAfter))
-    result.put("notBefore", generateValue(input.notBefore))
-
-    return result
+fun generateValidity(input: Validity?) = input?.let {
+    mapOf(
+        "notAfter" to generateValue(it.notAfter),
+        "notBefore" to generateValue(it.notBefore)
+    ).toJson()
 }
 
-fun certificateChainFromJSON(temp: JSONObject?): CertificateChain? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun certificateChainFromJSON(input: JSONObject?) = input?.let {
     val result = CertificateChain()
 
-    result.origin = input.optInt("origin")
-    result.type = input.optInt("type")
-    result.version = input.optInt("version")
-    result.paStatus = input.optInt("paStatus").toLong()
-    result.serialNumber = input.optString("serialNumber")
-    result.signatureAlgorithm = input.optString("signatureAlgorithm")
-    result.subjectPKAlgorithm = input.optString("subjectPKAlgorithm")
-    result.fileName = valueFromJSON(input.optJSONObject("fileName"))
-    result.validity = validityFromJSON(input.optJSONObject("validity"))
-    result.issuer = authorityFromJSON(input.optJSONObject("issuer"))
-    result.subject = authorityFromJSON(input.optJSONObject("subject"))
-    result.notifications = listFromJSON(input.optJSONArray("notifications")!!)
-    result.extensions = listFromJSON(input.optJSONArray("extensions"), ::extensionFromJSON)!!
+    result.origin = it.optInt("origin")
+    result.type = it.optInt("type")
+    result.version = it.optInt("version")
+    result.paStatus = it.optInt("paStatus").toLong()
+    result.serialNumber = it.optString("serialNumber")
+    result.signatureAlgorithm = it.optString("signatureAlgorithm")
+    result.subjectPKAlgorithm = it.optString("subjectPKAlgorithm")
+    result.fileName = valueFromJSON(it.optJSONObject("fileName"))
+    result.validity = validityFromJSON(it.optJSONObject("validity"))
+    result.issuer = authorityFromJSON(it.optJSONObject("issuer"))
+    result.subject = authorityFromJSON(it.optJSONObject("subject"))
+    result.notifications = it.optJSONArray("notifications")!!.toList()
+    result.extensions = it.optJSONArray("extensions").toList(::extensionFromJSON)!!
 
-    return result
+    result
 }
 
-fun generateCertificateChain(temp: CertificateChain?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: CertificateChain = temp
-
-    result.put("origin", input.origin)
-    result.put("type", input.type)
-    result.put("version", input.version)
-    result.put("paStatus", input.paStatus)
-    result.put("serialNumber", input.serialNumber)
-    result.put("signatureAlgorithm", input.signatureAlgorithm)
-    result.put("subjectPKAlgorithm", input.subjectPKAlgorithm)
-    result.put("fileName", generateValue(input.fileName))
-    result.put("validity", generateValidity(input.validity))
-    result.put("issuer", generateAuthority(input.issuer))
-    result.put("subject", generateAuthority(input.subject))
-    result.put("notifications", generateList(input.notifications))
-    result.put("extensions", generateList(input.extensions, ::generateExtension))
-
-    return result
+fun generateCertificateChain(input: CertificateChain?) = input?.let {
+    mapOf(
+        "origin" to it.origin,
+        "type" to it.type,
+        "version" to it.version,
+        "paStatus" to it.paStatus,
+        "serialNumber" to it.serialNumber,
+        "signatureAlgorithm" to it.signatureAlgorithm,
+        "subjectPKAlgorithm" to it.subjectPKAlgorithm,
+        "fileName" to generateValue(it.fileName),
+        "validity" to generateValidity(it.validity),
+        "issuer" to generateAuthority(it.issuer),
+        "subject" to generateAuthority(it.subject),
+        "notifications" to it.notifications.toJson(),
+        "extensions" to it.extensions.toJson(::generateExtension)
+    ).toJson()
 }
 
-fun signerInfoFromJSON(temp: JSONObject?): SignerInfo? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun signerInfoFromJSON(input: JSONObject?) = input?.let {
     val result = SignerInfo()
 
-    result.version = input.optInt("version")
-    result.paStatus = input.optInt("paStatus").toLong()
-    result.dataToHash = input.optString("dataToHash")
-    result.digestAlgorithm = input.optString("digestAlgorithm")
-    result.signatureAlgorithm = input.optString("signatureAlgorithm")
-    result.serialNumber = valueFromJSON(input.optJSONObject("serialNumber"))
-    result.signature = valueFromJSON(input.optJSONObject("signature"))
-    result.subjectKeyIdentifier = valueFromJSON(input.optJSONObject("subjectKeyIdentifier"))
-    result.issuer = authorityFromJSON(input.optJSONObject("issuer"))
-    result.notifications = listFromJSON(input.optJSONArray("notifications")!!)
-    result.signedAttributes = listFromJSON(input.optJSONArray("signedAttributes"), ::extensionFromJSON)!!
-    result.certificateChain = listFromJSON(input.optJSONArray("certificateChain"), ::certificateChainFromJSON)!!
+    result.version = it.optInt("version")
+    result.paStatus = it.optInt("paStatus").toLong()
+    result.dataToHash = it.optString("dataToHash")
+    result.digestAlgorithm = it.optString("digestAlgorithm")
+    result.signatureAlgorithm = it.optString("signatureAlgorithm")
+    result.serialNumber = valueFromJSON(it.optJSONObject("serialNumber"))
+    result.signature = valueFromJSON(it.optJSONObject("signature"))
+    result.subjectKeyIdentifier = valueFromJSON(it.optJSONObject("subjectKeyIdentifier"))
+    result.issuer = authorityFromJSON(it.optJSONObject("issuer"))
+    result.notifications = it.optJSONArray("notifications")!!.toList()
+    result.signedAttributes = it.optJSONArray("signedAttributes").toList(::extensionFromJSON)!!
+    result.certificateChain = it.optJSONArray("certificateChain").toList(::certificateChainFromJSON)!!
 
-    return result
+    result
 }
 
-fun generateSignerInfo(temp: SignerInfo?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: SignerInfo = temp
-
-    result.put("version", input.version)
-    result.put("paStatus", input.paStatus)
-    result.put("dataToHash", input.dataToHash)
-    result.put("digestAlgorithm", input.digestAlgorithm)
-    result.put("signatureAlgorithm", input.signatureAlgorithm)
-    result.put("serialNumber", generateValue(input.serialNumber))
-    result.put("signature", generateValue(input.signature))
-    result.put("subjectKeyIdentifier", generateValue(input.subjectKeyIdentifier))
-    result.put("issuer", generateAuthority(input.issuer))
-    result.put("notifications", generateList(input.notifications))
-    result.put("signedAttributes", generateList(input.signedAttributes, ::generateExtension))
-    result.put("certificateChain", generateList(input.certificateChain, ::generateCertificateChain))
-
-    return result
+fun generateSignerInfo(input: SignerInfo?) = input?.let {
+    mapOf(
+        "version" to it.version,
+        "paStatus" to it.paStatus,
+        "dataToHash" to it.dataToHash,
+        "digestAlgorithm" to it.digestAlgorithm,
+        "signatureAlgorithm" to it.signatureAlgorithm,
+        "serialNumber" to generateValue(it.serialNumber),
+        "signature" to generateValue(it.signature),
+        "subjectKeyIdentifier" to generateValue(it.subjectKeyIdentifier),
+        "issuer" to generateAuthority(it.issuer),
+        "notifications" to it.notifications.toJson(),
+        "signedAttributes" to it.signedAttributes.toJson(::generateExtension),
+        "certificateChain" to it.certificateChain.toJson(::generateCertificateChain)
+    ).toJson()
 }
 
-fun securityObjectFromJSON(temp: JSONObject?): SecurityObject? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun securityObjectFromJSON(input: JSONObject?) = input?.let {
     val result = SecurityObject()
 
-    result.fileReference = input.optInt("fileReference")
-    result.version = input.optInt("version")
-    result.objectType = input.optString("objectType")
-    result.notifications = listFromJSON(input.optJSONArray("notifications")!!)
-    result.signerInfos = listFromJSON(input.optJSONArray("signerInfos"), ::signerInfoFromJSON)!!
+    result.fileReference = it.optInt("fileReference")
+    result.version = it.optInt("version")
+    result.objectType = it.optString("objectType")
+    result.notifications = it.optJSONArray("notifications")!!.toList()
+    result.signerInfos = it.optJSONArray("signerInfos").toList(::signerInfoFromJSON)!!
 
-    return result
+    result
 }
 
-fun generateSecurityObject(temp: SecurityObject?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: SecurityObject = temp
-
-    result.put("fileReference", input.fileReference)
-    result.put("version", input.version)
-    result.put("objectType", input.objectType)
-    result.put("notifications", generateList(input.notifications))
-    result.put("signerInfos", generateList(input.signerInfos, ::generateSignerInfo))
-
-    return result
+fun generateSecurityObject(input: SecurityObject?) = input?.let {
+    mapOf(
+        "fileReference" to it.fileReference,
+        "version" to it.version,
+        "objectType" to it.objectType,
+        "notifications" to it.notifications.toJson(),
+        "signerInfos" to it.signerInfos.toJson(::generateSignerInfo)
+    ).toJson()
 }
 
-fun cardPropertiesFromJSON(temp: JSONObject?): CardProperties? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun cardPropertiesFromJSON(input: JSONObject?) = input?.let {
     val result = CardProperties()
 
-    result.aTQA = input.optInt("aTQA")
-    result.bitRateR = input.optInt("bitRateR")
-    result.bitRateS = input.optInt("bitRateS")
-    result.chipTypeA = input.optInt("chipTypeA")
-    result.mifareMemory = input.optInt("mifareMemory")
-    result.rfidType = input.optInt("rfidType")
-    result.sAK = input.optInt("sAK")
-    result.support4 = input.optBoolean("support4")
-    result.supportMifare = input.optBoolean("supportMifare")
-    result.aTQB = input.optString("aTQB")
-    result.aTR = input.optString("aTR")
-    result.baudrate1 = input.optString("baudrate1")
-    result.baudrate2 = input.optString("baudrate2")
-    result.uID = input.optString("uID")
+    result.aTQA = it.optInt("aTQA")
+    result.bitRateR = it.optInt("bitRateR")
+    result.bitRateS = it.optInt("bitRateS")
+    result.chipTypeA = it.optInt("chipTypeA")
+    result.mifareMemory = it.optInt("mifareMemory")
+    result.rfidType = it.optInt("rfidType")
+    result.sAK = it.optInt("sAK")
+    result.support4 = it.optBoolean("support4")
+    result.supportMifare = it.optBoolean("supportMifare")
+    result.aTQB = it.optString("aTQB")
+    result.aTR = it.optString("aTR")
+    result.baudrate1 = it.optString("baudrate1")
+    result.baudrate2 = it.optString("baudrate2")
+    result.uID = it.optString("uID")
 
-    return result
+    result
 }
 
-fun generateCardProperties(temp: CardProperties?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: CardProperties = temp
-
-    result.put("aTQA", input.aTQA)
-    result.put("bitRateR", input.bitRateR)
-    result.put("bitRateS", input.bitRateS)
-    result.put("chipTypeA", input.chipTypeA)
-    result.put("mifareMemory", input.mifareMemory)
-    result.put("rfidType", input.rfidType)
-    result.put("sAK", input.sAK)
-    result.put("support4", input.support4)
-    result.put("supportMifare", input.supportMifare)
-    result.put("aTQB", input.aTQB)
-    result.put("aTR", input.aTR)
-    result.put("baudrate1", input.baudrate1)
-    result.put("baudrate2", input.baudrate2)
-    result.put("uID", input.uID)
-
-    return result
+fun generateCardProperties(input: CardProperties?) = input?.let {
+    mapOf(
+        "aTQA" to it.aTQA,
+        "bitRateR" to it.bitRateR,
+        "bitRateS" to it.bitRateS,
+        "chipTypeA" to it.chipTypeA,
+        "mifareMemory" to it.mifareMemory,
+        "rfidType" to it.rfidType,
+        "sAK" to it.sAK,
+        "support4" to it.support4,
+        "supportMifare" to it.supportMifare,
+        "aTQB" to it.aTQB,
+        "aTR" to it.aTR,
+        "baudrate1" to it.baudrate1,
+        "baudrate2" to it.baudrate2,
+        "uID" to it.uID
+    ).toJson()
 }
 
-fun rfidSessionDataFromJSON(temp: JSONObject?): RFIDSessionData? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun rfidSessionDataFromJSON(input: JSONObject?) = input?.let {
     val result = RFIDSessionData()
 
-    result.totalBytesReceived = input.optInt("totalBytesReceived")
-    result.totalBytesSent = input.optInt("totalBytesSent")
-    result.status = input.optInt("status").toLong()
-    result.extLeSupport = input.optLong("extLeSupport")
-    result.processTime = input.optLong("processTime")
-    result.cardProperties = cardPropertiesFromJSON(input.optJSONObject("cardProperties"))
-    result.accessControls = listFromJSON(input.optJSONArray("accessControls"), ::accessControlProcedureTypeFromJSON)!!
-    result.applications = listFromJSON(input.optJSONArray("applications"), ::applicationFromJSON)!!
-    result.securityObjects = listFromJSON(input.optJSONArray("securityObjects"), ::securityObjectFromJSON)!!
-    result.dataFields = listFromJSON(input.optJSONArray("dataFields"), ::dataFieldFromJSON)!!
-    result.dataGroups = input.optJSONArray("dataGroups").toIntArray()
+    result.totalBytesReceived = it.optInt("totalBytesReceived")
+    result.totalBytesSent = it.optInt("totalBytesSent")
+    result.status = it.optInt("status").toLong()
+    result.extLeSupport = it.optLong("extLeSupport")
+    result.processTime = it.optLong("processTime")
+    result.cardProperties = cardPropertiesFromJSON(it.optJSONObject("cardProperties"))
+    result.accessControls = it.optJSONArray("accessControls").toList(::accessControlProcedureTypeFromJSON)!!
+    result.applications = it.optJSONArray("applications").toList(::applicationFromJSON)!!
+    result.securityObjects = it.optJSONArray("securityObjects").toList(::securityObjectFromJSON)!!
+    result.dataFields = it.optJSONArray("dataFields").toList(::dataFieldFromJSON)!!
+    result.dataGroups = it.optJSONArray("dataGroups").toIntArray()
 
-    return result
+    result
 }
 
-fun generateRFIDSessionData(temp: RFIDSessionData?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: RFIDSessionData = temp
-
-    result.put("totalBytesReceived", input.totalBytesReceived)
-    result.put("totalBytesSent", input.totalBytesSent)
-    result.put("status", input.status)
-    result.put("extLeSupport", input.extLeSupport)
-    result.put("processTime", input.processTime)
-    result.put("cardProperties", generateCardProperties(input.cardProperties))
-    result.put("accessControls", generateList(input.accessControls, ::generateAccessControlProcedureType))
-    result.put("applications", generateList(input.applications, ::generateApplication, context))
-    result.put("securityObjects", generateList(input.securityObjects, ::generateSecurityObject))
-    result.put("dataGroups", input.dataGroups.generate())
-    result.put("dataFields", generateList(input.dataFields, ::generateDataField))
-
-    return result
+fun generateRFIDSessionData(input: RFIDSessionData?) = input?.let {
+    mapOf(
+        "totalBytesReceived" to it.totalBytesReceived,
+        "totalBytesSent" to it.totalBytesSent,
+        "status" to it.status,
+        "extLeSupport" to it.extLeSupport,
+        "processTime" to it.processTime,
+        "cardProperties" to generateCardProperties(it.cardProperties),
+        "accessControls" to it.accessControls.toJson(::generateAccessControlProcedureType),
+        "applications" to it.applications.toJson(::generateApplication),
+        "securityObjects" to it.securityObjects.toJson(::generateSecurityObject),
+        "dataGroups" to it.dataGroups.toJson(),
+        "dataFields" to it.dataFields.toJson(::generateDataField)
+    ).toJson()
 }
 
-fun dataFieldFromJSON(temp: JSONObject?): DataField? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun dataFieldFromJSON(input: JSONObject?) = input?.let {
     val result = DataField()
-
-    result.data = input.optString("data")
-    result.fieldType = input.optInt("fieldType")
-
-    return result
+    result.data = it.optString("data")
+    result.fieldType = it.optInt("fieldType")
+    result
 }
 
-fun generateDataField(temp: DataField?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DataField = temp
-
-    result.put("data", input.data)
-    result.put("fieldType", input.fieldType)
-
-    return result
+fun generateDataField(input: DataField?) = input?.let {
+    mapOf(
+        "data" to it.data,
+        "fieldType" to it.fieldType
+    ).toJson()
 }
 
-fun documentReaderAuthenticityCheckFromJSON(temp: JSONObject?): DocumentReaderAuthenticityCheck? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderAuthenticityCheckFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderAuthenticityCheck()
-
-    result.type = input.optInt("type")
-    result.pageIndex = input.optInt("pageIndex")
-    result.elements = listFromJSON(input.optJSONArray("elements"), ::documentReaderAuthenticityElementFromJSON)!!
-
-    return result
+    result.type = it.optInt("type")
+    result.pageIndex = it.optInt("pageIndex")
+    result.elements = it.optJSONArray("elements").toList(::documentReaderAuthenticityElementFromJSON)!!
+    result
 }
 
-fun generateDocumentReaderAuthenticityCheck(temp: DocumentReaderAuthenticityCheck?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderAuthenticityCheck = temp
-
-    result.put("type", input.type)
-    result.put("status", input.status)
-    result.put("typeName", input.getTypeName(context))
-    result.put("pageIndex", input.pageIndex)
-    result.put("elements", generateList(input.elements, ::generateDocumentReaderAuthenticityElement, context))
-
-    return result
+fun generateDocumentReaderAuthenticityCheck(input: DocumentReaderAuthenticityCheck?) = input?.let {
+    mapOf(
+        "type" to it.type,
+        "status" to it.status,
+        "typeName" to it.getTypeName(context),
+        "pageIndex" to it.pageIndex,
+        "elements" to it.elements.toJson(::generateDocumentReaderAuthenticityElement)
+    ).toJson()
 }
 
-fun pdf417InfoFromJSON(temp: JSONObject?): PDF417Info? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun pdf417InfoFromJSON(input: JSONObject?) = input?.let {
     val result = PDF417Info()
-
-    result.errorLevel = input.optInt("errorLevel")
-    result.columns = input.optInt("columns")
-    result.rows = input.optInt("rows")
-
-    return result
+    result.errorLevel = it.optInt("errorLevel")
+    result.columns = it.optInt("columns")
+    result.rows = it.optInt("rows")
+    result
 }
 
-fun generatePDF417Info(temp: PDF417Info?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: PDF417Info = temp
-
-    result.put("errorLevel", input.errorLevel)
-    result.put("columns", input.columns)
-    result.put("rows", input.rows)
-
-    return result
+fun generatePDF417Info(input: PDF417Info?) = input?.let {
+    mapOf(
+        "errorLevel" to it.errorLevel,
+        "columns" to it.columns,
+        "rows" to it.rows
+    ).toJson()
 }
 
-fun documentReaderBarcodeResultFromJSON(temp: JSONObject?): DocumentReaderBarcodeResult? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderBarcodeResultFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderBarcodeResult()
-
-    result.fields = listFromJSON(input.optJSONArray("fields"), ::documentReaderBarcodeFieldFromJSON)!!
-
-    return result
+    result.fields = it.optJSONArray("fields").toList(::documentReaderBarcodeFieldFromJSON)!!
+    result
 }
 
-fun generateDocumentReaderBarcodeResult(temp: DocumentReaderBarcodeResult?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderBarcodeResult = temp
-
-    result.put("fields", generateList(input.fields, ::generateDocumentReaderBarcodeField))
-
-    return result
+fun generateDocumentReaderBarcodeResult(input: DocumentReaderBarcodeResult?) = input?.let {
+    mapOf(
+        "fields" to it.fields.toJson(::generateDocumentReaderBarcodeField)
+    ).toJson()
 }
 
-fun documentReaderBarcodeFieldFromJSON(temp: JSONObject?): DocumentReaderBarcodeField? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderBarcodeFieldFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderBarcodeField()
 
-    result.barcodeType = input.optInt("barcodeType")
-    result.status = input.optInt("status")
-    result.pageIndex = input.optInt("pageIndex")
-    result.pdf417Info = pdf417InfoFromJSON(input.optJSONObject("pdf417Info"))
-    result.data = byteArrayFromBase64(input.optString("data"))
+    result.barcodeType = it.optInt("barcodeType")
+    result.status = it.optInt("status")
+    result.pageIndex = it.optInt("pageIndex")
+    result.pdf417Info = pdf417InfoFromJSON(it.optJSONObject("pdf417Info"))
+    result.data = it.optString("data").toByteArray()
 
-    return result
+    result
 }
 
-fun generateDocumentReaderBarcodeField(temp: DocumentReaderBarcodeField?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderBarcodeField = temp
-
-    result.put("barcodeType", input.barcodeType)
-    result.put("status", input.status)
-    result.put("pageIndex", input.pageIndex)
-    result.put("pdf417Info", generatePDF417Info(input.pdf417Info))
-    result.put("data", generateByteArray(input.data))
-
-    return result
+fun generateDocumentReaderBarcodeField(input: DocumentReaderBarcodeField?) = input?.let {
+    mapOf(
+        "barcodeType" to it.barcodeType,
+        "status" to it.status,
+        "pageIndex" to it.pageIndex,
+        "pdf417Info" to generatePDF417Info(it.pdf417Info),
+        "data" to it.data.toBase64()
+    ).toJson()
 }
 
-fun documentReaderAuthenticityResultFromJSON(temp: JSONObject?): DocumentReaderAuthenticityResult? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderAuthenticityResultFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderAuthenticityResult()
-
-    result.checks = listFromJSON(input.optJSONArray("checks"), ::documentReaderAuthenticityCheckFromJSON)!!
-
-    return result
+    result.checks = it.optJSONArray("checks").toList(::documentReaderAuthenticityCheckFromJSON)!!
+    result
 }
 
-fun generateDocumentReaderAuthenticityResult(temp: DocumentReaderAuthenticityResult?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderAuthenticityResult = temp
-
-    @Suppress("DEPRECATION")
-    result.put("status", input.status)
-    result.put("checks", generateList(input.checks, ::generateDocumentReaderAuthenticityCheck, context))
-
-    return result
+@Suppress("DEPRECATION")
+fun generateDocumentReaderAuthenticityResult(input: DocumentReaderAuthenticityResult?) = input?.let {
+    mapOf(
+        "status" to it.status,
+        "checks" to it.checks.toJson(::generateDocumentReaderAuthenticityCheck)
+    ).toJson()
 }
 
-fun documentReaderAuthenticityElementFromJSON(temp: JSONObject?): DocumentReaderAuthenticityElement? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderAuthenticityElementFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderAuthenticityElement()
-
-    result.status = input.optInt("status")
-    result.elementType = input.optInt("elementType")
-    result.elementDiagnose = input.optInt("elementDiagnose")
-
-    return result
+    result.status = it.optInt("status")
+    result.elementType = it.optInt("elementType")
+    result.elementDiagnose = it.optInt("elementDiagnose")
+    result
 }
 
-fun generateDocumentReaderAuthenticityElement(temp: DocumentReaderAuthenticityElement?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderAuthenticityElement = temp
-
-    result.put("status", input.status)
-    result.put("elementType", input.elementType)
-    result.put("elementDiagnose", input.elementDiagnose)
-    result.put("elementTypeName", input.getElementTypeName(context))
-    result.put("elementDiagnoseName", input.getElementDiagnoseName(context))
-
-    return result
+fun generateDocumentReaderAuthenticityElement(input: DocumentReaderAuthenticityElement?) = input?.let {
+    mapOf(
+        "status" to it.status,
+        "elementType" to it.elementType,
+        "elementDiagnose" to it.elementDiagnose,
+        "elementTypeName" to it.getElementTypeName(context),
+        "elementDiagnoseName" to it.getElementDiagnoseName(context)
+    ).toJson()
 }
 
-fun paResourcesIssuerFromJSON(temp: JSONObject?): PAResourcesIssuer? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun paResourcesIssuerFromJSON(input: JSONObject?) = input?.let {
     val result = PAResourcesIssuer()
-
-    result.data = byteArrayFromBase64(input.optString("data"))
-    result.friendlyName = input.optString("friendlyName")
-    result.attributes = arrayFromJSON(input.optJSONArray("attributes"), ::paAttributeFromJSON, arrayOfNulls(input.optJSONArray("attributes")?.length() ?: 0))
-
-    return result
+    result.data = it.optString("data").toByteArray()
+    result.friendlyName = it.optString("friendlyName")
+    result.attributes = it.optJSONArray("attributes").toArray(::paAttributeFromJSON)
+    result
 }
 
-fun generatePAResourcesIssuer(temp: PAResourcesIssuer?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: PAResourcesIssuer = temp
-
-    result.put("data", generateByteArray(input.data))
-    result.put("friendlyName", input.friendlyName)
-    result.put("attributes", generateArray(input.attributes, ::generatePAAttribute))
-
-    return result
+fun generatePAResourcesIssuer(input: PAResourcesIssuer?) = input?.let {
+    mapOf(
+        "data" to it.data.toBase64(),
+        "friendlyName" to it.friendlyName,
+        "attributes" to it.attributes.toJson(::generatePAAttribute)
+    ).toJson()
 }
 
-fun paAttributeFromJSON(temp: JSONObject?): PAAttribute? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun paAttributeFromJSON(input: JSONObject?) = input?.let {
     val result = PAAttribute()
-
-    result.type = input.optString("type")
-    result.value = input.optString("value")
-
-    return result
+    result.type = it.optString("type")
+    result.value = it.optString("value")
+    result
 }
 
-fun generatePAAttribute(temp: PAAttribute?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: PAAttribute = temp
-
-    result.put("type", input.type)
-    result.put("value", input.value)
-
-    return result
+fun generatePAAttribute(input: PAAttribute?) = input?.let {
+    mapOf(
+        "type" to it.type,
+        "value" to it.value
+    ).toJson()
 }
 
-fun taChallengeFromJSON(temp: JSONObject?): TAChallenge? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun taChallengeFromJSON(input: JSONObject?) = input?.let {
     val result = TAChallenge()
 
-    result.data = byteArrayFromBase64(input.optString("data"))
-    result.auxPCD = input.optString("auxPCD")
-    result.challengePICC = input.optString("challengePICC")
-    result.hashPK = input.optString("hashPK")
-    result.idPICC = input.optString("idPICC")
+    result.data = it.optString("data").toByteArray()
+    result.auxPCD = it.optString("auxPCD")
+    result.challengePICC = it.optString("challengePICC")
+    result.hashPK = it.optString("hashPK")
+    result.idPICC = it.optString("idPICC")
 
-    return result
+    result
 }
 
-fun generateTAChallenge(temp: TAChallenge?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: TAChallenge = temp
-
-    result.put("data", generateByteArray(input.data))
-    result.put("auxPCD", input.auxPCD)
-    result.put("challengePICC", input.challengePICC)
-    result.put("hashPK", input.hashPK)
-    result.put("idPICC", input.idPICC)
-
-    return result
+fun generateTAChallenge(input: TAChallenge?) = input?.let {
+    mapOf(
+        "data" to it.data.toBase64(),
+        "auxPCD" to it.auxPCD,
+        "challengePICC" to it.challengePICC,
+        "hashPK" to it.hashPK,
+        "idPICC" to it.idPICC
+    ).toJson()
 }
 
-fun documentReaderResultsStatusFromJSON(temp: JSONObject?): DocumentReaderResultsStatus? {
-    temp ?: return null
-    val input: JSONObject = temp
-
-    input.remove("detailsRFID")
-
-    return DocumentReaderResultsStatus.fromJson(input)
+fun documentReaderResultsStatusFromJSON(input: JSONObject?) = input?.let {
+    it.remove("detailsRFID")
+    DocumentReaderResultsStatus.fromJson(input)
 }
 
-fun generateDocumentReaderResultsStatus(temp: DocumentReaderResultsStatus?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderResultsStatus = temp
-
-    result.put("overallStatus", input.overallStatus)
-    result.put("optical", input.optical)
-    result.put("detailsOptical", generateDetailsOptical(input.detailsOptical))
-    result.put("rfid", input.rfid)
-    result.put("detailsRFID", generateDetailsRFID(input.detailsRFID))
-    result.put("portrait", input.portrait)
-    result.put("stopList", input.stopList)
-
-    return result
+fun generateDocumentReaderResultsStatus(input: DocumentReaderResultsStatus?) = input?.let {
+    mapOf(
+        "overallStatus" to it.overallStatus,
+        "optical" to it.optical,
+        "detailsOptical" to generateDetailsOptical(it.detailsOptical),
+        "rfid" to it.rfid,
+        "detailsRFID" to generateDetailsRFID(it.detailsRFID),
+        "portrait" to it.portrait,
+        "stopList" to it.stopList
+    ).toJson()
 }
 
-fun generateDetailsOptical(temp: DetailsOptical?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DetailsOptical = temp
-
-    result.put("overallStatus", input.overallStatus)
-    result.put("mrz", input.mrz)
-    result.put("text", input.text)
-    result.put("docType", input.docType)
-    result.put("security", input.security)
-    result.put("imageQA", input.imageQA)
-    result.put("expiry", input.expiry)
-    result.put("vds", input.vds)
-    result.put("pagesCount", input.pagesCount)
-
-    return result
+fun generateDetailsOptical(input: DetailsOptical?) = input?.let {
+    mapOf(
+        "overallStatus" to it.overallStatus,
+        "mrz" to it.mrz,
+        "text" to it.text,
+        "docType" to it.docType,
+        "security" to it.security,
+        "imageQA" to it.imageQA,
+        "expiry" to it.expiry,
+        "vds" to it.vds,
+        "pagesCount" to it.pagesCount
+    ).toJson()
 }
 
-fun generateDetailsRFID(temp: DetailsRFID?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DetailsRFID = temp
-
-    result.put("pa", input.pa)
-    result.put("ca", input.ca)
-    result.put("aa", input.aa)
-    result.put("ta", input.ta)
-    result.put("bac", input.bac)
-    result.put("pace", input.pace)
-    result.put("overallStatus", input.overallStatus)
-
-    return result
+fun generateDetailsRFID(input: DetailsRFID?) = input?.let {
+    mapOf(
+        "pa" to it.pa,
+        "ca" to it.ca,
+        "aa" to it.aa,
+        "ta" to it.ta,
+        "bac" to it.bac,
+        "pace" to it.pace,
+        "overallStatus" to it.overallStatus
+    ).toJson()
 }
 
-fun vdsncDataDictionaryFromJSON(input: JSONObject): JSONObject {
-    val temp = JSONObject(input.toString())
+fun vdsncDataDictionaryFromJSON(input: JSONObject) = input.let {
+    val result = JSONObject(it.toString())
 
-    temp.put("Type", input.optString("type"))
-    temp.put("Version", input.optInt("version"))
-    temp.put("IssuingCountry", input.optString("issuingCountry"))
-    temp.put("Message", input.optJSONObject("message"))
-    temp.put("SignatureAlg", input.optString("signatureAlgorithm"))
-    temp.put("Signature", bytesDataDictionaryFromJSON(input.optJSONObject("signature")))
-    temp.put("Certificate", bytesDataDictionaryFromJSON(input.optJSONObject("certificate")))
-    temp.put("CertificateChain", input.optJSONArray("certificateChain"))
-    temp.put("Notifications", input.optJSONArray("notifications"))
+    result.put("Type", it.optString("type"))
+    result.put("Version", it.optInt("version"))
+    result.put("IssuingCountry", it.optString("issuingCountry"))
+    result.put("Message", it.optJSONObject("message"))
+    result.put("SignatureAlg", it.optString("signatureAlgorithm"))
+    result.put("Signature", bytesDataDictionaryFromJSON(it.optJSONObject("signature")))
+    result.put("Certificate", bytesDataDictionaryFromJSON(it.optJSONObject("certificate")))
+    result.put("CertificateChain", it.optJSONArray("certificateChain"))
+    result.put("Notifications", it.optJSONArray("notifications"))
 
-    return temp
+    result
 }
 
 fun vdsncDataFromJSON(input: JSONObject) = VDSNCData.fromJson(vdsncDataDictionaryFromJSON(input))
 
-fun generateVDSNCData(temp: VDSNCData?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: VDSNCData = temp
-
-    result.put("type", input.type)
-    result.put("version", input.version)
-    result.put("issuingCountry", input.issuingCountry)
-    result.put("message", input.message)
-    result.put("signatureAlgorithm", input.signatureAlg)
-    result.put("signature", generateBytesData(input.signature))
-    result.put("certificate", generateBytesData(input.certificate))
-    result.put("certificateChain", generateList(input.certificateChain, ::generateCertificateChain))
-    result.put("notifications", generateLongArray(input.notifications))
-
-    return result
+fun generateVDSNCData(input: VDSNCData?) = input?.let {
+    mapOf(
+        "type" to it.type,
+        "version" to it.version,
+        "issuingCountry" to it.issuingCountry,
+        "message" to it.message,
+        "signatureAlgorithm" to it.signatureAlg,
+        "signature" to generateBytesData(it.signature),
+        "certificate" to generateBytesData(it.certificate),
+        "certificateChain" to it.certificateChain.toJson(::generateCertificateChain),
+        "notifications" to if (it.notifications == null) null else {
+            val notifications = JSONArray()
+            for (i in it.notifications!!.indices) notifications.put(i, it.notifications!![i])
+            notifications
+        }
+    ).toJson()
 }
 
-fun bytesDataDictionaryFromJSON(input: JSONObject?): JSONObject? {
-    input ?: return null
-    val temp = JSONObject(input.toString())
+fun bytesDataDictionaryFromJSON(input: JSONObject?) = input?.let {
+    val result = JSONObject(input.toString())
 
-    temp.put("Data", input.optString("data"))
-    temp.put("Length", input.optInt("length"))
-    temp.put("Status", input.optLong("status"))
-    temp.put("Type", input.optInt("type"))
+    result.put("Data", input.optString("data"))
+    result.put("Length", input.optInt("length"))
+    result.put("Status", input.optLong("status"))
+    result.put("Type", input.optInt("type"))
 
-    return temp
+    result
 }
 
 fun bytesDataFromJSON(input: JSONObject?) = BytesData.fromJson(bytesDataDictionaryFromJSON(input))
 
-fun generateBytesData(temp: BytesData?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: BytesData = temp
-
-    result.put("data", input.data)
-    result.put("length", input.length)
-    result.put("status", input.status)
-    result.put("type", input.type)
-
-    return result
+fun generateBytesData(input: BytesData?) = input?.let {
+    mapOf(
+        "data" to it.data,
+        "length" to it.length,
+        "status" to it.status,
+        "type" to it.type
+    ).toJson()
 }
 
-fun generateLicense(temp: License?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: License = temp
-
-    result.put("expiryDate", input.expiryDate?.toString())
-    result.put("countryFilter", generateList(input.countryFilter))
-    result.put("isRfidAvailable", input.isRfidAvailable)
-
-    return result
+fun generateLicense(input: License?) = input?.let {
+    mapOf(
+        "expiryDate" to it.expiryDate?.toString(),
+        "countryFilter" to it.countryFilter?.toJson(),
+        "isRfidAvailable" to it.isRfidAvailable
+    ).toJson()
 }
 
-fun generateDocReaderVersion(temp: DocReaderVersion?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocReaderVersion = temp
-
-    result.put("api", input.api)
-    result.put("core", input.core)
-    result.put("coreMode", input.coreMode)
-    result.put("database", generateDocReaderDocumentsDatabase(input.database))
-
-    return result
+fun generateDocReaderVersion(input: DocReaderVersion?) = input?.let {
+    mapOf(
+        "api" to it.api,
+        "core" to it.core,
+        "coreMode" to it.coreMode,
+        "database" to generateDocReaderDocumentsDatabase(it.database)
+    ).toJson()
 }
 
-fun docReaderDocumentsDatabaseFromJSON(input: JSONObject?): DocReaderDocumentsDatabase? {
-    input ?: return null
-    val temp = JSONObject(input.toString())
-
-    temp.put("id", input.optString("databaseID"))
-    temp.put("export_date", input.optString("date"))
-    temp.put("description", input.optString("databaseDescription"))
-
-    return DocReaderDocumentsDatabase.fromJson(temp)
+fun docReaderDocumentsDatabaseFromJSON(input: JSONObject?) = input?.let {
+    val result = JSONObject(it.toString())
+    result.put("id", it.optString("databaseID"))
+    result.put("export_date", it.optString("date"))
+    result.put("description", it.optString("databaseDescription"))
+    DocReaderDocumentsDatabase.fromJson(result)
 }
 
-fun generateDocReaderDocumentsDatabase(temp: DocReaderDocumentsDatabase?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocReaderDocumentsDatabase = temp
-
-    result.put("databaseID", input.databaseID)
-    result.put("version", input.version)
-    result.put("date", input.date)
-    result.put("databaseDescription", input.databaseDescription)
-    result.put("countriesNumber", input.countriesNumber)
-    result.put("documentsNumber", input.documentsNumber)
-    result.put("size", input.size)
-
-    return result
+fun generateDocReaderDocumentsDatabase(input: DocReaderDocumentsDatabase?) = input?.let {
+    mapOf(
+        "databaseID" to it.databaseID,
+        "version" to it.version,
+        "date" to it.date,
+        "databaseDescription" to it.databaseDescription,
+        "countriesNumber" to it.countriesNumber,
+        "documentsNumber" to it.documentsNumber,
+        "size" to it.size
+    ).toJson()
 }
 
-fun documentReaderComparisonFromJSON(temp: JSONObject?): DocumentReaderComparison? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderComparisonFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderComparison()
-
-    result.sourceTypeLeft = input.optInt("sourceTypeLeft")
-    result.sourceTypeRight = input.optInt("sourceTypeRight")
-    result.status = input.optInt("status")
-
-    return result
+    result.sourceTypeLeft = it.optInt("sourceTypeLeft")
+    result.sourceTypeRight = it.optInt("sourceTypeRight")
+    result.status = it.optInt("status")
+    result
 }
 
-fun generateDocumentReaderComparison(temp: DocumentReaderComparison?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderComparison = temp
-
-    result.put("sourceTypeLeft", input.sourceTypeLeft)
-    result.put("sourceTypeRight", input.sourceTypeRight)
-    result.put("status", input.status)
-
-    return result
+fun generateDocumentReaderComparison(input: DocumentReaderComparison?) = input?.let {
+    mapOf(
+        "sourceTypeLeft" to it.sourceTypeLeft,
+        "sourceTypeRight" to it.sourceTypeRight,
+        "status" to it.status
+    ).toJson()
 }
 
-fun documentReaderRFIDOriginFromJSON(temp: JSONObject?): DocumentReaderRfidOrigin? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderRFIDOriginFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderRfidOrigin()
 
-    result.dg = input.optInt("dg")
-    result.dgTag = input.optInt("dgTag")
-    result.entryView = input.optInt("entryView")
-    result.tagEntry = input.optInt("tagEntry")
+    result.dg = it.optInt("dg")
+    result.dgTag = it.optInt("dgTag")
+    result.entryView = it.optInt("entryView")
+    result.tagEntry = it.optInt("tagEntry")
 
-    return result
+    result
 }
 
-fun generateDocumentReaderRFIDOrigin(temp: DocumentReaderRfidOrigin?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderRfidOrigin = temp
-
-    result.put("dg", input.dg)
-    result.put("dgTag", input.dgTag)
-    result.put("entryView", input.entryView)
-    result.put("tagEntry", input.tagEntry)
-
-    return result
+fun generateDocumentReaderRFIDOrigin(input: DocumentReaderRfidOrigin?) = input?.let {
+    mapOf(
+        "dg" to it.dg,
+        "dgTag" to it.dgTag,
+        "entryView" to it.entryView,
+        "tagEntry" to it.tagEntry
+    ).toJson()
 }
 
-fun documentReaderTextSourceFromJSON(temp: JSONObject?): DocumentReaderTextSource? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderTextSourceFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderTextSource()
-
-    result.sourceType = input.optInt("sourceType")
-    result.source = input.optString("source")
-    result.validityStatus = input.optInt("validityStatus")
-
-    return result
+    result.sourceType = it.optInt("sourceType")
+    result.source = it.optString("source")
+    result.validityStatus = it.optInt("validityStatus")
+    result
 }
 
-fun generateDocumentReaderTextSource(temp: DocumentReaderTextSource?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderTextSource = temp
-
-    result.put("sourceType", input.sourceType)
-    result.put("source", input.source)
-    result.put("validityStatus", input.validityStatus)
-
-    return result
+fun generateDocumentReaderTextSource(input: DocumentReaderTextSource?) = input?.let {
+    mapOf(
+        "sourceType" to it.sourceType,
+        "source" to it.source,
+        "validityStatus" to it.validityStatus
+    ).toJson()
 }
 
-fun documentReaderSymbolFromJSON(temp: JSONObject?): DocumentReaderSymbol? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderSymbolFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderSymbol()
-
-    result.code = input.optInt("code")
-    result.probability = input.optInt("probability")
-    result.rect = rectFromJSON(input.optJSONObject("rect"))
-
-    return result
+    result.code = it.optInt("code")
+    result.probability = it.optInt("probability")
+    result.rect = rectFromJSON(it.optJSONObject("rect"))
+    result
 }
 
-fun generateDocumentReaderSymbol(temp: DocumentReaderSymbol?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderSymbol = temp
-
-    result.put("code", input.code)
-    result.put("rect", generateRect(input.rect))
-    result.put("probability", input.probability)
-
-    return result
+fun generateDocumentReaderSymbol(input: DocumentReaderSymbol?) = input?.let {
+    mapOf(
+        "code" to it.code,
+        "rect" to generateRect(it.rect),
+        "probability" to it.probability
+    ).toJson()
 }
 
-fun documentReaderValidityFromJSON(temp: JSONObject?): DocumentReaderValidity? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderValidityFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderValidity()
-
-    result.sourceType = input.optInt("sourceType")
-    result.status = input.optInt("status")
-
-    return result
+    result.sourceType = it.optInt("sourceType")
+    result.status = it.optInt("status")
+    result
 }
 
-fun generateDocumentReaderValidity(temp: DocumentReaderValidity?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderValidity = temp
-
-    result.put("sourceType", input.sourceType)
-    result.put("status", input.status)
-
-    return result
+fun generateDocumentReaderValidity(input: DocumentReaderValidity?) = input?.let {
+    mapOf(
+        "sourceType" to it.sourceType,
+        "status" to it.status
+    ).toJson()
 }
 
-fun barcodeTypeArrayFromJson(temp: JSONArray?): Array<String?>? {
-    temp ?: return null
-    val input: JSONArray = temp
-
-    val result = arrayOfNulls<String>(input.length())
-    for (i in 0 until input.length()) result[i] = BarcodeType.valueOf(input.getInt(i))
-
-    return result
+fun barcodeTypeArrayFromJson(input: JSONArray?) = input?.let {
+    val result = arrayOfNulls<String>(it.length())
+    for (i in 0 until it.length()) result[i] = BarcodeType.valueOf(it.getInt(i))
+    result
 }
 
-fun generateBarcodeTypeArray(temp: Array<String?>?): JSONArray? {
-    temp ?: return null
-    val input: Array<String?> = temp
+fun generateBarcodeTypeArray(input: Array<String?>?) = input?.let {
     val result = JSONArray()
-
-    for (s in input) result.put(generateBarcodeType(s))
-
-    return result
+    for (s in it) result.put(
+        when (s) {
+            "bct_Code128" -> 1
+            "bct_Code39" -> 2
+            "bct_EAN8" -> 3
+            "bct_ITF" -> 4
+            "bct_PDF417" -> 5
+            "bct_STF" -> 6
+            "bct_MTF" -> 7
+            "bct_IATA" -> 8
+            "bct_CODABAR" -> 9
+            "bct_UPCA" -> 10
+            "bct_CODE93" -> 11
+            "bct_UPCE" -> 12
+            "bct_EAN13" -> 13
+            "bct_QRCODE" -> 14
+            "bct_AZTEC" -> 15
+            "bct_DATAMATRIX" -> 16
+            "bct_ALL_1D" -> 17
+            "bct_Code11" -> 18
+            "bct_JABCODE" -> 19
+            else -> 0
+        }
+    )
+    result
 }
 
-fun generateBarcodeType(input: String?) = when (input) {
-    "bct_Code128" -> 1
-    "bct_Code39" -> 2
-    "bct_EAN8" -> 3
-    "bct_ITF" -> 4
-    "bct_PDF417" -> 5
-    "bct_STF" -> 6
-    "bct_MTF" -> 7
-    "bct_IATA" -> 8
-    "bct_CODABAR" -> 9
-    "bct_UPCA" -> 10
-    "bct_CODE93" -> 11
-    "bct_UPCE" -> 12
-    "bct_EAN13" -> 13
-    "bct_QRCODE" -> 14
-    "bct_AZTEC" -> 15
-    "bct_DATAMATRIX" -> 16
-    "bct_ALL_1D" -> 17
-    "bct_Code11" -> 18
-    "bct_JABCODE" -> 19
-    else -> 0
-}
-
-fun documentReaderResultsFromJSON(temp: JSONObject?): DocumentReaderResults? {
-    temp ?: return null
-    val input: JSONObject = temp
+fun documentReaderResultsFromJSON(input: JSONObject?) = input?.let {
     val result = DocumentReaderResults()
 
-    result.chipPage = input.optInt("chipPage")
-    result.processingFinishedStatus = input.optInt("processingFinishedStatus")
-    result.elapsedTime = input.optInt("elapsedTime")
-    result.elapsedTimeRFID = input.optInt("elapsedTimeRFID")
-    result.morePagesAvailable = input.optInt("morePagesAvailable")
-    result.graphicResult = documentReaderGraphicResultFromJSON(input.optJSONObject("graphicResult"))
-    result.textResult = documentReaderTextResultFromJSON(input.optJSONObject("textResult"))
-    result.documentPosition = listFromJSON(input.optJSONArray("documentPosition"), ::elementPositionFromJSON)!!
-    result.barcodePosition = listFromJSON(input.optJSONArray("barcodePosition"), ::elementPositionFromJSON)!!
-    result.mrzPosition = listFromJSON(input.optJSONArray("mrzPosition"), ::elementPositionFromJSON)!!
-    result.imageQuality = listFromJSON(input.optJSONArray("imageQuality"), ::imageQualityGroupFromJSON)!!
-    result.rawResult = input.optString("rawResult")
-    result.rfidSessionData = rfidSessionDataFromJSON(input.optJSONObject("rfidSessionData"))
-    result.authenticityResult = documentReaderAuthenticityResultFromJSON(input.optJSONObject("authenticityResult"))
-    result.barcodeResult = documentReaderBarcodeResultFromJSON(input.optJSONObject("barcodeResult"))
-    result.rfidSessionData = rfidSessionDataFromJSON(input.optJSONObject("rfidSessionData"))
-    result.documentType = listFromJSON(input.optJSONArray("documentType"), ::documentReaderDocumentTypeFromJSON)!!
-    result.status = documentReaderResultsStatusFromJSON(input.optJSONObject("status"))!!
-    result.vdsncData = vdsncDataFromJSON(input.optJSONObject("vdsncData")!!)
-    result.dtcData = input.getString("dtcData")
-    result.transactionInfo = transactionInfoFromJSON(input.optJSONObject("transactionInfo"))!!
-
-    return result
+    result.chipPage = it.optInt("chipPage")
+    result.processingFinishedStatus = it.optInt("processingFinishedStatus")
+    result.elapsedTime = it.optInt("elapsedTime")
+    result.elapsedTimeRFID = it.optInt("elapsedTimeRFID")
+    result.morePagesAvailable = it.optInt("morePagesAvailable")
+    result.graphicResult = documentReaderGraphicResultFromJSON(it.optJSONObject("graphicResult"))
+    result.textResult = documentReaderTextResultFromJSON(it.optJSONObject("textResult"))
+    result.documentPosition = it.optJSONArray("documentPosition").toList(::elementPositionFromJSON)!!
+    result.barcodePosition = it.optJSONArray("barcodePosition").toList(::elementPositionFromJSON)!!
+    result.mrzPosition = it.optJSONArray("mrzPosition").toList(::elementPositionFromJSON)!!
+    result.imageQuality = it.optJSONArray("imageQuality").toList(::imageQualityGroupFromJSON)!!
+    result.rawResult = it.optString("rawResult")
+    result.rfidSessionData = rfidSessionDataFromJSON(it.optJSONObject("rfidSessionData"))
+    result.authenticityResult = documentReaderAuthenticityResultFromJSON(it.optJSONObject("authenticityResult"))
+    result.barcodeResult = documentReaderBarcodeResultFromJSON(it.optJSONObject("barcodeResult"))
+    result.rfidSessionData = rfidSessionDataFromJSON(it.optJSONObject("rfidSessionData"))
+    result.documentType = it.optJSONArray("documentType").toList(::documentReaderDocumentTypeFromJSON)!!
+    result.status = documentReaderResultsStatusFromJSON(it.optJSONObject("status"))!!
+    result.vdsncData = vdsncDataFromJSON(it.optJSONObject("vdsncData")!!)
+    result.dtcData = it.getString("dtcData")
+    result.transactionInfo = transactionInfoFromJSON(it.optJSONObject("transactionInfo"))!!
+    result
 }
 
-fun generateDocumentReaderResults(temp: DocumentReaderResults?, context: Context?): JSONObject? {
-    val result = JSONObject()
-    temp ?: return null
-    val input: DocumentReaderResults = temp
+fun generateDocumentReaderResults(input: DocumentReaderResults?) = input?.let {
+    mapOf(
+        "chipPage" to it.chipPage,
+        "processingFinishedStatus" to it.processingFinishedStatus,
+        "elapsedTime" to it.elapsedTime,
+        "elapsedTimeRFID" to it.elapsedTimeRFID,
+        "morePagesAvailable" to it.morePagesAvailable,
+        "graphicResult" to generateDocumentReaderGraphicResult(it.graphicResult),
+        "textResult" to generateDocumentReaderTextResult(it.textResult),
+        "documentPosition" to it.documentPosition.toJson(::generateElementPosition),
+        "barcodePosition" to it.barcodePosition.toJson(::generateElementPosition),
+        "mrzPosition" to it.mrzPosition.toJson(::generateElementPosition),
+        "imageQuality" to it.imageQuality.toJson(::generateImageQualityGroup),
+        "rawResult" to it.rawResult,
+        "rfidSessionData" to generateRFIDSessionData(it.rfidSessionData),
+        "authenticityResult" to generateDocumentReaderAuthenticityResult(it.authenticityResult),
+        "barcodeResult" to generateDocumentReaderBarcodeResult(it.barcodeResult),
+        "documentType" to it.documentType.toJson(::generateDocumentReaderDocumentType),
+        "status" to generateDocumentReaderResultsStatus(it.status),
+        "vdsncData" to generateVDSNCData(it.vdsncData),
+        "dtcData" to it.dtcData,
+        "transactionInfo" to generateTransactionInfo(it.transactionInfo)
+    ).toJson()
+}
 
-    result.put("chipPage", input.chipPage)
-    result.put("processingFinishedStatus", input.processingFinishedStatus)
-    result.put("elapsedTime", input.elapsedTime)
-    result.put("elapsedTimeRFID", input.elapsedTimeRFID)
-    result.put("morePagesAvailable", input.morePagesAvailable)
-    result.put("graphicResult", generateDocumentReaderGraphicResult(input.graphicResult, context))
-    result.put("textResult", generateDocumentReaderTextResult(input.textResult, context))
-    result.put("documentPosition", generateList(input.documentPosition, ::generateElementPosition))
-    result.put("barcodePosition", generateList(input.barcodePosition, ::generateElementPosition))
-    result.put("mrzPosition", generateList(input.mrzPosition, ::generateElementPosition))
-    result.put("imageQuality", generateList(input.imageQuality, ::generateImageQualityGroup))
-    result.put("rawResult", input.rawResult)
-    result.put("rfidSessionData", generateRFIDSessionData(input.rfidSessionData, context))
-    result.put("authenticityResult", generateDocumentReaderAuthenticityResult(input.authenticityResult, context))
-    result.put("barcodeResult", generateDocumentReaderBarcodeResult(input.barcodeResult))
-    result.put("documentType", generateList(input.documentType, ::generateDocumentReaderDocumentType))
-    result.put("status", generateDocumentReaderResultsStatus(input.status))
-    result.put("vdsncData", generateVDSNCData(input.vdsncData))
-    result.put("dtcData", input.dtcData)
-    result.put("transactionInfo", generateTransactionInfo(input.transactionInfo))
+fun matrixFromJSON(input: JSONArray?) = input?.let {
+    val matrix = Matrix()
+    val result = FloatArray(it.length())
+    for (i in 0 until it.length()) result[i] = it.getDouble(i).toFloat()
+    matrix.setValues(result)
+    matrix
+}
 
-    return result
+fun generateMatrix(input: Matrix?) = input?.let {
+    val floats = FloatArray(9)
+    it.getValues(floats)
+    val result = JSONArray()
+    for (f in floats) result.put(java.lang.Float.valueOf(f))
+    result
 }
