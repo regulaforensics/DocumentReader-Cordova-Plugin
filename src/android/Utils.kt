@@ -1,34 +1,18 @@
-//
-//  Utils.kt
-//  DocumentReader
-//
-//  Created by Pavel Masiuk on 21.09.2023.
-//  Copyright © 2023 Regula. All rights reserved.
-//
+@file:SuppressLint("UseKtx")
 
-package cordova.plugin.documentreader
+package com.regula.plugin.documentreader
 
-import android.content.Context
+import android.annotation.SuppressLint
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Canvas
-import android.graphics.Matrix
-import android.graphics.Paint
-import android.graphics.Typeface
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.util.Base64
-import com.regula.documentreader.api.enums.CustomizationFont
-import com.regula.documentreader.api.params.ParamsCustomization
 import org.json.JSONArray
 import org.json.JSONObject
 import java.io.ByteArrayOutputStream
 import kotlin.math.sqrt
-
-fun Any?.toSendable(): Any? = this?.let {
-    if (this is JSONObject || this is JSONArray) this.toString()
-    else this
-}
 
 fun List<*>.toJson(): JSONArray {
     val result = JSONArray()
@@ -55,140 +39,58 @@ fun Map<*, *>.toJson(): JSONObject {
     return result
 }
 
-fun <T> generateList(list: List<T>?) = list?.let {
+fun Any?.toSendable(): Any? = this?.let {
+    if (it is JSONObject || it is JSONArray) it.toString()
+    else it
+}
+
+fun <T> List<T>?.toJson(toJson: (T?) -> Any?) = this?.let {
     val result = JSONArray()
-    for (t in list) if (t != null) result.put(t)
+    for (item in it) result.put(toJson(item))
     result
 }
 
-fun <T> generateList(list: List<T>, toJson: (T?) -> JSONObject?): JSONArray {
+fun <T> List<T>?.toJsonNullable(toJson: (T?) -> Any?) = this?.let {
     val result = JSONArray()
-    for (t in list) if (t != null) result.put(toJson(t))
-    return result
+    for (item in it) result.put(toJson(item))
+    result
 }
 
-fun <T> listFromJSON(input: JSONArray?, fromJson: (JSONObject?) -> T) = input?.let {
+fun <T> JSONArray?.toList(fromJson: (JSONObject) -> T) = this?.let {
     val result: MutableList<T> = ArrayList()
-    for (i in 0 until input.length()) {
-        val item = input.getJSONObject(i)
-        result.add(fromJson(item))
-    }
+    for (i in 0 until it.length()) result.add(fromJson(it.getJSONObject(i)))
     result
 }
 
-@Suppress("UNCHECKED_CAST")
-fun <T> listFromJSON(input: JSONArray): List<T> {
-    val result: MutableList<T> = ArrayList()
-    for (i in 0 until input.length()) result.add(input.opt(i) as T)
-    return result
-}
-
-fun <T> arrayFromJSON(input: JSONArray?, fromJson: (JSONObject?) -> T, result: Array<T>) = input?.let {
-    for (i in 0 until input.length())
-        result[i] = fromJson(input.getJSONObject(i))
+fun <T> JSONArray.toList() = this.let {
+    val result = mutableListOf<T>()
+    @Suppress("UNCHECKED_CAST")
+    for (i in 0 until length()) result.add(get(i) as T)
     result
 }
 
-fun <T> generateList(list: List<T>, toJson: (T?, Context?) -> JSONObject?, context: Context?): JSONArray {
+inline fun <reified T> JSONArray?.toArray() = this?.let {
+    val result = arrayOfNulls<T>(length())
+    for (i in 0 until length()) result[i] = get(i) as T
+    result
+}
+
+inline fun <reified T> JSONArray?.toArray(fromJson: (JSONObject?) -> T) = this?.let {
+    val result = arrayOfNulls<T>(length())
+    for (i in 0 until length()) result[i] = fromJson(getJSONObject(i))
+    result
+}
+
+fun <T> Array<T>?.toJson() = this?.let {
     val result = JSONArray()
-    for (t in list) if (t != null) result.put(toJson(t, context))
-    return result
+    for (i in it.indices) result.put(i, it[i])
+    result
 }
 
-fun <T> generateArray(array: Array<T>?) = array?.let {
+fun <T> Array<T>?.toJson(toJson: (T?) -> JSONObject?) = this?.let {
     val result = JSONArray()
-    for (i in array.indices) result.put(i, array[i])
+    for (i in indices) result.put(i, toJson(this[i]))
     result
-}
-
-fun <T> generateArray(array: Array<T>?, toJson: (T?) -> JSONObject?) = array?.let {
-    val result = JSONArray()
-    for (i in array.indices) result.put(i, toJson(array[i]))
-    result
-}
-
-fun generateLongArray(array: LongArray?) = array?.let {
-    val result = JSONArray()
-    for (i in array.indices) result.put(i, array[i])
-    result
-}
-
-fun stringListFromJson(jsonArray: JSONArray): List<String> {
-    val result: MutableList<String> = ArrayList()
-    for (i in 0 until jsonArray.length()) result.add(jsonArray.optString(i))
-    return result
-}
-
-fun stringArrayFromJson(jsonArray: JSONArray): Array<String?> {
-    val result = arrayOfNulls<String>(jsonArray.length())
-    for (i in 0 until jsonArray.length()) result[i] = jsonArray.optString(i)
-    return result
-}
-
-fun paintCapToInt(cap: Paint.Cap) = when (cap) {
-    Paint.Cap.BUTT -> 0
-    Paint.Cap.ROUND -> 1
-    Paint.Cap.SQUARE -> 2
-}
-
-fun JSONObject.forEach(action: (String, Any?) -> Unit) {
-    val keys: Iterator<String> = keys()
-    while (keys.hasNext()) {
-        val key = keys.next()
-        action(key, get(key))
-    }
-}
-
-fun Map<String, Any?>.toJsonObject(): JSONObject {
-    val result = JSONObject()
-    forEach { (key, value) -> result.put(key, value) }
-    return result
-}
-
-fun stringMapFromJson(input: JSONObject): Map<String, String> {
-    val result: MutableMap<String, String> = HashMap()
-    input.forEach { key, value -> result[key] = value as String }
-    return result
-}
-
-fun generateStringMap(input: Map<String, String?>?) = input?.let {
-    val result = JSONObject()
-    for ((key, value) in input) result.put(key, value)
-    result
-}
-
-fun Any?.toInt() = when (this) {
-    is Double -> toInt()
-    is Long -> toInt()
-    else -> this as Int
-}
-
-fun Any?.toLong() = when (this) {
-    is Double -> toLong()
-    is Int -> toLong()
-    else -> this as Long
-}
-
-fun Any?.toDouble() = when (this) {
-    is Int -> toDouble()
-    is Long -> toDouble()
-    else -> this as Double
-}
-
-fun Any?.toColor() = "#" + toLong().toString(16)
-
-fun Any?.toFloat() = when (this) {
-    is Int -> toFloat()
-    is Double -> toFloat()
-    else -> this as Float
-}
-
-fun Any?.toMatrix() = this?.let {
-    val matrix = Matrix()
-    val result = FloatArray((this as JSONArray).length())
-    for (i in 0 until length()) result[i] = getDouble(i).toFloat()
-    matrix.setValues(result)
-    matrix
 }
 
 fun Any?.toIntArray() = (this as JSONArray?)?.let {
@@ -197,72 +99,83 @@ fun Any?.toIntArray() = (this as JSONArray?)?.let {
     result
 }
 
-fun IntArray?.generate() = this?.let {
+fun IntArray?.toJson() = this?.let {
     val result = JSONArray()
-    for (i in indices) result.put(i, this[i])
+    for (i in it.indices) result.put(i, it[i])
     result
 }
 
-fun String?.toLong() = this?.let {
-    if (this[0] == '#') this.substring(1).toLong(16)
-    else this.toLong(16)
+fun JSONObject.forEach(action: (String, Any) -> Unit) {
+    val keys: Iterator<String> = keys()
+    while (keys.hasNext()) {
+        val key = keys.next()
+        action(key, get(key))
+    }
 }
 
-fun Matrix?.generate() = this?.let {
-    val floats = FloatArray(9)
-    getValues(floats)
-    val result = JSONArray()
-    for (f in floats) result.put(java.lang.Float.valueOf(f))
-    result
+fun JSONObject.getJSONObjectOrNull(name: String): JSONObject? {
+    if (has(name) && get(name).toString() != "null") return getJSONObject(name)
+    return null
 }
 
-fun CustomizationFont.generate(fonts: Map<CustomizationFont, Typeface>, sizes: Map<CustomizationFont, Int>) = generateTypeface(fonts[this], sizes[this])
+fun JSONObject.getIntOrNull(name: String): Int? {
+    if (has(name) && get(name).toString() != "null") return getInt(name)
+    return null
+}
 
-fun CustomizationFont.setFont(editor: ParamsCustomization.CustomizationEditor, value: Any?) {
-    val font = typefaceFromJSON(value as JSONObject)
-    editor.setFont(this, font.first)
-    font.second?.let { editor.setFontSize(this, it) }
+fun JSONObject.getDoubleOrNull(name: String): Double? {
+    if (has(name) && get(name).toString() != "null") return getDouble(name)
+    return null
+}
+
+fun JSONObject.getBooleanOrNull(name: String): Boolean? {
+    if (has(name) && get(name).toString() != "null") return getBoolean(name)
+    return null
+}
+
+fun JSONObject.getStringOrNull(name: String): String? {
+    if (has(name) && get(name).toString() != "null") return getString(name)
+    return null
 }
 
 internal object Convert {
-    fun byteArrayFromBase64(base64: String?): ByteArray? {
-        var str = base64 ?: return null
+    fun String?.toByteArray(): ByteArray? {
+        var str = this ?: return null
         if (str.startsWith("data")) str = str.substring(str.indexOf(",") + 1)
         return Base64.decode(str, Base64.NO_WRAP)
     }
 
-    fun generateByteArray(array: ByteArray?) = array?.let { Base64.encodeToString(it, Base64.NO_WRAP) }
+    fun ByteArray?.toBase64() = this?.let { Base64.encodeToString(it, Base64.NO_WRAP) }
 
-    fun bitmapFromBase64(base64: String?) = base64?.let {
-        val decodedString = byteArrayFromBase64(base64)
-        var result = BitmapFactory.decodeByteArray(decodedString, 0, decodedString!!.size)
+    fun Bitmap?.toBase64() = this?.let {
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        it.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
+        byteArrayOutputStream.toByteArray().toBase64()
+    }
+
+    fun String?.toBitmap() = this?.let {
+        val decodedString = toByteArray()!!
+        var result = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.size)
         val sizeMultiplier = result.byteCount / 5000000
         if (result.byteCount > 5000000) result = Bitmap.createScaledBitmap(result, result.width / sqrt(sizeMultiplier.toDouble()).toInt(), result.height / sqrt(sizeMultiplier.toDouble()).toInt(), false)
         result
     }
 
-    fun bitmapToBase64(bitmap: Bitmap?) = bitmap?.let {
-        val byteArrayOutputStream = ByteArrayOutputStream()
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream)
-        val byteArray = byteArrayOutputStream.toByteArray()
-        generateByteArray(byteArray)
-    }
-
-    fun Any?.toDrawable(context: Context) = (this as String?)?.let {
-        val decodedByte = byteArrayFromBase64(it)
-        val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte!!.size)
+    fun Any?.toDrawable() = (this as String?)?.let {
+        val decodedByte = it.toByteArray()!!
+        val bitmap = BitmapFactory.decodeByteArray(decodedByte, 0, decodedByte.size)
         val density = context.resources.displayMetrics.density
         val width = (bitmap.width * density).toInt()
         val height = (bitmap.height * density).toInt()
         BitmapDrawable(context.resources, Bitmap.createScaledBitmap(bitmap, width, height, false))
     }
 
-    fun Drawable?.toString() = this?.let {
-        if (this is BitmapDrawable) if (bitmap != null) return bitmapToBase64(bitmap)
+    fun Drawable?.toBase64() = this?.let {
+        if (this is BitmapDrawable) if (bitmap != null) return bitmap.toBase64()
         val bitmap: Bitmap = if (intrinsicWidth <= 0 || intrinsicHeight <= 0) Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888) else Bitmap.createBitmap(intrinsicWidth, intrinsicHeight, Bitmap.Config.ARGB_8888)
         val canvas = Canvas(bitmap)
         setBounds(0, 0, canvas.width, canvas.height)
         draw(canvas)
-        bitmapToBase64(bitmap)
+        bitmap.toBase64()
     }
 }
