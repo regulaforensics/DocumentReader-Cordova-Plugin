@@ -4371,6 +4371,7 @@ DocumentReader.runAutoUpdate = (databaseId, successCallback, errorCallback) => c
 DocumentReader.cancelDBUpdate = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["cancelDBUpdate"])
 DocumentReader.checkDatabaseUpdate = (databaseId, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["checkDatabaseUpdate", databaseId])
 DocumentReader.scan = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["scan", config])
+DocumentReader.startScanner = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startScanner", config])
 DocumentReader.recognize = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognize", config])
 DocumentReader.startNewPage = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startNewPage"])
 DocumentReader.stopScanner = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["stopScanner"])
