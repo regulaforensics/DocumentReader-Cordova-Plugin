@@ -85,7 +85,7 @@ var app = {
         function scan() {
             var config = new ScannerConfig()
             config.scenario = selectedScenario
-            DocumentReader.scan(config, function (m) {
+            DocumentReader.startScanner(config, function (m) {
                 handleCompletion(DocumentReaderCompletion.fromJson(JSON.parse(m)))
             }, function (e) { })
         }
