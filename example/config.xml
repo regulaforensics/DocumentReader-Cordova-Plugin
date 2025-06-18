@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget android-packageName="com.regula.documentreader" ios-CFBundleIdentifier="regula.DocumentReader" version="1.0.0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget android-packageName="com.regula.dr.fullauthrfid" ios-CFBundleIdentifier="regula.DocumentReader" version="1.0.0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DocumentReader</name>
     <description>
         A sample Regula Document Reader application for reading and validation of identification documents.
