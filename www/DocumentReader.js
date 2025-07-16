@@ -1388,6 +1388,7 @@ class ProcessParams {
         result.generateDTCVC = jsonObject["generateDTCVC"]
         result.strictDLCategoryExpiry = jsonObject["strictDLCategoryExpiry"]
         result.generateAlpha2Codes = jsonObject["generateAlpha2Codes"]
+        result.disableAuthResolutionFilter = jsonObject["disableAuthResolutionFilter"]
         result.barcodeParserType = jsonObject["barcodeParserType"]
         result.perspectiveAngle = jsonObject["perspectiveAngle"]
         result.minDPI = jsonObject["minDPI"]
@@ -1566,6 +1567,7 @@ class Customization {
         result.changeFrameButtonExpandImage = jsonObject["changeFrameButtonExpandImage"]
         result.changeFrameButtonCollapseImage = jsonObject["changeFrameButtonCollapseImage"]
         result.livenessAnimationImage = jsonObject["livenessAnimationImage"]
+        result.multipageButtonImage = jsonObject["multipageButtonImage"]
         result.statusTextFont = Font.fromJson(jsonObject["statusTextFont"])
         result.resultStatusTextFont = Font.fromJson(jsonObject["resultStatusTextFont"])
         result.multipageButtonTextFont = Font.fromJson(jsonObject["multipageButtonTextFont"])
@@ -4068,6 +4070,8 @@ const eVisualFieldType = {
     FT_MVC_AGENCY: 695,
     FT_ISSUING_STATE_CODE_ALPHA2: 696,
     FT_NATIONALITY_CODE_ALPHA2: 697,
+    FT_FIRST_ISSUE_DATE_CHECKDIGIT: 698,
+    FT_FIRST_ISSUE_DATE_CHECKSUM: 699,
 }
 
 const DocReaderOrientation = {
@@ -4353,6 +4357,8 @@ DocumentReader.getTenant = (successCallback, errorCallback) => cordova.exec(succ
 DocumentReader.setTenant = (tenant, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTenant", tenant])
 DocumentReader.getEnv = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getEnv"])
 DocumentReader.setEnv = (env, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setEnv", env])
+DocumentReader.getLocale = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getLocale"])
+DocumentReader.setLocale = (locale, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setLocale", locale])
 DocumentReader.getFunctionality = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getFunctionality"])
 DocumentReader.setFunctionality = (functionality, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setFunctionality", functionality])
 DocumentReader.getProcessParams = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getProcessParams"])
