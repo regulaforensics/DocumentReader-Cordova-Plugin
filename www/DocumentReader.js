@@ -1235,6 +1235,7 @@ class ImageQA {
                 result.expectedPass.push(jsonObject["expectedPass"][i])
         result.documentPositionIndent = jsonObject["documentPositionIndent"]
         result.brightnessThreshold = jsonObject["brightnessThreshold"]
+        result.occlusionCheck = jsonObject["occlusionCheck"]
 
         return result
     }
@@ -1313,6 +1314,7 @@ class LivenessParams {
         result.checkED = jsonObject["checkED"]
         result.checkBlackAndWhiteCopy = jsonObject["checkBlackAndWhiteCopy"]
         result.checkDynaprint = jsonObject["checkDynaprint"]
+        result.checkGeometry = jsonObject["checkGeometry"]
 
         return result
     }
@@ -1384,6 +1386,9 @@ class ProcessParams {
         result.strictBarcodeDigitalSignatureCheck = jsonObject["strictBarcodeDigitalSignatureCheck"]
         result.selectLongestNames = jsonObject["selectLongestNames"]
         result.generateDTCVC = jsonObject["generateDTCVC"]
+        result.strictDLCategoryExpiry = jsonObject["strictDLCategoryExpiry"]
+        result.generateAlpha2Codes = jsonObject["generateAlpha2Codes"]
+        result.disableAuthResolutionFilter = jsonObject["disableAuthResolutionFilter"]
         result.barcodeParserType = jsonObject["barcodeParserType"]
         result.perspectiveAngle = jsonObject["perspectiveAngle"]
         result.minDPI = jsonObject["minDPI"]
@@ -1399,6 +1404,7 @@ class ProcessParams {
         result.mrzDetectMode = jsonObject["mrzDetectMode"]
         result.measureSystem = jsonObject["measureSystem"]
         result.forceDocID = jsonObject["forceDocID"]
+        result.pdfPagesLimit = jsonObject["pdfPagesLimit"]
         result.dateFormat = jsonObject["dateFormat"]
         result.scenario = jsonObject["scenario"]
         result.captureButtonScenario = jsonObject["captureButtonScenario"]
@@ -1523,6 +1529,7 @@ class Customization {
         result.cameraFrameShapeType = jsonObject["cameraFrameShapeType"]
         result.status = jsonObject["status"]
         result.resultStatus = jsonObject["resultStatus"]
+        result.multipageButtonText = jsonObject["multipageButtonText"]
         result.cameraFrameDefaultColor = jsonObject["cameraFrameDefaultColor"]
         result.cameraFrameActiveColor = jsonObject["cameraFrameActiveColor"]
         result.statusTextColor = jsonObject["statusTextColor"]
@@ -1534,6 +1541,7 @@ class Customization {
         result.statusBackgroundColor = jsonObject["statusBackgroundColor"]
         result.cameraPreviewBackgroundColor = jsonObject["cameraPreviewBackgroundColor"]
         result.backgroundMaskColor = jsonObject["backgroundMaskColor"]
+        result.multipageButtonTextColor = jsonObject["multipageButtonTextColor"]
         result.statusPositionMultiplier = jsonObject["statusPositionMultiplier"]
         result.resultStatusPositionMultiplier = jsonObject["resultStatusPositionMultiplier"]
         result.toolbarSize = jsonObject["toolbarSize"]
@@ -1544,6 +1552,9 @@ class Customization {
         result.cameraFrameLandscapeAspectRatio = jsonObject["cameraFrameLandscapeAspectRatio"]
         result.cameraFramePortraitAspectRatio = jsonObject["cameraFramePortraitAspectRatio"]
         result.cameraFrameCornerRadius = jsonObject["cameraFrameCornerRadius"]
+        result.activityIndicatorPortraitPositionMultiplier = jsonObject["activityIndicatorPortraitPositionMultiplier"]
+        result.activityIndicatorLandscapePositionMultiplier = jsonObject["activityIndicatorLandscapePositionMultiplier"]
+        result.cameraPreviewVerticalPositionMultiplier = jsonObject["cameraPreviewVerticalPositionMultiplier"]
         result.multipageAnimationFrontImage = jsonObject["multipageAnimationFrontImage"]
         result.multipageAnimationBackImage = jsonObject["multipageAnimationBackImage"]
         result.borderBackgroundImage = jsonObject["borderBackgroundImage"]
@@ -1556,8 +1567,10 @@ class Customization {
         result.changeFrameButtonExpandImage = jsonObject["changeFrameButtonExpandImage"]
         result.changeFrameButtonCollapseImage = jsonObject["changeFrameButtonCollapseImage"]
         result.livenessAnimationImage = jsonObject["livenessAnimationImage"]
+        result.multipageButtonImage = jsonObject["multipageButtonImage"]
         result.statusTextFont = Font.fromJson(jsonObject["statusTextFont"])
         result.resultStatusTextFont = Font.fromJson(jsonObject["resultStatusTextFont"])
+        result.multipageButtonTextFont = Font.fromJson(jsonObject["multipageButtonTextFont"])
         result.customLabelStatus = jsonObject["customLabelStatus"]
         result.cameraFrameLineCap = jsonObject["cameraFrameLineCap"]
         result.uiCustomizationLayer = jsonObject["uiCustomizationLayer"]
@@ -1732,6 +1745,7 @@ class RFIDScenario {
         result.readDTC = jsonObject["readDTC"]
         result.mrzStrictCheck = jsonObject["mrzStrictCheck"]
         result.loadCRLFromRemote = jsonObject["loadCRLFromRemote"]
+        result.independentSODStatus = jsonObject["independentSODStatus"]
         result.readingBuffer = jsonObject["readingBuffer"]
         result.onlineTAToSignDataType = jsonObject["onlineTAToSignDataType"]
         result.defaultReadingBufferSize = jsonObject["defaultReadingBufferSize"]
@@ -1748,6 +1762,10 @@ class RFIDScenario {
         result.eSignPINDefault = jsonObject["eSignPINDefault"]
         result.eSignPINNewValue = jsonObject["eSignPINNewValue"]
         result.cardAccess = jsonObject["cardAccess"]
+        result.mrzHash = jsonObject["mrzHash"]
+        result.documentNumber = jsonObject["documentNumber"]
+        result.dateOfBirth = jsonObject["dateOfBirth"]
+        result.dateOfExpiry = jsonObject["dateOfExpiry"]
         result.eDLDataGroups = EDLDataGroups.fromJson(jsonObject["eDLDataGroups"])
         result.ePassportDataGroups = EPassportDataGroups.fromJson(jsonObject["ePassportDataGroups"])
         result.eIDDataGroups = EIDDataGroups.fromJson(jsonObject["eIDDataGroups"])
@@ -2184,6 +2202,11 @@ const eProcessGLCommands = {
     ePC_RFID_SetTCCParams: 12522,
 }
 
+const eRFIDReadingBufferSize = {
+    STANDARD_LENGTH: 0,
+    EXTENDED_LENGTH: -1,
+}
+
 const PKDResourceType = {
     CERTIFICATE_PA: 0,
     CERTIFICATE_TA: 1,
@@ -2287,6 +2310,7 @@ const ScenarioIdentifier = {
     SCENARIO_CREDIT_CARD: "CreditCard",
     SCENARIO_CAPTURE: "Capture",
     SCENARIO_DTC: "DTC",
+    SCENARIO_RFID: "RFID",
 }
 
 const eRFID_AccessControl_ProcedureType = {
@@ -2353,6 +2377,7 @@ const eRFID_Password_Type = {
     PPT_PUK: 4,
     PPT_PIN_ESIGN: 5,
     PPT_SAI: 6,
+    PPT_MRZ_HASH: 7,
 }
 
 const ViewContentMode = {
@@ -2839,6 +2864,8 @@ const eLDS_ParsingNotificationCodes = {
     NTF_LDS_ICAO_CERTIFICATE_VISUAL_MRZ_COUNTRY_NON_MATCHING: 0x90000251,
     NTF_LDS_MRZ_COUNTRYCODE_VISUALMRZ_NON_MATCHING: 0x00022019,
     NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: 0x90000252,
+    NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: 0x90000253,
+    NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: 0x90000254,
 }
 
 const eImageQualityCheckType = {
@@ -2852,6 +2879,7 @@ const eImageQualityCheckType = {
     IQC_PORTRAIT: 7,
     IQC_HANDWRITTEN: 8,
     IQC_BRIGHTNESS: 9,
+    IQC_OCCLUSION: 10,
 }
 
 const MRZFormat = {
@@ -2941,6 +2969,8 @@ const eRPRM_SecurityFeatureType = {
     SECURITY_FEATURE_TYPE_CONTACT_CHIP_CLASSIFICATION: 51,
     SECURITY_FEATURE_TYPE_HEAD_POSITION_CHECK: 52,
     SECURITY_FEATURE_TYPE_LIVENESS_BLACK_AND_WHITE_COPY_CHECK: 53,
+    SECURITY_FEATURE_TYPE_LIVENESS_DYNAPRINT_CHECK: 54,
+    SECURITY_FEATURE_TYPE_LIVENESS_GEOMETRY_CHECK: 55,
 }
 
 const OnlineMode = {
@@ -4035,6 +4065,13 @@ const eVisualFieldType = {
     FT_DIGITAL_TRAVEL_AUTHORIZATION_NUMBER: 690,
     FT_DATE_OF_FIRST_POSITIVE_TEST_RESULT: 691,
     FT_EF_CARD_ACCESS: 692,
+    FT_SHORT_FLIGHT_NUMBER: 693,
+    FT_AIRLINE_CODE: 694,
+    FT_MVC_AGENCY: 695,
+    FT_ISSUING_STATE_CODE_ALPHA2: 696,
+    FT_NATIONALITY_CODE_ALPHA2: 697,
+    FT_FIRST_ISSUE_DATE_CHECKDIGIT: 698,
+    FT_FIRST_ISSUE_DATE_CHECKSUM: 699,
 }
 
 const DocReaderOrientation = {
@@ -4258,6 +4295,7 @@ const Enum = {
    eRPRM_FieldVerificationResult,
    DocReaderAction,
    eProcessGLCommands,
+   eRFIDReadingBufferSize,
    PKDResourceType,
    eRFID_AuthenticationProcedureType,
    DocumentReaderErrorCodes,
@@ -4319,6 +4357,8 @@ DocumentReader.getTenant = (successCallback, errorCallback) => cordova.exec(succ
 DocumentReader.setTenant = (tenant, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTenant", tenant])
 DocumentReader.getEnv = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getEnv"])
 DocumentReader.setEnv = (env, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setEnv", env])
+DocumentReader.getLocale = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getLocale"])
+DocumentReader.setLocale = (locale, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setLocale", locale])
 DocumentReader.getFunctionality = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getFunctionality"])
 DocumentReader.setFunctionality = (functionality, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setFunctionality", functionality])
 DocumentReader.getProcessParams = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getProcessParams"])
@@ -4337,6 +4377,7 @@ DocumentReader.runAutoUpdate = (databaseId, successCallback, errorCallback) => c
 DocumentReader.cancelDBUpdate = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["cancelDBUpdate"])
 DocumentReader.checkDatabaseUpdate = (databaseId, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["checkDatabaseUpdate", databaseId])
 DocumentReader.scan = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["scan", config])
+DocumentReader.startScanner = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startScanner", config])
 DocumentReader.recognize = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognize", config])
 DocumentReader.startNewPage = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startNewPage"])
 DocumentReader.stopScanner = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["stopScanner"])
@@ -4351,6 +4392,9 @@ DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallbac
 DocumentReader.clearPKDCertificates = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearPKDCertificates"])
 DocumentReader.startNewSession = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startNewSession"])
 DocumentReader.connectBluetoothDevice = (btDeviceName, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["connectBluetoothDevice", btDeviceName])
+DocumentReader.btDeviceRequestFlashing = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["btDeviceRequestFlashing"])
+DocumentReader.btDeviceRequestFlashingFullIR = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["btDeviceRequestFlashingFullIR"])
+DocumentReader.btDeviceRequestTurnOffAll = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["btDeviceRequestTurnOffAll"])
 DocumentReader.setLocalizationDictionary = (dictionary, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setLocalizationDictionary", dictionary])
 DocumentReader.getLicense = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getLicense"])
 DocumentReader.getAvailableScenarios = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getAvailableScenarios"])
