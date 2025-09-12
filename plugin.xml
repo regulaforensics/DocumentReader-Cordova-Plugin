@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="8.2.220-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="8.3.222-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
   <license>commercial</license>
@@ -29,7 +29,7 @@
         <source url="https://github.com/CocoaPods/Specs.git"/>
       </config>
       <pods>
-        <pod name="DocumentReaderStage" spec="8.3.5042" />
+        <pod name="DocumentReaderStage" spec="8.3.5051" />
       </pods>
     </podspec>
   </platform>
