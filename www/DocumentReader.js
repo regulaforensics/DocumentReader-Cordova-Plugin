@@ -1194,6 +1194,7 @@ class Functionality {
         result.btDeviceName = jsonObject["btDeviceName"]
         result.zoomFactor = jsonObject["zoomFactor"]
         result.exposure = jsonObject["exposure"]
+        result.videoRecordingSizeDownscaleFactor = jsonObject["videoRecordingSizeDownscaleFactor"]
         result.excludedCamera2Models = []
         if (jsonObject["excludedCamera2Models"] != null)
             for (const i in jsonObject["excludedCamera2Models"])
@@ -1389,6 +1390,7 @@ class ProcessParams {
         result.strictDLCategoryExpiry = jsonObject["strictDLCategoryExpiry"]
         result.generateAlpha2Codes = jsonObject["generateAlpha2Codes"]
         result.disableAuthResolutionFilter = jsonObject["disableAuthResolutionFilter"]
+        result.strictSecurityChecks = jsonObject["strictSecurityChecks"]
         result.barcodeParserType = jsonObject["barcodeParserType"]
         result.perspectiveAngle = jsonObject["perspectiveAngle"]
         result.minDPI = jsonObject["minDPI"]
@@ -2533,6 +2535,7 @@ const eCheckDiagnose = {
     TEXT_COLOR_SHOULD_BE_GREEN: 131,
     TEXT_COLOR_SHOULD_BE_RED: 132,
     TEXT_SHOULD_BE_BLACK: 133,
+    SECURITY_TEXT_IS_ABSENT: 134,
     BARCODE_WAS_READ_WITH_ERRORS: 140,
     BARCODE_DATA_FORMAT_ERROR: 141,
     BARCODE_SIZE_PARAMS_ERROR: 142,
