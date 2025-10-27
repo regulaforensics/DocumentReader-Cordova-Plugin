@@ -17,7 +17,7 @@ UIViewController*(^RGLWRootViewController)(void) = ^UIViewController*(){
 };
 
 static RGLWEventSender sendEvent = ^(NSString* event, id data) {
-    NSArray *skippedEvents = @[videoEncoderCompletionEvent, onCustomButtonTappedEvent];
+    NSArray *skippedEvents = @[drVideoEncoderCompletionEvent, drOnCustomButtonTappedEvent];
     if([skippedEvents containsObject:event]) return;
 
     NSArray *singleEvents = @[completionEvent, databaseProgressEvent];
