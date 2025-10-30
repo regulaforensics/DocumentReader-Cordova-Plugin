@@ -1393,6 +1393,7 @@ class ProcessParams {
         result.generateAlpha2Codes = jsonObject["generateAlpha2Codes"]
         result.disableAuthResolutionFilter = jsonObject["disableAuthResolutionFilter"]
         result.strictSecurityChecks = jsonObject["strictSecurityChecks"]
+        result.returnTransliteratedFields = jsonObject["returnTransliteratedFields"]
         result.barcodeParserType = jsonObject["barcodeParserType"]
         result.perspectiveAngle = jsonObject["perspectiveAngle"]
         result.minDPI = jsonObject["minDPI"]
