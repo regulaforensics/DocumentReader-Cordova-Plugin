@@ -1801,35 +1801,6 @@ class PrepareProgress {
     }
 }
 
-class FilterObjectType {
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new FilterObjectType()
-
-        result.list = []
-        if (jsonObject["list"] != null)
-            for (const i in jsonObject["list"])
-                result.list.push(jsonObject["list"][i])
-        result.isInclude = jsonObject["isInclude"]
-
-        return result
-    }
-}
-
-class FilterObject {
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new FilterObject()
-
-        result.docIDsFilter = FilterObjectType.fromJson(jsonObject["docIDsFilter"])
-        result.docFormatsFilter = FilterObjectType.fromJson(jsonObject["docFormatsFilter"])
-        result.docCategoriesFilter = FilterObjectType.fromJson(jsonObject["docCategoriesFilter"])
-        result.docCountriesFilter = FilterObjectType.fromJson(jsonObject["docCountriesFilter"])
-
-        return result
-    }
-}
-
 // Enum
 
 const FontStyle = {
@@ -1993,16 +1964,6 @@ const eRFID_ErrorCodes = {
     RFID_ERROR_LAYER34_SAM_ERROR: 0x840D0000,
     RFID_ERROR_LAYER34_SAM_COLLISION: 0x840E0000,
     RFID_ERROR_LAYER34_SAM_ACKNOWLEDGE: 0x840F0000,
-}
-
-const LivenessCheckType = {
-    OVI: "checkOVI",
-    MLI: "checkMLI",
-    HOLO: "checkHolo",
-    ED: "checkED",
-    BLACK_AND_WHITE_COPY: "checkBlackAndWhiteCopy",
-    DYNAPRINT: "checkDynaprint",
-    GEOMETRY: "checkGeometry",
 }
 
 const eLDS_ParsingErrorCodes = {
@@ -2217,10 +2178,6 @@ const LineCap = {
     BUTT: 0,
     ROUND: 1,
     SQUARE: 2,
-}
-
-const FilterCheckType = {
-    CHECK_AUTH: "checkAuth",
 }
 
 const eRPRM_FieldVerificationResult = {
@@ -3049,24 +3006,6 @@ const OnlineMode = {
 const eRFID_SDK_ProfilerType = {
     SPT_DOC_9303_EDITION_2006: 0x00000001,
     SPT_DOC_9303_LDS_PKI_MAINTENANCE: 0x00000002,
-}
-
-const AuthenticityCheckType = {
-    USE_LIVENESS: "checkLiveness",
-    UV_LUMINISCENCE: "checkUVLuminiscence",
-    IR_B900: "checkIRB900",
-    IMAGE_PATTERNS: "checkImagePatterns",
-    FIBERS: "checkFibers",
-    EXT_MRZ: "checkExtMRZ",
-    EXT_OCR: "checkExtOCR",
-    AXIAL: "checkAxial",
-    BARCODE_FORMAT: "checkBarcodeFormat",
-    IR_VISIBILITY: "checkIRVisibility",
-    IPI: "checkIPI",
-    PHOTO_EMBEDDING: "checkPhotoEmbedding",
-    PHOTO_COMPARISON: "checkPhotoComparison",
-    LETTER_SCREEN: "checkLetterScreen++",
-    SECURITY_TEXT: "checkSecurityText",
 }
 
 const diDocType = {
@@ -4375,7 +4314,6 @@ const Enum = {
    eRPRM_Authenticity,
    CustomizationColor,
    eRFID_ErrorCodes,
-   LivenessCheckType,
    eLDS_ParsingErrorCodes,
    eRFID_CertificateType,
    RGLMeasureSystem,
@@ -4383,7 +4321,6 @@ const Enum = {
    FrameShapeType,
    eRFID_BaudRate,
    LineCap,
-   FilterCheckType,
    eRPRM_FieldVerificationResult,
    DocReaderAction,
    eProcessGLCommands,
@@ -4414,7 +4351,6 @@ const Enum = {
    eRPRM_SecurityFeatureType,
    OnlineMode,
    eRFID_SDK_ProfilerType,
-   AuthenticityCheckType,
    diDocType,
    ButtonTag,
    HoloAnimationType,
@@ -4499,15 +4435,6 @@ DocumentReader.getDocReaderDocumentsDatabase = (successCallback, errorCallback) 
 DocumentReader.finalizePackage = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["finalizePackage"])
 DocumentReader.endBackendTransaction = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["endBackendTransaction"])
 DocumentReader.getTranslation = (className, value, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTranslation", className, value])
-DocumentReader.processParamsSetCheckFilter = (checkType, filter, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["processParamsSetCheckFilter", checkType, filter])
-DocumentReader.processParamsRemoveCheckFilter = (checkType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["processParamsRemoveCheckFilter", checkType])
-DocumentReader.processParamsClearCheckFilter = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["processParamsClearCheckFilter"])
-DocumentReader.authenticityParamsSetCheckFilter = (checkType, filter, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["authenticityParamsSetCheckFilter", checkType, filter])
-DocumentReader.authenticityParamsRemoveCheckFilter = (checkType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["authenticityParamsRemoveCheckFilter", checkType])
-DocumentReader.authenticityParamsClearCheckFilter = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["authenticityParamsClearCheckFilter"])
-DocumentReader.livenessParamsSetCheckFilter = (checkType, filter, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["livenessParamsSetCheckFilter", checkType, filter])
-DocumentReader.livenessParamsRemoveCheckFilter = (checkType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["livenessParamsRemoveCheckFilter", checkType])
-DocumentReader.livenessParamsClearCheckFilter = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["livenessParamsClearCheckFilter"])
 
 DocumentReader.textFieldValueByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByType", results.rawResult, fieldType])
 DocumentReader.textFieldValueByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeLcid", results.rawResult, fieldType, lcid])
@@ -4619,7 +4546,5 @@ DocumentReaderPlugin.EIDDataGroups = EIDDataGroups
 DocumentReaderPlugin.DTCDataGroup = DTCDataGroup
 DocumentReaderPlugin.RFIDScenario = RFIDScenario
 DocumentReaderPlugin.PrepareProgress = PrepareProgress
-DocumentReaderPlugin.FilterObjectType = FilterObjectType
-DocumentReaderPlugin.FilterObject = FilterObject
 
 module.exports = DocumentReaderPlugin
