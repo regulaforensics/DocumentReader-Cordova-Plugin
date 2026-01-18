@@ -1888,6 +1888,18 @@ class DeviceEngagement {
     }
 }
 
+class DeviceEngagementCompletion {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DeviceEngagementCompletion()
+
+        result.deviceEngagement = DeviceEngagement.fromJson(jsonObject["deviceEngagement"])
+        result.error = RegulaException.fromJson(jsonObject["error"])
+
+        return result
+    }
+}
+
 class DeviceRetrievalMethod {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
@@ -4794,6 +4806,7 @@ DocumentReaderPlugin.DTCDataGroup = DTCDataGroup
 DocumentReaderPlugin.RFIDScenario = RFIDScenario
 DocumentReaderPlugin.PrepareProgress = PrepareProgress
 DocumentReaderPlugin.DeviceEngagement = DeviceEngagement
+DocumentReaderPlugin.DeviceEngagementCompletion = DeviceEngagementCompletion
 DocumentReaderPlugin.DeviceRetrievalMethod = DeviceRetrievalMethod
 DocumentReaderPlugin.DataRetrieval = DataRetrieval
 DocumentReaderPlugin.DocumentRequestMDL = DocumentRequestMDL
