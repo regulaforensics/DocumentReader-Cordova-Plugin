@@ -18,6 +18,7 @@ import com.regula.documentreader.api.params.ImageQA
 import com.regula.documentreader.api.params.LivenessParams
 import com.regula.documentreader.api.params.ParamsCustomization
 import com.regula.documentreader.api.params.ProcessParam
+import com.regula.documentreader.api.params.Bsi
 import com.regula.documentreader.api.params.RfidScenario
 import com.regula.documentreader.api.params.rfid.dg.DTCDataGroup
 import com.regula.documentreader.api.params.rfid.dg.DataGroups
@@ -47,6 +48,7 @@ fun setFunctionality(config: Functionality, input: JSONObject) = input.forEach {
         "recordScanningProcess" -> editor.setDoRecordProcessingVideo(v as Boolean)
         "manualMultipageMode" -> editor.setManualMultipageMode(v as Boolean)
         "torchTurnedOn" -> editor.setTorchTurnedOn(v as Boolean)
+        "preventScreenRecording" -> editor.setPreventScreenRecording(v as Boolean)
         "showCaptureButtonDelayFromDetect" -> editor.setShowCaptureButtonDelayFromDetect(v.toLong())
         "showCaptureButtonDelayFromStart" -> editor.setShowCaptureButtonDelayFromStart(v.toLong())
         "orientation" -> editor.setOrientation(v.toInt())
@@ -58,6 +60,8 @@ fun setFunctionality(config: Functionality, input: JSONObject) = input.forEach {
         "btDeviceName" -> editor.setBtDeviceName(v as String)
         "zoomFactor" -> editor.setZoomFactor(v.toFloat())
         "exposure" -> editor.setExposure(v.toFloat())
+        "videoRecordingSizeDownscaleFactor" -> editor.setVideoRecordingSizeDownscaleFactor(v.toFloat())
+        "mdlTimeout" -> editor.setMDLTimeout(v.toDouble())
         "excludedCamera2Models" -> editor.setExcludedCamera2Models((v as JSONArray).toList())
         "cameraSize" -> editor.setCameraSize(cameraSizeFromJSON(v as JSONObject).first, cameraSizeFromJSON(v).second)
     }
@@ -81,6 +85,7 @@ fun getFunctionality(input: Functionality) = mapOf(
     "recordScanningProcess" to input.doRecordProcessingVideo(),
     "manualMultipageMode" to input.isManualMultipageMode,
     "torchTurnedOn" to input.isTorchTurnedOn,
+    "preventScreenRecording" to input.doPreventScreenRecording(),
     "showCaptureButtonDelayFromDetect" to input.showCaptureButtonDelayFromDetect,
     "showCaptureButtonDelayFromStart" to input.showCaptureButtonDelayFromStart,
     "orientation" to input.orientation,
@@ -92,6 +97,8 @@ fun getFunctionality(input: Functionality) = mapOf(
     "btDeviceName" to input.btDeviceName,
     "zoomFactor" to input.zoomFactor,
     "exposure" to input.exposure,
+    "videoRecordingSizeDownscaleFactor" to input.videoRecordingSizeDownscaleFactor,
+    "mdlTimeout" to input.mdlTimeout,
     "excludedCamera2Models" to input.excludedCamera2Models.toJson(),
     "cameraSize" to generateCameraSize(input.cameraWidth, input.cameraHeight)
 ).toJson()
@@ -138,6 +145,14 @@ fun setProcessParams(processParams: ProcessParam, opts: JSONObject) = opts.forEa
         "strictDLCategoryExpiry" -> processParams.strictDLCategoryExpiry = v as Boolean
         "generateAlpha2Codes" -> processParams.generateAlpha2Codes = v as Boolean
         "disableAuthResolutionFilter" -> processParams.disableAuthResolutionFilter = v as Boolean
+        "strictSecurityChecks" -> processParams.strictSecurityChecks = v as Boolean
+        "returnTransliteratedFields" -> processParams.returnTransliteratedFields = v as Boolean
+        "checkCaptureProcessIntegrity" -> processParams.checkCaptureProcessIntegrity = v as Boolean
+        "bsiTr03135" -> {
+            val temp = Bsi()
+            temp.generateResult = (v as JSONObject).getBooleanOrNull("generateResult")
+            processParams.bsiTr03135 = temp
+        }
         "measureSystem" -> processParams.measureSystem = v.toInt()
         "barcodeParserType" -> processParams.barcodeParserType = v.toInt()
         "perspectiveAngle" -> processParams.perspectiveAngle = v.toInt()
@@ -168,6 +183,7 @@ fun setProcessParams(processParams: ProcessParam, opts: JSONObject) = opts.forEa
         "documentGroupFilter" -> processParams.documentGroupFilter = v.toIntArray()
         "lcidIgnoreFilter" -> processParams.lcidIgnoreFilter = v.toIntArray()
         "lcidFilter" -> processParams.lcidFilter = v.toIntArray()
+        "fieldTypesIgnoreFilter" -> processParams.fieldTypesIgnoreFilter = v.toIntArray()
         "barcodeTypes" -> processParams.doBarcodes = barcodeTypeArrayFromJson(v as JSONArray)
         "mrzFormatsFilter" -> processParams.mrzFormatsFilter = (v as JSONArray).toArray()
         "customParams" -> processParams.customParams = v as JSONObject
@@ -223,6 +239,12 @@ fun getProcessParams(processParams: ProcessParam) = mapOf(
     "strictDLCategoryExpiry" to processParams.strictDLCategoryExpiry,
     "generateAlpha2Codes" to processParams.generateAlpha2Codes,
     "disableAuthResolutionFilter" to processParams.disableAuthResolutionFilter,
+    "strictSecurityChecks" to processParams.strictSecurityChecks,
+    "returnTransliteratedFields" to processParams.returnTransliteratedFields,
+    "checkCaptureProcessIntegrity" to processParams.checkCaptureProcessIntegrity,
+    "bsiTr03135" to mapOf(
+        "generateResult" to processParams.bsiTr03135?.generateResult
+    ).toJson(),
     "measureSystem" to processParams.measureSystem,
     "barcodeParserType" to processParams.barcodeParserType,
     "perspectiveAngle" to processParams.perspectiveAngle,
@@ -252,6 +274,7 @@ fun getProcessParams(processParams: ProcessParam) = mapOf(
     "documentGroupFilter" to processParams.documentGroupFilter.toJson(),
     "lcidIgnoreFilter" to processParams.lcidIgnoreFilter.toJson(),
     "lcidFilter" to processParams.lcidFilter.toJson(),
+    "fieldTypesIgnoreFilter" to processParams.fieldTypesIgnoreFilter.toJson(),
     "resultTypeOutput" to processParams.resultTypeOutput.toJson(),
     "mrzFormatsFilter" to processParams.mrzFormatsFilter.toJson(),
     "barcodeTypes" to generateBarcodeTypeArray(processParams.doBarcodes),
@@ -306,6 +329,7 @@ fun setCustomization(customization: ParamsCustomization, opts: JSONObject) = opt
         "activityIndicatorPortraitPositionMultiplier" -> editor.setActivityIndicatorPortraitPositionMultiplier(v.toFloat())
         "activityIndicatorLandscapePositionMultiplier" -> editor.setActivityIndicatorLandscapePositionMultiplier(v.toFloat())
         "cameraPreviewVerticalPositionMultiplier" -> editor.setCameraPreviewVerticalPositionMultiplier(v.toFloat())
+        "multipageButtonPositionMultiplier" -> editor.setMultipageButtonPositionMultiplier(v.toFloat())
         "multipageAnimationFrontImage" -> editor.setMultipageAnimationFrontImage(v.toDrawable())
         "multipageAnimationBackImage" -> editor.setMultipageAnimationBackImage(v.toDrawable())
         "borderBackgroundImage" -> editor.setBorderBackgroundImage(v.toDrawable())
@@ -392,6 +416,7 @@ fun getCustomization(customization: ParamsCustomization) = mapOf(
     "activityIndicatorPortraitPositionMultiplier" to customization.activityIndicatorPortraitPositionMultiplier,
     "activityIndicatorLandscapePositionMultiplier" to customization.activityIndicatorLandscapePositionMultiplier,
     "cameraPreviewVerticalPositionMultiplier" to customization.cameraPreviewVerticalPositionMultiplier,
+    "multipageButtonPositionMultiplier" to customization.multipageButtonPositionMultiplier,
     "multipageAnimationFrontImage" to customization.multipageAnimationFrontImage.toBase64(),
     "multipageAnimationBackImage" to customization.multipageAnimationBackImage.toBase64(),
     "borderBackgroundImage" to customization.borderBackgroundImage.toBase64(),
@@ -748,6 +773,10 @@ fun setColors(input: ParamsCustomization.CustomizationEditor, opts: JSONObject) 
         "rfidProcessingScreenProgressBarBackground" -> input.setColor(CustomizationColor.RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND, value)
         "rfidProcessingScreenResultLabelText" -> input.setColor(CustomizationColor.RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT, value)
         "rfidProcessingScreenLoadingBar" -> input.setColor(CustomizationColor.RFID_PROCESSING_SCREEN_LOADING_BAR, value)
+        "rfidEnableNfcTitleText" -> input.setColor(CustomizationColor.RFID_ENABLE_NFC_TITLE_TEXT, value)
+        "rfidEnableNfcDescriptionText" -> input.setColor(CustomizationColor.RFID_ENABLE_NFC_DESCRIPTION_TEXT, value)
+        "rfidEnableNfcButtonText" -> input.setColor(CustomizationColor.RFID_ENABLE_NFC_BUTTON_TEXT, value)
+        "rfidEnableNfcButtonBackground" -> input.setColor(CustomizationColor.RFID_ENABLE_NFC_BUTTON_BACKGROUND, value)
     }
 }
 
@@ -760,6 +789,10 @@ fun getColors(input: Map<CustomizationColor, Long>) = mapOf(
     "rfidProcessingScreenProgressBarBackground" to input[CustomizationColor.RFID_PROCESSING_SCREEN_PROGRESS_BAR_BACKGROUND],
     "rfidProcessingScreenResultLabelText" to input[CustomizationColor.RFID_PROCESSING_SCREEN_RESULT_LABEL_TEXT],
     "rfidProcessingScreenLoadingBar" to input[CustomizationColor.RFID_PROCESSING_SCREEN_LOADING_BAR],
+    "rfidEnableNfcTitleText" to input[CustomizationColor.RFID_ENABLE_NFC_TITLE_TEXT],
+    "rfidEnableNfcDescriptionText" to input[CustomizationColor.RFID_ENABLE_NFC_DESCRIPTION_TEXT],
+    "rfidEnableNfcButtonText" to input[CustomizationColor.RFID_ENABLE_NFC_BUTTON_TEXT],
+    "rfidEnableNfcButtonBackground" to input[CustomizationColor.RFID_ENABLE_NFC_BUTTON_BACKGROUND],
 ).toJson()
 
 fun setFonts(input: ParamsCustomization.CustomizationEditor, opts: JSONObject) = opts.forEach { key, value ->
@@ -767,6 +800,9 @@ fun setFonts(input: ParamsCustomization.CustomizationEditor, opts: JSONObject) =
         "rfidProcessingScreenHintLabel" -> CustomizationFont.RFID_PROCESSING_SCREEN_HINT_LABEL.setFont(input, value)
         "rfidProcessingScreenProgressLabel" -> CustomizationFont.RFID_PROCESSING_SCREEN_PROGRESS_LABEL.setFont(input, value)
         "rfidProcessingScreenResultLabel" -> CustomizationFont.RFID_PROCESSING_SCREEN_RESULT_LABEL.setFont(input, value)
+        "rfidEnableNfcTitleText" -> CustomizationFont.RFID_ENABLE_NFC_TITLE_TEXT.setFont(input, value)
+        "rfidEnableNfcDescriptionText" -> CustomizationFont.RFID_ENABLE_NFC_DESCRIPTION_TEXT.setFont(input, value)
+        "rfidEnableNfcButtonText" -> CustomizationFont.RFID_ENABLE_NFC_BUTTON_TEXT.setFont(input, value)
     }
 }
 
@@ -774,16 +810,21 @@ fun getFonts(fonts: Map<CustomizationFont, Typeface>, sizes: Map<CustomizationFo
     "rfidProcessingScreenHintLabel" to CustomizationFont.RFID_PROCESSING_SCREEN_HINT_LABEL.getFont(fonts, sizes),
     "rfidProcessingScreenProgressLabel" to CustomizationFont.RFID_PROCESSING_SCREEN_PROGRESS_LABEL.getFont(fonts, sizes),
     "rfidProcessingScreenResultLabel" to CustomizationFont.RFID_PROCESSING_SCREEN_RESULT_LABEL.getFont(fonts, sizes),
+    "rfidEnableNfcTitleText" to CustomizationFont.RFID_ENABLE_NFC_TITLE_TEXT.getFont(fonts, sizes),
+    "rfidEnableNfcDescriptionText" to CustomizationFont.RFID_ENABLE_NFC_DESCRIPTION_TEXT.getFont(fonts, sizes),
+    "rfidEnableNfcButtonText" to CustomizationFont.RFID_ENABLE_NFC_BUTTON_TEXT.getFont(fonts, sizes),
 ).toJson()
 
 fun setImages(input: ParamsCustomization.CustomizationEditor, opts: JSONObject) = opts.forEach { key, v ->
     when (key) {
         "rfidProcessingScreenFailureImage" -> input.setImage(CustomizationImage.RFID_PROCESSING_SCREEN_FAILURE_IMAGE, v.toDrawable())
+        "rfidEnableNfcImage" -> input.setImage(CustomizationImage.RFID_ENABLE_NFC_IMAGE, v.toDrawable())
     }
 }
 
 fun getImages(input: Map<CustomizationImage, Drawable>) = mapOf(
     "rfidProcessingScreenFailureImage" to (input[CustomizationImage.RFID_PROCESSING_SCREEN_FAILURE_IMAGE] ?: ContextCompat.getDrawable(context, com.regula.documentreader.api.R.drawable.reg_ic_error)).toBase64(),
+    "rfidEnableNfcImage" to (input[CustomizationImage.RFID_ENABLE_NFC_IMAGE] ?: ContextCompat.getDrawable(context, com.regula.documentreader.api.R.drawable.reg_enable_nfc)).toBase64(),
 ).toJson()
 
 fun CustomizationFont.getFont(fonts: Map<CustomizationFont, Typeface>, sizes: Map<CustomizationFont, Int>) =
