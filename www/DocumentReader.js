@@ -1463,7 +1463,7 @@ class ProcessParams {
         result.strictSecurityChecks = jsonObject["strictSecurityChecks"]
         result.returnTransliteratedFields = jsonObject["returnTransliteratedFields"]
         result.checkCaptureProcessIntegrity = jsonObject["checkCaptureProcessIntegrity"]
-        result.bsiTr03135Results = jsonObject["bsiTr03135Results"]
+        result.bsiTr03135 = Bsi.fromJson(jsonObject["bsiTr03135"])
         result.barcodeParserType = jsonObject["barcodeParserType"]
         result.perspectiveAngle = jsonObject["perspectiveAngle"]
         result.minDPI = jsonObject["minDPI"]
@@ -1543,6 +1543,17 @@ class Font {
         result.name = jsonObject["name"]
         result.size = jsonObject["size"]
         result.style = jsonObject["style"]
+
+        return result
+    }
+}
+
+class Bsi {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new Bsi()
+
+        result.generateResult = jsonObject["generateResult"]
 
         return result
     }
@@ -4817,6 +4828,7 @@ DocumentReaderPlugin.LivenessParams = LivenessParams
 DocumentReaderPlugin.AuthenticityParams = AuthenticityParams
 DocumentReaderPlugin.ProcessParams = ProcessParams
 DocumentReaderPlugin.Font = Font
+DocumentReaderPlugin.Bsi = Bsi
 DocumentReaderPlugin.CustomizationColors = CustomizationColors
 DocumentReaderPlugin.CustomizationFonts = CustomizationFonts
 DocumentReaderPlugin.CustomizationImages = CustomizationImages
