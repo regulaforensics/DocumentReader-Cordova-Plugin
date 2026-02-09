@@ -6,7 +6,7 @@ repositories {
 
 dependencies {
     //noinspection GradleDependency
-	implementation ('com.regula.documentreader:api:9.2.12397'){
+	implementation ('com.regula.documentreader:api:9.2.12401'){
         transitive = true
     }
 }
