@@ -1197,6 +1197,7 @@ class DocumentReaderResults {
             for (const i in jsonObject["imageQuality"])
                 result.imageQuality.push(ImageQualityGroup.fromJson(jsonObject["imageQuality"][i]))
         result.rawResult = jsonObject["rawResult"]
+        result.bsiTr03135Results = jsonObject["bsiTr03135Results"]
         result.rfidSessionData = RFIDSessionData.fromJson(jsonObject["rfidSessionData"])
         result.authenticityResult = DocumentReaderAuthenticityResult.fromJson(jsonObject["authenticityResult"])
         result.barcodeResult = DocumentReaderBarcodeResult.fromJson(jsonObject["barcodeResult"])
@@ -1462,6 +1463,7 @@ class ProcessParams {
         result.strictSecurityChecks = jsonObject["strictSecurityChecks"]
         result.returnTransliteratedFields = jsonObject["returnTransliteratedFields"]
         result.checkCaptureProcessIntegrity = jsonObject["checkCaptureProcessIntegrity"]
+        result.bsiTr03135 = Bsi.fromJson(jsonObject["bsiTr03135"])
         result.barcodeParserType = jsonObject["barcodeParserType"]
         result.perspectiveAngle = jsonObject["perspectiveAngle"]
         result.minDPI = jsonObject["minDPI"]
@@ -1541,6 +1543,17 @@ class Font {
         result.name = jsonObject["name"]
         result.size = jsonObject["size"]
         result.style = jsonObject["style"]
+
+        return result
+    }
+}
+
+class Bsi {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new Bsi()
+
+        result.generateResult = jsonObject["generateResult"]
 
         return result
     }
@@ -1888,6 +1901,18 @@ class DeviceEngagement {
     }
 }
 
+class DeviceEngagementCompletion {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new DeviceEngagementCompletion()
+
+        result.deviceEngagement = DeviceEngagement.fromJson(jsonObject["deviceEngagement"])
+        result.error = RegulaException.fromJson(jsonObject["error"])
+
+        return result
+    }
+}
+
 class DeviceRetrievalMethod {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
@@ -1996,6 +2021,19 @@ class DocumentRequest18013MDL {
         result.familyNameNationalCharacter = jsonObject["familyNameNationalCharacter"]
         result.givenNameNationalCharacter = jsonObject["givenNameNationalCharacter"]
         result.signatureUsualMark = jsonObject["signatureUsualMark"]
+
+        return result
+    }
+}
+
+class FinalizeConfig {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new FinalizeConfig()
+
+        result.rawImages = jsonObject["rawImages"]
+        result.video = jsonObject["video"]
+        result.rfidSession = jsonObject["rfidSession"]
 
         return result
     }
@@ -2363,6 +2401,7 @@ const eRPRM_ResultType = {
     RPRM_RESULT_TYPE_STATUS: 33,
     RPRM_RESULT_TYPE_PORTRAIT_COMPARISON: 34,
     RPRM_RESULT_TYPE_EXT_PORTRAIT: 35,
+    RPRM_RESULT_TYPE_BSI_XML_V2: 73,
 }
 
 const FrameShapeType = {
@@ -2812,6 +2851,7 @@ const eCheckDiagnose = {
     CHD_DOC_LIVENESS_BLACK_AND_WHITE_COPY_DETECTED: 239,
     DOC_LIVENESS_ELECTRONIC_DEVICE_DETECTED: 240,
     DOC_LIVENESS_INVALID_BARCODE_BACKGROUND: 241,
+    DOC_LIVENESS_VIRTUAL_CAMERA_DETECTED: 242,
     ICAO_IDB_BASE_32_ERROR: 243,
     ICAO_IDB_ZIPPED_ERROR: 244,
     ICAO_IDB_MESSAGE_ZONE_EMPTY: 245,
@@ -3218,6 +3258,10 @@ const eRPRM_SecurityFeatureType = {
     SECURITY_FEATURE_TYPE_LIVENESS_GEOMETRY_CHECK: 55,
     SECURITY_FEATURE_TYPE_AGE_CHECK: 56,
     SECURITY_FEATURE_TYPE_SEX_CHECK: 57,
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_RFIDVSGHOST: 58,
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_BARCODEVSGHOST: 59,
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_GHOSTVSLIVE: 60,
+    SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSGHOST: 61,
 }
 
 const OnlineMode = {
@@ -4679,6 +4723,7 @@ DocumentReader.engageDeviceData = (data, successCallback, errorCallback) => cord
 DocumentReader.startRetrieveData = (deviceEngagement, dataRetrieval, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startRetrieveData", deviceEngagement, dataRetrieval])
 DocumentReader.retrieveDataNFC = (dataRetrieval, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["retrieveDataNFC", dataRetrieval])
 DocumentReader.retrieveDataBLE = (deviceEngagement, dataRetrieval, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["retrieveDataBLE", deviceEngagement, dataRetrieval])
+DocumentReader.finalizePackageWithFinalizeConfig = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["finalizePackageWithFinalizeConfig", config])
 
 DocumentReader.textFieldValueByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByType", results.rawResult, fieldType])
 DocumentReader.textFieldValueByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeLcid", results.rawResult, fieldType, lcid])
@@ -4783,6 +4828,7 @@ DocumentReaderPlugin.LivenessParams = LivenessParams
 DocumentReaderPlugin.AuthenticityParams = AuthenticityParams
 DocumentReaderPlugin.ProcessParams = ProcessParams
 DocumentReaderPlugin.Font = Font
+DocumentReaderPlugin.Bsi = Bsi
 DocumentReaderPlugin.CustomizationColors = CustomizationColors
 DocumentReaderPlugin.CustomizationFonts = CustomizationFonts
 DocumentReaderPlugin.CustomizationImages = CustomizationImages
@@ -4794,10 +4840,12 @@ DocumentReaderPlugin.DTCDataGroup = DTCDataGroup
 DocumentReaderPlugin.RFIDScenario = RFIDScenario
 DocumentReaderPlugin.PrepareProgress = PrepareProgress
 DocumentReaderPlugin.DeviceEngagement = DeviceEngagement
+DocumentReaderPlugin.DeviceEngagementCompletion = DeviceEngagementCompletion
 DocumentReaderPlugin.DeviceRetrievalMethod = DeviceRetrievalMethod
 DocumentReaderPlugin.DataRetrieval = DataRetrieval
 DocumentReaderPlugin.DocumentRequestMDL = DocumentRequestMDL
 DocumentReaderPlugin.NameSpaceMDL = NameSpaceMDL
 DocumentReaderPlugin.DocumentRequest18013MDL = DocumentRequest18013MDL
+DocumentReaderPlugin.FinalizeConfig = FinalizeConfig
 
 module.exports = DocumentReaderPlugin
