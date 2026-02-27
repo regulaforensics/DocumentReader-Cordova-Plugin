@@ -1374,6 +1374,17 @@ class BackendProcessingConfig {
     }
 }
 
+class Bsi {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new Bsi()
+
+        result.generateResult = jsonObject["generateResult"]
+
+        return result
+    }
+}
+
 class LivenessParams {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
@@ -1463,7 +1474,6 @@ class ProcessParams {
         result.strictSecurityChecks = jsonObject["strictSecurityChecks"]
         result.returnTransliteratedFields = jsonObject["returnTransliteratedFields"]
         result.checkCaptureProcessIntegrity = jsonObject["checkCaptureProcessIntegrity"]
-        result.bsiTr03135 = Bsi.fromJson(jsonObject["bsiTr03135"])
         result.barcodeParserType = jsonObject["barcodeParserType"]
         result.perspectiveAngle = jsonObject["perspectiveAngle"]
         result.minDPI = jsonObject["minDPI"]
@@ -1528,6 +1538,7 @@ class ProcessParams {
         result.rfidParams = RFIDParams.fromJson(jsonObject["rfidParams"])
         result.faceApiParams = FaceApiParams.fromJson(jsonObject["faceApiParams"])
         result.backendProcessingConfig = BackendProcessingConfig.fromJson(jsonObject["backendProcessingConfig"])
+        result.bsiTr03135 = Bsi.fromJson(jsonObject["bsiTr03135"])
         result.authenticityParams = AuthenticityParams.fromJson(jsonObject["authenticityParams"])
         result.customParams = jsonObject["customParams"]
 
@@ -1543,17 +1554,6 @@ class Font {
         result.name = jsonObject["name"]
         result.size = jsonObject["size"]
         result.style = jsonObject["style"]
-
-        return result
-    }
-}
-
-class Bsi {
-    static fromJson(jsonObject) {
-        if (jsonObject == null) return null
-        const result = new Bsi()
-
-        result.generateResult = jsonObject["generateResult"]
 
         return result
     }
@@ -2039,6 +2039,19 @@ class FinalizeConfig {
     }
 }
 
+class FinalizeCompletion {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new FinalizeCompletion()
+
+        result.action = jsonObject["action"]
+        result.info = TransactionInfo.fromJson(jsonObject["info"])
+        result.error = RegulaException.fromJson(jsonObject["error"])
+
+        return result
+    }
+}
+
 // Enum
 
 const FontStyle = {
@@ -2085,6 +2098,16 @@ const CustomizationColor = {
     RFID_ENABLE_NFC_DESCRIPTION_TEXT: "rfidEnableNfcDescriptionText",
     RFID_ENABLE_NFC_BUTTON_TEXT: "rfidEnableNfcButtonText",
     RFID_ENABLE_NFC_BUTTON_BACKGROUND: "rfidEnableNfcButtonBackground",
+    MDL_PROCESSING_SCREEN_BACKGROUND: "mdlProcessingScreenBackground",
+    MDL_PROCESSING_SCREEN_HINT_LABEL_TEXT: "mdlProcessingScreenHintLabelText",
+    MDL_PROCESSING_SCREEN_HINT_LABEL_BACKGROUND: "mdlProcessingScreenHintLabelBackground",
+    MDL_PROCESSING_SCREEN_PROGRESS_LABEL_TEXT: "mdlProcessingScreenProgressLabelText",
+    MDL_PROCESSING_SCREEN_RESULT_LABEL_TEXT: "mdlProcessingScreenResultLabelText",
+    MDL_PROCESSING_SCREEN_LOADING_BAR: "mdlProcessingScreenLoadingBar",
+    MDL_ENABLE_NFC_TITLE_TEXT: "mdlEnableNfcTitleText",
+    MDL_ENABLE_NFC_DESCRIPTION_TEXT: "mdlEnableNfcDescriptionText",
+    MDL_ENABLE_NFC_BUTTON_TEXT: "mdlEnableNfcButtonText",
+    MDL_ENABLE_NFC_BUTTON_BACKGROUND: "mdlEnableNfcButtonBackground",
 }
 
 const eRFID_ErrorCodes = {
@@ -3541,6 +3564,12 @@ const CustomizationFont = {
     RFID_ENABLE_NFC_TITLE_TEXT: "rfidEnableNfcTitleText",
     RFID_ENABLE_NFC_DESCRIPTION_TEXT: "rfidEnableNfcDescriptionText",
     RFID_ENABLE_NFC_BUTTON_TEXT: "rfidEnableNfcButtonText",
+    MDL_PROCESSING_SCREEN_HINT_LABEL: "mdlProcessingScreenHintLabel",
+    MDL_PROCESSING_SCREEN_PROGRESS_LABEL: "mdlProcessingScreenProgressLabel",
+    MDL_PROCESSING_SCREEN_RESULT_LABEL: "mdlProcessingScreenResultLabel",
+    MDL_ENABLE_NFC_TITLE_TEXT: "mdlEnableNfcTitleText",
+    MDL_ENABLE_NFC_DESCRIPTION_TEXT: "mdlEnableNfcDescriptionText",
+    MDL_ENABLE_NFC_BUTTON_TEXT: "mdlEnableNfcButtonText",
 }
 
 const ImageFormat = {
@@ -4551,6 +4580,8 @@ const LCID = {
 const CustomizationImage = {
     RFID_PROCESSING_SCREEN_FAILURE_IMAGE: "rfidProcessingScreenFailureImage",
     RFID_ENABLE_NFC_IMAGE: "rfidEnableNfcImage",
+    MDL_PROCESSING_SCREEN_FAILURE_IMAGE: "mdlProcessingScreenFailureImage",
+    MDL_ENABLE_NFC_IMAGE: "mdlEnableNfcImage",
 }
 
 const DocReaderFrame = {
@@ -4714,6 +4745,7 @@ DocumentReader.isAuthenticatorAvailableForUse = (successCallback, errorCallback)
 DocumentReader.getDocReaderVersion = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getDocReaderVersion"])
 DocumentReader.getDocReaderDocumentsDatabase = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getDocReaderDocumentsDatabase"])
 DocumentReader.finalizePackage = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["finalizePackage"])
+DocumentReader.finalizePackageWithFinalizeConfig = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["finalizePackageWithFinalizeConfig", config])
 DocumentReader.endBackendTransaction = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["endBackendTransaction"])
 DocumentReader.getTranslation = (className, value, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["getTranslation", className, value])
 DocumentReader.startReadMDl = (type, dataRetrieval, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startReadMDl", type, dataRetrieval])
@@ -4723,7 +4755,6 @@ DocumentReader.engageDeviceData = (data, successCallback, errorCallback) => cord
 DocumentReader.startRetrieveData = (deviceEngagement, dataRetrieval, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startRetrieveData", deviceEngagement, dataRetrieval])
 DocumentReader.retrieveDataNFC = (dataRetrieval, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["retrieveDataNFC", dataRetrieval])
 DocumentReader.retrieveDataBLE = (deviceEngagement, dataRetrieval, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["retrieveDataBLE", deviceEngagement, dataRetrieval])
-DocumentReader.finalizePackageWithFinalizeConfig = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["finalizePackageWithFinalizeConfig", config])
 
 DocumentReader.textFieldValueByType = (results, fieldType, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByType", results.rawResult, fieldType])
 DocumentReader.textFieldValueByTypeLcid = (results, fieldType, lcid, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["textFieldValueByTypeLcid", results.rawResult, fieldType, lcid])
@@ -4824,11 +4855,11 @@ DocumentReaderPlugin.RFIDParams = RFIDParams
 DocumentReaderPlugin.FaceApiSearchParams = FaceApiSearchParams
 DocumentReaderPlugin.FaceApiParams = FaceApiParams
 DocumentReaderPlugin.BackendProcessingConfig = BackendProcessingConfig
+DocumentReaderPlugin.Bsi = Bsi
 DocumentReaderPlugin.LivenessParams = LivenessParams
 DocumentReaderPlugin.AuthenticityParams = AuthenticityParams
 DocumentReaderPlugin.ProcessParams = ProcessParams
 DocumentReaderPlugin.Font = Font
-DocumentReaderPlugin.Bsi = Bsi
 DocumentReaderPlugin.CustomizationColors = CustomizationColors
 DocumentReaderPlugin.CustomizationFonts = CustomizationFonts
 DocumentReaderPlugin.CustomizationImages = CustomizationImages
@@ -4847,5 +4878,6 @@ DocumentReaderPlugin.DocumentRequestMDL = DocumentRequestMDL
 DocumentReaderPlugin.NameSpaceMDL = NameSpaceMDL
 DocumentReaderPlugin.DocumentRequest18013MDL = DocumentRequest18013MDL
 DocumentReaderPlugin.FinalizeConfig = FinalizeConfig
+DocumentReaderPlugin.FinalizeCompletion = FinalizeCompletion
 
 module.exports = DocumentReaderPlugin
