@@ -1775,6 +1775,9 @@ class Customization {
         result.colors = CustomizationColors.fromJson(jsonObject["colors"])
         result.fonts = CustomizationFonts.fromJson(jsonObject["fonts"])
         result.images = CustomizationImages.fromJson(jsonObject["images"])
+        result.timings = CustomizationTimings.fromJson(jsonObject["timings"])
+        result.contentModes = CustomizationContentModes.fromJson(jsonObject["contentModes"])
+        result.matrices = CustomizationMatrices.fromJson(jsonObject["matrices"])
 
         return result
     }
@@ -2122,6 +2125,48 @@ class FinalizeCompletion {
         result.action = jsonObject["action"]
         result.info = TransactionInfo.fromJson(jsonObject["info"])
         result.error = RegulaException.fromJson(jsonObject["error"])
+
+        return result
+    }
+}
+
+class PACEProtocol {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new PACEProtocol()
+
+        result.version = jsonObject["version"]
+        result.stdDomainParams = jsonObject["stdDomainParams"]
+        result.keyAlgorithm = jsonObject["keyAlgorithm"]
+
+        return result
+    }
+}
+
+class CAProtocol {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new CAProtocol()
+
+        result.version = jsonObject["version"]
+        result.scheme = jsonObject["scheme"]
+        result.keyAlgorithm = jsonObject["keyAlgorithm"]
+        result.chipIndividual = jsonObject["chipIndividual"]
+
+        return result
+    }
+}
+
+class RFIDConfig {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new RFIDConfig()
+
+        result.onRequestPACertificates = jsonObject["onRequestPACertificates"]
+        result.onRequestTACertificates = jsonObject["onRequestTACertificates"]
+        result.onRequestTASignature = jsonObject["onRequestTASignature"]
+        result.onRequestPACEProtocol = jsonObject["onRequestPACEProtocol"]
+        result.onRequestCAProtocol = jsonObject["onRequestCAProtocol"]
 
         return result
     }
@@ -4846,12 +4891,14 @@ DocumentReader.startScanner = (config, successCallback, errorCallback) => cordov
 DocumentReader.recognize = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognize", config])
 DocumentReader.startNewPage = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startNewPage"])
 DocumentReader.stopScanner = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["stopScanner"])
-DocumentReader.startRFIDReader = (requestPACertificates, requestTACertificates, requestTASignature, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startRFIDReader", requestPACertificates, requestTACertificates, requestTASignature])
-DocumentReader.readRFID = (requestPACertificates, requestTACertificates, requestTASignature, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["readRFID", requestPACertificates, requestTACertificates, requestTASignature])
+DocumentReader.startRFIDReader = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startRFIDReader", config])
+DocumentReader.readRFID = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["readRFID", config])
 DocumentReader.stopRFIDReader = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["stopRFIDReader"])
 DocumentReader.providePACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["providePACertificates", certificates])
 DocumentReader.provideTACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTACertificates", certificates])
 DocumentReader.provideTASignature = (signature, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", signature])
+DocumentReader.selectPACEProtocol = (protocol, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["selectPACEProtocol", protocol])
+DocumentReader.selectCAProtocol = (protocol, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["selectCAProtocol", protocol])
 DocumentReader.setTCCParams = (params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTCCParams", params])
 DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", certificates])
 DocumentReader.clearPKDCertificates = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearPKDCertificates"])
@@ -5006,5 +5053,8 @@ DocumentReaderPlugin.NameSpaceMDL = NameSpaceMDL
 DocumentReaderPlugin.DocumentRequest18013MDL = DocumentRequest18013MDL
 DocumentReaderPlugin.FinalizeConfig = FinalizeConfig
 DocumentReaderPlugin.FinalizeCompletion = FinalizeCompletion
+DocumentReaderPlugin.PACEProtocol = PACEProtocol
+DocumentReaderPlugin.CAProtocol = CAProtocol
+DocumentReaderPlugin.RFIDConfig = RFIDConfig
 
 module.exports = DocumentReaderPlugin
