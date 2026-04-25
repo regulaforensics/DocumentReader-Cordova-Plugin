@@ -2130,6 +2130,48 @@ class FinalizeCompletion {
     }
 }
 
+class PACEProtocol {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new PACEProtocol()
+
+        result.version = jsonObject["version"]
+        result.stdDomainParams = jsonObject["stdDomainParams"]
+        result.keyAlgorithm = jsonObject["keyAlgorithm"]
+
+        return result
+    }
+}
+
+class CAProtocol {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new CAProtocol()
+
+        result.version = jsonObject["version"]
+        result.scheme = jsonObject["scheme"]
+        result.keyAlgorithm = jsonObject["keyAlgorithm"]
+        result.chipIndividual = jsonObject["chipIndividual"]
+
+        return result
+    }
+}
+
+class RFIDConfig {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new RFIDConfig()
+
+        result.onRequestPACertificates = jsonObject["onRequestPACertificates"]
+        result.onRequestTACertificates = jsonObject["onRequestTACertificates"]
+        result.onRequestTASignature = jsonObject["onRequestTASignature"]
+        result.onRequestPACEProtocol = jsonObject["onRequestPACEProtocol"]
+        result.onRequestCAProtocol = jsonObject["onRequestCAProtocol"]
+
+        return result
+    }
+}
+
 // Enum
 
 const FontStyle = {
@@ -2737,9 +2779,9 @@ const eRFID_NotificationCodes = {
     RFID_NOTIFICATION_AUXILIARY_DATA_VALIDATION: 0x000D0000,
     RFID_NOTIFICATION_RI_SECTOR_ID: 0x000E0000,
     RFID_NOTIFICATION_BIOMETRICS_EMPTY_PLACEHOLDER: 0x000F0000,
-    RFID_NOTIFICATION_SESSION_FILE_DATA_UPDATED: 1048576,
-    RFID_NOTIFICATION_TCC_TA_RESOURCES: 1114112,
-    RFID_NOTIFICATION_TCC_TA_SIGNATURE: 1114113,
+    RFID_NOTIFICATION_SESSION_FILE_DATA_UPDATED: 0x00100000,
+    RFID_NOTIFICATION_TCC_TA_RESOURCES: 0x00110000,
+    RFID_NOTIFICATION_TCC_TA_SIGNATURE: 0x00110001,
 }
 
 const CameraPosition = {
@@ -3269,6 +3311,8 @@ const eLDS_ParsingNotificationCodes = {
     NTF_LDS_ICAO_CERTIFICATE_MRZ_COUNTRY_NON_MATCHING: 0x90000252,
     NTF_LDS_ICAO_CERTIFICATE_ISSUER_COUNTRY_NON_UPPER_CASE: 0x90000253,
     NTF_LDS_ICAO_CERTIFICATE_SUBJECT_COUNTRY_NON_UPPER_CASE: 0x90000254,
+    NTFLDS_SI_STORAGE_CS_NONCONSISTANT: 0x91000111,
+    NTFLDS_SI_STORAGE_CS_PACE_CAM_KEY_MISSING: 0x9100011,
 }
 
 const eImageQualityCheckType = {
@@ -3835,6 +3879,13 @@ const eRFID_DataFile_Type = {
     DFT_VDS: 900,
     DFT_VDSNC: 901,
     DFT_USERDEFINED: 1000,
+    DFT_POST_CA_RESPONSE: 710,
+    DFT_POST_CA_PUBLIC_KEY: 711,
+    DFT_POST_CA_INFO: 712,
+    DFT_POST_CA_DPARAMS: 713,
+    DFT_POST_CA_CHECK_PK: 714,
+    DFT_POST_CA_CHECK_SK: 715,
+    DFT_ID_DG22: 122,
 }
 
 const eVisualFieldType = {
@@ -4495,6 +4546,7 @@ const eVisualFieldType = {
     FT_NON_DOMICILED_INDICATOR: 702,
     FT_JURISDICTION_SPECIFIC_DATA: 703,
     FT_DATA_DATE_OF_EXPIRY: 704,
+    FT_CONSUL: 705,
 }
 
 const DocReaderOrientation = {
@@ -4849,12 +4901,14 @@ DocumentReader.startScanner = (config, successCallback, errorCallback) => cordov
 DocumentReader.recognize = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["recognize", config])
 DocumentReader.startNewPage = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startNewPage"])
 DocumentReader.stopScanner = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["stopScanner"])
-DocumentReader.startRFIDReader = (requestPACertificates, requestTACertificates, requestTASignature, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startRFIDReader", requestPACertificates, requestTACertificates, requestTASignature])
-DocumentReader.readRFID = (requestPACertificates, requestTACertificates, requestTASignature, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["readRFID", requestPACertificates, requestTACertificates, requestTASignature])
+DocumentReader.startRFIDReader = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startRFIDReader", config])
+DocumentReader.readRFID = (config, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["readRFID", config])
 DocumentReader.stopRFIDReader = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["stopRFIDReader"])
 DocumentReader.providePACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["providePACertificates", certificates])
 DocumentReader.provideTACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTACertificates", certificates])
 DocumentReader.provideTASignature = (signature, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", signature])
+DocumentReader.selectPACEProtocol = (protocol, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["selectPACEProtocol", protocol])
+DocumentReader.selectCAProtocol = (protocol, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["selectCAProtocol", protocol])
 DocumentReader.setTCCParams = (params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTCCParams", params])
 DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", certificates])
 DocumentReader.clearPKDCertificates = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearPKDCertificates"])
@@ -5009,5 +5063,8 @@ DocumentReaderPlugin.NameSpaceMDL = NameSpaceMDL
 DocumentReaderPlugin.DocumentRequest18013MDL = DocumentRequest18013MDL
 DocumentReaderPlugin.FinalizeConfig = FinalizeConfig
 DocumentReaderPlugin.FinalizeCompletion = FinalizeCompletion
+DocumentReaderPlugin.PACEProtocol = PACEProtocol
+DocumentReaderPlugin.CAProtocol = CAProtocol
+DocumentReaderPlugin.RFIDConfig = RFIDConfig
 
 module.exports = DocumentReaderPlugin
