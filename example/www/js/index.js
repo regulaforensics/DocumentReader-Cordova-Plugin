@@ -166,12 +166,12 @@ var app = {
 
         function customRFID() {
             showRfidUI()
-            DocumentReader.readRFID(false, false, false, function (m) { handleRfidCompletion(m) }, function (e) { })
+            DocumentReader.readRFID(null, function (m) { handleRfidCompletion(m) }, function (e) { })
         }
 
         function usualRFID() {
             isReadingRfid = true
-            DocumentReader.startRFIDReader(false, false, false, function (m) { handleRfidCompletion(m) }, function (e) { })
+            DocumentReader.startRFIDReader(null, function (m) { handleRfidCompletion(m) }, function (e) { })
         }
 
         function handleRfidCompletion(raw) {
