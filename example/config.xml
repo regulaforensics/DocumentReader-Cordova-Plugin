@@ -1,38 +1,33 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget android-packageName="com.regula.dr.fullauthrfid" ios-CFBundleIdentifier="regula.DocumentReader" version="1.0.0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>DocumentReader</name>
-    <description>
-        A sample Regula Document Reader application for reading and validation of identification documents.
-    </description>
-    <author email="cordova.support@regulaforensics.com" href="https://mobile.regulaforensics.com">
-        Regula Forensics Inc.
-    </author>
-    <content src="index.html" />
-    <access origin="*" />
-    <allow-intent href="http://*/*" />
-    <allow-intent href="https://*/*" />
-    <allow-intent href="tel:*" />
-    <allow-intent href="sms:*" />
-    <allow-intent href="mailto:*" />
-    <allow-intent href="geo:*" />
     <platform name="android">
         <resource-file src="www/db.dat" target="app/src/main/assets/Regula/db.dat" />
-        <preference name="android-minSdkVersion" value="23" />
-        <preference name="android-targetSdkVersion" value="34" />
-        <allow-intent href="market:*" />
+        <preference name="orientation" value="portrait" />
+        <preference name="AndroidEdgeToEdge" value="true" />
+        <preference name="android-minSdkVersion" value="24" />
+        <preference name="android-targetSdkVersion" value="36" />
+        <preference name="GradlePluginKotlinEnabled" value="true" />
         <config-file parent="/*" target="AndroidManifest.xml">
             <uses-permission android:name="android.permission.NFC" />
-            <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
             <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
-            <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
         </config-file>
-        <preference name="orientation" value="portrait" />
+        <edit-config file="app/src/main/AndroidManifest.xml" mode="merge" target="/manifest/application">
+            <application android:usesCleartextTraffic="true" />
+        </edit-config>
     </platform>
     <platform name="ios">
         <resource-file src="www/db.dat" />
+        <preference name="deployment-target" value="14.0" />
+        <preference name="orientation" value="portrait" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
-        <preference name="orientation" value="portrait" />
+        <config-file parent="NSCameraUsageDescription" target="*-Info.plist">
+            <string>To use camera</string>
+        </config-file>
+        <config-file parent="NSPhotoLibraryUsageDescription" target="*-Info.plist">
+            <string>To pick images</string>
+        </config-file>
         <config-file target="*-Info.plist" parent="NSCameraUsageDescription">
             <string>To use camera</string>
         </config-file>
