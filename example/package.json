@@ -13,23 +13,19 @@
   "author": "Regula Forensics Inc.",
   "license": "commercial",
   "dependencies": {
-    "@regulaforensics/cordova-plugin-document-reader-api": "9.7.646-nightly",
-    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.7.2813-nightly",
-    "cordova-android": "13.0.0",
-    "cordova-ios": "7.1.1",
-    "cordova-plugin-add-swift-support": "2.0.2",
-    "cordova-plugin-advanced-http": "3.3.1",
-    "cordova-plugin-camera": "7.0.0",
-    "cordova-plugin-file": "8.0.0",
-    "jetifier": "2.0.0"
+    "@regulaforensics/cordova-plugin-document-reader-api": "9.7.657-nightly",
+    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.7.2830-nightly",
+    "cordova-android": "15.0.0",
+    "cordova-ios": "8.1.1",
+    "cordova-plugin-camera": "8.0.0",
+    "cordova-plugin-file": "8.1.3"
   },
   "cordova": {
     "plugins": {
       "@regulaforensics/cordova-plugin-document-reader-api": {},
       "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": {},
       "cordova-plugin-file": {},
-      "cordova-plugin-camera": {},
-      "cordova-plugin-advanced-http": {}
+      "cordova-plugin-camera": {}
     },
     "platforms": [
       "android",
