@@ -1,12 +1,13 @@
 repositories {
     maven {
-        url "https://maven.regulaforensics.com/RegulaDocumentReader"
+        url "url_place_holder"
+        allowInsecureProtocol = true
     }
 }
 
 dependencies {
     //noinspection GradleDependency
-	implementation ('com.regula.documentreader:api:9.6.13074'){
+	implementation ('com.regula.documentreader:api:version_place_holder'){
         transitive = true
     }
 }
