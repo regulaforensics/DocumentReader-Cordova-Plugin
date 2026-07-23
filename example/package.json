@@ -13,8 +13,8 @@
   "author": "Regula Forensics Inc.",
   "license": "commercial",
   "dependencies": {
-    "@regulaforensics/cordova-plugin-document-reader-api": "9.7.684-nightly",
-    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.7.2939-nightly",
+    "@regulaforensics/cordova-plugin-document-reader-api": "9.7.688-nightly",
+    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.7.2956-nightly",
     "cordova-android": "15.0.0",
     "cordova-ios": "8.1.1",
     "cordova-plugin-camera": "8.0.0",
