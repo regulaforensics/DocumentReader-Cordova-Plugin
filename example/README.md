@@ -9,7 +9,6 @@
 ```bash
 $ cd example
 $ npm install
-$ npx jetify
 $ cordova prepare
 ```
 
