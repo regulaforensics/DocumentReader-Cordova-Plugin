@@ -16,7 +16,6 @@ var app = {
         this.receivedEvent('deviceready')
         document.getElementById("status").innerHTML = "loading......"
         document.getElementById("status").style.backgroundColor = "grey"
-        var http = cordova.plugin.http
 
         // This way you can import any class declared in DocumentReaderPlugin
         var DocumentReader = DocumentReaderPlugin.DocumentReader
@@ -32,8 +31,6 @@ var app = {
 
         var selectedScenario = "Mrz"
         var doRfid = false
-        var encryption = false
-        const ENCRYPTED_RESULT_SERVICE = "https://api.regulaforensics.com/api/process"
         var isReadingRfidCustomUi = false
         var isReadingRfid = false
         var rfidUIHeader = "Reading RFID"
@@ -75,11 +72,6 @@ var app = {
                 document.getElementById("rfidCheckboxText").onclick = function () { document.getElementById("rfidCheckbox").click() }
                 document.getElementById("rfidCheckbox").onchange = function () { doRfid = this.checked }
             }
-            document.getElementById("encryptionCheckbox").disabled = false
-            document.getElementById("encryptionCheckboxText").style.color = "black"
-            document.getElementById("encryptionCheckboxText").innerHTML = " Data encryption"
-            document.getElementById("encryptionCheckboxText").onclick = function () { document.getElementById("encryptionCheckbox").click() }
-            document.getElementById("encryptionCheckbox").onchange = function () { encryption = this.checked }
         }
 
         function scan() {
@@ -190,35 +182,8 @@ var app = {
                 usualRFID()
             } else {
                 isReadingRfid = false
-                if (encryption) {
-                    var input = JSON.parse(results.rawResult)
-                    var processParam = {
-                        alreadyCropped: true,
-                        scenario: "FullProcess"
-                    }
-                    var body = {
-                        List: input["ContainerList"]["List"],
-                        processParam: processParam
-                    }
-                    postRequest(body)
-                } else
-                    displayResults(results)
+                displayResults(results)
             }
-        }
-
-        function postRequest(body) {
-            document.getElementById("status").innerHTML = "Getting results from server......"
-            document.getElementById("status").style.backgroundColor = "grey"
-            http.setDataSerializer('utf8')
-            http.post(ENCRYPTED_RESULT_SERVICE, JSON.stringify(body), { "content-type": "application/json; utf-8" }, function (response) {
-                DocumentReader.parseCoreResults(response.data, function (m) {
-                    displayResults(DocumentReaderResults.fromJson(JSON.parse(m)))
-                }, function (e) { })
-            }, function (response) {
-                console.error(response.error)
-                document.getElementById("status").innerHTML = "Something went wrong!"
-                document.getElementById("status").style.backgroundColor = "red"
-            })
         }
 
         function displayResults(results) {

@@ -2,8 +2,6 @@
 <html>
 
 <head>
-    <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self' data: gap: https://ssl.gstatic.com 'unsafe-eval'; style-src 'self' 'unsafe-inline'; media-src *; img-src 'self' data: content:;">
     <meta name="format-detection" content="telephone=no">
     <meta name="msapplication-tap-highlight" content="no">
     <meta name="viewport" content="initial-scale=1, width=device-width, viewport-fit=cover">
@@ -49,10 +47,6 @@
             <div id="rfidDiv" style="flex-direction: row; padding: 5px">
                 <input id="rfidCheckbox" type="checkbox" name="rfid" disabled><span id="rfidCheckboxText"
                     style="color: lightgrey"> Process rfid reading(unavailable)</span><br>
-            </div>
-            <div id="encryptionDiv" style="flex-direction: row; padding: 5px">
-                <input id="encryptionCheckbox" type="checkbox" name="rfid" disabled><span id="encryptionCheckboxText"
-                    style="color: lightgrey"> Data encryption(unavailable)</span><br>
             </div>
             <div style="flex-direction: row; padding: 10px">
                 <button id="showScannerButton" style="margin-right: 20px">scan doc</button>
