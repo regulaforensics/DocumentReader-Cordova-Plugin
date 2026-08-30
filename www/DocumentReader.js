@@ -1293,6 +1293,17 @@ class GlaresCheckParams {
     }
 }
 
+class OcclusionCheckParams {
+    static fromJson(jsonObject) {
+        if (jsonObject == null) return null
+        const result = new OcclusionCheckParams()
+
+        result.maxOcclusionPart = jsonObject["maxOcclusionPart"]
+
+        return result
+    }
+}
+
 class ImageQA {
     static fromJson(jsonObject) {
         if (jsonObject == null) return null
@@ -1303,6 +1314,7 @@ class ImageQA {
         result.focusCheck = jsonObject["focusCheck"]
         result.glaresCheck = jsonObject["glaresCheck"]
         result.glaresCheckParams = GlaresCheckParams.fromJson(jsonObject["glaresCheckParams"])
+        result.occlusionCheckParams = OcclusionCheckParams.fromJson(jsonObject["occlusionCheckParams"])
         result.colornessCheck = jsonObject["colornessCheck"]
         result.screenCapture = jsonObject["screenCapture"]
         result.expectedPass = []
@@ -2577,6 +2589,11 @@ const eRPRM_ResultType = {
     RPRM_RESULT_TYPE_BSI_XML_V2: 73,
 }
 
+const CameraTypes = {
+    FRONT: "front",
+    BACK: "back",
+}
+
 const FrameShapeType = {
     LINE: 0,
     CORNER: 1,
@@ -2597,6 +2614,9 @@ const eRFID_BaudRate = {
     rfbr_212: 2,
     rfbr_424: 4,
     rfbr_848: 8,
+    rfbr_1695: 0x10,
+    rfbr_3390: 0x20,
+    rfbr_6780: 0x40,
 }
 
 const LineCap = {
@@ -2622,7 +2642,6 @@ const DocReaderAction = {
     PROCESS_WHITE_FLASHLIGHT: 5,
     TIMEOUT: 6,
     PROCESSING_ON_SERVICE: 7,
-    NOTIFICATION: 101,
     PROCESS_WHITE_UV_IMAGES: 102,
     PROCESS_IR_FRAME: 103,
 }
@@ -2645,8 +2664,8 @@ const eProcessGLCommands = {
 }
 
 const eRFIDReadingBufferSize = {
-    STANDARD_LENGTH: 0,
     EXTENDED_LENGTH: -1,
+    STANDARD_LENGTH: 0,
 }
 
 const PKDResourceType = {
@@ -2691,6 +2710,13 @@ const eRFID_AuthenticationProcedureType = {
     aptStandard: 1,
     aptAdvanced: 2,
     aptGeneral: 3,
+}
+
+const eRFID_AccessControl = {
+    acDefault : 0,
+    acChipAccess_BAC : 1,
+    acChipAccess_PACE : 2,
+    acLocal_PIN : 3,
 }
 
 const DocumentReaderErrorCodes = {
@@ -2830,6 +2856,7 @@ const eRFID_Password_Type = {
     PPT_PIN_ESIGN: 5,
     PPT_SAI: 6,
     PPT_MRZ_HASH: 7,
+    PPT_PIN_LOCAL: 8,
 }
 
 const ViewContentMode = {
@@ -2884,6 +2911,8 @@ const BarcodeResult = {
 }
 
 const eRFID_Application_Type = {
+    AT_UNSPECIFIED: 0,
+    AT_ROOT_FILES: AT_UNSPECIFIED,
     ePASSPORT: 1,
     eID: 2,
     eSIGN: 3,
@@ -2892,6 +2921,8 @@ const eRFID_Application_Type = {
     LDS2_VISA_RECORDS: 6,
     LDS2_ADD_BIOMETRICS: 7,
     eDTC_PC: 8,
+    AT_APPLET_ROOT: 50,
+    AT_USER_DEFINED: 100,
 }
 
 const eSignManagementAction = {
@@ -4845,6 +4876,7 @@ const Enum = {
    eRFID_CertificateType,
    RGLMeasureSystem,
    eRPRM_ResultType,
+   CameraTypes,
    FrameShapeType,
    eMDLDeviceRetrieval,
    CustomizationTheme,
@@ -4856,6 +4888,7 @@ const Enum = {
    eRFIDReadingBufferSize,
    PKDResourceType,
    eRFID_AuthenticationProcedureType,
+   eRFID_AccessControl,
    DocumentReaderErrorCodes,
    ScenarioIdentifier,
    eRFID_AccessControl_ProcedureType,
@@ -5075,6 +5108,7 @@ DocumentReaderPlugin.DocumentReaderResults = DocumentReaderResults
 DocumentReaderPlugin.CameraSize = CameraSize
 DocumentReaderPlugin.Functionality = Functionality
 DocumentReaderPlugin.GlaresCheckParams = GlaresCheckParams
+DocumentReaderPlugin.OcclusionCheckParams = OcclusionCheckParams
 DocumentReaderPlugin.ImageQA = ImageQA
 DocumentReaderPlugin.RFIDParams = RFIDParams
 DocumentReaderPlugin.FaceApiSearchParams = FaceApiSearchParams
