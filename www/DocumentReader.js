@@ -2912,7 +2912,7 @@ const BarcodeResult = {
 
 const eRFID_Application_Type = {
     AT_UNSPECIFIED: 0,
-    AT_ROOT_FILES: AT_UNSPECIFIED,
+    AT_ROOT_FILES: 0,
     ePASSPORT: 1,
     eID: 2,
     eSIGN: 3,
