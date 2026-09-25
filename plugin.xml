@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="9.8.799-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="9.8.800-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
   <license>commercial</license>
@@ -26,6 +26,7 @@
     <source-file src="src/ios/RGLWMain.m" />
     <podspec>
       <config>
+        <source url="http://gitlab.regula.local/mobile-sdk/podspecs.git" />
         <source url="https://github.com/regulaforensics/podspecs.git"/>
       </config>
       <pods>
