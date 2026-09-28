@@ -1,13 +1,13 @@
 repositories {
-    maven {
-        url "https://maven.regulaforensics.com/RegulaDocumentReader/Stage"
-        allowInsecureProtocol = true
-    }
+    maven { url "https://maven.regulaforensics.com/RegulaDocumentReader" }
+    maven { url "https://maven.regulaforensics.com/RegulaDocumentReader/Beta" }
+    maven { url "https://maven.regulaforensics.com/RegulaDocumentReader/Nightly" }
+    maven { url "https://maven.regulaforensics.com/RegulaDocumentReader/Stage" }
 }
 
 dependencies {
     //noinspection GradleDependency
-	implementation ('com.regula.documentreader:api:9.8.13460'){
+	implementation ('com.regula.documentreader:api:9.9.13459'){
         transitive = true
     }
 }
