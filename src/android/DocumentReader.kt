@@ -1,4 +1,4 @@
-package com.regula.plugin.documentreader
+package com.regula.plugin.document.reader
 
 import android.app.Activity
 import android.content.Context
