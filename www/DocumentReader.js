@@ -1428,6 +1428,7 @@ class AuthenticityPropertiesParams {
         const result = new AuthenticityPropertiesParams()
 
         result.checkHoldersSignature = jsonObject["checkHoldersSignature"]
+        result.checkDocumentDamage = jsonObject["checkDocumentDamage"]
 
         return result
     }
@@ -2200,6 +2201,7 @@ class RFIDConfig {
         result.onRequestPACertificates = jsonObject["onRequestPACertificates"]
         result.onRequestTACertificates = jsonObject["onRequestTACertificates"]
         result.onRequestTASignature = jsonObject["onRequestTASignature"]
+        result.onRequestAAChallenge = jsonObject["onRequestAAChallenge"]
         result.onRequestPACEProtocol = jsonObject["onRequestPACEProtocol"]
         result.onRequestCAProtocol = jsonObject["onRequestCAProtocol"]
 
@@ -3081,6 +3083,8 @@ const eCheckDiagnose = {
     CHD_PROPERTY_NO_SIGNATURE: 260,
     CHD_PROPERTY_TEXT_AS_SIGNATURE: 261,
     CHD_PROPERTY_FINGERPRINT_AS_SIGNATURE: 262,
+    CHD_PROPERTY_DOCUMENT_DAMAGED: 263,
+    CHD_PROPERTY_DOCUMENT_CANCELLED: 264,
 }
 
 const eMDLIntentToRetain = {
@@ -3497,6 +3501,7 @@ const eRPRM_SecurityFeatureType = {
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_GHOSTVSLIVE: 60,
     SECURITY_FEATURE_TYPE_PORTRAIT_COMPARISON_EXTVSGHOST: 61,
     SECURITY_FEATURE_TYPE_SIGNATURE_PRESENCE: 62,
+    SECURITY_FEATURE_TYPE_DAMAGE_CHECK: 63,
 }
 
 const OnlineMode = {
@@ -4623,6 +4628,8 @@ const eVisualFieldType = {
     FT_DLCLASSCODE_B3_FROM: 706,
     FT_DLCLASSCODE_B3_TO: 707,
     FT_DLCLASSCODE_B3_NOTES: 708,
+    FT_ADDRESS_POST_OFFICE: 709,
+    FT_ADDRESS_LOT: 710,
 }
 
 const DocReaderOrientation = {
@@ -4986,6 +4993,7 @@ DocumentReader.stopRFIDReader = (successCallback, errorCallback) => cordova.exec
 DocumentReader.providePACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["providePACertificates", certificates])
 DocumentReader.provideTACertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTACertificates", certificates])
 DocumentReader.provideTASignature = (signature, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideTASignature", signature])
+DocumentReader.provideAAChallenge = (challenge, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["provideAAChallenge", challenge])
 DocumentReader.selectPACEProtocol = (protocol, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["selectPACEProtocol", protocol])
 DocumentReader.selectCAProtocol = (protocol, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["selectCAProtocol", protocol])
 DocumentReader.setTCCParams = (params, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["setTCCParams", params])
