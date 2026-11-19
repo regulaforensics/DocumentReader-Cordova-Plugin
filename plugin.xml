@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="9.11.937-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="9.11.938-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
   <license>commercial</license>
@@ -15,21 +15,19 @@
         <param name="ios-package" value="RGLWDocumentReader" />
       </feature>
       <preference name="deployment-target" value="16.0" />
+      <preference name="SwiftVersion" value="5" />
     </config-file>
-    <header-file src="src/ios/RGLWDocumentReader.h" />
-    <source-file src="src/ios/RGLWDocumentReader.m" />
-    <header-file src="src/ios/RGLWJSONConstructor.h" />
-    <source-file src="src/ios/RGLWJSONConstructor.m" />
-    <header-file src="src/ios/RGLWConfig.h" />
-    <source-file src="src/ios/RGLWConfig.m" />
-    <header-file src="src/ios/RGLWMain.h" />
-    <source-file src="src/ios/RGLWMain.m" />
+    <source-file src="src/ios/RGLWDocumentReader.swift" />
+    <source-file src="src/ios/Config.swift" />
+    <source-file src="src/ios/Decoder.swift" />
+    <source-file src="src/ios/Implementation.swift" />
+    <source-file src="src/ios/Utils.swift" />
     <podspec>
       <config>
         <source url="https://github.com/regulaforensics/podspecs.git"/>
       </config>
       <pods>
-        <pod name="DocumentReaderStage" spec="9.11.7373" />
+        <pod name="DocumentReader" spec="9.10.7343" />
       </pods>
     </podspec>
   </platform>
