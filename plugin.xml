@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="9.11.941-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
+<plugin id="@regulaforensics/cordova-plugin-document-reader-api" version="9.11.942-rc" xmlns="http://apache.org/cordova/ns/plugins/1.0">
   <name>DocumentReaderApi</name>
   <description>Cordova plugin Document reader api</description>
   <license>commercial</license>
@@ -9,7 +9,7 @@
     <clobbers target="DocumentReader" />
   </js-module>
 
-  <platform name="ios" package="swift">
+  <platform name="ios">
     <config-file target="config.xml" parent="/widget">
       <feature name="DocumentReader">
         <param name="ios-package" value="RGLWDocumentReader" />
@@ -27,7 +27,7 @@
         <source url="https://github.com/regulaforensics/podspecs.git"/>
       </config>
       <pods>
-        <pod name="DocumentReader" spec="9.10.7343" nospm="true" />
+        <pod name="DocumentReader" spec="9.10.7343" />
       </pods>
     </podspec>
   </platform>
