@@ -1,6 +1,6 @@
 {
-  "name": "documentreader",
-  "displayName": "DocumentReader",
+  "name": "document",
+  "displayName": "Document",
   "version": "1.0.0",
   "description": "A sample Regula Document Reader application for reading and validation of identification documents.",
   "main": "index.js",
@@ -13,8 +13,8 @@
   "author": "Regula Forensics Inc.",
   "license": "commercial",
   "dependencies": {
-    "@regulaforensics/cordova-plugin-document-reader-api": "9.10.952-rc",
-    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.11.4066-rc",
+    "@regulaforensics/cordova-plugin-document-reader-api": "9.11.953-rc",
+    "@regulaforensics/cordova-plugin-document-reader-core-fullauthrfid": "9.10.3958",
     "cordova-android": "15.0.0",
     "cordova-ios": "8.1.1",
     "cordova-plugin-camera": "8.0.0",

@@ -10,10 +10,13 @@ import org.apache.cordova.CallbackContext
 import org.apache.cordova.CordovaPlugin
 import org.apache.cordova.PluginResult
 import org.json.JSONArray
+import org.json.JSONObject
 
 val eventCallbackIds = mutableMapOf<String, String>()
 lateinit var callbackContext: CallbackContext
 
+// Args pass null arguments as nulls, null elements in arrays as nulls,
+// but in maps keys with null values are removed.
 lateinit var args: JSONArray
 lateinit var binding: CordovaPlugin
 val context: Context
@@ -45,9 +48,25 @@ fun sendEvent(event: String, data: Any? = "") {
 }
 
 @Suppress("UNCHECKED_CAST")
-fun <T> argsNullable(index: Int): T? = if (args.get(index).toString() != "null") {
-    args.get(index) as T
-} else null
+fun <T> argsNullable(index: Int): T? {
+    if (args.isNull(index)) return null
+    val value = args.get(index)
+    omitNullKeys(value)
+    return value as T
+}
+
+private fun omitNullKeys(value: Any?) {
+    when (value) {
+        is JSONObject -> {
+            val keys = value.keys()
+            while (keys.hasNext()) {
+                val key = keys.next()
+                if (value.isNull(key)) keys.remove() else omitNullKeys(value.get(key))
+            }
+        }
+        is JSONArray -> for (index in 0 until value.length()) omitNullKeys(value.opt(index))
+    }
+}
 
 fun requestPermissions(@Suppress("UNUSED_PARAMETER") activity: Activity, permissions: Array<String>, requestCode: Int) = binding.cordova.requestPermissions(binding, requestCode, permissions)
 fun startActivityForResult(@Suppress("UNUSED_PARAMETER") activity: Activity, intent: Intent, requestCode: Int) = binding.cordova.startActivityForResult(binding, intent, requestCode)
