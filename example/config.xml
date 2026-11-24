@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget android-packageName="com.regula.dr.fullauthrfid" ios-CFBundleIdentifier="regula.DocumentReader" version="1.0.0" xmlns:android="http://schemas.android.com/apk/res/android" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Document</name>
+    <name>DocumentReader</name>
     <platform name="android">
         <resource-file src="www/db.dat" target="app/src/main/assets/Regula/db.dat" />
         <preference name="orientation" value="portrait" />
@@ -15,7 +15,7 @@
     </platform>
     <platform name="ios">
         <resource-file src="www/db.dat" />
-        <preference name="deployment-target" value="16.0" />
+        <preference name="deployment-target" value="15.0" />
         <preference name="orientation" value="portrait" />
         <allow-intent href="itms:*" />
         <allow-intent href="itms-apps:*" />
