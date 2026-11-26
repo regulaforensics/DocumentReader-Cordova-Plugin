@@ -1736,6 +1736,7 @@ class Customization {
         result.status = jsonObject["status"]
         result.resultStatus = jsonObject["resultStatus"]
         result.multipageButtonText = jsonObject["multipageButtonText"]
+        result.globalFontFamily = jsonObject["globalFontFamily"]
         result.cameraFrameDefaultColor = jsonObject["cameraFrameDefaultColor"]
         result.cameraFrameActiveColor = jsonObject["cameraFrameActiveColor"]
         result.statusTextColor = jsonObject["statusTextColor"]
@@ -5000,6 +5001,7 @@ DocumentReader.setTCCParams = (params, successCallback, errorCallback) => cordov
 DocumentReader.addPKDCertificates = (certificates, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["addPKDCertificates", certificates])
 DocumentReader.clearPKDCertificates = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearPKDCertificates"])
 DocumentReader.startNewSession = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["startNewSession"])
+DocumentReader.clearLastPage = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["clearLastPage"])
 DocumentReader.connectBluetoothDevice = (btDeviceName, successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["connectBluetoothDevice", btDeviceName])
 DocumentReader.btDeviceRequestFlashing = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["btDeviceRequestFlashing"])
 DocumentReader.btDeviceRequestFlashingFullIR = (successCallback, errorCallback) => cordova.exec(successCallback, errorCallback, "DocumentReader", "exec", ["btDeviceRequestFlashingFullIR"])
